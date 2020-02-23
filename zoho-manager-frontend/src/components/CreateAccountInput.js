@@ -1,13 +1,14 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-export default class LoginInput extends Component {
+export default class CreateAccountInput extends Component {
   constructor() {
     super();
-    this.state = { name: "", email: "", privileges: "" };
+    this.state = { logo:"", name: "", email: "", privileges: "" };
   }
 
   handleOnChange = event => {
-    event.persist()
+    event.persist();
     this.setState({ [event.target.name]: event.target.value });
   };
 
@@ -23,12 +24,21 @@ export default class LoginInput extends Component {
           name="name"
           onChange={this.handleOnChange}
           value={this.state.name}
+          placeholder="Enter Name"
         />
         <input
           type="email"
           name="email"
           onChange={this.handleOnChange}
           value={this.state.email}
+          placeholder="Enter Email"
+        />
+        <input
+          type="password"
+          name="password"
+          onChange={this.handleOnChange}
+          value={this.state.password}
+          placeholder="Enter Password"
         />
         <input type="submit" />
         {this.state.name}

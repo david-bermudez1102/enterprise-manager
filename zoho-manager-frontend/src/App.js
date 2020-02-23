@@ -5,12 +5,14 @@ import AdminContainer from "./containers/AdminContainer";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
+import { fetchAdmins } from "./actions/adminActions";
 
 class App extends Component {
   state = { organizations: [], admins: [] };
 
   componentDidMount() {
     this.props.fetchOrganizations();
+    this.props.fetchAdmins();
   }
 
   render() {
@@ -42,7 +44,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchOrganizations: () => dispatch(fetchOrganizations())
+    fetchOrganizations: () => dispatch(fetchOrganizations()),
+    fetchAdmins: () => dispatch(fetchAdmins())
   };
 };
 

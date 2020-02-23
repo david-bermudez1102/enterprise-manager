@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import LoginInput from "./components/LoginInput";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import OrganizationContainer from "./containers/OrganizationContainer";
+import AdminContainer from "./containers/AdminContainer";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchOrganizations } from "./actions/OrganizationAction";
-import AccountContainer from "./containers/AccountContainer";
+import { fetchOrganizations } from "./actions/organizationAction";
 
 class App extends Component {
-
-  state = { organizations: [], accounts:[] };
+  state = { organizations: [], admins: [] };
 
   componentDidMount() {
     this.props.fetchOrganizations();
   }
 
   render() {
-    const {organizations, accounts} = this.props
+    const { organizations, admins } = this.props;
 
     return (
       <Router>
@@ -23,7 +22,7 @@ class App extends Component {
           <Route exact path="/" render={() => <div>Home</div>} />
           <Route path="/login" component={LoginInput} />
           <Route path="/accounts/new">
-            <AccountContainer organizations={organizations} accounts={accounts}/>
+            <AdminContainer organizations={organizations} admins={admins} />
           </Route>
           <Route path="/organizations/new">
             <OrganizationContainer organizations={organizations} />
@@ -37,7 +36,7 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     organizations: state.organizations,
-    accounts: state.accounts
+    admins: state.admins
   };
 };
 
@@ -47,4 +46,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

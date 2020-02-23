@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import OrganizationInput from "../components/OrganizationInput";
 import { connect } from "react-redux";
-import { addOrganization } from "../actions/OrganizationAction";
+import { addOrganization } from "../actions/organizationAction";
 import { Redirect } from "react-router-dom";
 
 class OrganizationContainer extends Component {

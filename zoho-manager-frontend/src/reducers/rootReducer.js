@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { OrganizationReducer } from "./OrganizationReducer";
-import { AccountsReducer } from "./AccountsReducer";
+import { organizationReducer } from "./organizationReducer";
+import { adminsReducer } from "./adminsReducer";
 
-export const rootReducer = combineReducers({organizations:OrganizationReducer,accounts:AccountsReducer})
+export const rootReducer = combineReducers({organizations:organizationReducer,admins:adminsReducer})

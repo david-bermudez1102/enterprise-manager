@@ -3,7 +3,7 @@ class AdminsController < ApplicationController
     admin = Admin.new
     account = admin.build_account(admin_params)
     if account.save
-      render json: admin
+      render json: AdminSerializer.new(admin)
     end
   end
 

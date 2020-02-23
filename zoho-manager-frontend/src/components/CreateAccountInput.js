@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
 
 export default class CreateAccountInput extends Component {
   constructor() {
     super();
-    this.state = { logo:"", name: "", email: "", privileges: "" };
+    this.state = { name: "", email: "", password: "" };
   }
 
   handleOnChange = event => {

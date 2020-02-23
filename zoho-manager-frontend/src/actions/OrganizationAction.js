@@ -7,8 +7,10 @@ export const addOrganization = organization => {
       body: jsonToFormData(organization)
     })
       .then(response => response.json())
-      .then(organization =>
-        dispatch({ type: "ADD_ORGANIZATION", organization })
+      .then(organization => {
+        organization = organization.data.attributes;
+        return dispatch({ type: "ADD_ORGANIZATION", organization})
+      }
       );
   };
 };

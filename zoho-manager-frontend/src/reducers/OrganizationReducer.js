@@ -1,8 +1,11 @@
-export const OrganizationReducer = (state = {logo:"", name:""}, action) => {
+export const OrganizationReducer = (state = { organization:[] }, action) => {
   switch (action.type) {
     case 'ADD_ORGANIZATION':
-      console.log(action.organization)
-      return action.organization
+      console.log({
+        ...state,
+        organization: [...state.organization, action.organization]
+      });
+      return { ...state, organization:[...state.organization, action.organization]}
     default:
       return state
   }

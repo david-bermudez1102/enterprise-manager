@@ -2,13 +2,13 @@ class OrganizationsController < ApplicationController
   def create
     organization = Organization.new(organization_params)
     if organization.save
-      render json: organization
+      render json: OrganizationSerializer.new(organization)
     end
   end
 
   def index
     organizations = Organization.all
-    render json: organizations
+    render json: OrganizationSerializer.new(organizations)
   end
 
   private

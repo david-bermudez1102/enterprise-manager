@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import LoginInput from "./components/LoginInput";
-import AccountForm from "./components/AccountForm";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import OrganizationContainer from "./containers/OrganizationContainer";
 import { connect } from "react-redux";
 import { fetchOrganizations } from "./actions/OrganizationAction";
+import AccountContainer from "./containers/AccountContainer";
 
 class App extends Component {
 
@@ -23,7 +23,7 @@ class App extends Component {
           <Route exact path="/" render={() => <div>Home</div>} />
           <Route path="/login" component={LoginInput} />
           <Route path="/accounts/new">
-            <AccountForm organizations={organizations} />
+            <AccountContainer organizations={organizations} />
           </Route>
           <Route path="/organizations/new">
             <OrganizationContainer organizations={organizations} />

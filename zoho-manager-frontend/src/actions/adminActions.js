@@ -1,11 +1,12 @@
-import jsonToFormData from "json-form-data";
-
 export const addAdmin = admin => {
 
   return dispatch => {
     fetch("/admins", {
       method: "POST",
-      body: jsonToFormData(admin)
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(admin)
     })
       .then(response => response.json())
       .then(admin => admin.data.attributes)

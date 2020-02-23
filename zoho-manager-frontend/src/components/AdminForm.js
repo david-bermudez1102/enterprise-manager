@@ -16,6 +16,7 @@ export default class AdminForm extends Component {
 
   handleOnSubmit = event => {
     event.preventDefault();
+    this.props.addAdmin(this.state)
   };
 
   render() {

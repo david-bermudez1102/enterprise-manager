@@ -3,8 +3,8 @@ import logo from "./logo.svg";
 import "./App.css";
 import LoginInput from "./components/LoginInput";
 import CreateAccountInput from "./components/CreateAccountInput";
-import OrganizationInput from "./components/OrganizationInput";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import OrganizationContainer from "./containers/OrganizationContainer";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
           <CreateAccountInput />
         </Route>
         <Route path="/organizations/new">
-          <OrganizationInput />
+          <OrganizationContainer />
         </Route>
       </>
     </Router>

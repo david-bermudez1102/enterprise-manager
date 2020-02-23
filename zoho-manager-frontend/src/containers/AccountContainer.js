@@ -9,7 +9,7 @@ class AccountContainer extends Component {
 
     return (
       <div>
-        {organizations.length === 0 ? <Redirect to="/organizations/new" /> : ""}
+        {organizations.length === 0 ? <Redirect push to="/organizations/new" /> : ""}
         <AccountForm />
       </div>
     );

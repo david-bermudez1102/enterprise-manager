@@ -10,7 +10,7 @@ class OrganizationContainer extends Component {
 
     return (
       <div>
-        {organizations.length > 0 ? <Redirect to="/accounts/new" /> : ""}
+        {organizations.length > 0 ? <Redirect push to="/accounts/new" /> : ""}
         <OrganizationInput addOrganization={this.props.addOrganization} />
       </div>
     );

@@ -1,26 +1,49 @@
-import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { Component } from "react";
 import LoginInput from "./components/LoginInput";
-import CreateAccountInput from "./components/CreateAccountInput";
+import AccountForm from "./components/AccountForm";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import OrganizationContainer from "./containers/OrganizationContainer";
+import { connect } from "react-redux";
+import { fetchOrganizations } from "./actions/OrganizationAction";
 
-function App() {
-  return (
-    <Router>
-      <>
-        <Route exact path="/" render={() => <div>Home</div>} />
-        <Route path="/login" component={LoginInput} />
-        <Route path="/accounts/new">
-          <CreateAccountInput />
-        </Route>
-        <Route path="/organizations/new">
-          <OrganizationContainer />
-        </Route>
-      </>
-    </Router>
-  );
+class App extends Component {
+
+  state = { organizations: [] };
+
+  componentDidMount() {
+    this.props.fetchOrganizations();
+  }
+
+  render() {
+    const {organizations} = this.props
+
+    return (
+      <Router>
+        <>
+          <Route exact path="/" render={() => <div>Home</div>} />
+          <Route path="/login" component={LoginInput} />
+          <Route path="/accounts/new">
+            <AccountForm organizations={organizations} />
+          </Route>
+          <Route path="/organizations/new">
+            <OrganizationContainer organizations={organizations} />
+          </Route>
+        </>
+      </Router>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    organizations: state.organizations
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchOrganizations: () => dispatch(fetchOrganizations())
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);

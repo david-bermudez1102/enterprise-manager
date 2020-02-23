@@ -7,10 +7,22 @@ export const addOrganization = organization => {
       body: jsonToFormData(organization)
     })
       .then(response => response.json())
-      .then(organization => {
-        organization = organization.data.attributes;
-        return dispatch({ type: "ADD_ORGANIZATION", organization})
-      }
+      .then(organization => organization.data.attributes)
+      .then(organization =>
+        dispatch({ type: "ADD_ORGANIZATION", organization })
+      );
+  };
+};
+
+export const fetchOrganizations = () => {
+  return dispatch => {
+    fetch("/organizations")
+      .then(response => response.json())
+      .then(organizations =>
+        organizations.data.map(organization => organization.attributes)
+      )
+      .then(organizations => 
+        dispatch({ type: "ADD_ORGANIZATIONS", organizations })
       );
   };
 };

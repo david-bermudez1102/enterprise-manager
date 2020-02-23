@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class CreateAccountInput extends Component {
+export default class AccountForm extends Component {
   constructor() {
     super();
     this.state = { name: "", email: "", password: "" };

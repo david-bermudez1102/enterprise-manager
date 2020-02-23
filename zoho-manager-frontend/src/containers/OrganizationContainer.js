@@ -1,24 +1,26 @@
 import React, { Component } from "react";
 import OrganizationInput from "../components/OrganizationInput";
 import { connect } from "react-redux";
-import { addOrganization } from "../actions/OrganizationAction"
+import { addOrganization } from "../actions/OrganizationAction";
+import { Redirect } from "react-router-dom";
 
 class OrganizationContainer extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
+    const { organizations } = this.props;
+
     return (
       <div>
-        <OrganizationInput addOrganization={this.props.addOrganization}/>
+        {organizations.length > 0 ? <Redirect to="/accounts/new" /> : ""}
+        <OrganizationInput addOrganization={this.props.addOrganization} />
       </div>
     );
   }
 }
 
 const mapDispatchToProps = dispatch => {
-  return { addOrganization: organization => dispatch(addOrganization(organization))}
-}
+  return {
+    addOrganization: organization => dispatch(addOrganization(organization))
+  };
+};
 
 export default connect(null, mapDispatchToProps)(OrganizationContainer);

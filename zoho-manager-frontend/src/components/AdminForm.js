@@ -3,12 +3,15 @@ import React, { Component } from "react";
 export default class AdminForm extends Component {
   constructor() {
     super();
-    this.state = { name: "", email: "", password: "" };
+    this.state = { admin: { name: "", email: "", password: "" } };
   }
 
   handleOnChange = event => {
     event.persist();
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({
+      ...this.state,
+      admin: { ...this.state.admin, [event.target.name]: event.target.value }
+    });
   };
 
   handleOnSubmit = event => {
@@ -40,7 +43,6 @@ export default class AdminForm extends Component {
           placeholder="Enter Password"
         />
         <input type="submit" />
-        {this.state.name}
       </form>
     );
   }

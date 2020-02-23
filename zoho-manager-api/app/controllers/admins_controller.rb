@@ -7,6 +7,11 @@ class AdminsController < ApplicationController
     end
   end
 
+  def index
+    admins = Admin.all
+    render json: AdminSerializer.new(admins)
+  end
+
   private
   def admin_params
     params.require(:admin).permit(:name,:email,:password)

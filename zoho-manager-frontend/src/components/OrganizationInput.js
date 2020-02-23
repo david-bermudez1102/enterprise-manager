@@ -16,9 +16,17 @@ export default class OrganizationInput extends Component {
     });
   };
 
+  handleOnChangeImage = event => {
+    this.setState({
+      organization: {...this.state.organization,
+        [event.target.name]: event.target.files[0]
+      }
+    });
+  }
+
   handleOnSubmit = event => {
     event.preventDefault();
-    this.props.addOrganization(this.state)
+    this.props.addOrganization(this.state);
   };
 
   render() {
@@ -26,9 +34,9 @@ export default class OrganizationInput extends Component {
       <form onSubmit={this.handleOnSubmit}>
         <input
           type="file"
+          accept="image/*"
           name="logo"
-          onChange={this.handleOnChange}
-          value={this.state.organization.logo}
+          onChange={this.handleOnChangeImage}
         />
         <input
           type="text"

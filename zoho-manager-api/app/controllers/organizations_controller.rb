@@ -6,8 +6,13 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def index
+    organizations = Organization.all
+    render json: organizations
+  end
+
   private
   def organization_params
-    params.require(:organizations).accept(:name,:logo)
+    params.require(:organization).permit(:name,:logo)
   end
 end

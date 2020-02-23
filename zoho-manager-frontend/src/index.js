@@ -7,9 +7,9 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 
-import { OrganizationReducer } from "./reducers/OrganizationReducer";
+import { rootReducer } from "./reducers/rootReducer";
 
-const store = createStore(OrganizationReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
   <Provider store={store}>

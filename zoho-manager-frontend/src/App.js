@@ -8,14 +8,14 @@ import AccountContainer from "./containers/AccountContainer";
 
 class App extends Component {
 
-  state = { organizations: [] };
+  state = { organizations: [], accounts:[] };
 
   componentDidMount() {
     this.props.fetchOrganizations();
   }
 
   render() {
-    const {organizations} = this.props
+    const {organizations, accounts} = this.props
 
     return (
       <Router>
@@ -23,7 +23,7 @@ class App extends Component {
           <Route exact path="/" render={() => <div>Home</div>} />
           <Route path="/login" component={LoginInput} />
           <Route path="/accounts/new">
-            <AccountContainer organizations={organizations} />
+            <AccountContainer organizations={organizations} accounts={accounts}/>
           </Route>
           <Route path="/organizations/new">
             <OrganizationContainer organizations={organizations} />
@@ -36,7 +36,8 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    organizations: state.organizations
+    organizations: state.organizations,
+    accounts: state.accounts
   };
 };
 

@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import AccountForm from "../components/AccountForm";
+import AdminForm from "../components/AdminForm";
 
-class AccountContainer extends Component {
+class AdminContainer extends Component {
   render() {
     const { organizations } = this.props;
 
     return (
       <div>
         {organizations.length === 0 ? <Redirect push to="/organizations/new" /> : ""}
-        <AccountForm />
+        <AdminForm />
       </div>
     );
   }
@@ -22,4 +22,4 @@ class AccountContainer extends Component {
   };
 }; */
 
-export default connect()(AccountContainer);
+export default connect()(AdminContainer);

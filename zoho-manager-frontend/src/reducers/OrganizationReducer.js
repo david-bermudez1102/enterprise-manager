@@ -1,16 +1,10 @@
-export const OrganizationReducer = (state = { organizations:[] }, action) => {
+export const OrganizationReducer = (state = [], action) => {
   switch (action.type) {
     case "ADD_ORGANIZATION":
-      return {
-        ...state,
-        organizations: [...state.organizations, action.organization]
-      };
+      return [...state, action.organization]
 
     case "ADD_ORGANIZATIONS":
-      return {
-        ...state,
-        organizations: [...state.organizations, ...action.organizations]
-      };
+      return [...state, ...action.organizations]
     default:
       return state;
   }

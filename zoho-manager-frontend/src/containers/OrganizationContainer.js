@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import OrganizationInput from "../components/OrganizationInput";
+import { connect } from "react-redux";
+import { addOrganization } from "../actions/OrganizationAction"
 
-export default class OrganizationContainer extends Component {
+class OrganizationContainer extends Component {
   constructor() {
     super();
   }
@@ -9,8 +11,14 @@ export default class OrganizationContainer extends Component {
   render() {
     return (
       <div>
-        <OrganizationInput />
+        <OrganizationInput addOrganization={this.props.addOrganization}/>
       </div>
     );
   }
 }
+
+const mapDispatchToProps = dispatch => {
+  return { addOrganization: organization => dispatch(addOrganization(organization))}
+}
+
+export default connect(null, mapDispatchToProps)(OrganizationContainer);

@@ -18,7 +18,7 @@ export default class OrganizationInput extends Component {
 
   handleOnSubmit = event => {
     event.preventDefault();
-    this.props.createOrganization(this.state)
+    this.props.addOrganization(this.state)
   };
 
   render() {

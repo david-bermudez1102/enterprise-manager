@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_23_014517) do
+ActiveRecord::Schema.define(version: 2020_02_24_191904) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -55,6 +55,23 @@ ActiveRecord::Schema.define(version: 2020_02_23_014517) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fields", force: :cascade do |t|
+    t.integer "field_type"
+    t.string "name"
+    t.integer "form_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_fields_on_form_id"
+  end
+
+  create_table "forms", force: :cascade do |t|
+    t.integer "organization_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_forms_on_organization_id"
+  end
+
   create_table "managers", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -64,6 +81,14 @@ ActiveRecord::Schema.define(version: 2020_02_23_014517) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "values", force: :cascade do |t|
+    t.integer "organization_id"
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_values_on_organization_id"
   end
 
 end

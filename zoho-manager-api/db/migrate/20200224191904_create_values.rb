@@ -1,7 +1,7 @@
 class CreateValues < ActiveRecord::Migration[5.2]
   def change
     create_table :values do |t|
-      t.field :references
+      t.references :organization
       t.string :content
 
       t.timestamps

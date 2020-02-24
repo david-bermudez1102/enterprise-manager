@@ -1,6 +1,8 @@
 class AdminSerializer
   include FastJsonapi::ObjectSerializer
-  attribute :id
+  attribute :id do |object|
+    object.account.id
+  end
 
   attribute :name do |object|
     object.account.name

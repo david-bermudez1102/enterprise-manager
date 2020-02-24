@@ -1,6 +1,5 @@
-/* eslint-disable */
-
 import React, { Component } from "react";
+import Navbar from "./components/Navbar/Navbar"
 import OrganizationContainer from "./containers/OrganizationContainer";
 import AdminContainer from "./containers/AdminContainer";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
@@ -36,25 +35,26 @@ class App extends Component {
     const { organizations, admins } = this.props;
 
     return (
-      <Router>
-        <>
-          {this.state.isLoggedIn ? <Redirect push to="/home" /> : ""}
-          <Route exact path="/" render={() => <div>Home</div>} />
-          <Route path="/home" render={() => <div>Home</div>} />
-          <Route path="/login">
-            <LoginContainer
-              isLoggedIn={this.state.isLoggedIn}
-              setAccount={this.setAccount}
-            />
-          </Route>
-          <Route path="/accounts/new">
-            <AdminContainer organizations={organizations} admins={admins} />
-          </Route>
-          <Route path="/organizations/new">
-            <OrganizationContainer organizations={organizations} />
-          </Route>
-        </>
-      </Router>
+        <Router>
+          <>
+            <Navbar />
+            {this.state.isLoggedIn ? <Redirect push to="/home" /> : ""}
+            <Route exact path="/" render={() => <div>Home</div>} />
+            <Route path="/home" render={() => <div>Home</div>} />
+            <Route path="/login">
+              <LoginContainer
+                isLoggedIn={this.state.isLoggedIn}
+                setAccount={this.setAccount}
+              />
+            </Route>
+            <Route path="/accounts/new">
+              <AdminContainer organizations={organizations} admins={admins} />
+            </Route>
+            <Route path="/organizations/new">
+              <OrganizationContainer organizations={organizations} />
+            </Route>
+          </>
+        </Router>
     );
   }
 }

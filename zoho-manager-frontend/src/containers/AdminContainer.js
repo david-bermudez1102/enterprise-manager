@@ -10,8 +10,16 @@ class AdminContainer extends Component {
 
     return (
       <div>
-        {organizations.length === 0 ? <Redirect push to="/organizations/new" /> : ""}
-        {admins.length === 0 ? <AdminForm addAdmin={this.props.addAdmin}/> : ""}
+        {organizations.length === 0 ? (
+          <Redirect push to="/organizations/new" />
+        ) : (
+          ""
+        )}
+        {admins.length === 0 ? (
+          <AdminForm addAdmin={this.props.addAdmin} />
+        ) : (
+          <Redirect push to="/login" />
+        )}
       </div>
     );
   }

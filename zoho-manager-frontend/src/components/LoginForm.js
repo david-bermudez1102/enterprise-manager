@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
-export default class LoginInput extends Component {
+export default class LoginForm extends Component {
   constructor() {
     super();
-    this.state = { name: "", email: "", privileges: "" };
+    this.state = { email: "", password: "" };
   }
 
   handleOnChange = event => {
@@ -13,6 +13,7 @@ export default class LoginInput extends Component {
 
   handleOnSubmit = event => {
     event.preventDefault();
+    this.props.handleOnSubmit(this.state)
   };
 
   render() {
@@ -20,15 +21,17 @@ export default class LoginInput extends Component {
       <form onSubmit={this.handleOnSubmit}>
         <input
           type="text"
-          name="name"
+          name="username"
           onChange={this.handleOnChange}
-          value={this.state.name}
+          value={this.state.username}
+          placeholder="Email or username..."
         />
         <input
-          type="email"
-          name="email"
+          type="password"
+          name="password"
           onChange={this.handleOnChange}
-          value={this.state.email}
+          value={this.state.password}
+          placeholder="Your password..."
         />
         <input type="submit" />
         {this.state.name}

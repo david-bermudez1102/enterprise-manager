@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export default class LoginForm extends Component {
   constructor() {
     super();
-    this.state = { email: "", password: "" };
+    this.state = { username: "", password: "" };
   }
 
   handleOnChange = event => {

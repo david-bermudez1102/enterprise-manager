@@ -17,6 +17,11 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    cookies.delete(:jwt)
+    if current_account
+      cookies.delete(:jwt)
+      render json: {message: "success"}
+    else
+      render json: {error: "None accounts logged in"}
+    end
   end
 end

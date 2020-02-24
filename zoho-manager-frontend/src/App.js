@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Navbar from "./components/Navbar/Navbar"
+import Navbar from "./components/Navbar/Navbar";
 import OrganizationContainer from "./containers/OrganizationContainer";
 import AdminContainer from "./containers/AdminContainer";
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
 import { fetchAdmins } from "./actions/adminActions";
 import LoginContainer from "./containers/LoginContainer";
+import LogoutContainer from "./containers/LogoutContainer";
 
 class App extends Component {
   state = {
@@ -31,30 +32,44 @@ class App extends Component {
   setAccount = account =>
     this.setState({ ...this.state, isLoggedIn: true, currentAccount: account });
 
+  handleLogout = () => {
+    this.setState({
+      isLoggedIn: false,
+      currentAccount: {}
+    });
+  };
+
   render() {
     const { organizations, admins } = this.props;
 
     return (
-        <Router>
-          <>
-            <Navbar />
-            {this.state.isLoggedIn ? <Redirect push to="/home" /> : ""}
-            <Route exact path="/" render={() => <div>Home</div>} />
-            <Route path="/home" render={() => <div>Home</div>} />
-            <Route path="/login">
+      <Router>
+        <>
+          {this.state.isLoggedIn ? <Redirect push to="/home" /> : ""}
+          <Navbar isLoggedIn={this.state.isLoggedIn} />
+          <Route exact path="/" render={() => <div>Home</div>} />
+          <Route path="/home" render={() => <div>Home</div>} />
+          <Route
+            path="/login"
+            render={props => (
               <LoginContainer
+                {...props}
                 isLoggedIn={this.state.isLoggedIn}
                 setAccount={this.setAccount}
               />
-            </Route>
-            <Route path="/accounts/new">
-              <AdminContainer organizations={organizations} admins={admins} />
-            </Route>
-            <Route path="/organizations/new">
-              <OrganizationContainer organizations={organizations} />
-            </Route>
-          </>
-        </Router>
+            )}
+          />
+          <Route path="/logout">
+            <LogoutContainer handleLogout={this.handleLogout} />
+          </Route>
+          <Route path="/accounts/new">
+            <AdminContainer organizations={organizations} admins={admins} />
+          </Route>
+          <Route path="/organizations/new">
+            <OrganizationContainer organizations={organizations} />
+          </Route>
+        </>
+      </Router>
     );
   }
 }

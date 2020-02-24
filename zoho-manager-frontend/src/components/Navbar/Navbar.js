@@ -2,20 +2,37 @@ import React, { Component } from "react";
 import Navlink from "./Navlink";
 
 class Navbar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      links: [
-        { path: "/home", text: "Home", isActive: false },
-        { path: "/login", text: "Login", isActive: false }
-      ]
+      links: [{ path: "/login", text: "Login", isActive: false }]
     };
   }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.isLoggedIn !== nextProps.isLoggedIn) {
+      this.props.isLoggedIn
+        ? this.setState({
+            ...this.state,
+            links: [
+              { path: "/home", text: "Home", isActive: false },
+              { path: "/logout", text: "Logout", isActive: false }
+            ]
+          })
+        : this.setState({
+            ...this.state,
+            links: [{ path: "/login", text: "Login", isActive: false }]
+          });
+    }
+  }
+
   render() {
     return (
       <>
         <nav className="navbar navbar-dark bg-dark">
-          {this.state.links.map(link => <Navlink linkTo={link.path} text={link.text} />)}
+          {this.state.links.map((link, id) => (
+            <Navlink key={id} linkTo={link.path} text={link.text} />
+          ))}
         </nav>
       </>
     );

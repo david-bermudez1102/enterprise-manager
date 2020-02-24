@@ -5,11 +5,11 @@ class ApplicationController < ActionController::API
     request.headers['Authorization']
   end
 
-  def current_user
+  def current_account
     decoded_hash = decoded_token
-    if !decoded_hash.empty?
+    if decoded_hash
      account_id = decoded_hash[0]['id']
-      @current_account = Account.find_by(id:account_id)
+      @_current_account ||= Account.find_by(id:account_id)
     end
   end
 
@@ -18,8 +18,8 @@ class ApplicationController < ActionController::API
   end
 
   def decoded_token
-    if auth_header
-      token = auth_header.split(' ')[1]
+    if cookies.signed[:jwt]
+      token = cookies.signed[:jwt]
       begin
         JWT.decode(token, 'my_secret', true, algorithm: 'HS256')
       rescue JWT::DecodeError

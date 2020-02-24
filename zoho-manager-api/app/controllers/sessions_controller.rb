@@ -9,8 +9,10 @@ class SessionsController < ApplicationController
   end
 
   def show
-    if current_user
-      render json: AccountSerializer.new(current_user)
+    if current_account
+      render json: AccountSerializer.new(current_account)
+    else
+      render json: {error:"Not logged in"}
     end
   end
 

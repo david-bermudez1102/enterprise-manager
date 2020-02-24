@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import React, { Component } from "react";
 import OrganizationContainer from "./containers/OrganizationContainer";
 import AdminContainer from "./containers/AdminContainer";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
 import { fetchAdmins } from "./actions/adminActions";
@@ -22,9 +24,9 @@ class App extends Component {
   }
 
   loginStatus = () => {
-    fetch("/current_user", { credentials: "include" })
+    fetch("http://localhost:3001/current_user", { credentials: "include" })
       .then(response => response.json())
-      .then(data => this.setAccount(data.attributes));
+      .then(data => (!data.error ? this.setAccount(data.attributes) : ""));
   };
 
   setAccount = account =>
@@ -36,8 +38,15 @@ class App extends Component {
     return (
       <Router>
         <>
+          {this.state.isLoggedIn ? <Redirect push to="/home" /> : ""}
           <Route exact path="/" render={() => <div>Home</div>} />
-          <Route path="/login" component={LoginContainer} />
+          <Route path="/home" render={() => <div>Home</div>} />
+          <Route path="/login">
+            <LoginContainer
+              isLoggedIn={this.state.isLoggedIn}
+              setAccount={this.setAccount}
+            />
+          </Route>
           <Route path="/accounts/new">
             <AdminContainer organizations={organizations} admins={admins} />
           </Route>

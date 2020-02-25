@@ -1,17 +1,22 @@
 import React, { Component } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
 import { Route } from "react-router-dom";
+import { connect } from "react-redux";
 
 class ResourceContainer extends Component {
   render() {
-    const { match } = this.props;
+    const { match, addResource } = this.props;
     return (
       <Route
         path={`${match.url}/new`}
-        render={props => <ResourceForm {...props} />}
+        render={props => <ResourceForm {...props} addResource={addResource} />}
       />
     );
   }
 }
 
-export default ResourceContainer;
+const mapDispatchToProps = dispatch => {
+  return { addResource: resource => dispatch(resource) };
+};
+
+export default connect(null, mapDispatchToProps)(ResourceContainer);

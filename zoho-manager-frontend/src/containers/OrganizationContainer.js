@@ -14,7 +14,7 @@ class OrganizationContainer extends Component {
   }
 
   render() {
-    const { match } = this.props;
+    const { match, addOrganization } = this.props;
 
     return (
       <div>
@@ -23,7 +23,7 @@ class OrganizationContainer extends Component {
           render={props => (
             <OrganizationInput
               {...props}
-              addOrganization={this.props.addOrganization}
+              addOrganization={addOrganization}
             />
           )}
         />

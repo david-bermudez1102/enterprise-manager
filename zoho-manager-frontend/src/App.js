@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import OrganizationContainer from "./containers/OrganizationContainer";
 import AdminContainer from "./containers/AdminContainer";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
 import { fetchAdmins } from "./actions/adminActions";
@@ -46,10 +46,10 @@ class App extends Component {
     return (
       <Router>
         <>
-          <Navbar
+          {organizations.length > 0 ? <Navbar
             isLoggedIn={this.state.isLoggedIn}
             organization={organizations[0]}
-          />
+          /> : null}
           <Route exact path="/" render={() => <div>Home</div>} />
           <Route path="/home" component={Home} />
           <Route

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
 
 class LoginContainer extends Component {
-  componentDidMount() {
+  componentDidUpdate() {
     return this.props.isLoggedIn ? this.redirect() : null;
   }
 
@@ -22,7 +21,7 @@ class LoginContainer extends Component {
       .then(response => response.json())
       .then(data =>
         !data.error ? this.props.setAccount(data.attributes) : ""
-      );
+      ).then(() => this.redirect())
   };
 
   redirect = () => {

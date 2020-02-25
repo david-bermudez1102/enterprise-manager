@@ -8,6 +8,7 @@ import { fetchOrganizations } from "./actions/organizationAction";
 import { fetchAdmins } from "./actions/adminActions";
 import LoginContainer from "./containers/LoginContainer";
 import LogoutContainer from "./containers/LogoutContainer";
+import Home from "./containers/Home/Home";
 
 class App extends Component {
   state = {
@@ -45,10 +46,12 @@ class App extends Component {
     return (
       <Router>
         <>
-          {this.state.isLoggedIn ? <Redirect push to="/home" /> : ""}
-          <Navbar isLoggedIn={this.state.isLoggedIn} />
+          <Navbar
+            isLoggedIn={this.state.isLoggedIn}
+            organization={organizations[0]}
+          />
           <Route exact path="/" render={() => <div>Home</div>} />
-          <Route path="/home" render={() => <div>Home</div>} />
+          <Route path="/home" component={Home} />
           <Route
             path="/login"
             render={props => (
@@ -65,9 +68,10 @@ class App extends Component {
           <Route path="/accounts/new">
             <AdminContainer organizations={organizations} admins={admins} />
           </Route>
-          <Route path="/organizations/new">
-            <OrganizationContainer organizations={organizations} />
-          </Route>
+          <Route
+            path="/organizations"
+            render={props => <OrganizationContainer isLoggedIn={this.state.isLoggedIn} organizations={organizations} {...props} />}
+          />
         </>
       </Router>
     );

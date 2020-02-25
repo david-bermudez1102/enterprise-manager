@@ -10,13 +10,15 @@ class Navbar extends Component {
   }
 
   componentDidUpdate(nextProps) {
-    if (this.props.isLoggedIn !== nextProps.isLoggedIn) {
+    const { isLoggedIn, organization } = this.props
+    if (isLoggedIn !== nextProps.isLoggedIn) {
       this.props.isLoggedIn
         ? this.setState({
             ...this.state,
             links: [
               { path: "/home", text: "Home", isActive: false },
-              { path: "/logout", text: "Logout", isActive: false }
+              { path: "/logout", text: "Logout", isActive: false },
+              { path: `/organizations/${organization.id}/resources/new`, text: "Add Resource", isActive: false }
             ]
           })
         : this.setState({

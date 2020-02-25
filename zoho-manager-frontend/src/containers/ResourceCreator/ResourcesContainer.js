@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { addResource } from "../../actions/resourceActions";
 import ResourcesList from "../../components/Resources/ResourcesList";
@@ -10,10 +10,17 @@ class ResourcesContainer extends Component {
   render() {
     const { match, addResource, resources } = this.props;
     const { organizationId } = match.params;
+
     return (
-      <>
+      <Switch>
         <Route
-          path={`${match.url}/new`}
+          exact
+          path={`${match.path}`}
+          render={props => <ResourcesList {...props} resources={resources} />}
+        />
+        <Route
+          exact
+          path={`${match.path}/new`}
           render={props => (
             <ResourceForm
               {...props}
@@ -23,15 +30,14 @@ class ResourcesContainer extends Component {
           )}
         />
         <Route
-          exact
-          path={`${match.url}`}
-          render={props => <ResourcesList {...props} resources={resources}/>}
+          path={`${match.path}/:resourceId`}
+          render={props =>
+            props.match.params.resourceId !== "new" ? (
+              <Resource {...props} resources={resources} />
+            ) : null
+          }
         />
-        <Route
-          path={`${match.url}/:resourceId`}
-          render={props => <Resource {...props} resources={resources}/>}
-        />
-      </>
+      </Switch>
     );
   }
 }

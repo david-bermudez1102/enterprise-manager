@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import OrganizationInput from "../components/OrganizationInput";
 import { connect } from "react-redux";
 import { addOrganization } from "../actions/organizationAction";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import ResourcesContainer from "./ResourceCreator/ResourcesContainer";
 import Organization from "../components/Organizations/Organization";
 import { fetchResources } from "../actions/resourceActions";
@@ -28,21 +28,25 @@ class OrganizationContainer extends Component {
     const { match, addOrganization } = this.props;
     return (
       <div>
-        <Route
-          path={`${match.url}/new`}
-          render={props => (
-            <OrganizationInput {...props} addOrganization={addOrganization} />
-          )}
-        />
-        <Route
-          path={`${match.url}/:organizationId/resources`}
-          render={props => <ResourcesContainer {...props} resources={this.props.resources}/>}
-        />
-        <Route
-          exact
-          path={`${match.url}/:organizationId/`}
-          render={props => <Organization {...props} />}
-        />
+        <Switch>
+          <Route
+            path={`${match.path}/new`}
+            render={props => (
+              <OrganizationInput {...props} addOrganization={addOrganization} />
+            )}
+          />
+          <Route
+            path={`${match.path}/:organizationId/resources`}
+            render={props => (
+              <ResourcesContainer {...props} resources={this.props.resources} />
+            )}
+          />
+          <Route
+            exact
+            path={`${match.path}/:organizationId/`}
+            render={props => <Organization {...props} />}
+          />
+        </Switch>
       </div>
     );
   }

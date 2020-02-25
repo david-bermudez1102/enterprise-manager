@@ -15,7 +15,6 @@ class OrganizationContainer extends Component {
 
   render() {
     const { match, addOrganization } = this.props;
-
     return (
       <div>
         <Route

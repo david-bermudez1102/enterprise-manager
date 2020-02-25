@@ -7,10 +7,17 @@ import { addResource } from "../../actions/resourceActions";
 class ResourceContainer extends Component {
   render() {
     const { match, addResource } = this.props;
+    const { organizationId } = match.params;
     return (
       <Route
         path={`${match.url}/new`}
-        render={props => <ResourceForm {...props} addResource={addResource} />}
+        render={props => (
+          <ResourceForm
+            {...props}
+            addResource={addResource}
+            organizationId={organizationId}
+          />
+        )}
       />
     );
   }

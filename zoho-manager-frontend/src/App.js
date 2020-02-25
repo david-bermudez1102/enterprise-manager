@@ -11,12 +11,15 @@ import LogoutContainer from "./containers/LogoutContainer";
 import Home from "./containers/Home/Home";
 
 class App extends Component {
-  state = {
-    organizations: [],
-    admins: [],
-    isLoggedIn: false,
-    currentAccount: {}
-  };
+  constructor() {
+    super();
+    this.state = {
+      organizations: [],
+      admins: [],
+      isLoggedIn: false,
+      currentAccount: {}
+    };
+  }
 
   componentDidMount() {
     this.props.fetchOrganizations();
@@ -51,9 +54,15 @@ class App extends Component {
               isLoggedIn={this.state.isLoggedIn}
               organization={organizations[0]}
             />
-          ) : ""}
+          ) : (
+            ""
+          )}
           <Route exact path="/" render={() => <div>Home</div>} />
-          <Route path="/home" component={Home} />
+          <Route
+            path="/home"
+            component={Home}
+            organization={organizations[0]}
+          />
           <Route
             path="/login"
             render={props => (
@@ -89,7 +98,8 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     organizations: state.organizations,
-    admins: state.admins
+    admins: state.admins,
+    isLoggedIn: state.isLoggedIn
   };
 };
 

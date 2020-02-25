@@ -13,11 +13,11 @@ export const addResource = resource => {
   };
 };
 
-export const fetchResources = () => {
+export const fetchResources = organizationId => {
   return dispatch => {
-    fetch("/forms")
+    fetch(`/organizations/${organizationId}/forms`)
       .then(response => response.json())
       .then(resources => resources.data.map(resource => resource.attributes))
-      .then(resources => dispatch({ type: "ADD_ADMINS", resources }));
+      .then(resources => dispatch({ type: "ADD_RESOURCES", resources }));
   };
 };

@@ -4,13 +4,17 @@ import { connect } from "react-redux";
 import { addOrganization } from "../actions/organizationAction";
 import { Route } from "react-router-dom";
 import ResourceContainer from "./ResourceCreator/ResourceContainer";
+import Organization from "../components/Organizations/Organization";
 
 class OrganizationContainer extends Component {
-  componentDidUpdate() {
+
+  componentDidUpdate(prevProps) {
     const { organizations, isLoggedIn, history } = this.props;
-    return organizations.length > 0 && !isLoggedIn
-      ? history.push("/accounts/new")
-      : "";
+    if (prevProps.isLoggedIn !== isLoggedIn) {
+      return organizations.length > 0 && !isLoggedIn
+        ? history.push("/accounts/new")
+        : "";
+    }
   }
 
   render() {
@@ -20,15 +24,16 @@ class OrganizationContainer extends Component {
         <Route
           path={`${match.url}/new`}
           render={props => (
-            <OrganizationInput
-              {...props}
-              addOrganization={addOrganization}
-            />
+            <OrganizationInput {...props} addOrganization={addOrganization} />
           )}
         />
         <Route
           path={`${match.url}/:organizationId/resources`}
           render={props => <ResourceContainer {...props} />}
+        />
+        <Route
+          exact path={`${match.url}/:organizationId/`}
+          render={props => <Organization {...props} />}
         />
       </div>
     );
@@ -37,8 +42,12 @@ class OrganizationContainer extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addOrganization: organization => dispatch(addOrganization(organization))
+    addOrganization: organization => dispatch(addOrganization(organization)),
+    fetchResources: organizationId => dispatch(fetchResources(organizationId))
   };
 };
 
-export default connect(null, mapDispatchToProps)(OrganizationContainer);
+export default connect(
+  null,
+  mapDispatchToProps
+)(OrganizationContainer);

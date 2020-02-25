@@ -9,16 +9,18 @@ class ResourceContainer extends Component {
     const { match, addResource } = this.props;
     const { organizationId } = match.params;
     return (
-      <Route
-        path={`${match.url}/new`}
-        render={props => (
-          <ResourceForm
-            {...props}
-            addResource={addResource}
-            organizationId={organizationId}
-          />
-        )}
-      />
+      <>
+        <Route
+          path={`${match.url}/new`}
+          render={props => (
+            <ResourceForm
+              {...props}
+              addResource={addResource}
+              organizationId={organizationId}
+            />
+          )}
+        />
+      </>
     );
   }
 }

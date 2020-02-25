@@ -1,11 +1,11 @@
 export const addResource = resource => {
   return dispatch => {
-    fetch("/forms", {
+    fetch(`/organizations/${resource.organization_id}/forms`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(resource)
+      body: JSON.stringify({ form: {...resource } })
     })
       .then(response => response.json())
       .then(resource => resource.data.attributes)

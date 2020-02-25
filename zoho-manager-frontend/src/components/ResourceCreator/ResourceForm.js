@@ -3,14 +3,12 @@ import React, { Component } from "react";
 class ResourceForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { resource: { name: "", organization_id: props.organizationId } };
+    this.state = { name: "", organization_id: props.organizationId };
   }
 
   handleChange = event => {
-    event.persist()
-    this.setState({
-      resource: { ...this.state.resource, [event.target.name]: event.target.value }
-    });
+    event.persist();
+    this.setState({ ...this.state, [event.target.name]: event.target.value });
   };
 
   handleSubmit = event => {
@@ -26,7 +24,7 @@ class ResourceForm extends Component {
           type="text"
           placeholder="Resource name"
           onChange={this.handleChange}
-          value={this.state.resource.name}
+          value={this.state.name}
         />
         <input type="submit" value="Create Resource" />
       </form>

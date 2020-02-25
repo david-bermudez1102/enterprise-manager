@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 export default class FieldForm extends Component {
-  constructor() {
-    super();
-    this.state = { field_type: "text", name: "" };
+  constructor(props) {
+    super(props);
+    this.state = { field_type: "text", name: "", form_id:props.resourceId, organization_id:props.organizationId };
   }
 
   handleOnChange = event => {

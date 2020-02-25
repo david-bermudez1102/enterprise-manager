@@ -3,7 +3,12 @@ import React, { Component } from "react";
 export default class FieldForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { field_type: "text", name: "", form_id:props.resourceId, organization_id:props.organizationId };
+    this.state = {
+      field_type: "text",
+      name: "",
+      form_id: props.resourceId,
+      organization_id: props.organizationId
+    };
   }
 
   handleOnChange = event => {
@@ -17,6 +22,11 @@ export default class FieldForm extends Component {
   handleOnSubmit = event => {
     event.preventDefault();
     this.props.addField(this.state);
+    this.setState({
+      ...this.state,
+      field_type: "text",
+      name: ""
+    });
   };
 
   render() {
@@ -27,8 +37,9 @@ export default class FieldForm extends Component {
           onChange={this.handleOnChange}
           value={this.state.field_type}
         >
-          <option value="text">Text</option>
-          <option value="password">Password</option>
+          <option value="text">Text Field</option>
+          <option value="password">Password Field</option>
+          <option value="selectable">Selectable Field</option>
         </select>
         <input
           type="text"

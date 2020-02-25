@@ -46,10 +46,12 @@ class App extends Component {
     return (
       <Router>
         <>
-          {organizations.length > 0 ? <Navbar
-            isLoggedIn={this.state.isLoggedIn}
-            organization={organizations[0]}
-          /> : null}
+          {organizations.length > 0 ? (
+            <Navbar
+              isLoggedIn={this.state.isLoggedIn}
+              organization={organizations[0]}
+            />
+          ) : ""}
           <Route exact path="/" render={() => <div>Home</div>} />
           <Route path="/home" component={Home} />
           <Route
@@ -70,7 +72,13 @@ class App extends Component {
           </Route>
           <Route
             path="/organizations"
-            render={props => <OrganizationContainer isLoggedIn={this.state.isLoggedIn} organizations={organizations} {...props} />}
+            render={props => (
+              <OrganizationContainer
+                isLoggedIn={this.state.isLoggedIn}
+                organizations={organizations}
+                {...props}
+              />
+            )}
           />
         </>
       </Router>

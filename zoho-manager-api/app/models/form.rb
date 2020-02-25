@@ -1,4 +1,4 @@
 class Form < ApplicationRecord
-  has_many :fields
   belongs_to :organization
+  has_many :fields
 end

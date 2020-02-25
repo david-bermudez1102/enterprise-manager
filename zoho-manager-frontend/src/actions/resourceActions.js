@@ -1,6 +1,6 @@
 export const addResource = resource => {
   return dispatch => {
-    fetch("/resources", {
+    fetch("/forms", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -15,7 +15,7 @@ export const addResource = resource => {
 
 export const fetchResources = () => {
   return dispatch => {
-    fetch("/resources")
+    fetch("/forms")
       .then(response => response.json())
       .then(resources => resources.data.map(resource => resource.attributes))
       .then(resources => dispatch({ type: "ADD_ADMINS", resources }));

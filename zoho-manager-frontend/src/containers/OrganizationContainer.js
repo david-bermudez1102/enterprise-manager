@@ -6,7 +6,7 @@ import { Route } from "react-router-dom";
 import ResourceContainer from "./ResourceCreator/ResourceContainer";
 
 class OrganizationContainer extends Component {
-  componentDidMount() {
+  componentDidUpdate() {
     const { organizations, isLoggedIn, history } = this.props;
     return organizations.length > 0 && !isLoggedIn
       ? history.push("/accounts/new")

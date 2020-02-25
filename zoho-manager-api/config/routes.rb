@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
+  resources :forms
   resources :values
   resources :fields
-  resources :forms
   resources :organizations
   resources :accounts
   resources :employees

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 
 class ResourceForm extends Component {
-  constructor() {
-    super();
-    this.state = { resource: { content: "" } };
+  constructor(props) {
+    super(props);
+    this.state = { resource: { content: "", organization_id: props.organization_id } };
   }
 
   handleChange = event => {
@@ -26,7 +26,7 @@ class ResourceForm extends Component {
           type="text"
           placeholder="Resource name"
           onChange={this.handleChange}
-          value={this.state.content}
+          value={this.state.resource.content}
         />
         <input type="submit" value="Create Resource" />
       </form>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
+import { addResource } from "../../actions/resourceActions";
 
 class ResourceContainer extends Component {
   render() {
@@ -16,7 +17,7 @@ class ResourceContainer extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return { addResource: resource => dispatch(resource) };
+  return { addResource: resource => dispatch(addResource(resource)) };
 };
 
 export default connect(null, mapDispatchToProps)(ResourceContainer);

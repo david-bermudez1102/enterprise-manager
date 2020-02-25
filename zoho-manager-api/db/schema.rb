@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_24_191904) do
+ActiveRecord::Schema.define(version: 2020_02_25_012659) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -65,8 +65,8 @@ ActiveRecord::Schema.define(version: 2020_02_24_191904) do
   end
 
   create_table "forms", force: :cascade do |t|
-    t.integer "organization_id"
     t.string "name"
+    t.integer "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_forms_on_organization_id"

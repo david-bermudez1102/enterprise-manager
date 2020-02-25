@@ -20,7 +20,7 @@ class FieldsController < ApplicationController
 
   private
     def field_params
-      params.require(:field).permit(:name,:field,:form_id)
+      params.require(:field).permit(:name,:field_type,:form_id)
     end
 
     def set_form

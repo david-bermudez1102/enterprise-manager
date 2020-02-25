@@ -1,4 +1,4 @@
 class FieldSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :name, :field_type 
+  attributes :name, :field_type, :form_id
 end

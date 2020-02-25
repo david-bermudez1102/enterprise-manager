@@ -1,3 +1,5 @@
+const camelcaseKeys = require("camelcase-keys");
+
 export const addField = field => {
   return dispatch => {
     fetch(
@@ -7,20 +9,20 @@ export const addField = field => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ form: { ...field } })
+        body: JSON.stringify({ field: { ...field } })
       }
     )
       .then(response => response.json())
-      .then(field => field.data.attributes)
+      .then(field => camelcaseKeys(field.data.attributes))
       .then(field => dispatch({ type: "ADD_FIELD", field }));
   };
 };
 
-export const fetchFields = organizationId => {
+export const fetchFields = (organizationId, formId) => {
   return dispatch => {
-    fetch(`/organizations/${organizationId}/forms`)
+    fetch(`/organizations/${organizationId}/forms/${formId}/fields`)
       .then(response => response.json())
-      .then(fields => fields.data.map(field => field.attributes))
+      .then(fields => fields.data.map(field => camelcaseKeys(field.attributes)))
       .then(fields => dispatch({ type: "ADD_FIELDS", fields }));
   };
 };

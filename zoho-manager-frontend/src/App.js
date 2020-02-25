@@ -79,7 +79,7 @@ class App extends Component {
           <Route path="/accounts/new">
             <AdminContainer organizations={organizations} admins={admins} />
           </Route>
-          <Route
+          {organizations.length > 0 ? (<Route
             path="/organizations"
             render={props => (
               <OrganizationContainer
@@ -88,7 +88,7 @@ class App extends Component {
                 {...props}
               />
             )}
-          />
+          />) : null}
         </>
       </Router>
     );

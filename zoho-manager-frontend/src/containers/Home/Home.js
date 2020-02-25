@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchResources } from "../../actions/resourceActions";
+import { Route } from "react-router-dom";
+import ResourcesContainer from "../ResourceCreator/ResourcesContainer";
 
 class Home extends Component {
   state = { resources: [] };
@@ -12,9 +14,9 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
-        
-      </div>
+      <>
+      <Route path="/resources" render={ props => <ResourcesContainer {...props}/>}/>
+      </>
     );
   }
 }

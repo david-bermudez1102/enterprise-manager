@@ -42,8 +42,7 @@ class OrganizationContainer extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addOrganization: organization => dispatch(addOrganization(organization)),
-    fetchResources: organizationId => dispatch(fetchResources(organizationId))
+    addOrganization: organization => dispatch(addOrganization(organization))
   };
 };
 

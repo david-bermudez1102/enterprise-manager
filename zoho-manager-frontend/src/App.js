@@ -58,11 +58,11 @@ class App extends Component {
             ""
           )}
           <Route exact path="/" render={() => <div>Home</div>} />
-          <Route
-            path="/home"
-            component={Home}
-            organization={organizations[0]}
-          />
+          {organizations.length > 0 ? (
+            <Route path="/home">
+              <Home organization={organizations[0]} />
+            </Route>
+          ) : null}
           <Route
             path="/login"
             render={props => (

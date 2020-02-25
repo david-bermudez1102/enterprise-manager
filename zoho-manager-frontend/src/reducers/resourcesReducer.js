@@ -1,10 +1,9 @@
-export const resourcesReducer = (state = {resources:[]}, action) => {
+export const resourcesReducer = (state = [], action) => {
   switch (action.type) {
+    case "ADD_RESOURCE":
+      return [...state, action.resource];
     case "ADD_RESOURCES":
-      return {...state, resources:[...state.resources, action.resource]};
-    case "ADD_RESOURCES":
-      console.log([...state, ...action.resources]);
-      return { ...state, resources: [...state.resources, action.resources] };
+      return [...state, ...action.resources];
     default:
       return state;
   }

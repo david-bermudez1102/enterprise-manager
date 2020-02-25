@@ -1,13 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchResources } from "../actions/resourceActions";
+import { fetchResources } from "../../actions/resourceActions";
 
 class Home extends Component {
+  state = { resources: [] };
 
-  state = { organization: this.props.organization, resources: [] };
+  componentDidMount() {
+    const { organization, fetchResources } = this.props;
+    fetchResources(organization.id);
+  }
 
   render() {
-    return <></>;
+    return (
+      <div>
+        
+      </div>
+    );
   }
 }
 
@@ -18,7 +26,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { fetchResources: organizationId => dispatch(fetchResources(organizationId))}
-}
+  return {
+    fetchResources: organizationId => dispatch(fetchResources(organizationId))
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

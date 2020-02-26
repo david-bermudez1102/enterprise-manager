@@ -4,7 +4,7 @@ export default class FieldForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      field_type: "text",
+      field_type: "",
       name: "",
       form_id: props.resourceId,
       organization_id: props.organizationId
@@ -24,7 +24,7 @@ export default class FieldForm extends Component {
     this.props.addField(this.state);
     this.setState({
       ...this.state,
-      field_type: "text",
+      field_type: "",
       name: ""
     });
   };
@@ -32,15 +32,30 @@ export default class FieldForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleOnSubmit}>
-        <select
+        <label htmlFor="text_field">Text Field</label>
+        <input
+          type="radio"
           name="field_type"
+          id="text_field"
+          value="text"
           onChange={this.handleOnChange}
-          value={this.state.field_type}
-        >
-          <option value="text">Text Field</option>
-          <option value="password">Password Field</option>
-          <option value="selectable">Selectable Field</option>
-        </select>
+        />
+        <label htmlFor="password_field">Password Field</label>
+        <input
+          type="radio"
+          name="field_type"
+          id="password_field"
+          value="password"
+          onChange={this.handleOnChange}
+        />
+        <label htmlFor="selectable_field">Selectable Field</label>
+        <input
+          type="radio"
+          name="field_type"
+          id="selectable_field"
+          value="selectable"
+          onChange={this.handleOnChange}
+        />
         <input
           type="text"
           name="name"
@@ -49,6 +64,7 @@ export default class FieldForm extends Component {
           placeholder="Enter name"
         />
         <input type="submit" />
+        {this.state.field_type}
       </form>
     );
   }

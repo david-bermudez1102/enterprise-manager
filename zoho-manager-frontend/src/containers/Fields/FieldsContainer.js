@@ -9,15 +9,15 @@ class FieldsContainer extends Component {
   state = { fields: [] };
 
   componentDidMount() {
-    const { organizationId, resourceId } = this.props;
-    this.props.fetchFields(organizationId, resourceId);
+    const { organizationId, resource } = this.props;
+    this.props.fetchFields(organizationId, resource.id);
   }
 
   render() {
-    const { match, addField, organizationId, resourceId, fields } = this.props;
+    const { match, addField, organizationId, resource, fields } = this.props;
     return (
       <>
-        <FieldsList fields={fields} />
+        <FieldsList fields={fields} resource={resource}/>
         <Link to={`${match.url}/fields/new`}>Add new field</Link>
         <Switch>
           <Route
@@ -26,7 +26,7 @@ class FieldsContainer extends Component {
               <FieldForm
                 addField={addField}
                 organizationId={organizationId}
-                resourceId={resourceId}
+                resourceId={resource.id}
               />
             )}
           />

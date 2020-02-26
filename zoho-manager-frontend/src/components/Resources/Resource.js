@@ -11,7 +11,7 @@ const Resource = ({ match, resources }) => {
       <FieldsContainer
         match={match}
         organizationId={resource.organizationId}
-        resourceId={resource.id}
+        resource={resource}
       />
     </div>
   ) : null;

@@ -16,15 +16,11 @@ export const addRecord = (record, organizationId, formId) => {
   };
 };
 
-export const fetchRecords = () => {
+export const fetchRecords = (organizationId, formId) => {
   return dispatch => {
-    fetch("/records")
+    fetch(`/organizations/${organizationId}/forms/${formId}/records`)
       .then(response => response.json())
-      .then(records =>
-        records.data.map(record => record.attributes)
-      )
-      .then(records =>
-        dispatch({ type: "ADD_RECORDS", records })
-      );
+      .then(records => records.data.map(record => camelcaseKeys(record.attributes)))
+      .then(records => dispatch({ type: "ADD_RECORDS", records }));
   };
 };

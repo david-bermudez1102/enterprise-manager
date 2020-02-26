@@ -1,5 +1,6 @@
 import React from "react";
 import FieldsContainer from "../../containers/Fields/FieldsContainer";
+import RecordsContainer from "../../containers/Records/RecordsContainer";
 
 const Resource = ({ match, resources }) => {
   const resource = resources.find(
@@ -13,6 +14,7 @@ const Resource = ({ match, resources }) => {
         organizationId={resource.organizationId}
         resource={resource}
       />
+      <RecordsContainer match={match} resource={resource} />
     </div>
   ) : null;
 };

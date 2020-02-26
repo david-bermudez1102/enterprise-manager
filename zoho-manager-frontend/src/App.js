@@ -9,49 +9,39 @@ import { fetchAdmins } from "./actions/adminActions";
 import LoginContainer from "./containers/LoginContainer";
 import LogoutContainer from "./containers/LogoutContainer";
 import Home from "./containers/Home/Home";
+import { addSession, fetchSession } from "./actions/sessionActions";
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       organizations: [],
       admins: [],
-      isLoggedIn: false,
-      currentAccount: {}
+      session: props.fetchSession()
     };
   }
 
   componentDidMount() {
     this.props.fetchOrganizations();
     this.props.fetchAdmins();
-    this.loginStatus();
   }
-
-  loginStatus = () => {
-    fetch("http://localhost:3001/current_user", { credentials: "include" })
-      .then(response => response.json())
-      .then(data => (!data.error ? this.setAccount(data.attributes) : ""));
-  };
-
-  setAccount = account =>
-    this.setState({ ...this.state, isLoggedIn: true, currentAccount: account });
 
   handleLogout = () => {
     this.setState({
+      ...this.state,
       isLoggedIn: false,
       currentAccount: {}
     });
   };
 
   render() {
-    const { organizations, admins } = this.props;
-
+    const { organizations, admins, addSession, session } = this.props;
     return (
       <Router>
         <>
           {organizations.length > 0 ? (
             <Navbar
-              isLoggedIn={this.state.isLoggedIn}
+              session={session}
               organization={organizations[0]}
             />
           ) : (
@@ -68,8 +58,8 @@ class App extends Component {
             render={props => (
               <LoginContainer
                 {...props}
-                isLoggedIn={this.state.isLoggedIn}
-                setAccount={this.setAccount}
+                session={session}
+                addSession={addSession}
               />
             )}
           />
@@ -79,16 +69,18 @@ class App extends Component {
           <Route path="/accounts/new">
             <AdminContainer organizations={organizations} admins={admins} />
           </Route>
-          {organizations.length > 0 ? (<Route
-            path="/organizations"
-            render={props => (
-              <OrganizationContainer
-                isLoggedIn={this.state.isLoggedIn}
-                organizations={organizations}
-                {...props}
-              />
-            )}
-          />) : null}
+          {organizations.length > 0 ? (
+            <Route
+              path="/organizations"
+              render={props => (
+                <OrganizationContainer
+                  isLoggedIn={this.state.isLoggedIn}
+                  organizations={organizations}
+                  {...props}
+                />
+              )}
+            />
+          ) : null}
         </>
       </Router>
     );
@@ -99,14 +91,16 @@ const mapStateToProps = state => {
   return {
     organizations: state.organizations,
     admins: state.admins,
-    isLoggedIn: state.isLoggedIn
+    session: state.session
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchOrganizations: () => dispatch(fetchOrganizations()),
-    fetchAdmins: () => dispatch(fetchAdmins())
+    fetchAdmins: () => dispatch(fetchAdmins()),
+    fetchSession: () => dispatch(fetchSession()),
+    addSession: data => dispatch(addSession(data))
   };
 };
 

@@ -2,17 +2,16 @@ import React, { Component } from "react";
 import Navlink from "./Navlink";
 
 class Navbar extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       links: [{ path: "/login", text: "Login", isActive: false }]
     };
   }
 
-  componentDidUpdate(prevProps) {
-    const { isLoggedIn, organization } = this.props;
-    if (prevProps.isLoggedIn !== isLoggedIn) {
-      isLoggedIn
+  componentDidMount() {
+    const { session, organization } = this.props;
+      session.isLoggedIn
         ? this.setState({
             ...this.state,
             links: [
@@ -29,7 +28,6 @@ class Navbar extends Component {
             ...this.state,
             links: [{ path: "/login", text: "Login", isActive: false }]
           });
-    }
   }
 
   render() {

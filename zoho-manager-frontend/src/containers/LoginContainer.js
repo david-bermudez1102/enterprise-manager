@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import LoginForm from "../components/LoginForm";
 
 class LoginContainer extends Component {
+
   componentDidUpdate(prevProps) {
     const { isLoggedIn } = this.props;
     if (prevProps.isLoggedIn !== isLoggedIn) {
@@ -11,19 +12,7 @@ class LoginContainer extends Component {
   }
 
   handleOnSubmit = data => {
-    const configObj = {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(data)
-    };
-    fetch("/sessions", configObj)
-      .then(response => response.json())
-      .then(data => (!data.error ? this.props.setAccount(data.attributes) : ""))
-      .then(() => this.redirect());
+    this.props.addSession(data)
   };
 
   redirect = () => {

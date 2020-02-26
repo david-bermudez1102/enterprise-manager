@@ -3,7 +3,7 @@ import Record from "./Record";
 
 const RecordsList = ({ records, fields, values }) => {
   return (
-    <table border="1">
+    <table className="table table-striped table-sm">
       <thead>
         <tr>
           {fields.map(field => (
@@ -13,7 +13,12 @@ const RecordsList = ({ records, fields, values }) => {
       </thead>
       <tbody>
         {records.map(record => (
-          <Record key={`record_${record.id}`} record={record} fields={fields} values={values}/>
+          <Record
+            key={`record_${record.id}`}
+            record={record}
+            fields={fields}
+            values={values}
+          />
         ))}
       </tbody>
     </table>

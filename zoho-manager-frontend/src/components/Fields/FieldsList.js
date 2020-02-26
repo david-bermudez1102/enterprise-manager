@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Field from "./Field";
 import { connect } from "react-redux";
 import { addRecord } from "../../actions/recordActions";
+
 const pluralize = require("pluralize");
 
 class FieldsList extends Component {

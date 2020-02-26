@@ -3,7 +3,6 @@ import { Route, Switch, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import RecordsList from "../../components/Records/RecordsList";
 import { fetchRecords } from "../../actions/recordActions";
-import { fetchValues } from "../../actions/valueActions";
 
 class RecordsContainer extends Component {
   state = { records:[], values:[], fields:[] }

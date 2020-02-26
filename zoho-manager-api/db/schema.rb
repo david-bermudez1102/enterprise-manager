@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_25_012659) do
+ActiveRecord::Schema.define(version: 2020_02_26_020036) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -81,6 +81,13 @@ ActiveRecord::Schema.define(version: 2020_02_25_012659) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "records", force: :cascade do |t|
+    t.integer "form_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_records_on_form_id"
   end
 
   create_table "values", force: :cascade do |t|

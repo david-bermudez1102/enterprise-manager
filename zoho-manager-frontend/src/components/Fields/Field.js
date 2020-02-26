@@ -7,6 +7,7 @@ class Field extends Component {
   }
 
   handleChange = event => {
+    event.persist();
     this.setState({ value: event.target.value });
   };
 
@@ -16,7 +17,8 @@ class Field extends Component {
       <div>
         <input
           type={field.fieldType}
-          name={field.name}
+          name={field.id}
+          id={field.name}
           placeholder={`Enter ${field.name}`}
           onChange={this.handleChange}
           value={this.state.value}

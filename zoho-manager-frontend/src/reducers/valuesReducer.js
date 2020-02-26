@@ -1,6 +1,7 @@
 export const valuesReducer = (state = [], action) => {
   switch (action.type) {
     case "ADD_VALUES":
+      console.log([...state, ...action.values]);
       return [...state, ...action.values];
     default:
       return state;

@@ -3,6 +3,7 @@ import { Route, Switch, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import RecordsList from "../../components/Records/RecordsList";
 import { fetchRecords } from "../../actions/recordActions";
+import { fetchValues } from "../../actions/valueActions";
 
 class RecordsContainer extends Component {
   state = { records:[], values:[] }
@@ -10,6 +11,7 @@ class RecordsContainer extends Component {
   componentDidMount() {
     const { resource } = this.props;
     this.props.fetchRecords(resource.organizationId, resource.id)
+    this.props.fetchValues(resource.organizationId, resource.id);
   }
 
   render() {
@@ -34,14 +36,17 @@ class RecordsContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    records: state.records
+    records: state.records,
+    values: state.values
   };
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     fetchRecords: (organizationId, formId) =>
-      dispatch(fetchRecords(organizationId, formId))
+      dispatch(fetchRecords(organizationId, formId)),
+    fetchValues: (organizationId, formId) =>
+      dispatch(fetchValues(organizationId, formId))
   };
 };
 

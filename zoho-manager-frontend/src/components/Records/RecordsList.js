@@ -1,17 +1,21 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Record from "./Record";
 
 const RecordsList = ({ records, fields, values }) => {
   return (
     <table border="1">
-      <tr>
-        {fields.map(field => (
-          <th>{field.name}</th>
+      <thead>
+        <tr>
+          {fields.map(field => (
+            <th key={`field_${field.id}`}>{field.name}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {records.map(record => (
+          <Record key={`record_${record.id}`} record={record} fields={fields} values={values}/>
         ))}
-      </tr>
-      {records.map(record => (
-        <tr>{values.filter(value => value.recordId === record.id).map(value => <td>{value.content}</td>)}</tr>
-      ))}
+      </tbody>
     </table>
   );
 };

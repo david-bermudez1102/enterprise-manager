@@ -15,7 +15,6 @@ class RecordsContainer extends Component {
   
   render() {
     const { match, resource, fields, records, values } = this.props
-    console.log(this.props.values)
     return (
       <>
         <Link to={`${match.url}/records`}>View All Records</Link>

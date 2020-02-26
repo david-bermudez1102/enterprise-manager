@@ -4,7 +4,7 @@ import Field from "./Field";
 const pluralize = require("pluralize");
 
 class FieldsList extends Component {
-
+  
   handleSubmit = event => {
     event.persist();
     event.preventDefault();
@@ -13,16 +13,18 @@ class FieldsList extends Component {
     for (const [key, value] of formData.entries()) {
       formDataObject[key] = value;
     }
-    formDataObject = Object.keys(formDataObject).map(key => {
-      return { field_id: key, value: formDataObject[key] };
-    });
+    formDataObject = {
+      fields: Object.keys(formDataObject).map(key => {
+        return { field_id: key, value: formDataObject[key] };
+      })
+    };
     console.log(formDataObject);
   };
 
   render() {
     const { fields, resource } = this.props;
     return (
-      <form id="xx" onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit}>
         {fields.map(field => (
           <Field key={field.id} field={field} />
         ))}

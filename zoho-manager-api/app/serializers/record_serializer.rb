@@ -1,4 +1,4 @@
 class RecordSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :form_id
+  attributes :id, :form_id, :values
 end

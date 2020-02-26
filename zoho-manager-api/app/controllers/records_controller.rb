@@ -1,9 +1,10 @@
 class RecordsController < ApplicationController
+  before_action :set_organization
   before_action :set_form
 
   def create
-    record = @form.records.build(form_params)
-    if form.save
+    record = @form.records.build(record_params)
+    if record.save
       render json: RecordSerializer.new(record)
     end
   end
@@ -20,10 +21,15 @@ class RecordsController < ApplicationController
 
   private
     def record_params
-      params.require(:record).permit(:form_id, values_attributes:[:field_id,:value])
+      params.require(:record).permit(values_attributes:[:field_id,:content])
+    end
+
+    def set_organization
+      @organization = Organization.find_by(id: params[:organization_id])
     end
 
     def set_form
-      @form = Form.find(params[:form_id])
+      @form = @organization.forms.find_by(id: params[:form_id])
     end
+    
 end

@@ -1,14 +1,18 @@
-export const addRecord = record => {
+const camelcaseKeys = require("camelcase-keys");
+
+export const addRecord = (record, organizationId, formId) => {
+  console.log(JSON.stringify({ record: { ...record } }));
   return dispatch => {
-    fetch("/records", {
+    fetch(`/organizations/${organizationId}/forms/${formId}/records`, {
       method: "POST",
-      body: record
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ record: { ...record } })
     })
       .then(response => response.json())
-      .then(record => record.data.attributes)
-      .then(record =>
-        dispatch({ type: "ADD_RECORD", record })
-      );
+      .then(record => camelcaseKeys(record.data.attributes))
+      .then(record => dispatch({ type: "ADD_RECORD", record }));
   };
 };
 

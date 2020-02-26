@@ -1,24 +1,27 @@
 import React, { Component } from "react";
 import Field from "./Field";
-
+import { connect } from "react-redux";
+import { addRecord } from "../../actions/recordActions";
 const pluralize = require("pluralize");
 
 class FieldsList extends Component {
-
   handleSubmit = event => {
     event.persist();
     event.preventDefault();
+    const { resource } = this.props;
     const formData = new FormData(event.target);
-    let formDataObject = {};
+
+    let record = {};
     for (const [key, value] of formData.entries()) {
-      formDataObject[key] = value;
+      record[key] = value;
     }
-    formDataObject = {
-      values_attributes: Object.keys(formDataObject).map(key => {
-        return { field_id: key, content: formDataObject[key] };
+    record = {
+      values_attributes: Object.keys(record).map(key => {
+        return { field_id: key, content: record[key] };
       })
     };
-    console.log(formDataObject);
+    this.props.addRecord(record, resource.organizationId, resource.id);
+    console.log(record);
   };
 
   render() {
@@ -36,4 +39,12 @@ class FieldsList extends Component {
     );
   }
 }
-export default FieldsList;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addRecord: (record, organizationId, formId) =>
+      dispatch(addRecord(record, organizationId, formId))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(FieldsList);

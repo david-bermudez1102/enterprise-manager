@@ -6,16 +6,16 @@ import { fetchRecords } from "../../actions/recordActions";
 import { fetchValues } from "../../actions/valueActions";
 
 class RecordsContainer extends Component {
-  state = { records:[], values:[] }
+  state = { records:[], values:[], fields:[] }
 
   componentDidMount() {
     const { resource } = this.props;
     this.props.fetchRecords(resource.organizationId, resource.id)
     this.props.fetchValues(resource.organizationId, resource.id);
   }
-
+  
   render() {
-    const { match, resource } = this.props
+    const { match, resource, fields } = this.props
     return (
       <>
         <Link to={`${match.url}/records`}>View All Records</Link>
@@ -24,7 +24,10 @@ class RecordsContainer extends Component {
             path={`${match.path}/records`}
             render={props => (
               <RecordsList
-                resourceId={resource.id}
+                fields={fields}
+                resource={resource}
+                records={this.props.records}
+                values={this.props.values}
               />
             )}
           />
@@ -37,7 +40,8 @@ class RecordsContainer extends Component {
 const mapStateToProps = state => {
   return {
     records: state.records,
-    values: state.values
+    values: state.values,
+    fields: state.fields
   };
 }
 

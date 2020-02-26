@@ -17,7 +17,7 @@ class FieldsContainer extends Component {
     const { match, addField, organizationId, resource, fields } = this.props;
     return (
       <>
-        <FieldsList fields={fields} resource={resource}/>
+        <FieldsList match={match} fields={fields} resource={resource}/>
         <Link to={`${match.url}/fields/new`}>Add new field</Link>
         <Switch>
           <Route

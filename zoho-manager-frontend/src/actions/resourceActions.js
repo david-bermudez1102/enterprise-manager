@@ -11,7 +11,7 @@ export const addResource = resource => {
     })
       .then(response => response.json())
       .then(resource => camelcaseKeys(resource.data.attributes))
-      .then(resource => dispatch({ type: "ADD_RESOURCE", resource }));
+      .then(resource => dispatch({ type: "ADD_RESOURCE", resource }))
   };
 };
 

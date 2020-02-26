@@ -5,6 +5,7 @@ import { addRecord } from "../../actions/recordActions";
 const pluralize = require("pluralize");
 
 class FieldsList extends Component {
+  
   handleSubmit = event => {
     event.persist();
     event.preventDefault();
@@ -21,7 +22,6 @@ class FieldsList extends Component {
       })
     };
     this.props.addRecord(record, resource.organizationId, resource.id);
-    console.log(record);
   };
 
   render() {

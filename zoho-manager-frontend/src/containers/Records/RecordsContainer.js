@@ -11,11 +11,11 @@ class RecordsContainer extends Component {
   componentDidMount() {
     const { resource } = this.props;
     this.props.fetchRecords(resource.organizationId, resource.id)
-    this.props.fetchValues(resource.organizationId, resource.id);
   }
   
   render() {
-    const { match, resource, fields } = this.props
+    const { match, resource, fields, records, values } = this.props
+    console.log(this.props.values)
     return (
       <>
         <Link to={`${match.url}/records`}>View All Records</Link>
@@ -26,8 +26,8 @@ class RecordsContainer extends Component {
               <RecordsList
                 fields={fields}
                 resource={resource}
-                records={this.props.records}
-                values={this.props.values}
+                records={records}
+                values={values}
               />
             )}
           />
@@ -48,9 +48,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchRecords: (organizationId, formId) =>
-      dispatch(fetchRecords(organizationId, formId)),
-    fetchValues: (organizationId, formId) =>
-      dispatch(fetchValues(organizationId, formId))
+      dispatch(fetchRecords(organizationId, formId))
   };
 };
 

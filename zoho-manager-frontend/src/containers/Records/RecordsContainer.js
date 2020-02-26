@@ -5,7 +5,7 @@ import RecordsList from "../../components/Records/RecordsList";
 import { fetchRecords } from "../../actions/recordActions";
 
 class RecordsContainer extends Component {
-  state = { records:[] }
+  state = { records:[], values:[] }
 
   componentDidMount() {
     const { resource } = this.props;

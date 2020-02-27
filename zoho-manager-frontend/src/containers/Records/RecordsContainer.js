@@ -42,14 +42,4 @@ const mapStateToProps = state => {
   };
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchRecords: (organizationId, formId) =>
-      dispatch(fetchRecords(organizationId, formId)),
-    clearFields: () => dispatch({ type: "CLEAR_FIELDS" }),
-    clearRecords: () => dispatch({ type: "CLEAR_RECORDS" }),
-    clearValues: () => dispatch({ type: "CLEAR_VALUES" })
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecordsContainer);
+export default connect(mapStateToProps, {fetchRecords})(RecordsContainer);

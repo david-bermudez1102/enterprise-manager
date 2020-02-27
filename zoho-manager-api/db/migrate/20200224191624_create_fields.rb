@@ -4,7 +4,6 @@ class CreateFields < ActiveRecord::Migration[5.2]
       t.integer :field_type
       t.string :name
       t.references :form
-
       t.timestamps
     end
   end

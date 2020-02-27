@@ -2,10 +2,10 @@ export const fieldsReducer = (state = [], action) => {
   switch (action.type) {
     case "ADD_FIELD":
       return [...state, action.field];
-    case "ADD_FIELDS":
+    case "FETCH_FIELDS":
       return [...action.fields];
-    case "CLEAR_FIELDS":
-      return [];
+      case "REMOVE_FIELD":
+        return [...state.filter(field => field.id !== action.fieldId)]
     default:
       return state;
   }

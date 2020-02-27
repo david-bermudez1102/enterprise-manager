@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import FieldForm from "../../components/Fields/FieldForm";
 import { Link, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { addField, fetchFields } from "../../actions/fieldActions";
+import { addField, fetchFields, removeField } from "../../actions/fieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
 import cuid from "cuid";
 
@@ -13,17 +13,19 @@ class FieldsContainer extends Component {
     this.props.fetchFields(organizationId, resource.id);
   }
 
-  componentWillUnmount(){
-    this.props.clearFields()
-  }
-
   render() {
-    const { match, addField, organizationId, resource } = this.props;
+    const { match, addField, organizationId, resource, removeField } = this.props;
     const fields = this.props.fields.filter(field => field.formId === resource.id)
     return (
       <div className="col-sm-5">
-        <FieldsList key={cuid()} match={match} fields={fields} resource={resource} />
+        <FieldsList
+          key={cuid()}
+          match={match}
+          fields={fields}
+          resource={resource}
+        />
         <Link to={`${match.url}/fields/new`}>Add new field</Link>
+
         <Switch>
           <Route
             path={`${match.path}/fields/new`}
@@ -34,6 +36,18 @@ class FieldsContainer extends Component {
                 resourceId={resource.id}
               />
             )}
+          />
+          <Route
+            path={`${match.url}/fields/:fieldId`}
+            render={props =>
+              props.match.params.fieldId !== "new"
+                ? removeField(
+                    organizationId,
+                    resource.id,
+                    props.match.params.fieldId
+                  )
+                : null
+            }
           />
         </Switch>
       </div>
@@ -47,13 +61,5 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addField: field => dispatch(addField(field)),
-    fetchFields: (organizationId, resourceId) =>
-      dispatch(fetchFields(organizationId, resourceId)),
-      clearFields: () => dispatch({type:"CLEAR_FIELDS"})
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(FieldsContainer);
+export default connect(mapStateToProps, {addField, fetchFields, removeField})(FieldsContainer);

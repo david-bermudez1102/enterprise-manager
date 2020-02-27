@@ -1,9 +1,9 @@
 const camelcaseKeys = require("camelcase-keys");
 
-export const addField = field => {
+export const addField = (field, organizationId) => {
   return dispatch => {
     fetch(
-      `/organizations/${field.organization_id}/forms/${field.form_id}/fields`,
+      `/organizations/${organizationId}/forms/${field.form_id}/fields`,
       {
         method: "POST",
         headers: {
@@ -23,6 +23,14 @@ export const fetchFields = (organizationId, formId) => {
     fetch(`/organizations/${organizationId}/forms/${formId}/fields`)
       .then(response => response.json())
       .then(fields => fields.data.map(field => camelcaseKeys(field.attributes)))
-      .then(fields => dispatch({ type: "ADD_FIELDS", fields }));
+      .then(fields => dispatch({ type: "FETCH_FIELDS", fields }));
+  };
+};
+
+export const removeField = (organizationId, formId, fieldId) => {
+  return dispatch => {
+    fetch(`/organizations/${organizationId}/forms/${formId}/fields/${fieldId}`, { method: "DELETE" })
+      .then(response => response.json())
+      .then(field => field.message ? dispatch({ type: "REMOVE_FIELD", fieldId }) : null);
   };
 };

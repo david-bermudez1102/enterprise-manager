@@ -32,11 +32,7 @@ class App extends Component {
     } = this.props;
     return (
       <Router>
-        {organizations.length > 0 ? (
-          <Navbar session={session} organization={organizations[0]} />
-        ) : (
-          ""
-        )}
+        <Navbar session={session} organizations={organizations} />
         <Switch>
           <Route exact path="/" render={() => <div>Home</div>} />
           {organizations.length > 0 ? (
@@ -61,18 +57,15 @@ class App extends Component {
           <Route path="/accounts/new">
             <AdminContainer organizations={organizations} admins={admins} />
           </Route>
-          {organizations.length > 0 ? (
-            <Route
-              path="/organizations"
-              render={props => (
-                <OrganizationContainer
-                  session={session}
-                  organizations={organizations}
-                  {...props}
-                />
-              )}
-            />
-          ) : null}
+          <Route
+            path="/organizations"
+            render={props => (
+              <OrganizationContainer
+                session={session}
+                {...props}
+              />
+            )}
+          />
         </Switch>
       </Router>
     );

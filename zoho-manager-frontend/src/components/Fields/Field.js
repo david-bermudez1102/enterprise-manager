@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Field extends Component {
   constructor() {
@@ -12,9 +13,12 @@ class Field extends Component {
   };
 
   render() {
-    const { field } = this.props;
+    const { match, field } = this.props;
     return (
       <div className="form-group">
+        <Link to={`${match.url}/fields/${field.id}`}>
+          <button>Delete</button>
+        </Link>
         {field.fieldType !== "selectable" ? (
           <input
             className="form-control"

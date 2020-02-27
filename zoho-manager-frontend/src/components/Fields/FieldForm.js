@@ -6,8 +6,7 @@ export default class FieldForm extends Component {
     this.state = {
       field_type: "",
       name: "",
-      form_id: props.resourceId,
-      organization_id: props.organizationId
+      form_id: props.resourceId
     };
   }
 
@@ -21,7 +20,7 @@ export default class FieldForm extends Component {
 
   handleOnSubmit = event => {
     event.preventDefault();
-    this.props.addField(this.state);
+    this.props.addField(this.state, this.props.organizationId);
     this.setState({
       ...this.state,
       field_type: "",

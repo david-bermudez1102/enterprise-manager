@@ -11,7 +11,6 @@ class ResourcesContainer extends Component {
   render() {
     const { match, addResource, resources } = this.props;
     const { organizationId } = match.params;
-
     return (
       <Switch>
         <Route
@@ -43,8 +42,4 @@ class ResourcesContainer extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return { addResource: resource => dispatch(addResource(resource)) };
-};
-
-export default connect(null, mapDispatchToProps)(ResourcesContainer);
+export default connect(null, { addResource })(ResourcesContainer);

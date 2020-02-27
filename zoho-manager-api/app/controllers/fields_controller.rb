@@ -14,13 +14,20 @@ class FieldsController < ApplicationController
   end
 
   def show
-    fields = @form.fields.find_by(id: params[:id])
+    field = @form.fields.find_by(id: params[:id])
     render json: FieldSerializer.new(field)
+  end
+
+  def destroy
+    field = @form.fields.find_by(id: params[:id])
+    if field.delete
+      render json: { message: "Success" }
+    end
   end
 
   private
     def field_params
-      params.require(:field).permit(:name,:field_type,:form_id)
+      params.require(:field).permit(:name,:field_type,:form_id, :selectable_resource)
     end
 
     def set_form

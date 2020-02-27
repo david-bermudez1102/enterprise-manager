@@ -8,23 +8,25 @@ import Organization from "../components/Organizations/Organization";
 import { fetchResources } from "../actions/resourceActions";
 
 class OrganizationContainer extends Component {
-
   componentDidMount() {
     const { organizations, fetchResources } = this.props;
-    fetchResources(organizations[0].id);
+    return organizations.length > 0
+      ? fetchResources(organizations[0].id)
+      : null;
   }
 
   componentDidUpdate(prevProps) {
-    const { organizations, isLoggedIn, history } = this.props;
-    if (prevProps.isLoggedIn !== isLoggedIn) {
-      return organizations.length > 0 && !isLoggedIn
+    const { organizations, session, history, fetchResources } = this.props;
+    if (prevProps.session !== session) {
+      if (organizations.length > 0) fetchResources(organizations[0].id);
+      return organizations.length > 0 && !session.isLoggedIn
         ? history.push("/accounts/new")
         : "";
     }
   }
 
   render() {
-    const { match, addOrganization } = this.props;
+    const { match, addOrganization, resources } = this.props;
     return (
       <div>
         <Switch>
@@ -37,7 +39,7 @@ class OrganizationContainer extends Component {
           <Route
             path={`${match.path}/:organizationId/resources`}
             render={props => (
-              <ResourcesContainer {...props} resources={this.props.resources} />
+              <ResourcesContainer {...props} resources={resources} />
             )}
           />
           <Route
@@ -53,7 +55,8 @@ class OrganizationContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    resources: state.resources
+    resources: state.resources,
+    organizations: state.organizations
   };
 };
 

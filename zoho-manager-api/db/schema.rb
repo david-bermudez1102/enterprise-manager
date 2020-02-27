@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_26_064429) do
+ActiveRecord::Schema.define(version: 2020_02_27_183034) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -77,6 +77,14 @@ ActiveRecord::Schema.define(version: 2020_02_26_064429) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "options", force: :cascade do |t|
+    t.integer "field_id"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_options_on_field_id"
+  end
+
   create_table "organizations", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -88,6 +96,15 @@ ActiveRecord::Schema.define(version: 2020_02_26_064429) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_id"], name: "index_records_on_form_id"
+  end
+
+  create_table "selectable_resources", force: :cascade do |t|
+    t.integer "form_id"
+    t.integer "field_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_selectable_resources_on_field_id"
+    t.index ["form_id"], name: "index_selectable_resources_on_form_id"
   end
 
   create_table "values", force: :cascade do |t|

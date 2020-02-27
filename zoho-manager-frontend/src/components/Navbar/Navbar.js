@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Navlink from "./Navlink";
+import { NavLink } from "react-router-dom";
 
 class Navbar extends Component {
   constructor(props) {
@@ -14,18 +14,6 @@ class Navbar extends Component {
         },
         { path: "/home", text: "Home", isActive: false, loginRequired: true },
         {
-          path: `/organizations/${props.organization.id}/resources/new`,
-          text: "Add Resource",
-          isActive: false,
-          loginRequired: true
-        },
-        {
-          path: `/organizations/${props.organization.id}/resources`,
-          text: "Resources",
-          isActive: false,
-          loginRequired: true
-        },
-        {
           path: "/logout",
           text: "Logout",
           isActive: false,
@@ -35,19 +23,58 @@ class Navbar extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    const { organizations } = this.props;
+    if (prevProps.organizations !== organizations) {
+      return organizations.length > 0
+        ? this.setState({
+            ...this.state,
+            links: [
+              ...this.state.links,
+              {
+                path: `/organizations/${organizations[0].id}/resources/new`,
+                text: "Add Resource",
+                isActive: false,
+                loginRequired: true
+              },
+              {
+                path: `/organizations/${organizations[0].id}/resources`,
+                text: "Resources",
+                isActive: false,
+                loginRequired: true
+              }
+            ]
+          })
+        : null;
+    }
+  }
+
   render() {
-    const { session } = this.props
+    const { session } = this.props;
     return (
       <nav className="navbar navbar-dark bg-dark">
         {session.isLoggedIn
           ? this.state.links.map((link, id) =>
               link.loginRequired ? (
-                <Navlink key={id} linkTo={link.path} text={link.text} />
+                <NavLink
+                  to={link.path}
+                  exact
+                  activeStyle={{ background: "red" }}
+                >
+                  {" "}
+                  {link.text}
+                </NavLink>
               ) : null
             )
           : this.state.links.map((link, id) =>
               !link.loginRequired ? (
-                <Navlink key={id} linkTo={link.path} text={link.text} />
+                <NavLink
+                  to={link.path}
+                  exact
+                  activeStyle={{ background: "red" }}
+                >
+                  {link.text}
+                </NavLink>
               ) : null
             )}
       </nav>

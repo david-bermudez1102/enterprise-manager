@@ -12,14 +12,6 @@ import Home from "./containers/Home/Home";
 import { addSession, removeSession, fetchSession } from "./actions/sessionActions";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      organizations: [],
-      admins: [],
-      session: {}
-    };
-  }
 
   componentDidMount() {
     this.props.fetchOrganizations();
@@ -66,7 +58,7 @@ class App extends Component {
                 path="/organizations"
                 render={props => (
                   <OrganizationContainer
-                    isLoggedIn={this.state.isLoggedIn}
+                    session={session}
                     organizations={organizations}
                     {...props}
                   />

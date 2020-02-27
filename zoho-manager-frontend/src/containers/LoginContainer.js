@@ -2,6 +2,12 @@ import React, { Component } from "react";
 import LoginForm from "../components/LoginForm";
 
 class LoginContainer extends Component {
+
+  componentDidMount() {
+    const { session } = this.props;
+    return session.isLoggedIn ? this.redirect() : null;
+  }
+
   componentDidUpdate() {
     const { session } = this.props;
     return session.isLoggedIn ? this.redirect() : null;

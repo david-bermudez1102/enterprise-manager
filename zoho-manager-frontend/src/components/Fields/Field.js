@@ -15,15 +15,27 @@ class Field extends Component {
     const { field } = this.props;
     return (
       <div className="form-group">
-        <input
-          className="form-control"
-          type={field.fieldType}
-          name={field.id}
-          id={field.name}
-          placeholder={`Enter ${field.name}`}
-          onChange={this.handleChange}
-          value={this.state.value}
-        />
+        {field.fieldType !== "selectable" ? (
+          <input
+            className="form-control"
+            type={field.fieldType}
+            name={field.id}
+            id={field.name}
+            placeholder={`Enter ${field.name}`}
+            onChange={this.handleChange}
+            value={this.state.value}
+          />
+        ) : (
+          <select
+            className="form-control"
+            type={field.fieldType}
+            name={field.id}
+            id={field.name}
+            placeholder={`Enter ${field.name}`}
+            onChange={this.handleChange}
+            value={this.state.value}
+          ></select>
+        )}
       </div>
     );
   }

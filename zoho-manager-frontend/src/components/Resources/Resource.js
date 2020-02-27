@@ -1,7 +1,7 @@
 import React from "react";
 import FieldsContainer from "../../containers/Fields/FieldsContainer";
 import RecordsContainer from "../../containers/Records/RecordsContainer";
-import uuid from "react-uuid";
+import cuid from "cuid";
 
 const Resource = ({ match, resources }) => {
   const resource = resources.find(
@@ -11,12 +11,12 @@ const Resource = ({ match, resources }) => {
     <div>
       <h3>{resource.name}</h3>
       <FieldsContainer
-        key={uuid()}
+        key={cuid()}
         match={match}
         organizationId={resource.organizationId}
         resource={resource}
       />
-      <RecordsContainer match={match} resource={resource} />
+      <RecordsContainer key={cuid()} match={match} resource={resource} />
     </div>
   ) : null;
 };

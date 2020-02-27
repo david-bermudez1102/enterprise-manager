@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Field from "./Field";
 import { connect } from "react-redux";
 import { addRecord } from "../../actions/recordActions";
-import uuid from "react-uuid";
+import cuid from "cuid";
 
 const pluralize = require("pluralize");
 
@@ -30,7 +30,7 @@ class FieldsList extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         {fields.map(field => (
-          <Field key={uuid()} field={field} />
+          <Field key={cuid()} field={field} />
         ))}
         <input
           className="btn btn-primary"

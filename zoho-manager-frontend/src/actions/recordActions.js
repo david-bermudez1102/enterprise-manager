@@ -31,8 +31,7 @@ export const fetchRecords = (organizationId, formId) => {
         });
         return records.map(record => camelcaseKeys(record.links.values));
       })
-      .then(recordsValues =>
-        recordsValues.map(values => dispatch({ type: "ADD_VALUES", values }))
+      .then(values => dispatch({ type: "ADD_VALUES", values: values.flat()  })
       );
   };
 };

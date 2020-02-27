@@ -4,7 +4,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { addField, fetchFields } from "../../actions/fieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
-import uuid from "react-uuid";
+import cuid from "cuid";
 
 class FieldsContainer extends Component {
 
@@ -20,10 +20,9 @@ class FieldsContainer extends Component {
   render() {
     const { match, addField, organizationId, resource } = this.props;
     const fields = this.props.fields.filter(field => field.formId === resource.id)
-    console.log(fields)
     return (
       <div className="col-sm-5">
-        <FieldsList key={uuid()} match={match} fields={fields} resource={resource} />
+        <FieldsList key={cuid()} match={match} fields={fields} resource={resource} />
         <Link to={`${match.url}/fields/new`}>Add new field</Link>
         <Switch>
           <Route

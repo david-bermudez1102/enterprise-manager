@@ -1,10 +1,11 @@
 import React from "react";
+import cuid from "cuid";
 
 const Record = ({ record, fields, values }) => {
   return (
     <tr>
       {fields.map(field => (
-        <td key={`field_value_${field.id}_${record.id}`}>
+        <td key={cuid()}>
           {values
             .filter(
               value =>

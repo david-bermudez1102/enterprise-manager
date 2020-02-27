@@ -5,7 +5,6 @@ import RecordsList from "../../components/Records/RecordsList";
 import { fetchRecords } from "../../actions/recordActions";
 
 class RecordsContainer extends Component {
-  state = { records:[], values:[], fields:[] }
 
   componentDidMount() {
     const { resource } = this.props;
@@ -46,7 +45,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchRecords: (organizationId, formId) =>
-      dispatch(fetchRecords(organizationId, formId))
+      dispatch(fetchRecords(organizationId, formId)),
+    clearFields: () => dispatch({ type: "CLEAR_FIELDS" }),
+    clearRecords: () => dispatch({ type: "CLEAR_RECORDS" }),
+    clearValues: () => dispatch({ type: "CLEAR_VALUES" })
   };
 };
 

@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.4.1",
     "camelcase-keys": "^6.1.2",
+    "cuid": "^2.1.8",
     "json-form-data": "^1.7.1",
     "pluralize": "^8.0.0",
     "react": "^16.12.0",

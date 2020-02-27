@@ -7,6 +7,6 @@ export const fetchValues = (organizationId, formId) => {
       .then(values =>
         values.data.map(value => camelcaseKeys(value.attributes))
       )
-      .then(values => dispatch({ type: "ADD_VALUES", values }));
+      .then(values => dispatch({ type: "FETCH_VALUES", values }));
   };
 };

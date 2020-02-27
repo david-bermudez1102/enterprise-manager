@@ -3,7 +3,6 @@ import Field from "./Field";
 import { connect } from "react-redux";
 import { addRecord } from "../../actions/recordActions";
 import cuid from "cuid";
-import { Link } from "react-router-dom";
 
 const pluralize = require("pluralize");
 
@@ -31,9 +30,7 @@ class FieldsList extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         {fields.map(field => (
-          <>
-            <Field key={cuid()} field={field} match={match}/>
-          </>
+          <Field key={cuid()} field={field} match={match} />
         ))}
         <input
           className="btn btn-primary"
@@ -45,11 +42,4 @@ class FieldsList extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addRecord: (record, organizationId, formId) =>
-      dispatch(addRecord(record, organizationId, formId))
-  };
-};
-
-export default connect(null, mapDispatchToProps)(FieldsList);
+export default connect(null, {addRecord})(FieldsList);

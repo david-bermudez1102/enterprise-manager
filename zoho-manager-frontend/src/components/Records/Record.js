@@ -3,7 +3,7 @@ import cuid from "cuid";
 
 const Record = ({ record, fields, values }) => {
   return (
-    <tr>
+    <tr key={cuid()}>
       {fields.map(field => (
         <td key={cuid()}>
           {values

@@ -59,7 +59,7 @@ class Navbar extends Component {
                 <NavLink
                   to={link.path}
                   exact
-                  activeStyle={{ background: "red" }}
+                  activeStyle={{ background: "white" }}
                 >
                   {" "}
                   {link.text}
@@ -71,7 +71,7 @@ class Navbar extends Component {
                 <NavLink
                   to={link.path}
                   exact
-                  activeStyle={{ background: "red" }}
+                  activeStyle={{ background: "white" }}
                 >
                   {link.text}
                 </NavLink>

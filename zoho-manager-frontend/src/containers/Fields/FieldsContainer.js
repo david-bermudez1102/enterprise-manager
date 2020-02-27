@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import FieldForm from "../../components/Fields/FieldForm";
+import FieldForm from "../../components/Fields/FieldForm/FieldForm";
 import { Link, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { addField, fetchFields, removeField } from "../../actions/fieldActions";

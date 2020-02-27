@@ -4,20 +4,26 @@ import { Link, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { addField, fetchFields } from "../../actions/fieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
+import uuid from "react-uuid";
 
 class FieldsContainer extends Component {
-  state = { fields: [] };
 
   componentDidMount() {
     const { organizationId, resource } = this.props;
     this.props.fetchFields(organizationId, resource.id);
   }
 
+  componentWillUnmount(){
+    this.props.clearFields()
+  }
+
   render() {
-    const { match, addField, organizationId, resource, fields } = this.props;
+    const { match, addField, organizationId, resource } = this.props;
+    const fields = this.props.fields.filter(field => field.formId === resource.id)
+    console.log(fields)
     return (
-      <>
-        <FieldsList match={match} fields={fields} resource={resource}/>
+      <div className="col-sm-5">
+        <FieldsList key={uuid()} match={match} fields={fields} resource={resource} />
         <Link to={`${match.url}/fields/new`}>Add new field</Link>
         <Switch>
           <Route
@@ -31,7 +37,7 @@ class FieldsContainer extends Component {
             )}
           />
         </Switch>
-      </>
+      </div>
     );
   }
 }
@@ -46,7 +52,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addField: field => dispatch(addField(field)),
     fetchFields: (organizationId, resourceId) =>
-      dispatch(fetchFields(organizationId, resourceId))
+      dispatch(fetchFields(organizationId, resourceId)),
+      clearFields: () => dispatch({type:"CLEAR_FIELDS"})
   };
 };
 

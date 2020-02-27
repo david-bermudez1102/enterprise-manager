@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Field from "./Field";
 import { connect } from "react-redux";
 import { addRecord } from "../../actions/recordActions";
+import uuid from "react-uuid";
 
 const pluralize = require("pluralize");
 
 class FieldsList extends Component {
-  
   handleSubmit = event => {
     event.persist();
     event.preventDefault();
@@ -28,18 +28,16 @@ class FieldsList extends Component {
   render() {
     const { fields, resource } = this.props;
     return (
-      <div className="col-sm-5">
-        <form onSubmit={this.handleSubmit}>
-          {fields.map(field => (
-            <Field key={field.id} field={field} />
-          ))}
-          <input
-            className="btn btn-primary"
-            type="submit"
-            value={`Create ${pluralize.singular(resource.name)}`}
-          />
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit}>
+        {fields.map(field => (
+          <Field key={uuid()} field={field} />
+        ))}
+        <input
+          className="btn btn-primary"
+          type="submit"
+          value={`Create ${pluralize.singular(resource.name)}`}
+        />
+      </form>
     );
   }
 }

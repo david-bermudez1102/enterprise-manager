@@ -8,7 +8,6 @@ import Organization from "../components/Organizations/Organization";
 import { fetchResources } from "../actions/resourceActions";
 
 class OrganizationContainer extends Component {
-  state = { resources: [] };
 
   componentDidMount() {
     const { organizations, fetchResources } = this.props;

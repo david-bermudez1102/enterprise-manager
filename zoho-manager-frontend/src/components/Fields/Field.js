@@ -14,8 +14,9 @@ class Field extends Component {
   render() {
     const { field } = this.props;
     return (
-      <div>
+      <div className="form-group">
         <input
+          className="form-control"
           type={field.fieldType}
           name={field.id}
           id={field.name}

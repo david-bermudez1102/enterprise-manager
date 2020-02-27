@@ -14,14 +14,20 @@ class Navbar extends Component {
         },
         { path: "/home", text: "Home", isActive: false, loginRequired: true },
         {
-          path: "/logout",
-          text: "Logout",
+          path: `/organizations/${props.organization.id}/resources/new`,
+          text: "Add Resource",
           isActive: false,
           loginRequired: true
         },
         {
-          path: `/organizations/${props.organization.id}/resources/new`,
-          text: "Add Resource",
+          path: `/organizations/${props.organization.id}/resources`,
+          text: "Resources",
+          isActive: false,
+          loginRequired: true
+        },
+        {
+          path: "/logout",
+          text: "Logout",
           isActive: false,
           loginRequired: true
         }

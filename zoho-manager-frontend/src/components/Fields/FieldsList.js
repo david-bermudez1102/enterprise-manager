@@ -28,15 +28,18 @@ class FieldsList extends Component {
   render() {
     const { fields, resource } = this.props;
     return (
-      <form onSubmit={this.handleSubmit}>
-        {fields.map(field => (
-          <Field key={field.id} field={field} />
-        ))}
-        <input
-          type="submit"
-          value={`Create ${pluralize.singular(resource.name)}`}
-        />
-      </form>
+      <div className="col-sm-5">
+        <form onSubmit={this.handleSubmit}>
+          {fields.map(field => (
+            <Field key={field.id} field={field} />
+          ))}
+          <input
+            className="btn btn-primary"
+            type="submit"
+            value={`Create ${pluralize.singular(resource.name)}`}
+          />
+        </form>
+      </div>
     );
   }
 }

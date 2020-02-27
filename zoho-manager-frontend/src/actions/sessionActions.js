@@ -13,7 +13,6 @@ export const addSession = data => {
     };
     fetch("/sessions", configObj)
       .then(response => response.json())
-      .then(response => response.json())
       .then(account =>
         !account.error
           ? dispatch({
@@ -32,7 +31,7 @@ export const addSession = data => {
 
 export const fetchSession = () => {
   return dispatch => {
-    fetch("http://localhost:3001/current_user", {
+    fetch("/current_user", {
       credentials: "include"
     })
       .then(response => response.json())
@@ -48,6 +47,23 @@ export const fetchSession = () => {
               isLoggedIn: false,
               currentUser: {}
             })
+      );
+  };
+};
+
+export const removeSession = () => {
+  return dispatch => {
+    fetch("/delete_session", {
+      method: "DELETE",
+      credentials: "include"
+    })
+      .then(response => response.json())
+      .then(data =>
+        !data.error
+          ? dispatch({
+              type: "REMOVE_SESSION"
+            })
+          : null
       );
   };
 };

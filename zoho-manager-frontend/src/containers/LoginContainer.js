@@ -1,18 +1,14 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import LoginForm from "../components/LoginForm";
 
 class LoginContainer extends Component {
-
-  componentDidUpdate(prevProps) {
-    const { isLoggedIn } = this.props;
-    if (prevProps.isLoggedIn !== isLoggedIn) {
-      return this.props.isLoggedIn ? this.redirect() : null;
-    }
+  componentDidUpdate() {
+    const { session } = this.props;
+    return session.isLoggedIn ? this.redirect() : null;
   }
 
   handleOnSubmit = data => {
-    this.props.addSession(data)
+    this.props.addSession(data);
   };
 
   redirect = () => {
@@ -28,4 +24,4 @@ class LoginContainer extends Component {
   }
 }
 
-export default connect()(LoginContainer);
+export default LoginContainer;

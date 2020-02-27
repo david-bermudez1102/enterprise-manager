@@ -3,14 +3,7 @@ import { Redirect } from "react-router-dom";
 
 export default class LogoutContainer extends Component {
   componentDidMount() {
-    fetch("/delete_session", {
-      method: "DELETE",
-      credentials: "include"
-    })
-      .then(res => res.json())
-      .then(data =>
-        data.message === "success" ? this.props.handleLogout() : null
-      );
+    this.props.removeSession()
   }
 
   render() {

@@ -9,6 +9,12 @@ export const sessionReducer = (
         isLoggedIn: action.isLoggedIn,
         currentUser: action.currentUser
       };
+    case "REMOVE_SESSION": //Logout
+      return {
+        ...state,
+        isLoggedIn: false,
+        currentUser: {}
+      };
 
     default:
       return state;

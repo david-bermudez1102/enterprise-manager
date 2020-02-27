@@ -2,41 +2,49 @@ import React, { Component } from "react";
 import Navlink from "./Navlink";
 
 class Navbar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      links: [{ path: "/login", text: "Login", isActive: false }]
+      links: [
+        {
+          path: "/login",
+          text: "Login",
+          isActive: false,
+          loginRequired: false
+        },
+        { path: "/home", text: "Home", isActive: false, loginRequired: true },
+        {
+          path: "/logout",
+          text: "Logout",
+          isActive: false,
+          loginRequired: true
+        },
+        {
+          path: `/organizations/${props.organization.id}/resources/new`,
+          text: "Add Resource",
+          isActive: false,
+          loginRequired: true
+        }
+      ]
     };
   }
 
-  componentDidMount() {
-    const { session, organization } = this.props;
-      session.isLoggedIn
-        ? this.setState({
-            ...this.state,
-            links: [
-              { path: "/home", text: "Home", isActive: false },
-              { path: "/logout", text: "Logout", isActive: false },
-              {
-                path: `/organizations/${organization.id}/resources/new`,
-                text: "Add Resource",
-                isActive: false
-              }
-            ]
-          })
-        : this.setState({
-            ...this.state,
-            links: [{ path: "/login", text: "Login", isActive: false }]
-          });
-  }
-
   render() {
+    const { session } = this.props
     return (
-        <nav className="navbar navbar-dark bg-dark">
-          {this.state.links.map((link, id) => (
-            <Navlink key={id} linkTo={link.path} text={link.text} />
-          ))}
-        </nav>
+      <nav className="navbar navbar-dark bg-dark">
+        {session.isLoggedIn
+          ? this.state.links.map((link, id) =>
+              link.loginRequired ? (
+                <Navlink key={id} linkTo={link.path} text={link.text} />
+              ) : null
+            )
+          : this.state.links.map((link, id) =>
+              !link.loginRequired ? (
+                <Navlink key={id} linkTo={link.path} text={link.text} />
+              ) : null
+            )}
+      </nav>
     );
   }
 }

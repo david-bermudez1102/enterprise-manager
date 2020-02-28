@@ -14,5 +14,6 @@ export const rootReducer = combineReducers({
   resources: resourcesReducer,
   fields: fieldsReducer,
   records: recordsReducer,
+  recordFields: recordFieldsReducer,
   values: valuesReducer
 });

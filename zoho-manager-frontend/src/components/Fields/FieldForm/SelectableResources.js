@@ -6,11 +6,28 @@ import SelectableResourcesOptions from "./SelectableResourcesOptions";
 class SelectableResources extends Component {
   constructor() {
     super();
-    this.state = { selected: "select" };
+    this.state = {
+      selected: 0,
+      selectable_resource: { form_id: "", resource_field_id: "" }
+    };
   }
 
   handleChange = event => {
-    this.setState({ selected: event.target.value });
+    event.persist();
+    this.setState(prevState => {
+      this.props.handleSelectableChange({
+        ...prevState.selectable_resource,
+        [event.target.name]: event.target.value
+      });
+      return {
+        ...prevState,
+        selected: event.target.value,
+        selectable_resource: {
+          ...prevState.selectable_resource,
+          [event.target.name]: event.target.value
+        }
+      };
+    });
   };
 
   render() {
@@ -18,8 +35,12 @@ class SelectableResources extends Component {
     return (
       <div>
         Connect to:
-        <select onChange={this.handleChange} value={this.state.selected}>
-          <option value="Select" key={cuid()}>
+        <select
+          name="form_id"
+          onChange={this.handleChange}
+          value={this.state.selected}
+        >
+          <option value="0" key={cuid()}>
             Select
           </option>
           {resources.map(resource => (
@@ -28,7 +49,11 @@ class SelectableResources extends Component {
             </option>
           ))}
         </select>
-        <SelectableResourcesOptions fields={fields} selected={this.state.selected}/>
+        <SelectableResourcesOptions
+          fields={fields}
+          selected={this.state.selected}
+          handleChange={this.handleChange}
+        />
       </div>
     );
   }

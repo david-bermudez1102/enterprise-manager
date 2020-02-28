@@ -1,6 +1,6 @@
 import React from "react";
 
-const TextField = ({ handleOnChange }) => {
+const TextField = ({ handleChange }) => {
   return (
     <div className="form-check form-check-inline">
       <input
@@ -9,7 +9,7 @@ const TextField = ({ handleOnChange }) => {
         name="field_type"
         id="text_field"
         value="text"
-        onChange={handleOnChange}
+        onChange={handleChange}
       />
       <label htmlFor="text_field" className="form-check-label">
         Text Field

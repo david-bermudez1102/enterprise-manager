@@ -1,6 +1,6 @@
 import React from "react";
 
-const PasswordField = ({ handleOnChange }) => {
+const PasswordField = ({ handleChange }) => {
   return (
     <div className="form-check form-check-inline">
       <input
@@ -9,7 +9,7 @@ const PasswordField = ({ handleOnChange }) => {
         name="field_type"
         id="password_field"
         value="password"
-        onChange={handleOnChange}
+        onChange={handleChange}
       />
       <label htmlFor="password_field" className="form-check-label">
         Password Field

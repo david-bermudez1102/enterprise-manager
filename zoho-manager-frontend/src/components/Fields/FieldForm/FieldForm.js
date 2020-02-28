@@ -13,11 +13,18 @@ export default class FieldForm extends Component {
     };
   }
 
-  handleOnChange = event => {
+  handleChange = event => {
     event.persist();
     this.setState({
       ...this.state,
       [event.target.name]: event.target.value
+    });
+  };
+
+  handleSelectableChange = selectable_resource => {
+    this.setState({
+      ...this.state,
+      selectable_resource
     });
   };
 
@@ -32,18 +39,22 @@ export default class FieldForm extends Component {
   };
 
   render() {
+    console.log(this.state);
     return (
       <form onSubmit={this.handleOnSubmit}>
-        <TextField handleOnChange={this.handleOnChange} />
-        <PasswordField handleOnChange={this.handleOnChange} />
-        <SelectableField handleOnChange={this.handleOnChange} />
+        <TextField handleChange={this.handleChange} />
+        <PasswordField handleChange={this.handleChange} />
+        <SelectableField
+          handleChange={this.handleChange}
+          handleSelectableChange={this.handleSelectableChange}
+        />
 
         <div className="form-group">
           <input
             className="form-control"
             type="text"
             name="name"
-            onChange={this.handleOnChange}
+            onChange={this.handleChange}
             value={this.state.name}
             placeholder="Enter name"
           />

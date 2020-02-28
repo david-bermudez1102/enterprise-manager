@@ -19,7 +19,7 @@ class FieldsList extends Component {
     }
     record = {
       values_attributes: Object.keys(record).map(key => {
-        return { field_id: key, content: record[key] };
+        return { record_field_id: key, content: record[key] };
       })
     };
     this.props.addRecord(record, resource.organizationId, resource.id);

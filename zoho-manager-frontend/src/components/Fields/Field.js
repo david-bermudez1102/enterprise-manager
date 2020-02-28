@@ -40,7 +40,7 @@ class Field extends Component {
             value={this.state.value}
           >
             {field.selectableResource ? field.selectableResource.options.map(option => (
-              <option key={cuid()} value={option.id}>{option.value}</option>
+              <option key={cuid()} value={option.value}>{option.value}</option>
             )) : null}
           </select>
         )}

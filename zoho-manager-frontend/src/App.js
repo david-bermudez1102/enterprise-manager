@@ -47,6 +47,7 @@ class App extends Component {
                 {...props}
                 session={session}
                 addSession={addSession}
+                organizations={organizations}
               />
             )}
           />
@@ -60,10 +61,7 @@ class App extends Component {
           <Route
             path="/organizations"
             render={props => (
-              <OrganizationContainer
-                session={session}
-                {...props}
-              />
+              <OrganizationContainer session={session} {...props} />
             )}
           />
         </Switch>

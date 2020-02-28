@@ -1,5 +1,5 @@
 import React from "react";
-import SelectableOptions from "./SelectableOptions";
+import SelectableResources from "./SelectableResources";
 
 const SelectableField = ({ handleOnChange }) => {
   return (
@@ -17,7 +17,7 @@ const SelectableField = ({ handleOnChange }) => {
           Selectable Field
         </label>
       </div>
-      <SelectableOptions />
+      <SelectableResources />
     </>
   );
 };

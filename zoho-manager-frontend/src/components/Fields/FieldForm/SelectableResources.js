@@ -1,21 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import cuid from "cuid";
+import SelectableResourcesOptions from "./SelectableResourcesOptions";
 
-class SelectableOptions extends Component {
-
-  constructor(){
-    super()
-    this.state = { selected: "select" }
+class SelectableResources extends Component {
+  constructor() {
+    super();
+    this.state = { selected: "select" };
   }
 
   handleChange = event => {
-    this.setState({ selected: event.target.value })
-  }
+    this.setState({ selected: event.target.value });
+  };
 
   render() {
     const { resources, fields } = this.props;
-    console.log(fields)
     return (
       <div>
         Connect to:
@@ -29,20 +28,14 @@ class SelectableOptions extends Component {
             </option>
           ))}
         </select>
-        <select>
-          {resources.map(resource => (
-            <option value={resource.id} key={cuid()}>
-              {resource.name}
-            </option>
-          ))}
-        </select>
+        <SelectableResourcesOptions fields={fields} selected={this.state.selected}/>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({resources, fields}) => {
+const mapStateToProps = ({ resources, fields }) => {
   return { resources, fields };
 };
 
-export default connect(mapStateToProps)(SelectableOptions);
+export default connect(mapStateToProps)(SelectableResources);

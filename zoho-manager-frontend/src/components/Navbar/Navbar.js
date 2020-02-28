@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import cuid from "cuid";
 
 class Navbar extends Component {
   constructor(props) {
@@ -57,6 +58,7 @@ class Navbar extends Component {
           ? this.state.links.map((link, id) =>
               link.loginRequired ? (
                 <NavLink
+                  key={cuid()}
                   to={link.path}
                   exact
                   activeStyle={{ background: "white" }}
@@ -69,6 +71,7 @@ class Navbar extends Component {
           : this.state.links.map((link, id) =>
               !link.loginRequired ? (
                 <NavLink
+                  key={cuid()}
                   to={link.path}
                   exact
                   activeStyle={{ background: "white" }}

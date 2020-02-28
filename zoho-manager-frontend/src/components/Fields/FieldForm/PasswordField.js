@@ -1,6 +1,6 @@
 import React from "react";
 
-const PasswordField = ({ handleChange }) => {
+const PasswordField = ({ handleChange, handleSelectableChange }) => {
   return (
     <div className="form-check form-check-inline">
       <input
@@ -9,7 +9,14 @@ const PasswordField = ({ handleChange }) => {
         name="field_type"
         id="password_field"
         value="password"
-        onChange={handleChange}
+        onChange={event => {
+          event.persist();
+          handleChange(event);
+          handleSelectableChange({
+            form_id: "",
+            selectable_resource_attributes: ""
+          });
+        }}
       />
       <label htmlFor="password_field" className="form-check-label">
         Password Field

@@ -27,7 +27,7 @@ class FieldsController < ApplicationController
 
   private
     def field_params
-      params.require(:field).permit(:name,:field_type,:form_id, :selectable_resource)
+      params.require(:field).permit(:name,:field_type,:form_id, selectable_resource_attributes: [:form_id, :resource_field_id])
     end
 
     def set_form

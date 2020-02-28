@@ -4,4 +4,5 @@ class Field < ApplicationRecord
   enum field_type: [ "text", "password", "selectable", "checkbox", "radio" ]
   has_one :selectable_resource
   has_many :options
+  accepts_nested_attributes_for :selectable_resource
 end

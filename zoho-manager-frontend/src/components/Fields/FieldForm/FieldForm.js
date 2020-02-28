@@ -21,10 +21,10 @@ export default class FieldForm extends Component {
     });
   };
 
-  handleSelectableChange = selectable_resource => {
+  handleSelectableChange = selectable_resource_attributes => {
     this.setState({
       ...this.state,
-      selectable_resource
+      selectable_resource_attributes
     });
   };
 

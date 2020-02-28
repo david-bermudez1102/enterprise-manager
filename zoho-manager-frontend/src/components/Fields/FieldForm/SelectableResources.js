@@ -8,7 +8,7 @@ class SelectableResources extends Component {
     super();
     this.state = {
       selected: "0",
-      selectable_resource: { form_id: "", resource_field_id: "" }
+      selectable_resource_attributes: { form_id: "", resource_field_id: "" }
     };
   }
 
@@ -16,15 +16,15 @@ class SelectableResources extends Component {
     event.persist();
     this.setState(prevState => {
       this.props.handleSelectableChange({
-        ...prevState.selectable_resource,
+        ...prevState.selectable_resource_attributes,
         [event.target.name]: event.target.value,
         resource_field_id: ""
       });
       return {
         ...prevState,
         selected: event.target.value,
-        selectable_resource: {
-          ...prevState.selectable_resource,
+        selectable_resource_attributes: {
+          ...prevState.selectable_resource_attributes,
           [event.target.name]: event.target.value,
           resource_field_id: ""
         }
@@ -36,13 +36,13 @@ class SelectableResources extends Component {
     event.persist();
     this.setState({
       ...this.state,
-      selectable_resource: {
-        ...this.state.selectable_resource,
+      selectable_resource_attributes: {
+        ...this.state.selectable_resource_attributes,
         [event.target.name]: event.target.value
       }
     });
     this.props.handleSelectableChange({
-      ...this.state.selectable_resource,
+      ...this.state.selectable_resource_attributes,
       [event.target.name]: event.target.value
     });
   };

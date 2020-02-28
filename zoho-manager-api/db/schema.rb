@@ -101,10 +101,12 @@ ActiveRecord::Schema.define(version: 2020_02_27_183034) do
   create_table "selectable_resources", force: :cascade do |t|
     t.integer "form_id"
     t.integer "field_id"
+    t.integer "resource_field_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["field_id"], name: "index_selectable_resources_on_field_id"
     t.index ["form_id"], name: "index_selectable_resources_on_form_id"
+    t.index ["resource_field_id"], name: "index_selectable_resources_on_resource_field_id"
   end
 
   create_table "values", force: :cascade do |t|

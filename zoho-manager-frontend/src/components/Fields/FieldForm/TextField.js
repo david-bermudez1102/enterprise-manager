@@ -14,7 +14,7 @@ const TextField = ({ handleChange, handleSelectableChange }) => {
           handleChange(event);
           handleSelectableChange({
             form_id: "",
-            selectable_resource: ""
+            selectable_resource_attributes: ""
           });
         }}
       />

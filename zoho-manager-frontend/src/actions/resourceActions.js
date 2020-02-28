@@ -22,6 +22,6 @@ export const fetchResources = organizationId => {
       .then(resources =>
         resources.data.map(resource => camelcaseKeys(resource.attributes))
       )
-      .then(resources => dispatch({ type: "ADD_RESOURCES", resources }));
+      .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }));
   };
 };

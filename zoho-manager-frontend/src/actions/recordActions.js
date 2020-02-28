@@ -26,7 +26,7 @@ export const fetchRecords = (organizationId, formId) => {
       .then(records => records.data.map(record => record))
       .then(records => {
         dispatch({
-          type: "ADD_RECORDS",
+          type: "FETCH_RECORDS",
           records: records.map(record => camelcaseKeys(record.attributes))
         });
         return records.map(record => camelcaseKeys(record.links.values));

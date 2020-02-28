@@ -3,9 +3,14 @@ export const fieldsReducer = (state = [], action) => {
     case "ADD_FIELD":
       return [...state, action.field];
     case "FETCH_FIELDS":
-      return [...action.fields];
-      case "REMOVE_FIELD":
-        return [...state.filter(field => field.id !== action.fieldId)]
+      return [
+        ...state,
+        ...action.fields.filter(
+          field => !state.some(f => field.id === f.id)
+        )
+      ];
+    case "REMOVE_FIELD":
+      return [...state.filter(field => field.id !== action.fieldId)];
     default:
       return state;
   }

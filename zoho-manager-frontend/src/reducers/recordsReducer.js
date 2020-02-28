@@ -3,8 +3,13 @@ export const recordsReducer = (state = [], action) => {
     case "ADD_RECORD":
       return [...state, action.record];
 
-    case "ADD_RECORDS":
-      return [...action.records];
+    case "FETCH_RECORDS":
+      return [
+        ...state,
+        ...action.records.filter(
+          record => !state.some(rec => record.id === rec.id)
+        )
+      ];
     case "CLEAR_RECORDS":
       return [];
     default:

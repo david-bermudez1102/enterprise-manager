@@ -8,7 +8,12 @@ export const valuesReducer = (state = [], action) => {
         )
       ];
     case "FETCH_VALUES":
-      return [...action.values];
+      return [
+        ...state,
+        ...action.values.filter(
+          value => !state.some(val => value.id === val.id)
+        )
+      ];
     default:
       return state;
   }

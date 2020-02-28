@@ -1,7 +1,9 @@
 class RecordFieldsController < ApplicationController
+  before_action :set_form
+  
   def index
-    fields = @form.fields
-    render json: FieldSerializer.new(fields)
+    record_fields = @form.record_fields
+    render json: FieldSerializer.new(record_fields)
   end
 
   private

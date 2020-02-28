@@ -8,19 +8,20 @@ import { fetchRecordFields } from "../../actions/recordFieldActions";
 
 class Resource extends Component {
   componentDidMount() {
-    const { organizationId, resources } = this.props;
-    resources.map(resource =>
-      {this.props.fetchFields(organizationId, resource.id)
-      this.props.fetchRecordFields(organizationId, resource.id);}
-    );
+    const { resources } = this.props;
+    resources.map(resource => {
+      this.props.fetchFields(resource.organizationId, resource.id);
+      this.props.fetchRecordFields(resource.organizationId, resource.id);
+    });
   }
 
   componentDidUpdate(prevProps) {
-    const { organizationId, resources } = this.props;
+    const { resources } = this.props;
     if (prevProps !== this.props)
-      resources.map(resource =>
-        this.props.fetchFields(organizationId, resource.id)
-      );
+      resources.map(resource => {
+        this.props.fetchFields(resource.organizationId, resource.id);
+        this.props.fetchRecordFields(resource.organizationId, resource.id);
+      });
   }
   render() {
     const { match, resources } = this.props;

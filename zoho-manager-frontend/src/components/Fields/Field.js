@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-
+import cuid from "cuid";
 class Field extends Component {
   constructor() {
     super();
@@ -38,7 +38,11 @@ class Field extends Component {
             placeholder={`Enter ${field.name}`}
             onChange={this.handleChange}
             value={this.state.value}
-          ></select>
+          >
+            {field.selectableResource ? field.selectableResource.options.map(option => (
+              <option key={cuid()} value={option.id}>{option.value}</option>
+            )) : null}
+          </select>
         )}
       </div>
     );

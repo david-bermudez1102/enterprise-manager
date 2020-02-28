@@ -1,5 +1,6 @@
 import React from "react";
 import SelectableResources from "./SelectableResources";
+import SelectableOptions from "./SelectableOptions";
 
 const SelectableField = ({
   field_type,
@@ -24,6 +25,7 @@ const SelectableField = ({
       {field_type === "selectable" ? (
         <SelectableResources handleSelectableChange={handleSelectableChange} />
       ) : null}
+      {field_type === "selectable" ? <SelectableOptions /> : null}
     </>
   );
 };

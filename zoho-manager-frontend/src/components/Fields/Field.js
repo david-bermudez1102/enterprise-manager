@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import cuid from "cuid";
+
 class Field extends Component {
   constructor() {
     super();
@@ -32,7 +33,6 @@ class Field extends Component {
         ) : (
           <select
             className="form-control"
-            type={field.fieldType}
             name={field.id}
             id={field.name}
             placeholder={`Enter ${field.name}`}

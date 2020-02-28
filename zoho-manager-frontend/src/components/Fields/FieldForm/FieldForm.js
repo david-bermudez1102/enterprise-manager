@@ -39,7 +39,6 @@ export default class FieldForm extends Component {
   };
 
   render() {
-    console.log(this.state);
     return (
       <form onSubmit={this.handleOnSubmit}>
         <TextField

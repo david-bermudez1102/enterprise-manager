@@ -4,7 +4,7 @@ class FieldSerializer
   attribute :selectable_resource, if: Proc.new { |field|
     field.field_type == "selectable"
   } do |field|
-    field.selectable_resource ? { options: field.selectable_resource.form.fields[0].values.map do |value|
+    field.selectable_resource ? { options: field.selectable_resource.form.fields.find(field.selectable_resource.resource_field.id).values.map do |value|
       value.content
     end }
      : nil

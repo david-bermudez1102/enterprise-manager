@@ -1,7 +1,11 @@
 import React from "react";
 import SelectableResources from "./SelectableResources";
 
-const SelectableField = ({ handleChange, handleSelectableChange }) => {
+const SelectableField = ({
+  field_type,
+  handleChange,
+  handleSelectableChange
+}) => {
   return (
     <>
       <div className="form-check form-check-inline">
@@ -17,7 +21,9 @@ const SelectableField = ({ handleChange, handleSelectableChange }) => {
           Selectable Field
         </label>
       </div>
-      <SelectableResources handleSelectableChange={handleSelectableChange} />
+      {field_type === "selectable" ? (
+        <SelectableResources handleSelectableChange={handleSelectableChange} />
+      ) : null}
     </>
   );
 };

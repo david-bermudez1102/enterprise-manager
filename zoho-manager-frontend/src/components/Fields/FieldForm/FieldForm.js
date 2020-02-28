@@ -42,9 +42,16 @@ export default class FieldForm extends Component {
     console.log(this.state);
     return (
       <form onSubmit={this.handleOnSubmit}>
-        <TextField handleChange={this.handleChange} />
-        <PasswordField handleChange={this.handleChange} />
+        <TextField
+          handleChange={this.handleChange}
+          handleSelectableChange={this.handleSelectableChange}
+        />
+        <PasswordField
+          handleChange={this.handleChange}
+          handleSelectableChange={this.handleSelectableChange}
+        />
         <SelectableField
+          field_type={this.state.field_type}
           handleChange={this.handleChange}
           handleSelectableChange={this.handleSelectableChange}
         />

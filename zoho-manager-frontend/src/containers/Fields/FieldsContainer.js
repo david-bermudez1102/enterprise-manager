@@ -2,20 +2,23 @@ import React, { Component } from "react";
 import FieldForm from "../../components/Fields/FieldForm/FieldForm";
 import { Link, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { addField, fetchFields, removeField } from "../../actions/fieldActions";
+import { addField, removeField } from "../../actions/fieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
 import cuid from "cuid";
 
 class FieldsContainer extends Component {
-
-  componentDidMount() {
-    const { organizationId, resource } = this.props;
-    this.props.fetchFields(organizationId, resource.id);
-  }
-
   render() {
-    const { match, addField, organizationId, resource, removeField } = this.props;
-    const fields = this.props.fields.filter(field => field.formId === resource.id)
+    const {
+      match,
+      addField,
+      organizationId,
+      resource,
+      removeField
+    } = this.props;
+    
+    const fields = this.props.fields.filter(
+      field => field.formId === resource.id
+    );
     return (
       <div className="col-sm-5">
         <FieldsList
@@ -55,11 +58,12 @@ class FieldsContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ fields }) => {
   return {
-    fields: state.fields
+    fields
   };
 };
 
-
-export default connect(mapStateToProps, {addField, fetchFields, removeField})(FieldsContainer);
+export default connect(mapStateToProps, { addField, removeField })(
+  FieldsContainer
+);

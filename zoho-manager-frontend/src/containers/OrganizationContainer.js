@@ -53,21 +53,13 @@ class OrganizationContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ resources, organizations }) => {
   return {
-    resources: state.resources,
-    organizations: state.organizations
+    resources,
+    organizations
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addOrganization: organization => dispatch(addOrganization(organization)),
-    fetchResources: organizationId => dispatch(fetchResources(organizationId))
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OrganizationContainer);
+export default connect(mapStateToProps, { addOrganization, fetchResources })(
+  OrganizationContainer
+);

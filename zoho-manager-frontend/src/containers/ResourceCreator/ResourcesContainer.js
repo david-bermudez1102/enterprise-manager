@@ -16,7 +16,13 @@ class ResourcesContainer extends Component {
         <Route
           exact
           path={`${match.path}`}
-          render={props => <ResourcesList {...props} resources={resources} />}
+          render={props => (
+            <ResourcesList
+              {...props}
+              resources={resources}
+              organizationId={organizationId}
+            />
+          )}
         />
         <Route
           exact

@@ -41,8 +41,8 @@ class SelectableOptions extends Component {
   }
 }
 
-const mapStateToProps = ({resources}) => {
-  return { resources };
+const mapStateToProps = ({resources, fields}) => {
+  return { resources, fields };
 };
 
 export default connect(mapStateToProps)(SelectableOptions);

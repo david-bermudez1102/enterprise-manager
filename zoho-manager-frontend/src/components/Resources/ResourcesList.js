@@ -13,4 +13,5 @@ const ResourcesList = ({ match, resources }) => {
     </div>
   );
 };
+
 export default ResourcesList;

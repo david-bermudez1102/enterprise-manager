@@ -34,12 +34,8 @@ class RecordsContainer extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    records: state.records,
-    values: state.values,
-    fields: state.fields
-  };
-}
+const mapStateToProps = ({ records, values, fields}) => {
+  return { records, values, fields };
+};
 
 export default connect(mapStateToProps, {fetchRecords})(RecordsContainer);

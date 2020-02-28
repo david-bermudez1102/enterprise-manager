@@ -15,18 +15,10 @@ class FieldsContainer extends Component {
       resource,
       removeField
     } = this.props;
-    
-    const fields = this.props.fields.filter(
-      field => field.formId === resource.id
-    );
+
     return (
       <div className="col-sm-5">
-        <FieldsList
-          key={cuid()}
-          match={match}
-          fields={fields}
-          resource={resource}
-        />
+        <FieldsList key={cuid()} match={match} resource={resource} />
         <Link to={`${match.url}/fields/new`}>Add new field</Link>
 
         <Switch>

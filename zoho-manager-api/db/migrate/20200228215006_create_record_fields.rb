@@ -1,9 +1,9 @@
 class CreateRecordFields < ActiveRecord::Migration[5.2]
   def change
     create_table :record_fields do |t|
-      t.references :record, foreign_key: true
+      t.integer :field_type
       t.string :name
-
+      t.references :form
       t.timestamps
     end
   end

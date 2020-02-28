@@ -3,7 +3,8 @@ class FieldsController < ApplicationController
 
   def create
     field = @form.fields.build(field_params)
-    if field.save
+    record_field = @form.record_fields.build(field_params)
+    if field.save && record_field.save
       render json: FieldSerializer.new(field)
     end
   end

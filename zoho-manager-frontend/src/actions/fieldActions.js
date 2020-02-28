@@ -30,7 +30,7 @@ export const fetchFields = (organizationId, formId) => {
 export const removeField = (organizationId, formId, fieldId) => {
   return dispatch => {
     fetch(`/organizations/${organizationId}/forms/${formId}/fields/${fieldId}`, { method: "DELETE" })
-      .then(response => response.json())
+      .then(response => camelcaseKeys(response.json()))
       .then(field => field.message ? dispatch({ type: "REMOVE_FIELD", fieldId }) : null);
   };
 };

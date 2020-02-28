@@ -92,11 +92,12 @@ ActiveRecord::Schema.define(version: 2020_02_28_215006) do
   end
 
   create_table "record_fields", force: :cascade do |t|
-    t.integer "record_id"
+    t.integer "field_type"
     t.string "name"
+    t.integer "form_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["record_id"], name: "index_record_fields_on_record_id"
+    t.index ["form_id"], name: "index_record_fields_on_form_id"
   end
 
   create_table "records", force: :cascade do |t|

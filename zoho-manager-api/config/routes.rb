@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  resources :record_fields
   resources :options
   resources :organizations do
     resources :forms do
       resources :fields
+      resources :record_fields
       resources :records
       resources :values
     end

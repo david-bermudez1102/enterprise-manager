@@ -6,6 +6,7 @@ import { fieldsReducer } from "./fieldsReducer";
 import { recordsReducer } from "./recordsReducer";
 import { valuesReducer } from "./valuesReducer";
 import { sessionReducer } from "./sessionReducer";
+import { recordFieldsReducer } from "./recordFieldsReducer";
 
 export const rootReducer = combineReducers({
   session: sessionReducer,

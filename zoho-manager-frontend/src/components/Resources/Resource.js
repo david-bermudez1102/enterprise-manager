@@ -4,12 +4,14 @@ import RecordsContainer from "../../containers/Records/RecordsContainer";
 import cuid from "cuid";
 import { connect } from "react-redux";
 import { fetchFields } from "../../actions/fieldActions";
+import { fetchRecordFields } from "../../actions/recordFieldActions";
 
 class Resource extends Component {
   componentDidMount() {
     const { organizationId, resources } = this.props;
     resources.map(resource =>
-      this.props.fetchFields(organizationId, resource.id)
+      {this.props.fetchFields(organizationId, resource.id)
+      this.props.fetchRecordFields(organizationId, resource.id);}
     );
   }
 
@@ -40,4 +42,4 @@ class Resource extends Component {
   }
 }
 
-export default connect(null, { fetchFields })(Resource);
+export default connect(null, { fetchFields, fetchRecordFields })(Resource);

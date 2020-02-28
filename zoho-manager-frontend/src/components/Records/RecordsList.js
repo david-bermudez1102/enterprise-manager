@@ -2,12 +2,12 @@ import React from "react";
 import Record from "./Record";
 import cuid from "cuid";
 
-const RecordsList = ({ records, fields, resource, values }) => {
+const RecordsList = ({ records, recordFields, resource, values }) => {
   return (
     <table className="table table-striped table-sm">
       <thead>
         <tr>
-          {fields.map(field =>
+          {recordFields.map(field =>
             field.formId === resource.id ? (
               <th key={cuid()}>{field.name}</th>
             ) : null
@@ -19,7 +19,7 @@ const RecordsList = ({ records, fields, resource, values }) => {
           <Record
             key={cuid()}
             record={record}
-            fields={fields}
+            recordFields={recordFields}
             values={values}
           />
         ) : null)}

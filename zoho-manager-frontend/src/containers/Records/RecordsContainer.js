@@ -12,7 +12,7 @@ class RecordsContainer extends Component {
   }
   
   render() {
-    const { match, resource, fields, records, values } = this.props
+    const { match, resource, recordFields, records, values } = this.props
     return (
       <>
         <Link to={`${match.url}/records`}>View All Records</Link>
@@ -21,7 +21,7 @@ class RecordsContainer extends Component {
             path={`${match.path}/records`}
             render={props => (
               <RecordsList
-                fields={fields}
+                recordFields={recordFields}
                 resource={resource}
                 records={records}
                 values={values}
@@ -34,8 +34,8 @@ class RecordsContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ records, values, fields}) => {
-  return { records, values, fields };
+const mapStateToProps = ({ records, values, recordFields}) => {
+  return { records, values, recordFields };
 };
 
 export default connect(mapStateToProps, {fetchRecords})(RecordsContainer);

@@ -21,11 +21,14 @@ export default class FieldForm extends Component {
     });
   };
 
-  handleSelectableChange = (selectable_resource_attributes, options) => {
+  handleSelectableChange = (
+    selectable_resource_attributes,
+    options_attributes
+  ) => {
     this.setState({
       ...this.state,
       selectable_resource_attributes,
-      options
+      options_attributes
     });
   };
 

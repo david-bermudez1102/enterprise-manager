@@ -6,7 +6,7 @@ class SelectableOptions extends Component {
     super();
     this.state = {
       itemValue: "",
-      options: []
+      options_attributes: []
     };
   }
 
@@ -22,12 +22,15 @@ class SelectableOptions extends Component {
     this.setState(
       {
         ...this.state,
-        options: [...this.state.options, { value: this.state.itemValue }]
+        options_attributes: [
+          ...this.state.options_attributes,
+          { value: this.state.itemValue }
+        ]
       },
       () =>
         this.props.handleSelectableChange(
           { form_id: "", resource_field_id: "" },
-          this.state.options
+          this.state.options_attributes
         )
     );
   };
@@ -36,8 +39,13 @@ class SelectableOptions extends Component {
     const { fieldType } = this.props;
     return (
       <div>
-        {this.state.options.map(option => (
-          <input type="text" value={option.value} readOnly={true} key={cuid()} />
+        {this.state.options_attributes.map(option => (
+          <input
+            type="text"
+            value={option.value}
+            readOnly={true}
+            key={cuid()}
+          />
         ))}
         Add items to {fieldType} field:
         <input

@@ -10,12 +10,14 @@ const PasswordField = ({ handleChange, handleSelectableChange }) => {
         id="password_field"
         value="password"
         onChange={event => {
-          event.persist();
+          handleSelectableChange(
+            {
+              form_id: "",
+              selectable_resource_id: ""
+            },
+            []
+          );
           handleChange(event);
-          handleSelectableChange({
-            form_id: "",
-            selectable_resource_attributes: ""
-          });
         }}
       />
       <label htmlFor="password_field" className="form-check-label">

@@ -10,12 +10,14 @@ const TextField = ({ handleChange, handleSelectableChange }) => {
         id="text_field"
         value="text"
         onChange={event => {
-          event.persist();
+          handleSelectableChange(
+            {
+              form_id: "",
+              selectable_resource_id: ""
+            },
+            []
+          );
           handleChange(event);
-          handleSelectableChange({
-            form_id: "",
-            selectable_resource_attributes: ""
-          });
         }}
       />
       <label htmlFor="text_field" className="form-check-label">

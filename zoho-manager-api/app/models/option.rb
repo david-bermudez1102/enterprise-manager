@@ -1,3 +1,3 @@
 class Option < ApplicationRecord
-  belongs_to :field
+  belongs_to :record_field
 end

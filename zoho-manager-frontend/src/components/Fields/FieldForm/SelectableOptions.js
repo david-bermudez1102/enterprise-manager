@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import cuid from "cuid";
 
 class SelectableOptions extends Component {
@@ -19,21 +18,28 @@ class SelectableOptions extends Component {
   };
 
   handleClick = event => {
-    event.persist();
     event.preventDefault();
-    this.setState({
-      ...this.state,
-      options: [...this.state.options, this.state.itemValue]
-    });
+    this.setState(
+      {
+        ...this.state,
+        options: [...this.state.options, { value: this.state.itemValue }]
+      },
+      () =>
+        this.props.handleSelectableChange(
+          { form_id: "", resource_field_id: "" },
+          this.state.options
+        )
+    );
   };
 
   render() {
+    const { fieldType } = this.props;
     return (
       <div>
         {this.state.options.map(option => (
-          <input type="text" value={option} readOnly={true} key={cuid()}/>
+          <input type="text" value={option.value} readOnly={true} key={cuid()} />
         ))}
-        Add items to selectable:
+        Add items to {fieldType} field:
         <input
           type="text"
           name="itemValue"
@@ -46,8 +52,4 @@ class SelectableOptions extends Component {
   }
 }
 
-const mapStateToProps = ({ resources, fields }) => {
-  return { resources, fields };
-};
-
-export default connect(mapStateToProps)(SelectableOptions);
+export default SelectableOptions;

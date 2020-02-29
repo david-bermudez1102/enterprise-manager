@@ -1,15 +1,15 @@
 import React from "react";
 import cuid from "cuid";
 
-const Record = ({ record, fields, values }) => {
+const Record = ({ record, recordFields, values }) => {
   return (
     <tr key={cuid()}>
-      {fields.map(field => (
+      {recordFields.map(recordField => (
         <td key={cuid()}>
           {values
             .filter(
               value =>
-                value.fieldId === field.id && value.recordId === record.id
+                value.recordFieldId === recordField.id && value.recordId === record.id
             )
             .map(value => value.content)}
         </td>

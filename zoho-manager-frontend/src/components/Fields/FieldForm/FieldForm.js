@@ -21,10 +21,11 @@ export default class FieldForm extends Component {
     });
   };
 
-  handleSelectableChange = selectable_resource_attributes => {
+  handleSelectableChange = (selectable_resource_attributes, options) => {
     this.setState({
       ...this.state,
-      selectable_resource_attributes
+      selectable_resource_attributes,
+      options
     });
   };
 
@@ -39,6 +40,7 @@ export default class FieldForm extends Component {
   };
 
   render() {
+    console.log(this.state)
     return (
       <form onSubmit={this.handleOnSubmit}>
         <TextField
@@ -50,7 +52,7 @@ export default class FieldForm extends Component {
           handleSelectableChange={this.handleSelectableChange}
         />
         <SelectableField
-          field_type={this.state.field_type}
+          fieldType={this.state.field_type}
           handleChange={this.handleChange}
           handleSelectableChange={this.handleSelectableChange}
         />

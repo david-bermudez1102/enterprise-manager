@@ -3,7 +3,7 @@ import SelectableResources from "./SelectableResources";
 import SelectableOptions from "./SelectableOptions";
 
 const SelectableField = ({
-  field_type,
+  fieldType,
   handleChange,
   handleSelectableChange
 }) => {
@@ -22,10 +22,15 @@ const SelectableField = ({
           Selectable Field
         </label>
       </div>
-      {field_type === "selectable" ? (
+      {fieldType === "selectable" ? (
         <SelectableResources handleSelectableChange={handleSelectableChange} />
       ) : null}
-      {field_type === "selectable" ? <SelectableOptions /> : null}
+      {fieldType === "selectable" ? (
+        <SelectableOptions
+          fieldType={fieldType}
+          handleSelectableChange={handleSelectableChange}
+        />
+      ) : null}
     </>
   );
 };

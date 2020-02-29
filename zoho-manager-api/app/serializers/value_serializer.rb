@@ -1,4 +1,4 @@
 class ValueSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :content, :field_id, :record_id
+  attributes :id, :content, :record_field_id, :record_id
 end

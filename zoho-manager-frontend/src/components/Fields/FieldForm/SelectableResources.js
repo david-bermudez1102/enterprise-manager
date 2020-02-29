@@ -19,7 +19,7 @@ class SelectableResources extends Component {
         ...prevState.selectable_resource_attributes,
         [event.target.name]: event.target.value,
         resource_field_id: ""
-      });
+      }, []);
       return {
         ...prevState,
         selected: event.target.value,
@@ -44,7 +44,7 @@ class SelectableResources extends Component {
     this.props.handleSelectableChange({
       ...this.state.selectable_resource_attributes,
       [event.target.name]: event.target.value
-    });
+    }, []);
   };
 
   render() {

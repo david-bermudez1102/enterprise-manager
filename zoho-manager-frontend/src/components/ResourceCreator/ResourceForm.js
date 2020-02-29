@@ -13,7 +13,7 @@ class ResourceForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.addResource(this.state);
+    this.props.addResource(this.state, this.props.history);
   };
 
   render() {

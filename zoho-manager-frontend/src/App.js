@@ -78,14 +78,10 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchOrganizations: () => dispatch(fetchOrganizations()),
-    fetchAdmins: () => dispatch(fetchAdmins()),
-    fetchSession: () => dispatch(fetchSession()),
-    addSession: data => dispatch(addSession(data)),
-    removeSession: () => dispatch(removeSession())
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, {
+  fetchOrganizations,
+  fetchAdmins,
+  fetchSession,
+  addSession,
+  removeSession
+})(App);

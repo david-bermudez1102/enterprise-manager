@@ -1,8 +1,9 @@
 const camelcaseKeys = require("camelcase-keys");
 
-export const addResource = resource => {
+export const addResource = (resource, history) => {
+  const organizationsPath = `/organizations/${resource.organization_id}`;
   return dispatch => {
-    fetch(`/organizations/${resource.organization_id}/forms`, {
+    fetch(`${organizationsPath}/forms`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -12,6 +13,9 @@ export const addResource = resource => {
       .then(response => response.json())
       .then(resource => camelcaseKeys(resource.data.attributes))
       .then(resource => dispatch({ type: "ADD_RESOURCE", resource }))
+      .then(action =>
+        history.push(`${organizationsPath}/resources/${action.resource.id}`)
+      );
   };
 };
 

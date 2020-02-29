@@ -20,6 +20,7 @@ const RecordsList = ({ records, recordFields, resource, values }) => {
             key={cuid()}
             record={record}
             recordFields={recordFields}
+            resourceId={resource.id}
             values={values}
           />
         ) : null)}

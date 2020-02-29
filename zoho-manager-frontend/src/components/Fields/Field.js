@@ -17,7 +17,7 @@ class Field extends Component {
     const { match, field } = this.props;
     return (
       <div className="form-group">
-        <Link to={`${match.url}/fields/${field.id}`}>
+        <Link to={`${match.url}/fields/delete/${field.id}`}>
           <button>Delete</button>
         </Link>
         {field.fieldType !== "selectable" ? (
@@ -39,9 +39,17 @@ class Field extends Component {
             onChange={this.handleChange}
             value={this.state.value}
           >
-            {field.selectableResource ? field.selectableResource.options.map(option => (
-              <option key={cuid()} value={option.value}>{option.value}</option>
-            )) : null}
+            {field.selectableResource
+              ? field.selectableResource.options.map(option => (
+                  <option key={cuid()} value={option.value}>
+                    {option.value}
+                  </option>
+                ))
+              : field.options.map(option => (
+                  <option key={cuid()} value={option.value}>
+                    {option.value}
+                  </option>
+                ))}
           </select>
         )}
       </div>

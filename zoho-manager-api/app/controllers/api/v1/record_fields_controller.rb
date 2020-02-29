@@ -1,0 +1,16 @@
+module Api::V1
+  class RecordFieldsController < ApplicationController
+    before_action :set_form
+
+    def index
+      record_fields = @form.record_fields
+      render json: FieldSerializer.new(record_fields)
+    end
+
+    private
+
+    def set_form
+      @form = Form.find(params[:form_id])
+    end
+  end
+end

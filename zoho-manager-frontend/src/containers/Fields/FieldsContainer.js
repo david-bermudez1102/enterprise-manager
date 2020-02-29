@@ -33,15 +33,14 @@ class FieldsContainer extends Component {
             )}
           />
           <Route
-            path={`${match.url}/fields/:fieldId`}
+            path={`${match.url}/fields/delete/:fieldId`}
             render={props =>
-              props.match.params.fieldId !== "new"
-                ? removeField(
-                    organizationId,
-                    resource.id,
-                    props.match.params.fieldId
-                  )
-                : null
+              removeField(
+                organizationId,
+                resource.id,
+                props.match.params.fieldId,
+                props.history
+              )
             }
           />
         </Switch>

@@ -27,10 +27,11 @@ export const fetchFields = (organizationId, formId) => {
   };
 };
 
-export const removeField = (organizationId, formId, fieldId) => {
+export const removeField = (organizationId, formId, fieldId, history) => {
   return dispatch => {
     fetch(`/organizations/${organizationId}/forms/${formId}/fields/${fieldId}`, { method: "DELETE" })
       .then(response => camelcaseKeys(response.json()))
-      .then(field => field.message ? dispatch({ type: "REMOVE_FIELD", fieldId }) : null);
+      .then(field => field.message ? dispatch({ type: "REMOVE_FIELD", fieldId }) : null)
+      .then(action => history.push(`/organizations/${organizationId}/resources/${formId}`))
   };
 };

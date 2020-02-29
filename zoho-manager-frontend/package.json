@@ -1,6 +1,5 @@
 {
   "name": "zoho-manager-frontend",
-  "proxy": "http://localhost:3001/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,6 +9,7 @@
     "bootstrap": "^4.4.1",
     "camelcase-keys": "^6.1.2",
     "cuid": "^2.1.8",
+    "http-proxy-middleware": "^1.0.1",
     "json-form-data": "^1.7.1",
     "pluralize": "^8.0.0",
     "react": "^16.12.0",

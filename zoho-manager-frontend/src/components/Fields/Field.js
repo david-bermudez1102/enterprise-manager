@@ -18,7 +18,7 @@ class Field extends Component {
     return (
       <div className="form-group">
         <Link to={`${match.url}/fields/delete/${field.id}`}>
-          <button>Delete</button>
+          Delete
         </Link>
         {field.fieldType !== "selectable" ? (
           <input

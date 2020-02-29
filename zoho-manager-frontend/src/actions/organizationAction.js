@@ -22,7 +22,7 @@ export const fetchOrganizations = () => {
         organizations.data.map(organization => organization.attributes)
       )
       .then(organizations =>
-        dispatch({ type: "ADD_ORGANIZATIONS", organizations })
+        dispatch({ type: "FETCH_ORGANIZATIONS", organizations })
       );
   };
 };

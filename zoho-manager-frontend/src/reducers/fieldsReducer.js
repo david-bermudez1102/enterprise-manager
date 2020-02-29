@@ -10,7 +10,7 @@ export const fieldsReducer = (state = [], action) => {
         )
       ];
     case "REMOVE_FIELD":
-      return [...state.filter(field => field.id !== action.fieldId)];
+      return [...state.filter(field => field.id !== parseInt(action.fieldId))];
     default:
       return state;
   }

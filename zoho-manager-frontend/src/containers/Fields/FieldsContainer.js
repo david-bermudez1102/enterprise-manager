@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { addField, removeField } from "../../actions/fieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
 import cuid from "cuid";
+import FieldDelete from "../../components/Fields/FieldDelete";
 
 class FieldsContainer extends Component {
   render() {
@@ -34,14 +35,15 @@ class FieldsContainer extends Component {
           />
           <Route
             path={`${match.url}/fields/delete/:fieldId`}
-            render={props =>
-              removeField(
-                organizationId,
-                resource.id,
-                props.match.params.fieldId,
-                props.history
-              )
-            }
+            render={props => (
+              <FieldDelete
+                {...props}
+                redirectTo={match.url}
+                organizationId={organizationId}
+                resourceId={resource.id}
+                removeField={removeField}
+              />
+            )}
           />
         </Switch>
       </div>

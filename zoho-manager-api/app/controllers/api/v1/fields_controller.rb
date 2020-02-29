@@ -27,8 +27,8 @@ module Api::V1
 
     def destroy
       field = @form.fields.find_by(id: params[:id])
-      if field.delete
-        render json: { message: "Success" }
+      if field.destroy
+        render json: { id: params[:id], message: "Success" }
       end
     end
 

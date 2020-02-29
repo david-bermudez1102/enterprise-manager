@@ -7,8 +7,8 @@ export default class FieldForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      field_type: "",
-      name: "",
+      field_type: props.fieldType || "",
+      name: props.name || "",
       form_id: props.resourceId
     };
   }
@@ -33,8 +33,10 @@ export default class FieldForm extends Component {
   };
 
   handleOnSubmit = event => {
+    const { addField, updateField, organizationId, fieldId } = this.props;
     event.preventDefault();
-    this.props.addField(this.state, this.props.organizationId);
+    if (addField) addField(this.state, organizationId);
+    if (updateField) updateField(this.state, organizationId, fieldId);
     this.setState({
       ...this.state,
       field_type: "",
@@ -43,13 +45,16 @@ export default class FieldForm extends Component {
   };
 
   render() {
+    const { action } = this.props;
     return (
       <form onSubmit={this.handleOnSubmit}>
         <TextField
+          fieldType={this.state.field_type}
           handleChange={this.handleChange}
           handleSelectableChange={this.handleSelectableChange}
         />
         <PasswordField
+          fieldType={this.state.field_type}
           handleChange={this.handleChange}
           handleSelectableChange={this.handleSelectableChange}
         />
@@ -69,7 +74,7 @@ export default class FieldForm extends Component {
             placeholder="Enter name"
           />
         </div>
-        <input type="submit" className="btn btn-primary" />
+        <input type="submit" value={action} className="btn btn-primary" />
       </form>
     );
   }

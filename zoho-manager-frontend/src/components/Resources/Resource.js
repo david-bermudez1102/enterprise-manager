@@ -17,7 +17,7 @@ class Resource extends Component {
 
   componentDidUpdate(prevProps) {
     const { resources } = this.props;
-    if (prevProps !== this.props)
+    if (prevProps.resources !== this.props.resources)
       resources.map(resource => {
         this.props.fetchFields(resource.organizationId, resource.id);
         return this.props.fetchRecordFields(
@@ -27,7 +27,8 @@ class Resource extends Component {
       });
   }
   render() {
-    const { match, resources } = this.props;
+
+    const { match, resources, fields} = this.props;
     const resource = resources.find(
       resource => resource.id === parseInt(match.params.resourceId)
     );
@@ -39,6 +40,7 @@ class Resource extends Component {
           match={match}
           organizationId={resource.organizationId}
           resource={resource}
+          fields={fields}
         />
         <RecordsContainer key={cuid()} match={match} resource={resource} />
       </div>
@@ -46,4 +48,12 @@ class Resource extends Component {
   }
 }
 
-export default connect(null, { fetchFields, fetchRecordFields })(Resource);
+const mapStateToProps = ({ fields }) => {
+  return {
+    fields
+  };
+};
+
+export default connect(mapStateToProps, { fetchFields, fetchRecordFields })(
+  Resource
+);

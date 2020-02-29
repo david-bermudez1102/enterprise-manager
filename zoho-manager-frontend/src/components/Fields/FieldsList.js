@@ -27,11 +27,16 @@ class FieldsList extends Component {
 
   render() {
     const { match, fields, resource } = this.props;
+    
     return (
       <form onSubmit={this.handleSubmit}>
         {fields.map(field =>
           field.formId === resource.id ? (
-            <Field key={cuid()} field={field} match={match} />
+            <Field
+              key={cuid()}
+              field={field}
+              match={match}
+            />
           ) : null
         )}
         <input

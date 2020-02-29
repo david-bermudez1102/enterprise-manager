@@ -27,6 +27,24 @@ export const fetchFields = (organizationId, formId) => {
   };
 };
 
+export const updateField = (field, organizationId, fieldId) => {
+  return dispatch => {
+    fetch(
+      `/api/v1/organizations/${organizationId}/forms/${field.form_id}/fields/${fieldId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ field: { ...field } })
+      }
+    )
+      .then(response => response.json())
+      .then(field => camelcaseKeys(field.data.attributes))
+      .then(field => dispatch({ type: "UPDATE_FIELD", fieldId, field }));
+  };
+};
+
 export const removeField = (organizationId, formId, fieldId) => {
   return dispatch => {
     return fetch(
@@ -38,7 +56,9 @@ export const removeField = (organizationId, formId, fieldId) => {
       .then(response => response.json())
       .then(field => camelcaseKeys(field))
       .then(field =>
-        field.message ? dispatch({ type: "REMOVE_FIELD", fieldId, status:"deleted" }) : null
+        field.message
+          ? dispatch({ type: "REMOVE_FIELD", fieldId, status: "deleted" })
+          : null
       );
   };
 };

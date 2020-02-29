@@ -1,6 +1,6 @@
 import React from "react";
 
-const PasswordField = ({ handleChange, handleSelectableChange }) => {
+const PasswordField = ({ fieldType, handleChange, handleSelectableChange }) => {
   return (
     <div className="form-check form-check-inline">
       <input
@@ -19,6 +19,7 @@ const PasswordField = ({ handleChange, handleSelectableChange }) => {
           );
           handleChange(event);
         }}
+        defaultChecked={fieldType === "password" ? true : false}
       />
       <label htmlFor="password_field" className="form-check-label">
         Password Field

@@ -10,7 +10,7 @@ export default class FieldDelete extends Component {
   componentDidMount() {
     const { match, organizationId, resourceId, removeField } = this.props;
     removeField(organizationId, resourceId, match.params.fieldId).then(action =>
-      this.setState({ status: action ? action.status : "error" })
+      this.setState({ status: action ? action.status : "deleted" })
     );
   }
 

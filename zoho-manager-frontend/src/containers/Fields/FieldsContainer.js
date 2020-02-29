@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import FieldForm from "../../components/Fields/FieldForm/FieldForm";
 import { Link, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { addField, removeField } from "../../actions/fieldActions";
+import { addField, updateField, removeField } from "../../actions/fieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
 import cuid from "cuid";
 import FieldDelete from "../../components/Fields/FieldDelete";
@@ -12,19 +12,25 @@ class FieldsContainer extends Component {
     const {
       match,
       addField,
+      updateField,
       organizationId,
       resource,
-      removeField
+      removeField,
+      fields
     } = this.props;
-
     return (
       <div className="col-sm-5">
-        <FieldsList key={cuid()} match={match} resource={resource} />
+        <FieldsList
+          key={cuid()}
+          match={match}
+          resource={resource}
+          updateField={updateField}
+        />
         <Link to={`${match.url}/fields/new`}>Add new field</Link>
 
         <Switch>
           <Route
-            path={`${match.path}/fields/new`}
+            exact path={`${match.path}/fields/new`}
             render={props => (
               <FieldForm
                 addField={addField}
@@ -34,7 +40,7 @@ class FieldsContainer extends Component {
             )}
           />
           <Route
-            path={`${match.url}/fields/delete/:fieldId`}
+            exact path={`${match.url}/fields/:fieldId/delete`}
             render={props => (
               <FieldDelete
                 {...props}
@@ -45,18 +51,35 @@ class FieldsContainer extends Component {
               />
             )}
           />
+          <Route
+            exact path={`${match.url}/fields/:fieldId/edit`}
+            render={props => {
+              if (fields.length > 0) {
+                const field = fields.find(
+                  field => field.id === parseInt(props.match.params.fieldId)
+                );
+                return (
+                  <FieldForm
+                    updateField={updateField}
+                    organizationId={organizationId}
+                    resourceId={resource.id}
+                    name={field.name}
+                    fieldType={field.fieldType}
+                    fieldId={field.id}
+                    action="Update Field"
+                  />
+                );
+              }
+            }}
+          />
         </Switch>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ fields }) => {
-  return {
-    fields
-  };
-};
-
-export default connect(mapStateToProps, { addField, removeField })(
-  FieldsContainer
-);
+export default connect(null, {
+  addField,
+  updateField,
+  removeField
+})(FieldsContainer);

@@ -17,9 +17,9 @@ class Field extends Component {
     const { match, field } = this.props;
     return (
       <div className="form-group">
-        <Link to={`${match.url}/fields/delete/${field.id}`}>
-          Delete
-        </Link>
+        <Link to={`${match.url}/fields/${field.id}/delete`}>Delete</Link>
+        <Link to={`${match.url}/fields/${field.id}/edit`}>Edit</Link>
+        
         {field.fieldType !== "selectable" ? (
           <input
             className="form-control"

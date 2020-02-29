@@ -22,7 +22,9 @@ module Api::V1
 
     def update
       field = @form.fields.find_by(id: params[:id])
-      render json: FieldSerializer.new(field)
+      if field.update(field_params)
+        render json: FieldSerializer.new(field)
+      end
     end
 
     def destroy

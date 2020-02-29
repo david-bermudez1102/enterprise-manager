@@ -1,6 +1,6 @@
 import React from "react";
 
-const TextField = ({ handleChange, handleSelectableChange }) => {
+const TextField = ({ fieldType,handleChange, handleSelectableChange }) => {
   return (
     <div className="form-check form-check-inline">
       <input
@@ -19,6 +19,7 @@ const TextField = ({ handleChange, handleSelectableChange }) => {
           );
           handleChange(event);
         }}
+        defaultChecked={fieldType === "text" ? true : false}
       />
       <label htmlFor="text_field" className="form-check-label">
         Text Field

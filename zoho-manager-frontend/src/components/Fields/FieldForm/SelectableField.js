@@ -1,6 +1,5 @@
 import React from "react";
-import SelectableResources from "./SelectableResources";
-import SelectableOptions from "./SelectableOptions";
+import SelectableChoice from "./SelectableChoice";
 
 const SelectableField = ({
   fieldType,
@@ -23,12 +22,10 @@ const SelectableField = ({
         </label>
       </div>
       {fieldType === "selectable" ? (
-        <SelectableResources handleSelectableChange={handleSelectableChange} />
-      ) : null}
-      {fieldType === "selectable" ? (
-        <SelectableOptions
+        <SelectableChoice
           fieldType={fieldType}
           handleSelectableChange={handleSelectableChange}
+          handleChange={handleChange}
         />
       ) : null}
     </>

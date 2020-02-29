@@ -1,7 +1,7 @@
 const camelcaseKeys = require("camelcase-keys");
 
 export const addResource = (resource, history) => {
-  const organizationsPath = `/organizations/${resource.organization_id}`;
+  const organizationsPath = `/api/v1/organizations/${resource.organization_id}`;
   return dispatch => {
     fetch(`${organizationsPath}/forms`, {
       method: "POST",
@@ -21,7 +21,7 @@ export const addResource = (resource, history) => {
 
 export const fetchResources = organizationId => {
   return dispatch => {
-    fetch(`/organizations/${organizationId}/forms`)
+    fetch(`/api/v1/organizations/${organizationId}/forms`)
       .then(response => response.json())
       .then(resources =>
         resources.data.map(resource => camelcaseKeys(resource.attributes))

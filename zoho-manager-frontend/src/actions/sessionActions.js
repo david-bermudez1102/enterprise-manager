@@ -11,7 +11,7 @@ export const addSession = data => {
       },
       body: JSON.stringify(data)
     };
-    fetch("/sessions", configObj)
+    fetch("/api/v1/sessions", configObj)
       .then(response => response.json())
       .then(account =>
         !account.error
@@ -31,7 +31,7 @@ export const addSession = data => {
 
 export const fetchSession = () => {
   return dispatch => {
-    fetch("/current_user", {
+    fetch("/api/v1/current_user", {
       credentials: "include"
     })
       .then(response => response.json())

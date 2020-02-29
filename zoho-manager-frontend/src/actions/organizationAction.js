@@ -2,7 +2,7 @@ import jsonToFormData from "json-form-data";
 
 export const addOrganization = organization => {
   return dispatch => {
-    fetch("/organizations", {
+    fetch("/api/v1/organizations", {
       method: "POST",
       body: jsonToFormData(organization)
     })
@@ -16,12 +16,12 @@ export const addOrganization = organization => {
 
 export const fetchOrganizations = () => {
   return dispatch => {
-    fetch("/organizations")
+    fetch("/api/v1/organizations")
       .then(response => response.json())
       .then(organizations =>
         organizations.data.map(organization => organization.attributes)
       )
-      .then(organizations => 
+      .then(organizations =>
         dispatch({ type: "ADD_ORGANIZATIONS", organizations })
       );
   };

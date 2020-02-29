@@ -3,7 +3,7 @@ const camelcaseKeys = require("camelcase-keys");
 export const addRecordField = (recordField, organizationId) => {
   return dispatch => {
     fetch(
-      `/organizations/${organizationId}/forms/${recordField.form_id}/record_fields`,
+      `/api/v1/organizations/${organizationId}/forms/${recordField.form_id}/record_fields`,
       {
         method: "POST",
         headers: {
@@ -20,7 +20,9 @@ export const addRecordField = (recordField, organizationId) => {
 
 export const fetchRecordFields = (organizationId, formId) => {
   return dispatch => {
-    fetch(`/organizations/${organizationId}/forms/${formId}/record_fields`)
+    fetch(
+      `/api/v1/organizations/${organizationId}/forms/${formId}/record_fields`
+    )
       .then(response => response.json())
       .then(recordFields =>
         recordFields.data.map(recordField =>

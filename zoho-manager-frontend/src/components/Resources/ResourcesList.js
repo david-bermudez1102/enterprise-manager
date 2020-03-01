@@ -9,16 +9,14 @@ const ResourcesList = ({ match, resources }) => {
       <div className="col-lg-4">
         <div className="list-group">
           {resources.map(resource => (
-            <div className="">
-              <NavLink
-                key={cuid()}
-                to={`${match.url}/${resource.id}`}
-                className="list-group-item list-group-item-action"
-                activeClassName="active"
-              >
-                {resource.name}
-              </NavLink>
-            </div>
+            <NavLink
+              key={cuid()}
+              to={`${match.url}/${resource.id}`}
+              className="list-group-item list-group-item-action"
+              activeClassName="active"
+            >
+              {resource.name}
+            </NavLink>
           ))}
         </div>
       </div>

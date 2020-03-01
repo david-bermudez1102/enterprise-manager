@@ -5,6 +5,7 @@ const Logo = ({organization}) => {
     <img
       src={`http://localhost:3001/${organization.logo}`}
       style={{ maxWidth: "180px" }}
+      alt={organization.name}
     />
   );
 }

@@ -1,6 +1,11 @@
 import React from "react";
 
-const TextField = ({ fieldType,handleChange, handleSelectableChange }) => {
+const TextField = ({
+  field,
+  fieldType,
+  handleChange,
+  handleSelectableChange
+}) => {
   return (
     <div className="form-check form-check-inline">
       <input
@@ -13,9 +18,10 @@ const TextField = ({ fieldType,handleChange, handleSelectableChange }) => {
           handleSelectableChange(
             {
               form_id: "",
-              selectable_resource_id: ""
+              selectable_resource_id: "",
+              _destroy: 1
             },
-            []
+            [{}]
           );
           handleChange(event);
         }}

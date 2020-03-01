@@ -14,7 +14,7 @@ export const addField = (field, organizationId) => {
     )
       .then(response => response.json())
       .then(field => camelcaseKeys(field.data.attributes))
-      .then(field => dispatch({ type: "ADD_FIELD", field }));
+      .then(field => dispatch({ type: "ADD_FIELD", field }))
   };
 };
 

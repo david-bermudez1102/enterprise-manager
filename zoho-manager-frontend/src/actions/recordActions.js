@@ -10,7 +10,6 @@ export const addRecord = (record, organizationId, formId) => {
       body: JSON.stringify({ record: { ...record } })
     })
       .then(response => response.json())
-      .then(record => record.data)
       .then(record => {
         dispatch({
           type: "ADD_RECORD",

@@ -13,7 +13,8 @@ const PasswordField = ({ fieldType, handleChange, handleSelectableChange }) => {
           handleSelectableChange(
             {
               form_id: "",
-              selectable_resource_id: ""
+              selectable_resource_id: "",
+              _destroy: 1
             },
             []
           );

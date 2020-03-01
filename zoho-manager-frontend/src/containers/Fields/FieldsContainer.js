@@ -63,9 +63,7 @@ class FieldsContainer extends Component {
                     updateField={updateField}
                     organizationId={organizationId}
                     resourceId={resource.id}
-                    name={field.name}
-                    fieldType={field.fieldType}
-                    fieldId={field.id}
+                    field={field}
                     action="Update Field"
                   />
                 );

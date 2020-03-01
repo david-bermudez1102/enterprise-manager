@@ -27,18 +27,19 @@ class FieldsList extends Component {
 
   render() {
     const { match, fields, resource } = this.props;
-    
+    const recordFields = this.props.recordFields.filter(recordField => recordField.formId === resource.id)
     return (
       <form onSubmit={this.handleSubmit}>
         {fields.map(field =>
-          field.formId === resource.id ? (
-            <Field
-              key={cuid()}
-              field={field}
-              match={match}
-            />
-          ) : null
-        )}
+            field.formId === resource.id ? (
+              <Field
+                key={cuid()}
+                field={field}
+                recordField={recordFields.find(f => f.fieldId === field.id)}
+                match={match}
+              />
+            ) : null
+          )}
         <input
           className="btn btn-primary"
           type="submit"
@@ -49,8 +50,8 @@ class FieldsList extends Component {
   }
 }
 
-const mapStateToProps = ({ fields }) => {
-  return { fields };
+const mapStateToProps = ({ fields, recordFields }) => {
+  return { fields, recordFields };
 };
 
 export default connect(mapStateToProps, { addRecord })(FieldsList);

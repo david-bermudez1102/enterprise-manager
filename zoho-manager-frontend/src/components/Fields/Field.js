@@ -14,17 +14,17 @@ class Field extends Component {
   };
 
   render() {
-    const { match, field } = this.props;
+    const { match, field, recordField } = this.props;
     return (
       <div className="form-group">
         <Link to={`${match.url}/fields/${field.id}/delete`}>Delete</Link>
         <Link to={`${match.url}/fields/${field.id}/edit`}>Edit</Link>
-        
+
         {field.fieldType !== "selectable" ? (
           <input
             className="form-control"
             type={field.fieldType}
-            name={field.id}
+            name={recordField ? recordField.id : null}
             id={field.name}
             placeholder={`Enter ${field.name}`}
             onChange={this.handleChange}
@@ -33,7 +33,7 @@ class Field extends Component {
         ) : (
           <select
             className="form-control"
-            name={field.id}
+            name={recordField ? recordField.id : null}
             id={field.name}
             placeholder={`Enter ${field.name}`}
             onChange={this.handleChange}

@@ -14,7 +14,9 @@ export const addResource = (resource, history) => {
       .then(resource => camelcaseKeys(resource.data.attributes))
       .then(resource => dispatch({ type: "ADD_RESOURCE", resource }))
       .then(action =>
-        history.push(`${organizationsPath}/resources/${action.resource.id}`)
+        history.push(
+          `/organizations/${resource.organization_id}/resources/${action.resource.id}`
+        )
       );
   };
 };

@@ -11,5 +11,4 @@ class AdminSerializer
   attribute :email do |object|
     object.account.email
   end
-
 end

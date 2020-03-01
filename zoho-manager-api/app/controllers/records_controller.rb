@@ -5,7 +5,7 @@ class RecordsController < ApplicationController
   def create
     record = @form.records.build(record_params)
     if record.save
-      render json: RecordSerializer.new(record)
+      render json: RecordSerializer.new(record).serialized_json
     else
       render json: record.errors.full_messages
     end
@@ -13,7 +13,7 @@ class RecordsController < ApplicationController
 
   def index
     record = @form.records
-    render json: RecordSerializer.new(record)
+    render json: RecordSerializer.new(record).serialized_json
   end
 
   def show
@@ -24,7 +24,9 @@ class RecordsController < ApplicationController
   private
 
   def record_params
-    params.require(:record).permit(values_attributes: [:record_field_id, :content])
+    params.require(:record).permit(
+      values_attributes: %i[record_field_id content],
+    )
   end
 
   def set_organization

@@ -1,9 +1,7 @@
 class OrganizationsController < ApplicationController
   def create
     organization = Organization.new(organization_params)
-    if organization.save
-      render json: OrganizationSerializer.new(organization)
-    end
+    render json: OrganizationSerializer.new(organization) if organization.save
   end
 
   def index

@@ -5,7 +5,8 @@ export const addRecord = (record, organizationId, formId) => {
     fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/records`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Accept: "application/json"
       },
       body: JSON.stringify({ record: { ...record } })
     })
@@ -13,9 +14,9 @@ export const addRecord = (record, organizationId, formId) => {
       .then(record => {
         dispatch({
           type: "ADD_RECORD",
-          record: camelcaseKeys(record.attributes)
+          record: camelcaseKeys(record.data.attributes)
         });
-        return camelcaseKeys(record.links.values);
+        return camelcaseKeys(record.data.links.values);
       })
       .then(values => dispatch({ type: "ADD_VALUES", values }));
   };

@@ -1,9 +1,16 @@
 class SessionsController < ApplicationController
   def create
-    account = Account.find_by("username = ? OR email = ?", params[:username], params[:username])
+    account =
+      Account.find_by(
+        "username = ? OR email = ?",
+        params[:username],
+        params[:username]
+      )
     if account && account.authenticate(params[:password])
       token = encode_token({ id: account.id })
-      cookies.signed[:jwt] = { value: token, httponly: true, expires: 1.hour.from_now }
+      cookies.signed[:jwt] = {
+        value: token, httponly: true, expires: 24.hour.from_now,
+      }
       render json: AccountSerializer.new(account)
     end
   end
@@ -21,7 +28,7 @@ class SessionsController < ApplicationController
       cookies.delete(:jwt)
       render json: { message: "success" }
     else
-      render json: { error: "None accounts logged in" }
+      render json: { error: "No account logged in" }
     end
   end
 end

@@ -8,7 +8,7 @@ class FieldsController < ApplicationController
       record_field.field = field
       record_field.save ? render(json: FieldSerializer.new(field)) : nil
     else
-      render :json => { :errors => field.errors.full_messages }
+      render json: { errors: field.errors.full_messages }
     end
   end
 
@@ -24,22 +24,24 @@ class FieldsController < ApplicationController
 
   def update
     field = @form.fields.find_by(id: params[:id])
-    if field.update(field_params)
-      render json: FieldSerializer.new(field)
-    end
+    render json: FieldSerializer.new(field) if field.update(field_params)
   end
 
   def destroy
     field = @form.fields.find_by(id: params[:id])
-    if field.destroy
-      render json: { id: params[:id], message: "Success" }
-    end
+    render json: { id: params[:id], message: 'Success' } if field.destroy
   end
 
   private
 
   def field_params
-    params.require(:field).permit(:name, :field_type, :form_id, selectable_resource_attributes: [:form_id, :resource_field_id], options_attributes: [:value])
+    params.require(:field).permit(
+      :name,
+      :field_type,
+      :form_id,
+      selectable_resource_attributes: %i[form_id resource_field_id],
+      options_attributes: %i[value]
+    )
   end
 
   def set_form

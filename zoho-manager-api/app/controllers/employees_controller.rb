@@ -1,2 +1,1 @@
-class EmployeesController < ApplicationController
-end
+class EmployeesController < ApplicationController; end

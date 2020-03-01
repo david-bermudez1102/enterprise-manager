@@ -95,6 +95,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.8-x86-mingw32)
       mini_portile2 (~> 2.4.0)
+    prettier (0.17.0)
     puma (3.12.2)
     puma (3.12.2-java)
     rack (2.2.2)
@@ -171,6 +172,7 @@ DEPENDENCIES
   foreman
   jwt
   listen (>= 3.0.5, < 3.2)
+  prettier
   puma (~> 3.11)
   rack-cors
   rails (~> 5.2.4, >= 5.2.4.1)

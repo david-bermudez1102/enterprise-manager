@@ -10,7 +10,7 @@ export const fieldsReducer = (state = [], action) => {
       ];
     case "UPDATE_FIELD":
       const field = state.find(field => field.id === parseInt(action.fieldId));
-      return [...state.map(f => (f === field ? action.field : field))];
+      return [...state.map(f => (f.id === field.id ? action.field : f))];
     case "REMOVE_FIELD":
       return [...state.filter(field => field.id !== parseInt(action.fieldId))];
     default:

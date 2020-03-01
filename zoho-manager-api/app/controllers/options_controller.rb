@@ -1,2 +1,1 @@
-class OptionsController < ApplicationController
-end
+class OptionsController < ApplicationController; end

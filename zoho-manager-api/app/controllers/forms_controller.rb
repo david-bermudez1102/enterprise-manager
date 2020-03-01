@@ -3,9 +3,7 @@ class FormsController < ApplicationController
 
   def create
     form = @organization.forms.build(form_params)
-    if form.save
-      render json: FormSerializer.new(form)
-    end
+    render json: FormSerializer.new(form) if form.save
   end
 
   def index

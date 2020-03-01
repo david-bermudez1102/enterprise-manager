@@ -3,9 +3,7 @@ class AdminsController < ApplicationController
     admin = Admin.new
     account = admin.build_account(admin_params)
     token = encode_token({ account_id: account.id })
-    if account.save
-      render json: AdminSerializer.new(admin, jwt: token)
-    end
+    render json: AdminSerializer.new(admin, jwt: token) if account.save
   end
 
   def index

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope "api/v1" do
+  scope 'api/v1' do
     resources :options
     resources :organizations do
       resources :forms do
@@ -13,9 +13,9 @@ Rails.application.routes.draw do
     resources :employees
     resources :managers
     resources :admins
-    resources :sessions, only: [:create]
-    get "/current_user", to: "sessions#show"
-    delete "/delete_session", to: "sessions#destroy"
+    resources :sessions, only: %i[create]
+    get '/current_user', to: 'sessions#show'
+    delete '/delete_session', to: 'sessions#destroy'
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

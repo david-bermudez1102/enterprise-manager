@@ -33,7 +33,7 @@ class App extends Component {
     } = this.props;
     return (
       <Router>
-        <div className="container-fluid d-flex flex-column min-vh-100">
+        <div className="bg-light container-fluid d-flex flex-column min-vh-100">
           <Navbar session={session} organizations={organizations} />
           <main className="w-100 flex-grow-1 align-items-center justify-content-center bg-transparent py-4">
             <Switch>

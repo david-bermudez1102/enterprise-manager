@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import FieldForm from "../../components/Fields/FieldForm/FieldForm";
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { addField, updateField, removeField } from "../../actions/fieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
@@ -20,15 +20,12 @@ class FieldsContainer extends Component {
     } = this.props;
     return (
       <div className="col-lg-8">
-        <h3>{resource.name}</h3>
         <FieldsList
           key={cuid()}
           match={match}
           resource={resource}
           updateField={updateField}
         />
-        <Link to={`${match.url}/fields/new`}>Add new field</Link>
-
         <Switch>
           <Route
             exact

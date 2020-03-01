@@ -12,22 +12,21 @@ class ResourcesContainer extends Component {
     return (
       <Switch>
         <Route
-          path={`${match.path}`}
-          render={props => (
-            <ResourcesList
-              {...props}
-              resources={resources}
-              organizationId={organizationId}
-            />
-          )}
-        />
-        <Route
-          exact
           path={`${match.path}/new`}
           render={props => (
             <ResourceForm
               {...props}
               addResource={addResource}
+              organizationId={organizationId}
+            />
+          )}
+        />
+        <Route
+          path={`${match.path}`}
+          render={props => (
+            <ResourcesList
+              {...props}
+              resources={resources}
               organizationId={organizationId}
             />
           )}

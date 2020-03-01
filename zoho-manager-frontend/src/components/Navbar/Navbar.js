@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import cuid from "cuid";
+import Logo from "./Logo";
 
 class Navbar extends Component {
   constructor(props) {
@@ -51,35 +52,50 @@ class Navbar extends Component {
   }
 
   render() {
-    const { session } = this.props;
+    const { session, organizations } = this.props;
     return (
-      <nav className="navbar navbar-dark bg-dark">
-        {session.isLoggedIn
-          ? this.state.links.map((link, id) =>
-              link.loginRequired ? (
-                <NavLink
-                  key={cuid()}
-                  to={link.path}
-                  exact
-                  activeStyle={{ background: "white" }}
-                >
-                  {" "}
-                  {link.text}
-                </NavLink>
-              ) : null
-            )
-          : this.state.links.map((link, id) =>
-              !link.loginRequired ? (
-                <NavLink
-                  key={cuid()}
-                  to={link.path}
-                  exact
-                  activeStyle={{ background: "white" }}
-                >
-                  {link.text}
-                </NavLink>
-              ) : null
-            )}
+      <nav className="navbar navbar-expand-lg navbar-light bg-success shadow-md">
+        {organizations.length > 0 ? (
+          <NavLink to="#" className="navbar-brand">
+            <Logo organization={organizations[0]} />
+          </NavLink>
+        ) : null}
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            {session.isLoggedIn
+              ? this.state.links.map((link, id) =>
+                  link.loginRequired ? (
+                    <li className="nav-item">
+                      <NavLink
+                        key={cuid()}
+                        to={link.path}
+                        exact
+                        className="nav-link"
+                        activeClassName="active"
+                      >
+                        {" "}
+                        {link.text}
+                      </NavLink>
+                    </li>
+                  ) : null
+                )
+              : this.state.links.map((link, id) =>
+                  !link.loginRequired ? (
+                    <li className="nav-item">
+                      <NavLink
+                        key={cuid()}
+                        to={link.path}
+                        exact
+                        className="nav-link"
+                        activeClassName="active"
+                      >
+                        {link.text}
+                      </NavLink>
+                    </li>
+                  ) : null
+                )}
+          </ul>
+        </div>
       </nav>
     );
   }

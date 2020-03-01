@@ -33,8 +33,7 @@ class Resource extends Component {
       resource => resource.id === parseInt(match.params.resourceId)
     );
     return resources.length > 0 ? (
-      <div>
-        <h3>{resource.name}</h3>
+      <div className="row">
         <FieldsContainer
           key={cuid()}
           match={match}

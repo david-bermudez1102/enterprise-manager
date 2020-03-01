@@ -28,7 +28,6 @@ class OrganizationContainer extends Component {
   render() {
     const { match, addOrganization, resources } = this.props;
     return (
-      <div>
         <Switch>
           <Route
             path={`${match.path}/new`}
@@ -48,7 +47,6 @@ class OrganizationContainer extends Component {
             render={props => <Organization {...props} />}
           />
         </Switch>
-      </div>
     );
   }
 }

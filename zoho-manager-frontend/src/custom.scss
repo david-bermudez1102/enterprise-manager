@@ -5,7 +5,7 @@ $font-family-base:Montserrat;
 @import url(https://fonts.googleapis.com/css?family=Comfortaa:200,300,400,700);
 $headings-font-family:Comfortaa;
 
-$enable-grid-classes:false;
+$enable-grid-classes:true;
 $primary:#07689F;
 $secondary:#C9D6DF;
 $success:#11D3BC;
@@ -20,4 +20,4 @@ $btn-border-radius:.25rem;
 $enable-shadows:true;
 
 // Add SASS theme customizations here..
-@import '~bootstrap/scss/bootstrap.scss';
+@import "bootstrap";

@@ -14,6 +14,7 @@ import {
   removeSession,
   fetchSession
 } from "./actions/sessionActions";
+import Footer from "./components/Footer/Footer";
 
 class App extends Component {
   componentDidMount() {
@@ -32,39 +33,45 @@ class App extends Component {
     } = this.props;
     return (
       <Router>
-        <Navbar session={session} organizations={organizations} />
-        <Switch>
-          <Route exact path="/" render={() => <div>Home</div>} />
-          {organizations.length > 0 ? (
-            <Route path="/home">
-              <Home organization={organizations[0]} />
-            </Route>
-          ) : null}
-          <Route
-            path="/login"
-            render={props => (
-              <LoginContainer
-                {...props}
-                session={session}
-                addSession={addSession}
-                organizations={organizations}
+        <div className="container-fluid d-flex flex-column min-vh-100">
+          <Navbar session={session} organizations={organizations} />
+          <Switch>
+            <main className="row flex-grow-1 align-items-center justify-content-center bg-transparent py-4">
+              <Route exact path="/" render={() => <div>Home</div>} />
+              {organizations.length > 0 ? (
+                <Route path="/home">
+                  <Home organization={organizations[0]} />
+                </Route>
+              ) : null}
+              <Route
+                path="/login"
+                render={props => (
+                  <LoginContainer
+                    {...props}
+                    session={session}
+                    addSession={addSession}
+                    organizations={organizations}
+                  />
+                )}
               />
-            )}
-          />
-          ''
-          <Route path="/logout">
-            <LogoutContainer removeSession={removeSession} />
-          </Route>
-          <Route path="/accounts/new">
-            <AdminContainer organizations={organizations} admins={admins} />
-          </Route>
-          <Route
-            path="/organizations"
-            render={props => (
-              <OrganizationContainer session={session} {...props} />
-            )}
-          />
-        </Switch>
+              <Route path="/logout">
+                <LogoutContainer removeSession={removeSession} />
+              </Route>
+              <Route path="/accounts/new">
+                <AdminContainer organizations={organizations} admins={admins} />
+              </Route>
+              <Route
+                path="/organizations"
+                render={props => (
+                  <OrganizationContainer session={session} {...props} />
+                )}
+              />
+            </main>
+          </Switch>
+          {organizations.length > 0 ? (
+            <Footer organization={organizations[0]} />
+          ) : null}
+        </div>
       </Router>
     );
   }

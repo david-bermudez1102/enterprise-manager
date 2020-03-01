@@ -54,14 +54,14 @@ class Navbar extends Component {
   render() {
     const { session, organizations } = this.props;
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-success shadow-md">
+      <nav className="row navbar navbar-expand-lg navbar-dark bg-primary shadow-lg">
         {organizations.length > 0 ? (
           <NavLink to="#" className="navbar-brand">
             <Logo organization={organizations[0]} />
           </NavLink>
         ) : null}
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav nav-pills">
             {session.isLoggedIn
               ? this.state.links.map((link, id) =>
                   link.loginRequired ? (
@@ -71,7 +71,7 @@ class Navbar extends Component {
                         to={link.path}
                         exact
                         className="nav-link"
-                        activeClassName="active"
+                        activeClassName="active bg-secondary"
                       >
                         {" "}
                         {link.text}

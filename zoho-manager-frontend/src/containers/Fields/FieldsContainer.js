@@ -20,6 +20,7 @@ class FieldsContainer extends Component {
     } = this.props;
     return (
       <div className="col-sm-5">
+        <h3>{resource.name}</h3>
         <FieldsList
           key={cuid()}
           match={match}
@@ -30,7 +31,8 @@ class FieldsContainer extends Component {
 
         <Switch>
           <Route
-            exact path={`${match.path}/fields/new`}
+            exact
+            path={`${match.path}/fields/new`}
             render={props => (
               <FieldForm
                 addField={addField}
@@ -40,7 +42,8 @@ class FieldsContainer extends Component {
             )}
           />
           <Route
-            exact path={`${match.url}/fields/:fieldId/delete`}
+            exact
+            path={`${match.url}/fields/:fieldId/delete`}
             render={props => (
               <FieldDelete
                 {...props}
@@ -52,7 +55,8 @@ class FieldsContainer extends Component {
             )}
           />
           <Route
-            exact path={`${match.url}/fields/:fieldId/edit`}
+            exact
+            path={`${match.url}/fields/:fieldId/edit`}
             render={props => {
               if (fields.length > 0) {
                 const field = fields.find(

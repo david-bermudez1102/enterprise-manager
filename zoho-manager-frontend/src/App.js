@@ -35,8 +35,8 @@ class App extends Component {
       <Router>
         <div className="container-fluid d-flex flex-column min-vh-100">
           <Navbar session={session} organizations={organizations} />
-          <Switch>
-            <main className="row flex-grow-1 align-items-center justify-content-center bg-transparent py-4">
+          <main className="w-100 flex-grow-1 align-items-center justify-content-center bg-transparent py-4">
+            <Switch>
               <Route exact path="/" render={() => <div>Home</div>} />
               {organizations.length > 0 ? (
                 <Route path="/home">
@@ -66,8 +66,8 @@ class App extends Component {
                   <OrganizationContainer session={session} {...props} />
                 )}
               />
-            </main>
-          </Switch>
+            </Switch>
+          </main>
           {organizations.length > 0 ? (
             <Footer organization={organizations[0]} />
           ) : null}

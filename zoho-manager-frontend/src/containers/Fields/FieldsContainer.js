@@ -19,7 +19,7 @@ class FieldsContainer extends Component {
       fields
     } = this.props;
     return (
-      <div className="col-sm-5">
+      <div className="col-lg-8">
         <h3>{resource.name}</h3>
         <FieldsList
           key={cuid()}

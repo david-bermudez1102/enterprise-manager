@@ -65,9 +65,8 @@ class Navbar extends Component {
             {session.isLoggedIn
               ? this.state.links.map((link, id) =>
                   link.loginRequired ? (
-                    <li className="nav-item">
+                    <li className="nav-item" key={cuid()}>
                       <NavLink
-                        key={cuid()}
                         to={link.path}
                         exact
                         className="nav-link"
@@ -81,9 +80,8 @@ class Navbar extends Component {
                 )
               : this.state.links.map((link, id) =>
                   !link.loginRequired ? (
-                    <li className="nav-item">
+                    <li className="nav-item" key={cuid()}>
                       <NavLink
-                        key={cuid()}
                         to={link.path}
                         exact
                         className="nav-link"

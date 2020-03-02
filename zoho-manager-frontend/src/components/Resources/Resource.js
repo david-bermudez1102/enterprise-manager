@@ -30,7 +30,7 @@ class Resource extends Component {
 
     const { match, resources, fields} = this.props;
     const resource = resources.find(
-      resource => resource.id === parseInt(match.params.resourceId)
+      resource => resource.formAlias === match.params.formAlias
     );
     return resources.length > 0 ? (
       <>

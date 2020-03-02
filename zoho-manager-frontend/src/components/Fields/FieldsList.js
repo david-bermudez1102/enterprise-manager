@@ -35,7 +35,7 @@ class FieldsList extends Component {
       <>
         <div className="card-header d-flex align-items-center justify-content-between">
           <span className="card-title display-4">
-            {resource.name}
+            {pluralize(resource.name)}
           </span>
           <span>
             <Link to={`${match.url}/fields/new`}>Add new field</Link>

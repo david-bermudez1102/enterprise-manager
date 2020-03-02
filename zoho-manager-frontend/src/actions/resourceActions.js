@@ -15,7 +15,7 @@ export const addResource = (resource, history) => {
       .then(resource => dispatch({ type: "ADD_RESOURCE", resource }))
       .then(action =>
         history.push(
-          `/organizations/${resource.organization_id}/resources/${action.resource.id}`
+          `/organizations/${resource.organization_id}/resources/${action.resource.formAlias}`
         )
       );
   };

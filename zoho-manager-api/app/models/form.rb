@@ -4,8 +4,18 @@ class Form < ApplicationRecord
   has_many :records, dependent: :delete_all
   has_many :record_fields, dependent: :delete_all
   has_many :values, through: :records
-
   validates :name, length: { in: 2..12 }
+
+  before_create :generate_form_alias
+
+  def name
+    self[:name].split.map(&:capitalize).join(' ')
+  end
+  
+  def form_alias
+    self.update_attribute(:form_alias, generate_form_alias) if self[:form_alias].nil?
+    self[:form_alias]
+  end
 
   def generate_form_alias
     form_alias = ActiveSupport::Inflector.transliterate(self.name) # change ñ => n
@@ -26,7 +36,7 @@ class Form < ApplicationRecord
       count = 0
       while true
         new_form_alias = "#{form_alias}_#{count}"
-        new_form_alias unless Form.find_by(form_alias: new_form_alias)
+        return new_form_alias unless Form.find_by(form_alias: new_form_alias)
         count += 1
       end
     end

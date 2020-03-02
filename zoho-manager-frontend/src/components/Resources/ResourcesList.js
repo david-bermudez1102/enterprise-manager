@@ -3,6 +3,8 @@ import { NavLink, Route, Switch } from "react-router-dom";
 import cuid from "cuid";
 import Resource from "./Resource";
 
+const pluralize = require("pluralize");
+
 const ResourcesList = ({ match, resources }) => {
   return (
     <div className="row">
@@ -11,18 +13,18 @@ const ResourcesList = ({ match, resources }) => {
           {resources.map(resource => (
             <NavLink
               key={cuid()}
-              to={`${match.url}/${resource.id}`}
+              to={`${match.url}/${resource.formAlias}`}
               className="list-group-item list-group-item-action"
               activeClassName="active"
             >
-              {resource.name}
+              {pluralize(resource.name)}
             </NavLink>
           ))}
         </div>
       </div>
       <Switch>
         <Route
-          path={`${match.path}/:resourceId`}
+          path={`${match.path}/:formAlias`}
           render={props => (
             <Resource key={cuid()} {...props} resources={resources} />
           )}

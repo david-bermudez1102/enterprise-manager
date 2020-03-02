@@ -4,18 +4,20 @@ import { connect } from "react-redux";
 import RecordsList from "../../components/Records/RecordsList";
 import { fetchRecords } from "../../actions/recordActions";
 
+const pluralize = require("pluralize");
+
 class RecordsContainer extends Component {
 
   componentDidMount() {
-    const { resource } = this.props;
-    this.props.fetchRecords(resource.organizationId, resource.id)
+    const { resource, fetchRecords } = this.props;
+    fetchRecords(resource.organizationId, resource.id)
   }
   
   render() {
     const { match, resource, recordFields, records, values } = this.props
     return (
       <div className="col-lg-12">
-        <Link to={`${match.url}/records`}>View All Records</Link>
+        <Link to={`${match.url}/records`}>View All {pluralize(resource.name)}</Link>
         <Switch>
           <Route
             path={`${match.path}/records`}

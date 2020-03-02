@@ -36,7 +36,6 @@ export default class FieldForm extends Component {
   handleOnSubmit = event => {
     const { addField, updateField, organizationId, field } = this.props;
     event.preventDefault();
-    console.log(this.state);
     if (addField) addField(this.state, organizationId);
     if (updateField) updateField(this.state, organizationId, field.id);
     this.setState({

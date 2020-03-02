@@ -20,58 +20,62 @@ class FieldsContainer extends Component {
     } = this.props;
     return (
       <div className="col-lg-8">
-        <FieldsList
-          key={cuid()}
-          match={match}
-          resource={resource}
-          updateField={updateField}
-        />
-        <Switch>
-          <Route
-            exact
-            path={`${match.path}/fields/new`}
-            render={props => (
-              <FieldForm
-                addField={addField}
-                organizationId={organizationId}
-                resourceId={resource.id}
-              />
-            )}
+        <div className="card border-0 shadow-sm">
+          <FieldsList
+            key={cuid()}
+            match={match}
+            resource={resource}
+            updateField={updateField}
           />
-          <Route
-            exact
-            path={`${match.url}/fields/:fieldId/delete`}
-            render={props => (
-              <FieldDelete
-                {...props}
-                redirectTo={match.url}
-                organizationId={organizationId}
-                resourceId={resource.id}
-                removeField={removeField}
-              />
-            )}
-          />
-          <Route
-            exact
-            path={`${match.url}/fields/:fieldId/edit`}
-            render={props => {
-              if (fields.length > 0) {
-                const field = fields.find(
-                  field => field.id === parseInt(props.match.params.fieldId)
-                );
-                return (
+          <div className="card-footer">
+            <Switch>
+              <Route
+                exact
+                path={`${match.path}/fields/new`}
+                render={props => (
                   <FieldForm
-                    updateField={updateField}
+                    addField={addField}
                     organizationId={organizationId}
                     resourceId={resource.id}
-                    field={field}
-                    action="Update Field"
                   />
-                );
-              }
-            }}
-          />
-        </Switch>
+                )}
+              />
+              <Route
+                exact
+                path={`${match.path}/fields/:fieldId/delete`}
+                render={props => (
+                  <FieldDelete
+                    {...props}
+                    redirectTo={match.url}
+                    organizationId={organizationId}
+                    resourceId={resource.id}
+                    removeField={removeField}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path={`${match.path}/fields/:fieldId/edit`}
+                render={props => {
+                  if (fields.length > 0) {
+                    const field = fields.find(
+                      field => field.id === parseInt(props.match.params.fieldId)
+                    );
+                    return (
+                      <FieldForm
+                        updateField={updateField}
+                        organizationId={organizationId}
+                        resourceId={resource.id}
+                        field={field}
+                        action="Update Field"
+                      />
+                    );
+                  }
+                }}
+              />
+            </Switch>
+          </div>
+        </div>
       </div>
     );
   }

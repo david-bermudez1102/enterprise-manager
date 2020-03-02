@@ -32,7 +32,7 @@ class FieldsList extends Component {
       recordField => recordField.formId === resource.id
     );
     return (
-      <div className="card border-0 shadow-sm">
+      <>
         <div className="card-header d-flex align-items-center justify-content-between">
           <span>
             <h1>{resource.name}</h1>
@@ -60,7 +60,7 @@ class FieldsList extends Component {
             />
           </form>
         </div>
-      </div>
+      </>
     );
   }
 }

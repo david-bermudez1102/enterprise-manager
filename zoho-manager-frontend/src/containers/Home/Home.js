@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchResources } from "../../actions/resourceActions";
-import { Route } from "react-router-dom";
-import ResourcesContainer from "../ResourceCreator/ResourcesContainer";
+import SideBar from "../../components/Home/SideBar/SideBar";
 
 class Home extends Component {
-  state = { resources: [] };
-
   componentDidMount() {
     const { organization, fetchResources } = this.props;
     fetchResources(organization.id);
@@ -14,23 +11,19 @@ class Home extends Component {
 
   render() {
     return (
-      <>
-      <Route path="/resources" render={ props => <ResourcesContainer {...props}/>}/>
-      </>
+      <div className="row">
+        <div className="col-lg-2">
+          <SideBar />
+        </div>
+      </div>
     );
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ resources }) => {
   return {
-    resources: state.resources
+    resources
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchResources: organizationId => dispatch(fetchResources(organizationId))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, { fetchResources })(Home);

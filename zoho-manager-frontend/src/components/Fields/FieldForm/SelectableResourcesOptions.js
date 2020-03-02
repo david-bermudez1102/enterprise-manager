@@ -20,6 +20,7 @@ class SelectableResourcesOptions extends Component {
         name="resource_field_id"
         onChange={this.handleChange}
         value={this.state.value}
+        className="form-control"
       >
         <option value="" key={cuid()}>
           Select

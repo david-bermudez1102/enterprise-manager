@@ -19,14 +19,17 @@ class ResourceForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input
-          name="name"
-          type="text"
-          placeholder="Resource name"
-          onChange={this.handleChange}
-          value={this.state.name}
-        />
-        <input type="submit" value="Create Resource" />
+        <div className="form-group">
+          <input
+            name="name"
+            type="text"
+            placeholder="Resource name"
+            onChange={this.handleChange}
+            value={this.state.name}
+            className="form-control"
+          />
+        </div>
+        <input type="submit" value="Create Resource" className="btn btn-primary shadow"/>
       </form>
     );
   }

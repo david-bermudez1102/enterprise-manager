@@ -1,4 +1,6 @@
 import React from "react";
+import Icon from "@mdi/react";
+import { mdiTextboxPassword } from "@mdi/js";
 
 const PasswordField = ({ fieldType, handleChange, handleSelectableChange }) => {
   return (
@@ -23,7 +25,8 @@ const PasswordField = ({ fieldType, handleChange, handleSelectableChange }) => {
         defaultChecked={fieldType === "password" ? true : false}
       />
       <label htmlFor="password_field" className="form-check-label">
-        Password Field
+        Password Field{" "}
+        <Icon path={mdiTextboxPassword} title="Password Field" size={2} color="#07689F" />
       </label>
     </div>
   );

@@ -49,22 +49,24 @@ export default class FieldForm extends Component {
     const { action, field } = this.props;
     return (
       <form onSubmit={this.handleOnSubmit}>
-        <TextField
-        field={field}
-          fieldType={this.state.field_type}
-          handleChange={this.handleChange}
-          handleSelectableChange={this.handleSelectableChange}
-        />
-        <PasswordField
-          fieldType={this.state.field_type}
-          handleChange={this.handleChange}
-          handleSelectableChange={this.handleSelectableChange}
-        />
-        <SelectableField
-          fieldType={this.state.field_type}
-          handleChange={this.handleChange}
-          handleSelectableChange={this.handleSelectableChange}
-        />
+        <div className="form-group">
+          <TextField
+            field={field}
+            fieldType={this.state.field_type}
+            handleChange={this.handleChange}
+            handleSelectableChange={this.handleSelectableChange}
+          />
+          <PasswordField
+            fieldType={this.state.field_type}
+            handleChange={this.handleChange}
+            handleSelectableChange={this.handleSelectableChange}
+          />
+          <SelectableField
+            fieldType={this.state.field_type}
+            handleChange={this.handleChange}
+            handleSelectableChange={this.handleSelectableChange}
+          />
+        </div>
 
         <div className="form-group">
           <input

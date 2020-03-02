@@ -5,7 +5,7 @@ import { FormCard } from "../components/Cards/Cards";
 class LoginContainer extends Component {
   componentDidMount() {
     const { session, organizations } = this.props;
-    console.log(organizations)
+    console.log(organizations);
     return session.isLoggedIn || organizations.length === 0
       ? this.redirect({ session, organizations })
       : null;

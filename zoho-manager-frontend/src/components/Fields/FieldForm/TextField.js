@@ -1,4 +1,6 @@
 import React from "react";
+import Icon from "@mdi/react";
+import { mdiTextbox } from "@mdi/js";
 
 const TextField = ({
   field,
@@ -28,7 +30,8 @@ const TextField = ({
         defaultChecked={fieldType === "text" ? true : false}
       />
       <label htmlFor="text_field" className="form-check-label">
-        Text Field
+        Text Field{" "}
+        <Icon path={mdiTextbox} title="Text Field" size={2} color="#07689F" />
       </label>
     </div>
   );

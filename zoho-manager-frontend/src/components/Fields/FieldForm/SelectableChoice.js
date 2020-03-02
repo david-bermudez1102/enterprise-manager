@@ -15,7 +15,7 @@ class SelectableChoice extends Component {
   render() {
     const { fieldType, handleSelectableChange } = this.props;
     return (
-      <>
+      <div className="form-group">
         <div className="form-check form-check-inline">
           <input
             className="form-check-input"
@@ -51,7 +51,7 @@ class SelectableChoice extends Component {
             handleSelectableChange={handleSelectableChange}
           />
         ) : null}
-      </>
+      </div>
     );
   }
 }

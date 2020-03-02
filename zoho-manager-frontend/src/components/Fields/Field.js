@@ -27,8 +27,15 @@ class Field extends Component {
     return (
       <div className="form-group">
         <label htmlFor={field.name}>{this.fieldName()}:</label>
-        <Link to={`${match.url}/fields/${field.id}/delete`}>Delete</Link>
-        <Link to={`${match.url}/fields/${field.id}/edit`}>Edit</Link>
+        <span className="float-right">
+          {" "}
+          <Link to={`${match.url}/fields/${field.id}/delete`}>
+            <i className="fad fa-trash" style={{ fontSize: "24px" }}></i>
+          </Link>
+          <Link to={`${match.url}/fields/${field.id}/edit`}>
+            <i className="fad fa-edit" style={{ fontSize: "24px" }}></i>
+          </Link>
+        </span>
         {field.fieldType !== "selectable" ? (
           <input
             className="form-control"

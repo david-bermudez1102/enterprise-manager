@@ -12,7 +12,7 @@ class FieldsList extends Component {
   handleSubmit = event => {
     event.persist();
     event.preventDefault();
-    const { resource } = this.props;
+    const { resource, addRecord } = this.props;
     const formData = new FormData(event.target);
 
     let record = {};
@@ -24,7 +24,7 @@ class FieldsList extends Component {
         return { record_field_id: key, content: record[key] };
       })
     };
-    this.props.addRecord(record, resource.organizationId, resource.id);
+    addRecord(record, resource.organizationId, resource.id);
   };
 
   render() {
@@ -39,7 +39,9 @@ class FieldsList extends Component {
             {pluralize(resource.name)}
           </span>
           <span>
-            <Link to={`${match.url}/fields/new`}>Add new field</Link>
+            <Link to={`${match.url}/fields/new`}>
+                <i className="fad fa-plus-circle" style={{fontSize:"40px"}}></i>
+            </Link>
           </span>
         </CardHeader>
         <CardBody>

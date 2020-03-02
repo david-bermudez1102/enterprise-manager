@@ -18,7 +18,7 @@ const SelectableField = ({
           onChange={handleChange}
         />
         <label htmlFor="selectable_field" className="form-check-label">
-          Selectable Field
+          <i className="fad fa-chevron-square-down"></i>Selectable Field
         </label>
       </div>
       {fieldType === "selectable" ? (

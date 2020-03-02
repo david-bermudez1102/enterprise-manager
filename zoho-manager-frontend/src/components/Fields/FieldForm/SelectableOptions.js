@@ -18,10 +18,12 @@ class SelectableOptions extends Component {
   };
 
   handleClick = event => {
+    event.persist();
     event.preventDefault();
     this.setState(
       {
         ...this.state,
+        itemValue: "",
         options_attributes: [
           ...this.state.options_attributes,
           { value: this.state.itemValue }
@@ -29,32 +31,37 @@ class SelectableOptions extends Component {
       },
       () =>
         this.props.handleSelectableChange(
-          { form_id: "", resource_field_id: "" },
+          { form_id: "", resource_field_id: "", _destroy:1 },
           this.state.options_attributes
         )
     );
+    event.target.focus()
   };
 
   render() {
     const { fieldType } = this.props;
+    const { options_attributes, itemValue } = this.state;
     return (
       <div>
-        {this.state.options_attributes.map(option => (
-          <input
-            type="text"
-            value={option.value}
-            readOnly={true}
-            key={cuid()}
-          />
+        {options_attributes.map(option => (
+          <div className="form-group" key={cuid()}>
+            <input type="text" value={option.value} readOnly={true} />
+          </div>
         ))}
         Add items to {fieldType} field:
-        <input
-          type="text"
-          name="itemValue"
-          onChange={this.handleChange}
-          value={this.itemValue}
-        />
-        <button onClick={this.handleClick}>Add another Item</button>
+        <div className="form-group">
+          <input
+            type="text"
+            name="itemValue"
+            onChange={this.handleChange}
+            className="form-control"
+            value={itemValue}
+            autoFocus={true}
+          />
+        </div>
+        <button onClick={this.handleClick} className="btn btn-primary shadow">
+          {options_attributes.length === 0 ? "Add Item" : "Add Another Item"}
+        </button>
       </div>
     );
   }

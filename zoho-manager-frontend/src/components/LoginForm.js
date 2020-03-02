@@ -7,33 +7,39 @@ export default class LoginForm extends Component {
   }
 
   handleOnChange = event => {
-    event.persist()
+    event.persist();
     this.setState({ [event.target.name]: event.target.value });
   };
 
   handleOnSubmit = event => {
     event.preventDefault();
-    this.props.handleOnSubmit(this.state)
+    this.props.handleOnSubmit(this.state);
   };
 
   render() {
     return (
       <form onSubmit={this.handleOnSubmit}>
-        <input
-          type="text"
-          name="username"
-          onChange={this.handleOnChange}
-          value={this.state.username}
-          placeholder="Email or username..."
-        />
-        <input
-          type="password"
-          name="password"
-          onChange={this.handleOnChange}
-          value={this.state.password}
-          placeholder="Your password..."
-        />
-        <input type="submit" />
+        <div className="form-group">
+          <input
+            type="text"
+            name="username"
+            className="form-control"
+            onChange={this.handleOnChange}
+            value={this.state.username}
+            placeholder="Email or username..."
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            name="password"
+            className="form-control"
+            onChange={this.handleOnChange}
+            value={this.state.password}
+            placeholder="Your password..."
+          />
+        </div>
+        <input type="submit" className="btn btn-primary shadow" />
         {this.state.name}
       </form>
     );

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import LoginForm from "../components/LoginForm";
+import { FormCard } from "../components/Cards/Cards";
 
 class LoginContainer extends Component {
   componentDidMount() {
@@ -12,7 +13,6 @@ class LoginContainer extends Component {
 
   componentDidUpdate() {
     const { session, organizations } = this.props;
-    console.log(organizations);
     return session.isLoggedIn || organizations.length === 0
       ? this.redirect({ session, organizations })
       : null;
@@ -31,8 +31,14 @@ class LoginContainer extends Component {
 
   render() {
     return (
-      <div>
-        <LoginForm handleOnSubmit={this.handleOnSubmit} />
+      <div className="row">
+        <div className="col">
+          <FormCard
+            header={<span className="card-title display-4">Login</span>}
+          >
+            <LoginForm handleOnSubmit={this.handleOnSubmit} />
+          </FormCard>
+        </div>
       </div>
     );
   }

@@ -53,7 +53,7 @@ export const fetchSession = () => {
 
 export const removeSession = () => {
   return dispatch => {
-    fetch("/delete_session", {
+    fetch("api/v1/delete_session", {
       method: "DELETE",
       credentials: "include"
     })

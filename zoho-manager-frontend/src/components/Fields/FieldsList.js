@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { addRecord } from "../../actions/recordActions";
 import cuid from "cuid";
 import { Link } from "react-router-dom";
+import { CardHeader, CardBody } from "../Cards/Cards";
 
 const pluralize = require("pluralize");
 
@@ -33,15 +34,15 @@ class FieldsList extends Component {
     );
     return (
       <>
-        <div className="card-header d-flex align-items-center justify-content-between">
+        <CardHeader>
           <span className="card-title display-4">
             {pluralize(resource.name)}
           </span>
           <span>
             <Link to={`${match.url}/fields/new`}>Add new field</Link>
           </span>
-        </div>
-        <div className="card-body">
+        </CardHeader>
+        <CardBody>
           <form onSubmit={this.handleSubmit}>
             {fields.map(field =>
               field.formId === resource.id ? (
@@ -59,7 +60,7 @@ class FieldsList extends Component {
               value={`Create ${pluralize.singular(resource.name)}`}
             />
           </form>
-        </div>
+        </CardBody>
       </>
     );
   }

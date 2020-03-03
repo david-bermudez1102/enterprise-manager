@@ -7,7 +7,7 @@ const pluralize = require("pluralize");
 
 const ResourcesList = ({ match, resources }) => {
   return (
-    <div className="row">
+    <div className="row w-100">
       <div className="col-lg-4">
         <div className="list-group">
           {resources.map(resource => (

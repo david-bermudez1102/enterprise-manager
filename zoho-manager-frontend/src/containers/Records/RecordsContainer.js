@@ -7,17 +7,18 @@ import { fetchRecords } from "../../actions/recordActions";
 const pluralize = require("pluralize");
 
 class RecordsContainer extends Component {
-
   componentDidMount() {
     const { resource, fetchRecords } = this.props;
     fetchRecords(resource.organizationId, resource.id)
   }
-  
+
   render() {
-    const { match, resource, recordFields, records, values } = this.props
+    const { match, resource, recordFields, records, values } = this.props;
     return (
       <div className="col-lg-12">
-        <Link to={`${match.url}/records`}>View All {pluralize(resource.name)}</Link>
+        <Link to={`${match.url}/records`}>
+          View All {pluralize(resource.name)}
+        </Link>
         <Switch>
           <Route
             path={`${match.path}/records`}
@@ -36,8 +37,8 @@ class RecordsContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ records, values, recordFields}) => {
+const mapStateToProps = ({ records, values, recordFields }) => {
   return { records, values, recordFields };
 };
 
-export default connect(mapStateToProps, {fetchRecords})(RecordsContainer);
+export default connect(mapStateToProps, { fetchRecords })(RecordsContainer);

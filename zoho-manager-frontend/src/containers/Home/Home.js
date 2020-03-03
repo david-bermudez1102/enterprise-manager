@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import SideBar from "../../components/Home/SideBar/SideBar";
 import Navbar from "../../components/Navbar/Navbar";
 import LoginContainer from "../LoginContainer";
@@ -15,8 +14,7 @@ class Home extends Component {
       admins,
       addSession,
       removeSession,
-      session,
-      match
+      session
     } = this.props;
     return (
       <div className="w-100 d-flex flex-grow-1">
@@ -25,7 +23,7 @@ class Home extends Component {
           {session.isLoggedIn ? (
             <Navbar session={session} organizations={organizations} />
           ) : null}
-          <main className="w-100 align-items-center justify-content-center bg-transparent py-4">
+          <main className="w-100 align-items-center justify-content-center bg-transparent p-4">
             <Switch>
               <Route
                 path={`/organizations`}

@@ -24,7 +24,7 @@ class LoginContainer extends Component {
 
   redirect = props => {
     const { session, organizations } = props;
-    if (session.isLoggedIn) this.props.history.push("/home");
+    if (session.isLoggedIn) this.props.history.push("/");
     else if (organizations.length === 0)
       this.props.history.push("/organizations/new");
   };

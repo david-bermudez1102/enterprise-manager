@@ -14,7 +14,7 @@ class SideBar extends Component {
           isActive: false,
           loginRequired: false
         },
-        { path: "/home", text: "Home", isActive: false, loginRequired: true },
+        { path: "/", text: "Home", isActive: false, loginRequired: true },
         {
           path: "/logout",
           text: "Logout",
@@ -27,8 +27,15 @@ class SideBar extends Component {
 
   render() {
     return (
-      <div style={{ width: "150px" }} className="p-0">
-        <nav className="nav nav-dark flex-column nav-pills bg-dark min-vh-100">
+      <div className="p-0 bg-dark sticky-top" style={{ minWidth: "200px" }}>
+        <i
+          className="fad fa-user-circle  text-light"
+          style={{ fontSize: "140px" }}
+        ></i>
+        <nav
+          className="p-4 nav nav-dark flex-column nav-pills  min-vh-100 "
+          style={{ zIndex: 999 }}
+        >
           {this.state.links.map(link => (
             <NavLink
               to={link.path}

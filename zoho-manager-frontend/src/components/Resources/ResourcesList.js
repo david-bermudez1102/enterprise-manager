@@ -26,7 +26,7 @@ const ResourcesList = ({ match, resources }) => {
         <Route
           path={`${match.path}/:formAlias`}
           render={props => (
-            <Resource key={cuid()} {...props} resources={resources} />
+            <Resource key={cuid()} {...props} />
           )}
         />
       </Switch>

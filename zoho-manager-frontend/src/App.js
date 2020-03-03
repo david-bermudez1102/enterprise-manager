@@ -34,25 +34,21 @@ class App extends Component {
             <Navbar session={session} organizations={organizations} />
           ) : null}
           <Switch>
-            {organizations.length > 0 ? (
-              <Route
-                path="/"
-                render={props => (
-                  <Home
-                    organizations={organizations}
-                    session={session}
-                    {...props}
-                    admins={admins}
-                    addSession={addSession}
-                    removeSession={removeSession}
-                  />
-                )}
-              />
-            ) : null}
+            <Route
+              path="/"
+              render={props => (
+                <Home
+                  organizations={organizations}
+                  session={session}
+                  {...props}
+                  admins={admins}
+                  addSession={addSession}
+                  removeSession={removeSession}
+                />
+              )}
+            />
           </Switch>
-          {organizations.length > 0 ? (
-            <Footer organization={organizations[0]} />
-          ) : null}
+          {organizations[0] ? <Footer organization={organizations[0]} /> : null}
         </div>
       </Router>
     );

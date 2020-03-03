@@ -5,7 +5,7 @@ class RecordsController < ApplicationController
   def create
     record = @form.records.build(record_params)
     if record.save
-      render json: RecordSerializer.new(record).serialized_json
+      render json: RecordSerializer.new(record)
     else
       render json: record.errors.full_messages
     end
@@ -13,7 +13,7 @@ class RecordsController < ApplicationController
 
   def index
     record = @form.records
-    render json: RecordSerializer.new(record).serialized_json
+    render json: RecordSerializer.new(record)
   end
 
   def show

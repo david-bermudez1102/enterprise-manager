@@ -4,7 +4,6 @@ import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { addField, updateField, removeField } from "../../actions/fieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
-import cuid from "cuid";
 import FieldDelete from "../../components/Fields/FieldDelete";
 
 class FieldsContainer extends Component {
@@ -22,7 +21,6 @@ class FieldsContainer extends Component {
       <div className="col-lg-8">
         <div className="card border-0 shadow-sm">
           <FieldsList
-            key={cuid()}
             match={match}
             resource={resource}
             updateField={updateField}
@@ -57,20 +55,18 @@ class FieldsContainer extends Component {
                 exact
                 path={`${match.path}/fields/:fieldId/edit`}
                 render={props => {
-                  if (fields.length > 0) {
-                    const field = fields.find(
-                      field => field.id === parseInt(props.match.params.fieldId)
-                    );
-                    return (
-                      <FieldForm
-                        updateField={updateField}
-                        organizationId={organizationId}
-                        resourceId={resource.id}
-                        field={field}
-                        action="Update Field"
-                      />
-                    );
-                  }
+                  const field = fields.find(
+                    field => field.id === parseInt(props.match.params.fieldId)
+                  );
+                  return (
+                    <FieldForm
+                      updateField={updateField}
+                      organizationId={organizationId}
+                      resourceId={resource.id}
+                      field={field}
+                      action="Update Field"
+                    />
+                  );
                 }}
               />
             </Switch>

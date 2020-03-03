@@ -51,7 +51,6 @@ class Navbar extends Component {
 
   render() {
     const { session, organizations } = this.props;
-    console.log(this.state);
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg">
         {organizations.length > 0 ? (

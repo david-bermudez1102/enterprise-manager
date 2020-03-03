@@ -8,6 +8,11 @@ class RecordsList extends Component {
     this.myRef = React.createRef();
   }
 
+  componentDidMount() {
+    const RecordsList = this.myRef.current.getBoundingClientRect();
+    window.scrollTo(RecordsList.x, RecordsList.y);
+  }
+
   render() {
     const { records, recordFields, resource, values } = this.props;
     return (

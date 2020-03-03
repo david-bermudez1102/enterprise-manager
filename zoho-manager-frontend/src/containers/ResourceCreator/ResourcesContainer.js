@@ -13,7 +13,7 @@ class ResourcesContainer extends Component {
     const { resources, fetchFields, fetchRecordFields } = this.props;
     resources.map(resource => {
       fetchFields(resource.organizationId, resource.id);
-      fetchRecordFields(resource.organizationId, resource.id);
+      return fetchRecordFields(resource.organizationId, resource.id);
     });
   }
 

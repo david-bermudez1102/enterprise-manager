@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Record from "./Record";
 import cuid from "cuid";
+import RecordsHeader from "./RecordsHeader";
 
 class RecordsList extends Component {
   constructor(props) {
@@ -17,15 +18,7 @@ class RecordsList extends Component {
     const { records, recordFields, resource, values } = this.props;
     return (
       <table ref={this.myRef} className="table table-striped table-sm">
-        <thead>
-          <tr>
-            {recordFields.map(field =>
-              field.formId === resource.id ? (
-                <th key={cuid()}>{field.name}</th>
-              ) : null
-            )}
-          </tr>
-        </thead>
+        <RecordsHeader {...this.props}/>
         <tbody>
           {records.map(record =>
             record.formId === resource.id ? (

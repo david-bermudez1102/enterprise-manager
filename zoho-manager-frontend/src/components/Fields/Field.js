@@ -26,11 +26,7 @@ class Field extends Component {
 
     return (
       <div className="form-group">
-        <label htmlFor={field.name}>{this.fieldName()}:</label>
-        <span className="float-right">
-          {" "}
-          <Options url={`${match.url}/fields`} content={field} />
-        </span>
+        <Options url={`${match.url}/fields`} content={field} />
         {field.fieldType !== "selectable" ? (
           <input
             className="form-control"

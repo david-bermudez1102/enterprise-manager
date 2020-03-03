@@ -24,6 +24,7 @@ class RecordsContainer extends Component {
             path={`${match.path}/records`}
             render={props => (
               <RecordsList
+                match={match}
                 recordFields={recordFields}
                 resource={resource}
                 records={records}

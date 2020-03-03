@@ -12,14 +12,13 @@ class Navbar extends Component {
         {
           path: "/login",
           text: "Login",
-          isActive: false,
           loginRequired: false
         },
-        { path: "/", text: "Home", isActive: false, loginRequired: true },
+        { path: "/", text: "Home", loginRequired: true },
         {
           path: "/logout",
+          icon: "fas fa-sign-out-alt",
           text: "Logout",
-          isActive: false,
           loginRequired: true
         }
       ]
@@ -36,13 +35,25 @@ class Navbar extends Component {
             {
               path: `/organizations/${organizations[0].id}/resources/new`,
               text: "Add Resource",
-              isActive: false,
+              icon: "fas fa-plus",
               loginRequired: true
             },
             {
               path: `/organizations/${organizations[0].id}/resources`,
               text: "Resources",
-              isActive: false,
+              icon: "fas fa-layer-group",
+              loginRequired: true
+            },
+            {
+              path: `/settings`,
+              text: "Settings",
+              icon: "fas fa-cog",
+              loginRequired: true
+            },
+            {
+              path: `/notifications`,
+              text: "Notifications",
+              icon: "fas fa-bell",
               loginRequired: true
             }
           ]
@@ -73,7 +84,7 @@ class Navbar extends Component {
                         activeClassName="active bg-light"
                       >
                         {" "}
-                        {link.text}
+                        <i className={link.icon}></i> {link.text}
                       </NavLink>
                     </li>
                   ) : null
@@ -87,7 +98,7 @@ class Navbar extends Component {
                         className="nav-link"
                         activeClassName="active bg-light"
                       >
-                        {link.text}
+                        <i className={link.icon}></i> {link.text}
                       </NavLink>
                     </li>
                   ) : null

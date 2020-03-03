@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import cuid from "cuid";
+import Options from "../Options/Options";
 
 class Field extends Component {
   constructor() {
@@ -29,12 +29,7 @@ class Field extends Component {
         <label htmlFor={field.name}>{this.fieldName()}:</label>
         <span className="float-right">
           {" "}
-          <Link to={`${match.url}/fields/${field.id}/delete`}>
-            <i className="fad fa-trash" style={{ fontSize: "24px" }}></i>
-          </Link>
-          <Link to={`${match.url}/fields/${field.id}/edit`}>
-            <i className="fad fa-edit" style={{ fontSize: "24px" }}></i>
-          </Link>
+          <Options url={`${match.url}/fields`} content={field} />
         </span>
         {field.fieldType !== "selectable" ? (
           <input

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import cuid from "cuid";
 import Logo from "./Logo";
+import SearchBar from "./SearchBar";
 
 class Navbar extends Component {
   constructor(props) {
@@ -52,12 +53,13 @@ class Navbar extends Component {
   render() {
     const { session, organizations } = this.props;
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         {organizations.length > 0 ? (
           <NavLink to="#" className="navbar-brand">
             <Logo organization={organizations[0]} />
           </NavLink>
         ) : null}
+        <SearchBar organization={organizations[0]} />
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav nav-pills">
             {session.isLoggedIn
@@ -68,7 +70,7 @@ class Navbar extends Component {
                         to={link.path}
                         exact
                         className="nav-link"
-                        activeClassName="active bg-secondary"
+                        activeClassName="active bg-light"
                       >
                         {" "}
                         {link.text}
@@ -83,7 +85,7 @@ class Navbar extends Component {
                         to={link.path}
                         exact
                         className="nav-link"
-                        activeClassName="active"
+                        activeClassName="active bg-light"
                       >
                         {link.text}
                       </NavLink>

@@ -18,7 +18,7 @@ class Home extends Component {
     } = this.props;
     return (
       <div className="w-100 d-flex flex-grow-1">
-        {session.isLoggedIn ? <SideBar /> : null}
+        {session.isLoggedIn ? <SideBar session={session} /> : null}
         <div className="w-100">
           {session.isLoggedIn ? (
             <Navbar session={session} organizations={organizations} />

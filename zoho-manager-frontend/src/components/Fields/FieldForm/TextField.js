@@ -3,7 +3,6 @@ import Icon from "@mdi/react";
 import { mdiTextbox } from "@mdi/js";
 
 const TextField = ({
-  field,
   fieldType,
   handleChange,
   handleSelectableChange

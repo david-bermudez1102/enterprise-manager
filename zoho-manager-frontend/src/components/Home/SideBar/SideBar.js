@@ -1,49 +1,72 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import cuid from "cuid";
-import { connect } from "react-redux";
 
-class SideBar extends Component {
+export default class SideBar extends Component {
   constructor(props) {
     super(props);
+    const navLinkClass = "nav-item nav-link text-light";
     this.state = {
       links: [
         {
-          path: "/login",
-          text: "Login",
-          isActive: false,
-          loginRequired: false
+          path: "/",
+          className: navLinkClass,
+          text: "Home",
+          icon: "fas fa-home"
         },
-        { path: "/", text: "Home", isActive: false, loginRequired: true },
+        {
+          path: "/organizations",
+          className: navLinkClass,
+          text: "Organizations",
+          icon: "fas fa-sitemap",
+          levels: ["admin"]
+        },
+        {
+          path: "/accounts",
+          className: navLinkClass,
+          text: "Accounts",
+          icon: "fas fa-users",
+          levels: ["admin"]
+        },
         {
           path: "/logout",
-          text: "Logout",
-          isActive: false,
-          loginRequired: true
+          className: `${navLinkClass} dropdown`,
+          text: "Resources",
+          icon: "fas fa-layer-group",
+          levels: ["admin", "manager", "employee"]
         }
       ]
     };
   }
 
   render() {
+    const { session } = this.props;
+    const currentUser = session.currentUser;
     return (
-      <div className="p-0 bg-dark sticky-top" style={{ minWidth: "200px" }}>
-        <i
-          className="fad fa-user-circle  text-light"
-          style={{ fontSize: "140px" }}
-        ></i>
+      <div
+        className="py-3 bg-secondary sticky-top shadow-lg text-light"
+        style={{ minWidth: "200px" }}
+      >
+        <div className="w-100 d-flex align-items-center justify-content-center">
+          <i
+            className="fad fa-user-circle text-shadow"
+            style={{ fontSize: "40px" }}
+          ></i>{" "}
+          {currentUser.name}
+        </div>
         <nav
-          className="p-4 nav nav-dark flex-column nav-pills  min-vh-100 "
+          className="p-3 nav nav-dark nav-pills flex-column min-vh-100 "
           style={{ zIndex: 999 }}
         >
           {this.state.links.map(link => (
             <NavLink
+              exact
               to={link.path}
-              className="nav-item nav-link"
+              className={link.className}
               key={cuid()}
-              activeClassName="active"
+              activeClassName="bg-info active shadow"
             >
-              {link.text}
+              <i className={link.icon}></i> {link.text}
             </NavLink>
           ))}
         </nav>
@@ -51,9 +74,3 @@ class SideBar extends Component {
     );
   }
 }
-
-const mapStateToProps = ({session}) => {
-  return {session}
-}
-
-export default connect(mapStateToProps)(SideBar)

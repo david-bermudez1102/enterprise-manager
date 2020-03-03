@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import cuid from "cuid";
+import { connect } from "react-redux";
 
-export default class SideBar extends Component {
+class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,13 +27,26 @@ export default class SideBar extends Component {
 
   render() {
     return (
-      <nav className="nav nav-dark flex-column nav-pills bg-dark" aria-orientation="vertical">
-        {this.state.links.map(link => (
-          <NavLink to={link.path} className="nav-item nav-link" key={cuid()} activeClassName="active">
-            {link.text}
-          </NavLink>
-        ))}
-      </nav>
+      <div style={{ width: "150px" }} className="p-0">
+        <nav className="nav nav-dark flex-column nav-pills bg-dark min-vh-100">
+          {this.state.links.map(link => (
+            <NavLink
+              to={link.path}
+              className="nav-item nav-link"
+              key={cuid()}
+              activeClassName="active"
+            >
+              {link.text}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
     );
   }
 }
+
+const mapStateToProps = ({session}) => {
+  return {session}
+}
+
+export default connect(mapStateToProps)(SideBar)

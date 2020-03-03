@@ -31,7 +31,7 @@ class LoginContainer extends Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="row w-100">
         <div className="col">
           <FormCard
             header={<span className="card-title display-4">Login</span>}

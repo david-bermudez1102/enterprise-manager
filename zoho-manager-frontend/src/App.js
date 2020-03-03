@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import Navbar from "./components/Navbar/Navbar";
-import OrganizationContainer from "./containers/OrganizationContainer";
-import AdminContainer from "./containers/AdminContainer";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
 import { fetchAdmins } from "./actions/adminActions";
-import LoginContainer from "./containers/LoginContainer";
-import LogoutContainer from "./containers/LogoutContainer";
 import Home from "./containers/Home/Home";
 import {
   addSession,
@@ -33,41 +29,27 @@ class App extends Component {
     } = this.props;
     return (
       <Router>
-        <div className="bg-light container-fluid d-flex flex-column min-vh-100">
-          <Navbar session={session} organizations={organizations} />
-          <main className="w-100 flex-grow-1 align-items-center justify-content-center bg-transparent py-4">
-            <Switch>
-              <Route exact path="/" render={() => <div>Home</div>} />
-              {organizations.length > 0 ? (
-                <Route path="/home">
-                  <Home organization={organizations[0]} />
-                </Route>
-              ) : null}
+        <div className="bg-light container-fluid d-flex p-0 flex-column min-vh-100">
+          {!session.isLoggedIn ? (
+            <Navbar session={session} organizations={organizations} />
+          ) : null}
+          <Switch>
+            {organizations.length > 0 ? (
               <Route
-                path="/login"
+                path="/"
                 render={props => (
-                  <LoginContainer
-                    {...props}
-                    session={session}
-                    addSession={addSession}
+                  <Home
                     organizations={organizations}
+                    session={session}
+                    {...props}
+                    admins={admins}
+                    addSession={addSession}
+                    removeSession={removeSession}
                   />
                 )}
               />
-              <Route path="/logout">
-                <LogoutContainer removeSession={removeSession} />
-              </Route>
-              <Route path="/accounts/new">
-                <AdminContainer organizations={organizations} admins={admins} />
-              </Route>
-              <Route
-                path="/organizations"
-                render={props => (
-                  <OrganizationContainer session={session} {...props} />
-                )}
-              />
-            </Switch>
-          </main>
+            ) : null}
+          </Switch>
           {organizations.length > 0 ? (
             <Footer organization={organizations[0]} />
           ) : null}
@@ -77,11 +59,11 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ organizations, admins, session }) => {
   return {
-    organizations: state.organizations,
-    admins: state.admins,
-    session: state.session
+    organizations,
+    admins,
+    session
   };
 };
 

@@ -15,7 +15,7 @@ class RecordsContainer extends Component {
   render() {
     const { match, resource, recordFields, records, values } = this.props;
     return (
-      <div className="col-lg-12">
+      <div className="col-lg-12 bg-white rounded shadow">
         <Link to={`${match.url}/records`}>
           View All {pluralize(resource.name)}
         </Link>

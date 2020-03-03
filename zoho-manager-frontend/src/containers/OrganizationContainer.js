@@ -42,8 +42,7 @@ class OrganizationContainer extends Component {
             )}
           />
           <Route
-            exact
-            path={`${match.path}/:organizationId/`}
+            path={`${match.path}/:organizationId`}
             render={props => <Organization {...props} />}
           />
         </Switch>

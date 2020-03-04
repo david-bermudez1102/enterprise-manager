@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { DeletionModal } from "../Modal/Modals";
 
 export default class Options extends Component {
   constructor(props) {
     super(props);
-    this.state = { isOpen: false };
+    this.state = { isOpen: false, showModal: false };
   }
 
   handleOpen = () => {
@@ -13,6 +14,16 @@ export default class Options extends Component {
 
   handleClose = () => {
     this.setState({ isOpen: false });
+  };
+
+  handleShowModal = event => {
+    event.preventDefault();
+    this.setState({ showModal: true });
+  };
+
+  handleCloseModal = event => {
+    event.preventDefault();
+    this.setState({ showModal: false });
   };
 
   contentName = () => {
@@ -25,29 +36,34 @@ export default class Options extends Component {
 
   render() {
     const { content, url, fontSize } = this.props;
-    const { isOpen } = this.state;
+    const { isOpen, showModal } = this.state;
     return (
-      <div
-        onMouseEnter={this.handleOpen}
-        onMouseLeave={this.handleClose}
-        className="w-100 d-flex justify-content-between"
-      >
-        <label htmlFor={content.name}>{this.contentName()}</label>
+      <>
+        {showModal ? (
+          <DeletionModal {...this.props} handleClose={this.handleCloseModal} />
+        ) : null}
         <div
-          className="d-flex justify-content-between"
-          style={{
-            minWidth: "40px",
-            visibility: isOpen ? "visible" : "hidden"
-          }}
+          onMouseEnter={this.handleOpen}
+          onMouseLeave={this.handleClose}
+          className="w-100 d-flex justify-content-between"
         >
-          <Link to={`${url}/${content.id}/delete`}>
-            <i className="fad fa-trash" style={{ fontSize: fontSize }}></i>
-          </Link>
-          <Link to={`${url}/${content.id}/edit`}>
-            <i className="fad fa-edit" style={{ fontSize: fontSize }}></i>
-          </Link>
+          <label htmlFor={content.name}>{this.contentName()}</label>
+          <div
+            className="d-flex justify-content-between"
+            style={{
+              minWidth: "40px",
+              visibility: isOpen ? "visible" : "hidden"
+            }}
+          >
+            <a href="#" className="text-primary" onClick={this.handleShowModal}>
+              <i className="fad fa-trash" style={{ fontSize: fontSize }}></i>
+            </a>
+            <Link to={`${url}/${content.id}/edit`}>
+              <i className="fad fa-edit" style={{ fontSize: fontSize }}></i>
+            </Link>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }

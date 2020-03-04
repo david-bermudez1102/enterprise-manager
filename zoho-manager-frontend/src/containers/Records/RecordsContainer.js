@@ -23,6 +23,18 @@ class RecordsContainer extends Component {
         </Link>
         <Switch>
           <Route
+            path={`${match.path}/record_fields/:recordFieldId/delete`}
+            render={props => (
+              <RecordFieldDelete
+                {...props}
+                redirectTo={`${match.url}/records`}
+                organizationId={resource.organizationId}
+                resourceId={resource.id}
+                removeRecordField={removeRecordField}
+              />
+            )}
+          />
+          <Route
             path={`${match.path}/records`}
             render={props => (
               <RecordsList
@@ -31,19 +43,6 @@ class RecordsContainer extends Component {
                 resource={resource}
                 records={records}
                 values={values}
-              />
-            )}
-          />
-          <Route
-            exact
-            path={`${match.path}/records/:resourceFieldId/delete`}
-            render={props => (
-              <RecordFieldDelete
-                {...props}
-                redirectTo={`${match.url}/records`}
-                organizationId={resource.organizationId}
-                resourceId={resource.id}
-                removeRecordField={removeRecordField}
               />
             )}
           />

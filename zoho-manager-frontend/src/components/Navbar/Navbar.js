@@ -70,7 +70,9 @@ class Navbar extends Component {
             <Logo organization={organizations[0]} />
           </NavLink>
         ) : null}
-        <SearchBar organization={organizations[0]} />
+        {session.isLoggedIn ? (
+          <SearchBar organization={organizations[0]} />
+        ) : null}
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav nav-pills">
             {session.isLoggedIn

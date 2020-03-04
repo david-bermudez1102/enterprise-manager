@@ -37,15 +37,19 @@ export const fetchRecordFields = (organizationId, formId) => {
 
 export const removeRecordField = (organizationId, formId, recordFieldId) => {
   return dispatch => {
-    fetch(
-      `/organizations/${organizationId}/forms/${formId}/record_fields/${recordFieldId}`,
-      { method: "DELETE" }
+    return fetch(
+      `/api/v1/organizations/${organizationId}/forms/${formId}/fields/${recordFieldId}`,
+      {
+        method: "DELETE"
+      }
     )
-      .then(response => camelcaseKeys(response.json()))
-      .then(recordField =>
-        recordField.message
-          ? dispatch({ type: "REMOVE_RECORD_FIELD", recordFieldId })
+      .then(response => response.json())
+      .then(field => camelcaseKeys(field))
+      .then(field =>
+        field.message
+          ? dispatch({ type: "REMOVE_FIELD", recordFieldId, status: "deleted" })
           : null
       );
   };
 };
+

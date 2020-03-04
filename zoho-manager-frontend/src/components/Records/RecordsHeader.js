@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import cuid from "cuid";
 import Options from "../Options/Options";
+import { Switch, Route } from "react-router-dom";
 
 export default class RecordsHeader extends Component {
   render() {

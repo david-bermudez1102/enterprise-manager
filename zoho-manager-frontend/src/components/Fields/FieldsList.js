@@ -70,7 +70,7 @@ class FieldsList extends Component {
                 ) : null;
               })}
               <input
-                className="btn btn-primary"
+                className="btn btn-primary shadow"
                 type="submit"
                 value={`Create ${pluralize.singular(resource.name)}`}
               />

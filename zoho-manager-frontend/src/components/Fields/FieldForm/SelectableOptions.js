@@ -52,6 +52,7 @@ class SelectableOptions extends Component {
           {options_attributes.map(option => (
             <li key={cuid()} className="list-group-item">
               {option.value}
+              <span className="badge badge-primary badge-pill">14</span>
             </li>
           ))}
         </ul>

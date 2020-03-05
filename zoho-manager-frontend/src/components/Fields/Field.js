@@ -48,12 +48,12 @@ class Field extends Component {
             ref={fieldRef}>
             {field.selectableResource
               ? field.selectableResource.options.map(option => (
-                  <option key={cuid()} value={option.value}>
+                  <option key={cuid()} value={option.value} data-id={option.id}>
                     {option.value}
                   </option>
                 ))
               : field.options.map(option => (
-                  <option key={cuid()} value={option.value}>
+                  <option key={cuid()} value={option.value} data-id={option.id}>
                     {option.value}
                   </option>
                 ))}

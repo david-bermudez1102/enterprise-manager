@@ -18,6 +18,7 @@ class SelectableOptions extends Component {
   };
 
   handleClick = event => {
+    const { selectable_resource_attributes } = this.props;
     event.persist();
     event.preventDefault();
     this.setState(
@@ -33,8 +34,7 @@ class SelectableOptions extends Component {
         this.props.handleSelectableChange(
           {
             selectable_resource_attributes: {
-              form_id: "",
-              resource_field_id: "",
+              ...selectable_resource_attributes,
               _destroy: 1
             }
           },

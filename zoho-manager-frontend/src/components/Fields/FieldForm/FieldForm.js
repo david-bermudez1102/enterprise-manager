@@ -7,10 +7,17 @@ export default class FieldForm extends Component {
   constructor(props) {
     super(props);
     const { field, resourceId } = props;
+    const selectableResource = field ? field.selectableResource : null;
     this.state = {
       field_type: field ? field.fieldType : "",
       name: field ? field.name : "",
-      form_id: resourceId
+      form_id: resourceId,
+      selectable_resource_attributes: {
+        form_id: selectableResource ? selectableResource.resource_id || "" : "",
+        resource_field_id: selectableResource
+          ? selectableResource.resource_field_id || ""
+          : ""
+      }
     };
   }
 
@@ -82,11 +89,13 @@ export default class FieldForm extends Component {
               handleSelectableChange={this.handleSelectableChange}
             />
             <PasswordField
+              field={field}
               fieldType={this.state.field_type}
               handleChange={this.handleChange}
               handleSelectableChange={this.handleSelectableChange}
             />
             <SelectableField
+              field={field}
               fieldType={this.state.field_type}
               handleChange={this.handleChange}
               handleSelectableChange={this.handleSelectableChange}

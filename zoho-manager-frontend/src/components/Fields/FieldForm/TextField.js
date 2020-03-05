@@ -2,11 +2,7 @@ import React from "react";
 import Icon from "@mdi/react";
 import { mdiTextbox } from "@mdi/js";
 
-const TextField = ({
-  fieldType,
-  handleChange,
-  handleSelectableChange
-}) => {
+const TextField = ({ fieldType, handleChange, handleSelectableChange }) => {
   return (
     <div className="form-check form-check-inline">
       <input
@@ -18,9 +14,11 @@ const TextField = ({
         onChange={event => {
           handleSelectableChange(
             {
-              form_id: "",
-              selectable_resource_id: "",
-              _destroy: 1
+              selectable_resource_attributes: {
+                form_id: "",
+                resource_field_id: "",
+                _destroy: 1
+              }
             },
             [{}]
           );

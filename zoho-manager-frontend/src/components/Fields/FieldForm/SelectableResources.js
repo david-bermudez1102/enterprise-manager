@@ -4,11 +4,18 @@ import cuid from "cuid";
 import SelectableResourcesOptions from "./SelectableResourcesOptions";
 
 class SelectableResources extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const { field } = props;
+    const selectableResource = field.selectableResource;
     this.state = {
-      selected: "0",
-      selectable_resource_attributes: { form_id: "", resource_field_id: "" }
+      selected: selectableResource ? selectableResource.resource_id : "0",
+      selectable_resource_attributes: {
+        form_id: selectableResource ? selectableResource.resource_id || "" : "",
+        resource_field_id: selectableResource
+          ? selectableResource.resource_field_id || ""
+          : ""
+      }
     };
   }
 
@@ -54,7 +61,7 @@ class SelectableResources extends Component {
   };
 
   render() {
-    const { resources, fields } = this.props;
+    const { resources, fields, field } = this.props;
     return (
       <>
         <div className="form-group">
@@ -77,6 +84,9 @@ class SelectableResources extends Component {
           </select>
         </div>
         <SelectableResourcesOptions
+          resourceFieldId={
+            field ? field.selectableResource.resource_field_id || "" : ""
+          }
           fields={fields}
           selected={this.state.selected}
           handleChange={this.handleResourcesOptionsChange}

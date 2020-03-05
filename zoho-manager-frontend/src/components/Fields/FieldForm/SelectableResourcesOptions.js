@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import cuid from "cuid";
 
 class SelectableResourcesOptions extends Component {
-  constructor() {
-    super();
-    this.state = { value: "" };
+  constructor(props) {
+    super(props);
+    const { resourceFieldId } = props;
+    this.state = { value: resourceFieldId };
   }
 
   handleChange = event => {

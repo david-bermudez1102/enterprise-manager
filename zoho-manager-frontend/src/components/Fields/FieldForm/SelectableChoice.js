@@ -3,9 +3,12 @@ import SelectableResources from "./SelectableResources";
 import SelectableOptions from "./SelectableOptions";
 
 class SelectableChoice extends Component {
-  constructor() {
-    super();
-    this.state = { choice: "" };
+  constructor(props) {
+    super(props);
+    const { field } = props;
+    const choice =
+      field.selectableResource.options.length > 0 ? "connect" : "items";
+    this.state = { choice: field ? choice : "" };
   }
 
   handleChange = event => {
@@ -23,7 +26,7 @@ class SelectableChoice extends Component {
   };
 
   render() {
-    const { fieldType, handleSelectableChange } = this.props;
+    const { field, fieldType, handleSelectableChange } = this.props;
     return (
       <div className="form-group">
         <hr />
@@ -34,6 +37,7 @@ class SelectableChoice extends Component {
             name="choice"
             value="connect"
             onChange={this.handleChange}
+            defaultChecked={this.state.choice === "connect" ? true : false}
           />
           <label htmlFor="selectable_field" className="form-check-label">
             Connect to a Resource
@@ -46,6 +50,7 @@ class SelectableChoice extends Component {
             name="choice"
             value="items"
             onChange={this.handleChange}
+            defaultChecked={this.state.choice === "items" ? true : false}
           />
           <label htmlFor="selectable_field" className="form-check-label">
             Add Items Individually
@@ -53,11 +58,13 @@ class SelectableChoice extends Component {
         </div>
         {this.state.choice === "connect" ? (
           <SelectableResources
+            field={field}
             handleSelectableChange={handleSelectableChange}
           />
         ) : null}
         {this.state.choice === "items" ? (
           <SelectableOptions
+            field={field}
             fieldType={fieldType}
             handleSelectableChange={handleSelectableChange}
           />

@@ -9,7 +9,9 @@ export const addRecordField = (recordField, organizationId) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ record_field: { ...recordField } })
+        body: JSON.stringify({
+          record_field: { ...recordField }
+        })
       }
     )
       .then(response => response.json())
@@ -38,7 +40,7 @@ export const fetchRecordFields = (organizationId, formId) => {
 export const removeRecordField = (organizationId, formId, recordFieldId) => {
   return dispatch => {
     return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${formId}/fields/${recordFieldId}`,
+      `/api/v1/organizations/${organizationId}/forms/${formId}/record_fields/${recordFieldId}`,
       {
         method: "DELETE"
       }
@@ -52,4 +54,3 @@ export const removeRecordField = (organizationId, formId, recordFieldId) => {
       );
   };
 };
-

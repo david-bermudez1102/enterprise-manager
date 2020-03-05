@@ -9,20 +9,21 @@ import { CardHeader, CardBody } from "../Cards/Cards";
 const pluralize = require("pluralize");
 
 class FieldsList extends Component {
+  constructor() {
+    super();
+    this.fields = []; // For the refs
+  }
+
   handleSubmit = event => {
     event.persist();
     event.preventDefault();
     const { resource, addRecord } = this.props;
-    const formData = new FormData(event.target);
-
-    let record = {};
-    for (const [key, value] of formData.entries()) {
-      record[key] = value;
-    }
-    record = {
-      values_attributes: Object.keys(record).map(key => {
-        return { record_field_id: key, content: record[key] };
-      })
+    const record = {
+      values_attributes: this.fields
+        .filter(n => n)
+        .map(field => {
+          return { record_field_id: field.name, content: field.value };
+        })
     };
     addRecord(record, resource.organizationId, resource.id);
   };
@@ -40,22 +41,28 @@ class FieldsList extends Component {
           </span>
           <span>
             <Link to={`${match.url}/fields/new`}>
-                <i className="fad fa-plus-circle" style={{fontSize:"40px"}}></i>
+              <i
+                className="fad fa-plus-circle"
+                style={{ fontSize: "40px" }}></i>
             </Link>
           </span>
         </CardHeader>
         <CardBody>
           <form onSubmit={this.handleSubmit}>
-            {fields.map(field =>
-              field.formId === resource.id ? (
+            {fields.map((field, index) => {
+              const recordField = recordFields.find(
+                f => f.fieldId === field.id
+              );
+              return field.formId === resource.id && recordField ? (
                 <Field
                   key={cuid()}
                   field={field}
-                  recordField={recordFields.find(f => f.fieldId === field.id)}
+                  recordField={recordField}
                   match={match}
+                  fieldRef={el => (this.fields[index] = el)}
                 />
-              ) : null
-            )}
+              ) : null;
+            })}
             <input
               className="btn btn-primary"
               type="submit"

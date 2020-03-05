@@ -2,7 +2,7 @@ const camelcaseKeys = require("camelcase-keys");
 
 export const addField = (field, organizationId) => {
   return dispatch => {
-    fetch(
+    return fetch(
       `/api/v1/organizations/${organizationId}/forms/${field.form_id}/fields`,
       {
         method: "POST",
@@ -14,7 +14,11 @@ export const addField = (field, organizationId) => {
     )
       .then(response => response.json())
       .then(field => camelcaseKeys(field.data.attributes))
-      .then(field => dispatch({ type: "ADD_FIELD", field }))
+      .then(f => {
+        dispatch({ type: "ADD_FIELD", field: f });
+        console.log({ ...field, field_id: f.id });
+        return { ...field, field_id: f.id };
+      });
   };
 };
 

@@ -4,10 +4,8 @@ import RecordsContainer from "../../containers/Records/RecordsContainer";
 import { connect } from "react-redux";
 
 class Resource extends Component {
-  
   render() {
-
-    const { match, resources, fields} = this.props;
+    const { match, resources, fields } = this.props;
     const resource = resources.find(
       resource => resource.formAlias === match.params.formAlias
     );
@@ -20,7 +18,6 @@ class Resource extends Component {
           fields={fields}
         />
         <RecordsContainer match={match} resource={resource} />
-        
       </>
     ) : null;
   }
@@ -33,6 +30,4 @@ const mapStateToProps = ({ fields, resources }) => {
   };
 };
 
-export default connect(mapStateToProps)(
-  Resource
-);
+export default connect(mapStateToProps)(Resource);

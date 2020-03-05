@@ -35,26 +35,26 @@ export default class Options extends Component {
   };
 
   render() {
-    const { content, url, fontSize } = this.props;
+    const { content, url, fontSize, deletionMessage } = this.props;
     const { isOpen, showModal } = this.state;
     return (
       <>
         {showModal ? (
-          <DeletionModal {...this.props} handleClose={this.handleCloseModal} />
+          <DeletionModal {...this.props} handleClose={this.handleCloseModal}>
+            {deletionMessage}
+          </DeletionModal>
         ) : null}
         <div
           onMouseEnter={this.handleOpen}
           onMouseLeave={this.handleClose}
-          className="w-100 d-flex justify-content-between"
-        >
+          className="w-100 d-flex justify-content-between">
           <label htmlFor={content.name}>{this.contentName()}</label>
           <div
             className="d-flex justify-content-between"
             style={{
               minWidth: "40px",
               visibility: isOpen ? "visible" : "hidden"
-            }}
-          >
+            }}>
             <a href="#" className="text-primary" onClick={this.handleShowModal}>
               <i className="fad fa-trash" style={{ fontSize: fontSize }}></i>
             </a>

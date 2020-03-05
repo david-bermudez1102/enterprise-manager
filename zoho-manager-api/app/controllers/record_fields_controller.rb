@@ -1,5 +1,13 @@
 class RecordFieldsController < ApplicationController
   before_action :set_form
+  def create
+    record_field = @form.record_fields.build(record_field_params)
+    if record_field.save
+      render json: RecordFieldSerializer.new(record_field)
+    else
+      render json: { errors: record_field.errors.full_messages }
+    end
+  end
 
   def index
     record_fields = @form.record_fields
@@ -20,8 +28,12 @@ class RecordFieldsController < ApplicationController
   private
   def record_field_params
     params.require(:record_field).permit(
+      :field_id,
       :name,
-      :form_id
+      :field_type,
+      :form_id,
+      selectable_resource_attributes: [:form_id, :resource_field_id],
+      options_attributes: [:value]
     )
   end
 

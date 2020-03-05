@@ -1,7 +1,6 @@
 export const fieldsReducer = (state = [], action) => {
   switch (action.type) {
     case "ADD_FIELD":
-      console.log(action.field)
       return [...state, action.field];
     case "FETCH_FIELDS":
       return [

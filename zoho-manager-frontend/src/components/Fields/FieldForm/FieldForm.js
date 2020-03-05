@@ -6,7 +6,7 @@ import SelectableField from "./SelectableField";
 export default class FieldForm extends Component {
   constructor(props) {
     super(props);
-    const { field, resourceId } = props
+    const { field, resourceId } = props;
     this.state = {
       field_type: field ? field.fieldType : "",
       name: field ? field.name : "",
@@ -34,9 +34,18 @@ export default class FieldForm extends Component {
   };
 
   handleOnSubmit = event => {
-    const { addField, updateField, organizationId, field } = this.props;
+    const {
+      addField,
+      addRecordField,
+      updateField,
+      organizationId,
+      field
+    } = this.props;
     event.preventDefault();
-    if (addField) addField(this.state, organizationId);
+    if (addField)
+      addField(this.state, organizationId).then(field =>
+        addRecordField(field, organizationId)
+      );
     if (updateField) updateField(this.state, organizationId, field.id);
     this.setState({
       ...this.state,

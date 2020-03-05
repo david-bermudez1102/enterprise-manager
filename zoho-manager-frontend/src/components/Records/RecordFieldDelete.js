@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import { DeletionModal } from "../Modal/Modals";
 
 export default class RecordFieldDelete extends Component {
   constructor() {
@@ -8,8 +6,18 @@ export default class RecordFieldDelete extends Component {
     this.state = { status: "deleting" };
   }
 
+  componentDidMount() {
+    const { match, organizationId, resourceId, removeRecordField } = this.props;
+    removeRecordField(
+      organizationId,
+      resourceId,
+      match.params.recordFieldId
+    ).then(action =>
+      this.setState({ status: action ? action.status : "deleted" })
+    );
+  }
+
   render() {
-    return    <DeletionModal />
-    
+    return <div>Done</div>;
   }
 }

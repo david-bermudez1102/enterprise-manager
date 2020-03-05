@@ -15,6 +15,7 @@ export default class RecordsHeader extends Component {
                   url={`${match.url}/record_fields`}
                   content={field}
                   fontSize="14px"
+                  deletionMessage="The entire column and all of it's data associated will be deleted."
                 />
               </th>
             ) : null;

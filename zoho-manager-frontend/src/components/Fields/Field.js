@@ -22,8 +22,7 @@ class Field extends Component {
   };
 
   render() {
-    const { match, field, recordField } = this.props;
-
+    const { match, field, recordField, fieldRef } = this.props;
     return (
       <div className="form-group">
         <Options url={`${match.url}/fields`} content={field} />
@@ -31,21 +30,22 @@ class Field extends Component {
           <input
             className="form-control"
             type={field.fieldType}
-            name={recordField ? recordField.id : null}
+            name={recordField.id}
             id={field.name}
             placeholder={`Enter ${this.fieldName()}`}
             onChange={this.handleChange}
             value={this.state.value}
+            ref={fieldRef}
           />
         ) : (
           <select
             className="form-control"
-            name={recordField ? recordField.id : null}
+            name={recordField.id}
             id={field.name}
             placeholder={`Enter ${field.name}`}
             onChange={this.handleChange}
             value={this.state.value}
-          >
+            ref={fieldRef}>
             {field.selectableResource
               ? field.selectableResource.options.map(option => (
                   <option key={cuid()} value={option.value}>

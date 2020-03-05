@@ -3,6 +3,7 @@ import FieldForm from "../../components/Fields/FieldForm/FieldForm";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { addField, updateField, removeField } from "../../actions/fieldActions";
+import { addRecordField } from "../../actions/recordFieldActions";
 import FieldsList from "../../components/Fields/FieldsList";
 import FieldDelete from "../../components/Fields/FieldDelete";
 
@@ -11,6 +12,7 @@ class FieldsContainer extends Component {
     const {
       match,
       addField,
+      addRecordField,
       updateField,
       organizationId,
       resource,
@@ -33,6 +35,7 @@ class FieldsContainer extends Component {
                 render={props => (
                   <FieldForm
                     addField={addField}
+                    addRecordField={addRecordField}
                     organizationId={organizationId}
                     resourceId={resource.id}
                   />
@@ -79,6 +82,7 @@ class FieldsContainer extends Component {
 
 export default connect(null, {
   addField,
+  addRecordField,
   updateField,
   removeField
 })(FieldsContainer);

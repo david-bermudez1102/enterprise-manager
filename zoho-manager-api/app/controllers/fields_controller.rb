@@ -3,10 +3,8 @@ class FieldsController < ApplicationController
 
   def create
     field = @form.fields.build(field_params)
-    record_field = @form.record_fields.build(field_params)
     if field.save
-      record_field.field = field
-      record_field.save ? render(json: FieldSerializer.new(field)) : nil
+      render(json: FieldSerializer.new(field))
     else
       render json: { errors: field.errors.full_messages }
     end
@@ -39,8 +37,8 @@ class FieldsController < ApplicationController
       :name,
       :field_type,
       :form_id,
-      selectable_resource_attributes: %i[form_id resource_field_id],
-      options_attributes: %i[value]
+      selectable_resource_attributes: [:form_id, :resource_field_id],
+      options_attributes: [:value]
     )
   end
 

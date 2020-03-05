@@ -19,6 +19,7 @@ class FieldsContainer extends Component {
       removeField,
       fields
     } = this.props;
+
     return (
       <div className="col-lg-8">
         <div className="card border-0 shadow-sm">
@@ -61,15 +62,16 @@ class FieldsContainer extends Component {
                   const field = fields.find(
                     field => field.id === parseInt(props.match.params.fieldId)
                   );
-                  return (
-                    <FieldForm
-                      updateField={updateField}
-                      organizationId={organizationId}
-                      resourceId={resource.id}
-                      field={field}
-                      action="Update Field"
-                    />
-                  );
+                  if (field)
+                    return (
+                      <FieldForm
+                        updateField={updateField}
+                        organizationId={organizationId}
+                        resourceId={resource.id}
+                        field={field}
+                        action="Update Field"
+                      />
+                    );
                 }}
               />
             </Switch>

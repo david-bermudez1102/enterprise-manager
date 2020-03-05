@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { Route, Switch, Link } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import RecordsList from "../../components/Records/RecordsList";
 import { fetchRecords } from "../../actions/recordActions";
 import RecordFieldDelete from "../../components/Records/RecordFieldDelete";
 import { removeRecordField } from "../../actions/recordFieldActions";
 import { NoContent } from "../../components/NoContent";
-
-const pluralize = require("pluralize");
 
 class RecordsContainer extends Component {
   componentDidMount() {

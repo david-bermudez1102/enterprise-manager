@@ -18,7 +18,7 @@ class SelectableOptions extends Component {
   };
 
   handleClick = event => {
-    const { selectable_resource_attributes } = this.props;
+    const { selectableResourceAttributes } = this.props;
     event.persist();
     event.preventDefault();
     this.setState(
@@ -33,10 +33,8 @@ class SelectableOptions extends Component {
       () =>
         this.props.handleSelectableChange(
           {
-            selectable_resource_attributes: {
-              ...selectable_resource_attributes,
-              _destroy: 1
-            }
+            ...selectableResourceAttributes,
+            _destroy: 1
           },
           this.state.options_attributes
         )

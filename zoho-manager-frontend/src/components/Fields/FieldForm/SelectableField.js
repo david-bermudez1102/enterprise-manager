@@ -5,7 +5,8 @@ const SelectableField = ({
   field,
   fieldType,
   handleChange,
-  handleSelectableChange
+  handleSelectableChange,
+  selectableResourceAttributes
 }) => {
   return (
     <>
@@ -20,7 +21,7 @@ const SelectableField = ({
           defaultChecked={fieldType === "selectable" ? true : false}
         />
         <label htmlFor="selectable_field" className="form-check-label">
-          <i className="fad fa-chevron-square-down"></i>Selectable Field
+          <i className="fad fa-chevron-square-down"></i> Selectable Field
         </label>
       </div>
       {fieldType === "selectable" ? (
@@ -29,6 +30,7 @@ const SelectableField = ({
           fieldType={fieldType}
           handleSelectableChange={handleSelectableChange}
           handleChange={handleChange}
+          selectableResourceAttributes={selectableResourceAttributes}
         />
       ) : null}
     </>

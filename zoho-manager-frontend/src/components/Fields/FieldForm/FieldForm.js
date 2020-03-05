@@ -30,12 +30,11 @@ export default class FieldForm extends Component {
   };
 
   handleSelectableChange = (
-    selectable_resource_attributes,
+    selectableResourceAttributes,
     options_attributes
   ) => {
     this.setState({
-      ...this.state,
-      selectable_resource_attributes,
+      selectable_resource_attributes: selectableResourceAttributes,
       options_attributes
     });
   };
@@ -87,18 +86,27 @@ export default class FieldForm extends Component {
               fieldType={this.state.field_type}
               handleChange={this.handleChange}
               handleSelectableChange={this.handleSelectableChange}
+              selectableResourceAttributes={
+                this.state.selectable_resource_attributes
+              }
             />
             <PasswordField
               field={field}
               fieldType={this.state.field_type}
               handleChange={this.handleChange}
               handleSelectableChange={this.handleSelectableChange}
+              selectableResourceAttributes={
+                this.state.selectable_resource_attributes
+              }
             />
             <SelectableField
               field={field}
               fieldType={this.state.field_type}
               handleChange={this.handleChange}
               handleSelectableChange={this.handleSelectableChange}
+              selectableResourceAttributes={
+                this.state.selectable_resource_attributes
+              }
             />
           </div>
         </div>

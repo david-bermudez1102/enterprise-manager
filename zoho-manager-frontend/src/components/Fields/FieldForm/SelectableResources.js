@@ -7,7 +7,7 @@ class SelectableResources extends Component {
   constructor(props) {
     super(props);
     const { field } = props;
-    const selectableResource = field.selectableResource;
+    const selectableResource = field ? field.selectableResource : null;
     this.state = {
       selected: selectableResource ? selectableResource.resource_id : "0",
       selectable_resource_attributes: {

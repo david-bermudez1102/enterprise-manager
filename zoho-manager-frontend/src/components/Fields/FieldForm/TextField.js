@@ -2,7 +2,12 @@ import React from "react";
 import Icon from "@mdi/react";
 import { mdiTextbox } from "@mdi/js";
 
-const TextField = ({ fieldType, handleChange, handleSelectableChange }) => {
+const TextField = ({
+  fieldType,
+  handleChange,
+  handleSelectableChange,
+  selectableResourceAttributes
+}) => {
   return (
     <div className="form-check form-check-inline">
       <input
@@ -12,17 +17,14 @@ const TextField = ({ fieldType, handleChange, handleSelectableChange }) => {
         id="text_field"
         value="text"
         onChange={event => {
+          handleChange(event);
           handleSelectableChange(
             {
-              selectable_resource_attributes: {
-                form_id: "",
-                resource_field_id: "",
-                _destroy: 1
-              }
+              ...selectableResourceAttributes,
+              _destroy: 1
             },
-            [{}]
+            []
           );
-          handleChange(event);
         }}
         defaultChecked={fieldType === "text" ? true : false}
       />

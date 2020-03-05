@@ -6,27 +6,39 @@ class SelectableChoice extends Component {
   constructor(props) {
     super(props);
     const { field } = props;
-    const choice =
-      field.selectableResource.options.length > 0 ? "connect" : "items";
+    const choice = field
+      ? field.selectableResource.options.length > 0
+        ? "connect"
+        : "items"
+      : null;
     this.state = { choice: field ? choice : "" };
   }
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
-    this.props.handleSelectableChange(
-      {
-        selectable_resource_attributes: {
-          form_id: "",
-          resource_field_id: "",
-          _destroy: 1
-        }
-      },
-      []
+    const { selectableResourceAttributes, handleSelectableChange } = this.props;
+    this.setState({ [event.target.name]: event.target.value }, () =>
+      handleSelectableChange(
+        this.state.choice !== "connect"
+          ? {
+              ...selectableResourceAttributes,
+              _destroy: 1
+            }
+          : {
+              form_id: selectableResourceAttributes.form_id,
+              resource_field_id: selectableResourceAttributes.resource_field_id
+            },
+        []
+      )
     );
   };
 
   render() {
-    const { field, fieldType, handleSelectableChange } = this.props;
+    const {
+      field,
+      fieldType,
+      handleSelectableChange,
+      selectableResourceAttributes
+    } = this.props;
     return (
       <div className="form-group">
         <hr />
@@ -60,6 +72,7 @@ class SelectableChoice extends Component {
           <SelectableResources
             field={field}
             handleSelectableChange={handleSelectableChange}
+            selectableResourceAttributes={selectableResourceAttributes}
           />
         ) : null}
         {this.state.choice === "items" ? (
@@ -67,6 +80,7 @@ class SelectableChoice extends Component {
             field={field}
             fieldType={fieldType}
             handleSelectableChange={handleSelectableChange}
+            selectableResourceAttributes={selectableResourceAttributes}
           />
         ) : null}
       </div>

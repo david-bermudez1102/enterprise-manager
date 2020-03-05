@@ -17,8 +17,8 @@ class RecordsList extends Component {
   render() {
     const { records, recordFields, resource, values } = this.props;
     return (
-      <table ref={this.myRef} className="table table-striped table-sm" >
-        <RecordsHeader {...this.props}/>
+      <table ref={this.myRef} className="table table-striped table-sm">
+        <RecordsHeader {...this.props} />
         <tbody>
           {records.map(record =>
             record.formId === resource.id ? (

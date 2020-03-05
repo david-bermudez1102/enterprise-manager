@@ -5,17 +5,25 @@ import RecordsList from "../../components/Records/RecordsList";
 import { fetchRecords } from "../../actions/recordActions";
 import RecordFieldDelete from "../../components/Records/RecordFieldDelete";
 import { removeRecordField } from "../../actions/recordFieldActions";
+import { NoContent } from "../../components/NoContent";
 
 const pluralize = require("pluralize");
 
 class RecordsContainer extends Component {
   componentDidMount() {
     const { resource, fetchRecords } = this.props;
-    fetchRecords(resource.organizationId, resource.id)
+    fetchRecords(resource.organizationId, resource.id);
   }
 
   render() {
-    const { match, resource, recordFields, removeRecordField, records, values } = this.props;
+    const {
+      match,
+      resource,
+      recordFields,
+      removeRecordField,
+      records,
+      values
+    } = this.props;
     return (
       <div className="col-lg-12 bg-white rounded shadow">
         <Link to={`${match.url}/records`}>
@@ -36,15 +44,21 @@ class RecordsContainer extends Component {
           />
           <Route
             path={`${match.path}/records`}
-            render={props => (
-              <RecordsList
-                match={match}
-                recordFields={recordFields}
-                resource={resource}
-                records={records}
-                values={values}
-              />
-            )}
+            render={props =>
+              records.length > 0 ? (
+                <RecordsList
+                  match={match}
+                  recordFields={recordFields}
+                  resource={resource}
+                  records={records}
+                  values={values}
+                />
+              ) : (
+                <NoContent>
+                  This resource doesn't have any records yet.
+                </NoContent>
+              )
+            }
           />
         </Switch>
       </div>
@@ -56,4 +70,6 @@ const mapStateToProps = ({ records, values, recordFields }) => {
   return { records, values, recordFields };
 };
 
-export default connect(mapStateToProps, { fetchRecords, removeRecordField })(RecordsContainer);
+export default connect(mapStateToProps, { fetchRecords, removeRecordField })(
+  RecordsContainer
+);

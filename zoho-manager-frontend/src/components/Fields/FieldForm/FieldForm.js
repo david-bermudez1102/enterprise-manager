@@ -56,38 +56,49 @@ export default class FieldForm extends Component {
 
   render() {
     const { action, field } = this.props;
+    console.log(this.state);
     return (
       <form onSubmit={this.handleOnSubmit}>
         <div className="form-group">
-          <TextField
-            field={field}
-            fieldType={this.state.field_type}
-            handleChange={this.handleChange}
-            handleSelectableChange={this.handleSelectableChange}
-          />
-          <PasswordField
-            fieldType={this.state.field_type}
-            handleChange={this.handleChange}
-            handleSelectableChange={this.handleSelectableChange}
-          />
-          <SelectableField
-            fieldType={this.state.field_type}
-            handleChange={this.handleChange}
-            handleSelectableChange={this.handleSelectableChange}
-          />
-        </div>
-
-        <div className="form-group">
+          <label htmlFor="field_name">Field Name:</label>
           <input
             className="form-control"
             type="text"
             name="name"
+            id="field_name"
             onChange={this.handleChange}
             value={this.state.name}
-            placeholder="Enter name"
+            placeholder="Enter field name..."
           />
         </div>
-        <input type="submit" value={action} className="btn btn-primary" />
+        <hr />
+        <div className="form-group">
+          <label htmlFor="field_type">Field Type:</label>
+          <div id="field_type">
+            <TextField
+              field={field}
+              fieldType={this.state.field_type}
+              handleChange={this.handleChange}
+              handleSelectableChange={this.handleSelectableChange}
+            />
+            <PasswordField
+              fieldType={this.state.field_type}
+              handleChange={this.handleChange}
+              handleSelectableChange={this.handleSelectableChange}
+            />
+            <SelectableField
+              fieldType={this.state.field_type}
+              handleChange={this.handleChange}
+              handleSelectableChange={this.handleSelectableChange}
+            />
+          </div>
+        </div>
+        <hr />
+        <input
+          type="submit"
+          value={action}
+          className="btn btn-primary shadow"
+        />
       </form>
     );
   }

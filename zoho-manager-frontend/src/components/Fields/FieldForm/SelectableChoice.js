@@ -10,12 +10,23 @@ class SelectableChoice extends Component {
 
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
+    this.props.handleSelectableChange(
+      {
+        selectable_resource_attributes: {
+          form_id: "",
+          resource_field_id: "",
+          _destroy: 1
+        }
+      },
+      []
+    );
   };
 
   render() {
     const { fieldType, handleSelectableChange } = this.props;
     return (
       <div className="form-group">
+        <hr />
         <div className="form-check form-check-inline">
           <input
             className="form-check-input"

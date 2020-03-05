@@ -31,35 +31,45 @@ class SelectableOptions extends Component {
       },
       () =>
         this.props.handleSelectableChange(
-          { form_id: "", resource_field_id: "", _destroy:1 },
+          {
+            selectable_resource_attributes: {
+              form_id: "",
+              resource_field_id: "",
+              _destroy: 1
+            }
+          },
           this.state.options_attributes
         )
     );
-    event.target.focus()
+    event.target.focus();
   };
 
   render() {
     const { fieldType } = this.props;
     const { options_attributes, itemValue } = this.state;
     return (
-      <div>
-        {options_attributes.map(option => (
-          <div className="form-group" key={cuid()}>
-            <input type="text" value={option.value} readOnly={true} />
-          </div>
-        ))}
-        Add items to {fieldType} field:
+      <div className="">
+        <hr />
+        <ul className="list-group list-group-flush">
+          {options_attributes.map(option => (
+            <li key={cuid()} className="list-group-item">
+              {option.value}
+            </li>
+          ))}
+        </ul>
         <div className="form-group">
+          <label htmlFor="item_value">Add items to {fieldType} field:</label>
           <input
             type="text"
             name="itemValue"
+            id="item_value"
             onChange={this.handleChange}
             className="form-control"
             value={itemValue}
             autoFocus={true}
           />
         </div>
-        <button onClick={this.handleClick} className="btn btn-primary shadow">
+        <button onClick={this.handleClick} className="btn btn-secondary shadow">
           {options_attributes.length === 0 ? "Add Item" : "Add Another Item"}
         </button>
       </div>

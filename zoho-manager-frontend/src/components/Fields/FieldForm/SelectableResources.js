@@ -15,11 +15,14 @@ class SelectableResources extends Component {
   handleChange = event => {
     event.persist();
     this.setState(prevState => {
-      this.props.handleSelectableChange({
-        ...prevState.selectable_resource_attributes,
-        [event.target.name]: event.target.value,
-        resource_field_id: ""
-      }, []);
+      this.props.handleSelectableChange(
+        {
+          ...prevState.selectable_resource_attributes,
+          [event.target.name]: event.target.value,
+          resource_field_id: ""
+        },
+        []
+      );
       return {
         ...prevState,
         selected: event.target.value,
@@ -41,38 +44,44 @@ class SelectableResources extends Component {
         [event.target.name]: event.target.value
       }
     });
-    this.props.handleSelectableChange({
-      ...this.state.selectable_resource_attributes,
-      [event.target.name]: event.target.value
-    }, []);
+    this.props.handleSelectableChange(
+      {
+        ...this.state.selectable_resource_attributes,
+        [event.target.name]: event.target.value
+      },
+      []
+    );
   };
 
   render() {
     const { resources, fields } = this.props;
     return (
-      <div>
-        Connect to:
-        <select
-          name="form_id"
-          onChange={this.handleChange}
-          value={this.state.selected}
-          className="form-control"
-        >
-          <option value="" key={cuid()}>
-            Select
-          </option>
-          {resources.map(resource => (
-            <option value={resource.id} key={cuid()}>
-              {resource.name}
+      <>
+        <div className="form-group">
+          <hr />
+          <label htmlFor="selectable_resource">Connect to:</label>
+          <select
+            name="form_id"
+            id="selectable_resource"
+            onChange={this.handleChange}
+            value={this.state.selected}
+            className="form-control">
+            <option value="" key={cuid()}>
+              Select
             </option>
-          ))}
-        </select>
+            {resources.map(resource => (
+              <option value={resource.id} key={cuid()}>
+                {resource.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <SelectableResourcesOptions
           fields={fields}
           selected={this.state.selected}
           handleChange={this.handleResourcesOptionsChange}
         />
-      </div>
+      </>
     );
   }
 }

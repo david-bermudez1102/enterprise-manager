@@ -20,45 +20,33 @@ class Navbar extends Component {
           icon: "fas fa-sign-out-alt",
           text: "Logout",
           loginRequired: true
+        },
+        {
+          path: `/organizations/${props.organizations[0].id}/resources/new`,
+          text: "Add Resource",
+          icon: "fas fa-plus",
+          loginRequired: true
+        },
+        {
+          path: `/organizations/${props.organizations[0].id}/resources`,
+          text: "Resources",
+          icon: "fas fa-layer-group",
+          loginRequired: true
+        },
+        {
+          path: `/settings`,
+          text: "Settings",
+          icon: "fas fa-cog",
+          loginRequired: true
+        },
+        {
+          path: `/notifications`,
+          text: "Notifications",
+          icon: "fas fa-bell",
+          loginRequired: true
         }
       ]
     };
-  }
-
-  componentDidMount() {
-    const { organizations } = this.props;
-    return organizations.length > 0
-      ? this.setState({
-          ...this.state,
-          links: [
-            ...this.state.links,
-            {
-              path: `/organizations/${organizations[0].id}/resources/new`,
-              text: "Add Resource",
-              icon: "fas fa-plus",
-              loginRequired: true
-            },
-            {
-              path: `/organizations/${organizations[0].id}/resources`,
-              text: "Resources",
-              icon: "fas fa-layer-group",
-              loginRequired: true
-            },
-            {
-              path: `/settings`,
-              text: "Settings",
-              icon: "fas fa-cog",
-              loginRequired: true
-            },
-            {
-              path: `/notifications`,
-              text: "Notifications",
-              icon: "fas fa-bell",
-              loginRequired: true
-            }
-          ]
-        })
-      : null;
   }
 
   render() {
@@ -83,8 +71,7 @@ class Navbar extends Component {
                         to={link.path}
                         exact
                         className="nav-link"
-                        activeClassName="active bg-light"
-                      >
+                        activeClassName="active bg-light">
                         {" "}
                         <i className={link.icon}></i> {link.text}
                       </NavLink>
@@ -98,8 +85,7 @@ class Navbar extends Component {
                         to={link.path}
                         exact
                         className="nav-link"
-                        activeClassName="active bg-light"
-                      >
+                        activeClassName="active bg-light">
                         <i className={link.icon}></i> {link.text}
                       </NavLink>
                     </li>

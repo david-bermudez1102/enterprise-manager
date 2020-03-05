@@ -30,7 +30,7 @@ class App extends Component {
     return (
       <Router>
         <div className="bg-light container-fluid d-flex p-0 flex-column min-vh-100">
-          {!session.isLoggedIn ? (
+          {!session.isLoggedIn && organizations.length > 0 ? (
             <Navbar session={session} organizations={organizations} />
           ) : null}
           <Switch>

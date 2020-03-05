@@ -25,43 +25,42 @@ class RecordsContainer extends Component {
       values
     } = this.props;
     return (
-      <div className="col-lg-12 bg-white rounded shadow">
-        <Link to={`${match.url}/records`}>
-          View All {pluralize(resource.name)}
-        </Link>
-        <Switch>
-          <Route
-            path={`${match.path}/record_fields/:recordFieldId/delete`}
-            render={props => (
-              <RecordFieldDelete
-                {...props}
-                redirectTo={`${match.url}/records`}
-                organizationId={resource.organizationId}
-                resourceId={resource.id}
-                removeRecordField={removeRecordField}
-              />
-            )}
-          />
-          <Route
-            path={`${match.path}/records`}
-            render={props =>
-              records.length > 0 ? (
-                <RecordsList
-                  match={match}
-                  recordFields={recordFields}
-                  resource={resource}
-                  records={records}
-                  values={values}
-                />
-              ) : (
-                <NoContent>
-                  This resource doesn't have any records yet.
-                </NoContent>
-              )
-            }
-          />
-        </Switch>
-      </div>
+      <Switch>
+        <Route
+          path={`${match.path}/record_fields/:recordFieldId/delete`}
+          render={props => (
+            <RecordFieldDelete
+              {...props}
+              redirectTo={`${match.url}/records`}
+              organizationId={resource.organizationId}
+              resourceId={resource.id}
+              removeRecordField={removeRecordField}
+            />
+          )}
+        />
+        <div className="col-lg-12 pt-3">
+          <div className="bg-white shadow-sm">
+            <Route
+              path={`${match.path}/records`}
+              render={props =>
+                records.length > 0 ? (
+                  <RecordsList
+                    match={match}
+                    recordFields={recordFields}
+                    resource={resource}
+                    records={records}
+                    values={values}
+                  />
+                ) : (
+                  <NoContent>
+                    This resource doesn't have any records yet.
+                  </NoContent>
+                )
+              }
+            />
+          </div>
+        </div>
+      </Switch>
     );
   }
 }

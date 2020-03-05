@@ -20,7 +20,7 @@ class Home extends Component {
       <div className="w-100 d-flex flex-grow-1">
         {session.isLoggedIn ? <SideBar session={session} /> : null}
         <div className="w-100">
-          {session.isLoggedIn ? (
+          {session.isLoggedIn && organizations.length > 0 ? (
             <Navbar session={session} organizations={organizations} />
           ) : null}
           <main className="w-100 align-items-center justify-content-center bg-transparent p-4">

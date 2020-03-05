@@ -11,7 +11,9 @@ export const recordFieldsReducer = (state = [], action) => {
       ];
     case "REMOVE_RECORD_FIELD":
       return [
-        ...state.filter(recordField => recordField.id !== action.recordFieldId)
+        ...state.filter(
+          recordField => recordField.id !== parseInt(action.recordFieldId)
+        )
       ];
     default:
       return state;

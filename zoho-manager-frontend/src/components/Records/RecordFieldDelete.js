@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
 export default class RecordFieldDelete extends Component {
   constructor() {
@@ -18,6 +19,9 @@ export default class RecordFieldDelete extends Component {
   }
 
   render() {
-    return <div>Done</div>;
+    const { redirectTo } = this.props;
+    return this.state.status === "deleted" ? (
+      <Redirect to={redirectTo} />
+    ) : null;
   }
 }

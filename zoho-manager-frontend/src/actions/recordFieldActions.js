@@ -49,7 +49,11 @@ export const removeRecordField = (organizationId, formId, recordFieldId) => {
       .then(field => camelcaseKeys(field))
       .then(field =>
         field.message
-          ? dispatch({ type: "REMOVE_FIELD", recordFieldId, status: "deleted" })
+          ? dispatch({
+              type: "REMOVE_RECORD_FIELD",
+              recordFieldId,
+              status: "deleted"
+            })
           : null
       );
   };

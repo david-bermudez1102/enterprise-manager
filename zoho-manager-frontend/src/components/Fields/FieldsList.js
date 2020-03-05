@@ -15,7 +15,6 @@ class FieldsList extends Component {
   }
 
   handleSubmit = event => {
-    event.persist();
     event.preventDefault();
     const { resource, addRecord } = this.props;
     const record = {

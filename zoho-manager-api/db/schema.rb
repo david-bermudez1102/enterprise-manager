@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_05_230457) do
+ActiveRecord::Schema.define(version: 2020_03_06_051728) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -73,6 +73,18 @@ ActiveRecord::Schema.define(version: 2020_03_05_230457) do
     t.index ["organization_id"], name: "index_forms_on_organization_id"
   end
 
+  create_table "key_values", force: :cascade do |t|
+    t.integer "record_key_id"
+    t.integer "record_value_id"
+    t.integer "option_id"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_key_values_on_option_id"
+    t.index ["record_key_id"], name: "index_key_values_on_record_key_id"
+    t.index ["record_value_id"], name: "index_key_values_on_record_value_id"
+  end
+
   create_table "managers", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -103,6 +115,13 @@ ActiveRecord::Schema.define(version: 2020_03_05_230457) do
     t.integer "field_id"
     t.index ["field_id"], name: "index_record_fields_on_field_id"
     t.index ["form_id"], name: "index_record_fields_on_form_id"
+  end
+
+  create_table "record_keys", force: :cascade do |t|
+    t.integer "field_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["field_id"], name: "index_record_keys_on_field_id"
   end
 
   create_table "records", force: :cascade do |t|

@@ -16,7 +16,7 @@ class ValuesController < ApplicationController
 
   def record_params
     params.require(:record).permit(
-      values_attributes: %i[record_field_id content]
+      values_attributes: [:record_field_id,:content]
     )
   end
 

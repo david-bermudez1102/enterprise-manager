@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TextField from "./TextField";
 import PasswordField from "./PasswordField";
 import SelectableField from "./SelectableField";
+import RecordKeyField from "./RecordKeyField";
 
 export default class FieldForm extends Component {
   constructor(props) {
@@ -39,6 +40,12 @@ export default class FieldForm extends Component {
     });
   };
 
+  handleKeyFieldChange = KeyFieldAttributes => {
+    this.setState({
+      record_key_attributes: KeyFieldAttributes
+    });
+  };
+
   handleOnSubmit = event => {
     const {
       addField,
@@ -61,7 +68,7 @@ export default class FieldForm extends Component {
   };
 
   render() {
-    const { action, field } = this.props;
+    const { action, field, resourceId } = this.props;
     console.log(this.state);
     return (
       <form onSubmit={this.handleOnSubmit}>
@@ -104,6 +111,17 @@ export default class FieldForm extends Component {
               fieldType={this.state.field_type}
               handleChange={this.handleChange}
               handleSelectableChange={this.handleSelectableChange}
+              selectableResourceAttributes={
+                this.state.selectable_resource_attributes
+              }
+            />
+            <RecordKeyField
+              field={field}
+              resourceId={resourceId}
+              fieldType={this.state.field_type}
+              handleChange={this.handleChange}
+              handleSelectableChange={this.handleSelectableChange}
+              handleKeyFieldChange={this.handleKeyFieldChange}
               selectableResourceAttributes={
                 this.state.selectable_resource_attributes
               }

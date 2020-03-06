@@ -38,7 +38,8 @@ class FieldsController < ApplicationController
       :field_type,
       :form_id,
       selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
-      options_attributes: [:value]
+      options_attributes: [:value],
+      record_key_attributes: [:field_id]
     )
   end
 

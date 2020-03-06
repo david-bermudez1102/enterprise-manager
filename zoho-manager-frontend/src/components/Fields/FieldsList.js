@@ -22,7 +22,16 @@ class FieldsList extends Component {
       values_attributes: this.fields
         .filter(n => n)
         .map(field => {
-          return { record_field_id: field.name, content: field.value };
+          return {
+            record_field_id: field.name,
+            content: field.value,
+            record_value_id: field.options
+              ? field.options[field.selectedIndex].dataset.recordValueId
+              : undefined,
+            option_id: field.options
+              ? field.options[field.selectedIndex].dataset.optionValueId
+              : undefined
+          };
         })
     };
     addRecord(record, resource.organizationId, resource.id);

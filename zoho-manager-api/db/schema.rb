@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_02_032440) do
+ActiveRecord::Schema.define(version: 2020_03_05_230457) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -133,10 +133,14 @@ ActiveRecord::Schema.define(version: 2020_03_02_032440) do
     t.integer "record_field_id"
     t.integer "record_id"
     t.integer "field_id"
+    t.integer "record_value_id"
+    t.integer "option_id"
     t.index ["field_id"], name: "index_values_on_field_id"
+    t.index ["option_id"], name: "index_values_on_option_id"
     t.index ["organization_id"], name: "index_values_on_organization_id"
     t.index ["record_field_id"], name: "index_values_on_record_field_id"
     t.index ["record_id"], name: "index_values_on_record_id"
+    t.index ["record_value_id"], name: "index_values_on_record_value_id"
   end
 
 end

@@ -5,12 +5,18 @@ import Options from "../Options/Options";
 class Field extends Component {
   constructor() {
     super();
-    this.state = { value: "" };
+    this.state = { id: "", value: "" };
   }
 
   handleChange = event => {
     event.persist();
-    this.setState({ value: event.target.value });
+    this.setState({
+      recordValueId:
+        event.target.options[event.target.selectedIndex].dataset.recordValueId,
+      optionValueId:
+        event.target.options[event.target.selectedIndex].dataset.optionValueId,
+      value: event.target.value
+    });
   };
 
   fieldName = () => {
@@ -45,15 +51,23 @@ class Field extends Component {
             placeholder={`Enter ${field.name}`}
             onChange={this.handleChange}
             value={this.state.value}
+            data-record-value-id={this.state.recordValueId}
+            data-option-value-id={this.state.optionValueId}
             ref={fieldRef}>
             {field.selectableResource
               ? field.selectableResource.options.map(option => (
-                  <option key={cuid()} value={option.value} data-id={option.id}>
+                  <option
+                    key={cuid()}
+                    value={option.value}
+                    data-record-value-id={option.id}>
                     {option.value}
                   </option>
                 ))
               : field.options.map(option => (
-                  <option key={cuid()} value={option.value} data-id={option.id}>
+                  <option
+                    key={cuid()}
+                    value={option.value}
+                    data-option-value-id={option.id}>
                     {option.value}
                   </option>
                 ))}

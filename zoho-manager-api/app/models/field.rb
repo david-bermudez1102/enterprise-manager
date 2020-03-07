@@ -6,7 +6,7 @@ class Field < ApplicationRecord
   has_one :record_field, dependent: :nullify
   has_many :options, dependent: :nullify
   has_many :values, through: :record_field
-  
+  has_many :key_values, through: :record_key
   accepts_nested_attributes_for :selectable_resource,
                                 allow_destroy: true,
                                 reject_if: proc { |attributes|

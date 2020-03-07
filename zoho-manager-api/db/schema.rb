@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_06_051728) do
+ActiveRecord::Schema.define(version: 2020_03_06_190106) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -119,9 +119,11 @@ ActiveRecord::Schema.define(version: 2020_03_06_051728) do
 
   create_table "record_keys", force: :cascade do |t|
     t.integer "field_id"
+    t.integer "resource_field_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["field_id"], name: "index_record_keys_on_field_id"
+    t.index ["resource_field_id"], name: "index_record_keys_on_resource_field_id"
   end
 
   create_table "records", force: :cascade do |t|
@@ -154,7 +156,9 @@ ActiveRecord::Schema.define(version: 2020_03_06_051728) do
     t.integer "field_id"
     t.integer "record_value_id"
     t.integer "option_id"
+    t.integer "key_value_id"
     t.index ["field_id"], name: "index_values_on_field_id"
+    t.index ["key_value_id"], name: "index_values_on_key_value_id"
     t.index ["option_id"], name: "index_values_on_option_id"
     t.index ["organization_id"], name: "index_values_on_organization_id"
     t.index ["record_field_id"], name: "index_values_on_record_field_id"

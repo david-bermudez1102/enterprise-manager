@@ -10,11 +10,13 @@ class Field extends Component {
 
   handleChange = event => {
     event.persist();
+    const option = event.target.options
+      ? event.target.options[event.target.selectedIndex]
+      : null;
+    const optionDataSet = option ? option.dataset : null;
     this.setState({
-      recordValueId:
-        event.target.options[event.target.selectedIndex].dataset.recordValueId,
-      optionValueId:
-        event.target.options[event.target.selectedIndex].dataset.optionValueId,
+      recordValueId: optionDataSet ? optionDataSet.recordValueId : null,
+      optionValueId: optionDataSet ? optionDataSet.optionValueId : null,
       value: event.target.value
     });
   };

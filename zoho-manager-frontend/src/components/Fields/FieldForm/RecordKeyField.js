@@ -27,10 +27,11 @@ class RecordKeyField extends Component {
   };
 
   handleFieldChange = event => {
+    event.persist();
     this.setState(
       {
         fieldId: event.target.value,
-        record_key_attributes: { field_id: event.target.value }
+        record_key_attributes: { resource_field_id: event.target.value }
       },
       () => this.props.handleKeyFieldChange(this.state.record_key_attributes)
     );

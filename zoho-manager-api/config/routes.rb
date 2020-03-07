@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         resources :record_fields
         resources :records
         resources :values
+        resources :key_values
       end
     end
     resources :accounts

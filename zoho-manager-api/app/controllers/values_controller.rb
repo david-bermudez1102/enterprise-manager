@@ -14,12 +14,6 @@ class ValuesController < ApplicationController
 
   private
 
-  def record_params
-    params.require(:record).permit(
-      values_attributes: [:record_field_id,:content]
-    )
-  end
-
   def set_organization
     @organization = Organization.find_by(id: params[:organization_id])
   end

@@ -36,12 +36,12 @@ class RecordsContainer extends Component {
             />
           )}
         />
-        <div className="col-lg-12 pt-3">
-          <div className="bg-white shadow-sm">
-            <Route
-              path={`${match.path}/records`}
-              render={props =>
-                records.length > 0 ? (
+        <Route
+          path={`${match.path}/records`}
+          render={props => (
+            <div className="col-lg-12 pt-3">
+              <div className="bg-white shadow-sm">
+                {records.length > 0 ? (
                   <RecordsList
                     match={match}
                     recordFields={recordFields}
@@ -53,11 +53,11 @@ class RecordsContainer extends Component {
                   <NoContent>
                     This resource doesn't have any records yet.
                   </NoContent>
-                )
-              }
-            />
-          </div>
-        </div>
+                )}
+              </div>
+            </div>
+          )}
+        />
       </Switch>
     );
   }

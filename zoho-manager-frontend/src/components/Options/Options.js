@@ -47,7 +47,7 @@ export default class Options extends Component {
         <div
           onMouseEnter={this.handleOpen}
           onMouseLeave={this.handleClose}
-          className="w-100 d-flex justify-content-between">
+          className="w-100 d-flex justify-content-between align-items-end">
           <label htmlFor={content.name}>{this.contentName()}</label>
           <div
             className="d-flex justify-content-between"
@@ -55,11 +55,17 @@ export default class Options extends Component {
               minWidth: "40px",
               visibility: isOpen ? "visible" : "hidden"
             }}>
-            <a href="#" className="text-primary" onClick={this.handleShowModal}>
+            <button
+              className="btn btn-transparent text-primary px-0"
+              onClick={this.handleShowModal}>
               <i className="fad fa-trash" style={{ fontSize: fontSize }}></i>
-            </a>
+            </button>
             <Link to={`${url}/${content.id}/edit`}>
-              <i className="fad fa-edit" style={{ fontSize: fontSize }}></i>
+              <button
+                className="btn btn-transparent text-primary px-0"
+                onClick={this.handleShowModal}>
+                <i className="fad fa-edit" style={{ fontSize: fontSize }}></i>
+              </button>
             </Link>
           </div>
         </div>

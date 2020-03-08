@@ -37,13 +37,13 @@ class CheckBoxField extends Component {
             id="checkbox_field"
             value="checkbox"
             onChange={this.handleChange}
-            defaultChecked={fieldType === "radio" ? true : false}
+            defaultChecked={fieldType === "checkbox" ? true : false}
           />
-          <label htmlFor="radio_field" className="form-check-label">
+          <label htmlFor="checkbox_field" className="form-check-label">
             Checkbox Set <i className="fad fa-check-square text-primary"></i>
           </label>
         </div>
-        {fieldType === "radio" ? (
+        {fieldType === "checkbox" ? (
           <SelectableOptions
             field={field}
             fieldType={fieldType}

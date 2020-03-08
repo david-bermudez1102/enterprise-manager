@@ -6,7 +6,7 @@ class Value < ApplicationRecord
   belongs_to :record_value, class_name:"Value", optional: true
   belongs_to :key_value, optional: true
   before_create :generate_key_value
-
+  has_many :checkbox_options
 
   def generate_key_value
     unless self.record_value.nil?

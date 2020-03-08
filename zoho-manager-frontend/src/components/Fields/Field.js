@@ -5,7 +5,7 @@ import Options from "../Options/Options";
 class Field extends Component {
   constructor() {
     super();
-    this.state = { id: "", value: "" };
+    this.state = { id: "", value: "", checked: {}, checkedValues: {} };
   }
 
   handleChange = event => {
@@ -19,6 +19,16 @@ class Field extends Component {
     this.setState({
       recordValueId: optionDataSet ? optionDataSet.recordValueId : null,
       optionValueId: optionDataSet ? optionDataSet.optionValueId : null,
+      checked: {
+        ...this.state.checked,
+        [event.target.id]: event.target.checked
+      },
+      checkedValues: {
+        ...this.state.checkedValues,
+        [event.target.dataset.optionValueId]: event.target.checked
+          ? event.target.value
+          : undefined
+      },
       value: event.target.value
     });
   };
@@ -81,7 +91,7 @@ class Field extends Component {
                   id={`radio_field_${option.id}`}
                   onChange={this.handleChange}
                   value={option.value}
-                  checked={this.state.value === option.value}
+                  checked={this.state.checked[`radio_field_${option.id}`]}
                   data-option-value-id={option.id}
                 />
                 <label
@@ -90,6 +100,31 @@ class Field extends Component {
                   {option.value}
                 </label>
               </React.Fragment>
+            ))}
+          </div>
+        );
+        break;
+      case "checkbox":
+        inputField = (
+          <div className="form-check form-check-inline" ref={fieldRef}>
+            {field.options.map(option => (
+              <fieldset key={cuid()}>
+                <input
+                  className="form-check-input"
+                  type={field.fieldType}
+                  name={recordField.id}
+                  id={`checkbox_field_${option.id}`}
+                  onChange={this.handleChange}
+                  value={option.value}
+                  checked={this.state.checked[`checkbox_field_${option.id}`]}
+                  data-option-value-id={option.id}
+                />
+                <label
+                  htmlFor={`radio_field_${option.id}`}
+                  className="form-check-label">
+                  {option.value}
+                </label>
+              </fieldset>
             ))}
           </div>
         );

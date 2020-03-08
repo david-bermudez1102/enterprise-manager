@@ -9,9 +9,11 @@ class RecordFieldSerializer
   attribute :selectable_resource, if: proc { |field|
                           field.field_type == "selectable"
                         } do |object|
-    object.selectable_resource ? { options: object.selectable_resource.form.fields.find_by(id: object.selectable_resource.resource_field_id).values.map do |value|
+    if object.selectable_resource
+    { options: object.selectable_resource.form.fields.find_by(id: object.selectable_resource.resource_field_id).values.map do |value|
       { id: value.id, value: value.content }
-    end || [] } : nil
+    end || [] } 
+  end
   end
   attribute :options, if: proc { |field|
               field.field_type == "selectable"

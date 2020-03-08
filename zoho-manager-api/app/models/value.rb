@@ -23,7 +23,7 @@ class Value < ApplicationRecord
           self.record_value.save
            Value.create(record:self.record, field_id:record_key.field_id, record_field_id:record_key.field_id, content: value, key_value:new_key_value)
            Value.where(content: "", record_field_id:record_key.field_id).update_all(content: value)
-           Record.joins(:values).where(values:{key_value: new_key_value}).map do |rec|
+           Record.joins(:values).where(values: {record_value_id: record_value.id}).map do |rec|
             rec.values.find_or_create_by(content:value, record_field_id:record_key.field_id)
            end
           end

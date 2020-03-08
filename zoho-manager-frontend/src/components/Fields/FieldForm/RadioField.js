@@ -1,22 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import cuid from "cuid";
 import SelectableOptions from "./SelectableOptions";
 
 class RadioField extends Component {
-  constructor(props) {
-    super(props);
-    const { field } = props;
-    this.state = {
-      fieldId:
-        field && field.recordKey ? field.recordKey.resource_field_id : "",
-      record_key_attributes: {
-        resource_field_id:
-          field && field.recordKey ? field.recordKey.resource_field_id : ""
-      }
-    };
-  }
-
   handleChange = event => {
     const {
       handleChange,
@@ -31,17 +17,7 @@ class RadioField extends Component {
       },
       []
     );
-  };
-
-  handleFieldChange = event => {
-    event.persist();
-    this.setState(
-      {
-        fieldId: event.target.value,
-        record_key_attributes: { resource_field_id: event.target.value }
-      },
-      () => this.props.handleKeyFieldChange(this.state.record_key_attributes)
-    );
+    this.props.handleKeyFieldChange({ resource_field_id: "" });
   };
 
   render() {

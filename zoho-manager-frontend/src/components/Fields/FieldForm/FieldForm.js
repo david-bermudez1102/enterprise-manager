@@ -140,6 +140,7 @@ export default class FieldForm extends Component {
               selectableResourceAttributes={
                 this.state.selectable_resource_attributes
               }
+              handleKeyFieldChange={this.handleKeyFieldChange}
             />
           </div>
         </div>

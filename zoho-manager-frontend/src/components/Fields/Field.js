@@ -10,9 +10,11 @@ class Field extends Component {
 
   handleChange = event => {
     event.persist();
-    const option = event.target.options
-      ? event.target.options[event.target.selectedIndex]
-      : null;
+    let option;
+    if (event.target.options)
+      option = event.target.options[event.target.selectedIndex];
+    else if (event.target.checked) option = event.target;
+
     const optionDataSet = option ? option.dataset : null;
     this.setState({
       recordValueId: optionDataSet ? optionDataSet.recordValueId : null,
@@ -31,23 +33,10 @@ class Field extends Component {
 
   render() {
     const { match, field, recordField, fieldRef } = this.props;
-    return (
-      <div className="form-group">
-        <Options url={`${match.url}/fields`} content={field} />
-        {field.fieldType !== "selectable" ? (
-          field.fieldType !== "key_field" ? (
-            <input
-              className="form-control"
-              type={field.fieldType}
-              name={recordField.id}
-              id={field.name}
-              placeholder={`Enter ${this.fieldName()}`}
-              onChange={this.handleChange}
-              value={this.state.value}
-              ref={fieldRef}
-            />
-          ) : null
-        ) : (
+    let inputField;
+    switch (field.fieldType) {
+      case "selectable":
+        inputField = (
           <select
             className="form-control"
             name={recordField.id}
@@ -76,7 +65,55 @@ class Field extends Component {
                   </option>
                 ))}
           </select>
-        )}
+        );
+        break;
+      case "key_field":
+        break;
+      case "radio":
+        inputField = (
+          <div className="form-check form-check-inline" ref={fieldRef}>
+            {field.options.map(option => (
+              <React.Fragment key={cuid()}>
+                <input
+                  className="form-check-input"
+                  type={field.fieldType}
+                  name={recordField.id}
+                  id={`radio_field_${option.id}`}
+                  onChange={this.handleChange}
+                  value={option.value}
+                  checked={this.state.value === option.value}
+                  data-option-value-id={option.id}
+                />
+                <label
+                  htmlFor={`radio_field_${option.id}`}
+                  className="form-check-label">
+                  {option.value}
+                </label>
+              </React.Fragment>
+            ))}
+          </div>
+        );
+        break;
+      default:
+        inputField = (
+          <input
+            className="form-control"
+            type={field.fieldType}
+            name={recordField.id}
+            id={field.name}
+            placeholder={`Enter ${this.fieldName()}`}
+            onChange={this.handleChange}
+            value={this.state.value}
+            ref={fieldRef}
+          />
+        );
+        break;
+    }
+    console.log(this.state);
+    return (
+      <div className="form-group">
+        <Options url={`${match.url}/fields`} content={field} />
+        {inputField}
       </div>
     );
   }

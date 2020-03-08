@@ -3,6 +3,7 @@ import TextField from "./TextField";
 import PasswordField from "./PasswordField";
 import SelectableField from "./SelectableField";
 import RecordKeyField from "./RecordKeyField";
+import RadioField from "./RadioField";
 
 export default class FieldForm extends Component {
   constructor(props) {
@@ -18,6 +19,10 @@ export default class FieldForm extends Component {
         resource_field_id: selectableResource
           ? selectableResource.resource_field_id || ""
           : ""
+      },
+      record_key_attributes: {
+        resource_field_id:
+          field && field.recordKey ? field.recordKey.resource_field_id : ""
       }
     };
   }
@@ -60,14 +65,16 @@ export default class FieldForm extends Component {
         addRecordField(field, organizationId)
       );
     if (updateField) updateField(this.state, organizationId, field.id);
-    this.setState({
-      ...this.state,
-      field_type: "",
-      name: ""
-    });
+    if (addField)
+      this.setState({
+        ...this.state,
+        field_type: "",
+        name: ""
+      });
   };
 
   render() {
+    console.log(this.state);
     const { action, field, resourceId } = this.props;
     return (
       <form onSubmit={this.handleOnSubmit}>
@@ -87,6 +94,17 @@ export default class FieldForm extends Component {
         <div className="form-group">
           <label htmlFor="field_type">Field Type:</label>
           <div id="field_type">
+            <RecordKeyField
+              field={field}
+              resourceId={resourceId}
+              fieldType={this.state.field_type}
+              handleChange={this.handleChange}
+              handleSelectableChange={this.handleSelectableChange}
+              handleKeyFieldChange={this.handleKeyFieldChange}
+              selectableResourceAttributes={
+                this.state.selectable_resource_attributes
+              }
+            />
             <TextField
               field={field}
               fieldType={this.state.field_type}
@@ -114,13 +132,11 @@ export default class FieldForm extends Component {
                 this.state.selectable_resource_attributes
               }
             />
-            <RecordKeyField
+            <RadioField
               field={field}
-              resourceId={resourceId}
               fieldType={this.state.field_type}
               handleChange={this.handleChange}
               handleSelectableChange={this.handleSelectableChange}
-              handleKeyFieldChange={this.handleKeyFieldChange}
               selectableResourceAttributes={
                 this.state.selectable_resource_attributes
               }

@@ -17,6 +17,6 @@ class FieldSerializer
     end.compact, resource_field_id: object.selectable_resource.resource_field_id, resource_id: object.selectable_resource.form_id } : nil
   end
   attribute :options, if: Proc.new { |field|
-                        field.field_type == "selectable"
+                        field.field_type == "selectable" || field.field_type == "radio"
                       }
 end

@@ -1,13 +1,19 @@
 import React, { Component } from "react";
-import Icon from "@mdi/react";
-import { mdiTextboxPassword } from "@mdi/js";
 import { connect } from "react-redux";
 import cuid from "cuid";
 
 class RecordKeyField extends Component {
   constructor(props) {
     super(props);
-    this.state = { fieldId: "", record_key_attributes: {} };
+    const { field } = props;
+    this.state = {
+      fieldId:
+        field && field.recordKey ? field.recordKey.resource_field_id : "",
+      record_key_attributes: {
+        resource_field_id:
+          field && field.recordKey ? field.recordKey.resource_field_id : ""
+      }
+    };
   }
 
   handleChange = event => {
@@ -43,36 +49,37 @@ class RecordKeyField extends Component {
       f => f.formId === resourceId && f.fieldType === "selectable"
     );
     return (
-      <div className="form-check form-check-inline">
-        <input
-          className="form-check-input"
-          type="radio"
-          name="field_type"
-          id="record_key_field"
-          value="key_field"
-          onChange={this.handleChange}
-          defaultChecked={fieldType === "key_field" ? true : false}
-        />
-        <label htmlFor="record_key_field" className="form-check-label">
-          Key Field{" "}
-          <Icon
-            path={mdiTextboxPassword}
-            title="Key Field"
-            size={2}
-            color="#07689F"
+      <>
+        <div className="form-check form-check-inline">
+          <input
+            className="form-check-input"
+            type="radio"
+            name="field_type"
+            id="record_key_field"
+            value="key_field"
+            onChange={this.handleChange}
+            defaultChecked={fieldType === "key_field" ? true : false}
           />
-        </label>
+          <label htmlFor="record_key_field" className="form-check-label">
+            Key Field <i className="fas fa-key"></i>
+          </label>
+        </div>
         {fieldType === "key_field" ? (
-          <select onChange={this.handleFieldChange} value={this.state.fieldId}>
-            <option value="">Select a field</option>
-            {fields.map(field => (
-              <option key={cuid()} value={field.id}>
-                {field.name}
-              </option>
-            ))}
-          </select>
+          <div className="form-group">
+            <select
+              onChange={this.handleFieldChange}
+              value={this.state.fieldId}
+              className="form-control">
+              <option value="">Select a field</option>
+              {fields.map(field => (
+                <option key={cuid()} value={field.id}>
+                  {field.name}
+                </option>
+              ))}
+            </select>
+          </div>
         ) : null}
-      </div>
+      </>
     );
   }
 }

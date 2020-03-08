@@ -16,6 +16,6 @@ class RecordFieldSerializer
   end
   end
   attribute :options, if: proc { |field|
-              field.field_type == "selectable"
+              field.field_type == "selectable" || field.field_type == "radio"
             }
 end

@@ -22,15 +22,20 @@ class FieldsList extends Component {
       values_attributes: this.fields
         .filter(n => n)
         .map(field => {
+          let option;
+          if (field.options) option = field.options[field.selectedIndex];
+          else if (field.querySelector("input[checked]"))
+            option = field.querySelector("input[checked]");
+          const optionDataSet = option ? option.dataset : null;
           return {
-            record_field_id: field.name,
-            content: field.value,
-            record_value_id: field.options
-              ? field.options[field.selectedIndex].dataset.recordValueId
-              : undefined,
-            option_id: field.options
-              ? field.options[field.selectedIndex].dataset.optionValueId
-              : undefined
+            record_field_id: field.querySelector("input[checked]")
+              ? option.name
+              : field.name,
+            content: field.querySelector("input[checked]")
+              ? option.value
+              : field.value,
+            record_value_id: optionDataSet ? optionDataSet.recordValueId : null,
+            option_value_id: optionDataSet ? optionDataSet.optionValueId : null
           };
         })
     };

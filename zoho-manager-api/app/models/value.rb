@@ -8,6 +8,8 @@ class Value < ApplicationRecord
   before_create :generate_key_value
   has_many :checkbox_options
 
+  accepts_nested_attributes_for :checkbox_options, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
+
   def generate_key_value
     unless self.record_value.nil?
       if self.record_value.key_value.nil?

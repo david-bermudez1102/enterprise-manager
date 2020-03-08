@@ -22,24 +22,43 @@ class FieldsList extends Component {
       values_attributes: this.fields
         .filter(n => n)
         .map(field => {
+          const radio = field.querySelector("input[type='radio']");
+          const checkbox = field.querySelector("input[type='checkbox']");
+          const checkboxFieldsList = field.querySelectorAll(
+            "input[type='checkbox'][checked]"
+          );
           let option;
           if (field.options) option = field.options[field.selectedIndex];
-          else if (field.querySelector("input[checked]"))
-            option = field.querySelector("input[checked]");
+          else if (radio) option = radio;
+          else if (checkbox) option = checkbox;
           const optionDataSet = option ? option.dataset : null;
+
+          let content;
+          if (field.querySelector("input[type='radio'][checked]"))
+            content = field.querySelector("input[type='radio'][checked]").value;
+          else if (checkbox)
+            content = Array.from(checkboxFieldsList)
+              .map(cb => cb.value)
+              .join(", ");
+          else content = field.value;
+
           return {
-            record_field_id: field.querySelector("input[checked]")
-              ? option.name
-              : field.name,
-            content: field.querySelector("input[checked]")
-              ? option.value
-              : field.value,
-            record_value_id: optionDataSet ? optionDataSet.recordValueId : null,
-            option_value_id: optionDataSet ? optionDataSet.optionValueId : null
+            record_field_id: radio || checkbox ? option.name : field.name,
+            content: content,
+            record_value_id:
+              optionDataSet && !checkbox ? optionDataSet.recordValueId : null,
+            option_value_id:
+              optionDataSet && !checkbox ? optionDataSet.optionValueId : null,
+            checkbox_options_attributes: checkbox
+              ? Array.from(checkboxFieldsList).map(cb => {
+                  return { option_id: cb.dataset.optionValueId };
+                })
+              : null
           };
         })
     };
     addRecord(record, resource.organizationId, resource.id);
+    console.log(record);
   };
 
   render() {

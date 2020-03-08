@@ -5,7 +5,7 @@ import Options from "../Options/Options";
 class Field extends Component {
   constructor() {
     super();
-    this.state = { id: "", value: "", checked: {}, checkedValues: {} };
+    this.state = { id: "", value: "", checked: {} };
   }
 
   handleChange = event => {
@@ -22,12 +22,6 @@ class Field extends Component {
       checked: {
         ...this.state.checked,
         [event.target.id]: event.target.checked
-      },
-      checkedValues: {
-        ...this.state.checkedValues,
-        [event.target.dataset.optionValueId]: event.target.checked
-          ? event.target.value
-          : undefined
       },
       value: event.target.value
     });
@@ -91,7 +85,7 @@ class Field extends Component {
                   id={`radio_field_${option.id}`}
                   onChange={this.handleChange}
                   value={option.value}
-                  checked={this.state.checked[`radio_field_${option.id}`]}
+                  checked={this.state.value === option.value}
                   data-option-value-id={option.id}
                 />
                 <label
@@ -144,7 +138,6 @@ class Field extends Component {
         );
         break;
     }
-    console.log(this.state);
     return (
       <div className="form-group">
         <Options url={`${match.url}/fields`} content={field} />

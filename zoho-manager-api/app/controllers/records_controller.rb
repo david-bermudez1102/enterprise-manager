@@ -25,7 +25,7 @@ class RecordsController < ApplicationController
 
   def record_params
     params.require(:record).permit(
-      values_attributes: [:record_field_id, :content, :option_id, :record_value_id],
+      values_attributes: [:record_field_id, :content, :option_id, :record_value_id, checkbox_options_attributes:[:option_id]],
     )
   end
 

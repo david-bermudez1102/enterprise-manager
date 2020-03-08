@@ -1,6 +1,14 @@
 class FieldSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :name, :field_type, :form_id
+  attributes :id, :name, :field_type, :form_id, :record_key
+  attribute :key_values do  |field|
+    if field.record_key 
+      key_values = KeyValueSerializer.new(field.record_key.key_values).serializable_hash[:data]
+      key_values.map do |key_value|
+        key_value[:attributes]
+      end
+    end
+  end
   attribute :selectable_resource, if: Proc.new { |field|
                           field.field_type == "selectable"
                         } do |object|

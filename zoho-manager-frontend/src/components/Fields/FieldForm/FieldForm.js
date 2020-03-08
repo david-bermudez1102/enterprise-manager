@@ -69,7 +69,6 @@ export default class FieldForm extends Component {
 
   render() {
     const { action, field, resourceId } = this.props;
-    console.log(this.state);
     return (
       <form onSubmit={this.handleOnSubmit}>
         <div className="form-group">

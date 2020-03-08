@@ -35,16 +35,18 @@ class Field extends Component {
       <div className="form-group">
         <Options url={`${match.url}/fields`} content={field} />
         {field.fieldType !== "selectable" ? (
-          <input
-            className="form-control"
-            type={field.fieldType}
-            name={recordField.id}
-            id={field.name}
-            placeholder={`Enter ${this.fieldName()}`}
-            onChange={this.handleChange}
-            value={this.state.value}
-            ref={fieldRef}
-          />
+          field.fieldType !== "key_field" ? (
+            <input
+              className="form-control"
+              type={field.fieldType}
+              name={recordField.id}
+              id={field.name}
+              placeholder={`Enter ${this.fieldName()}`}
+              onChange={this.handleChange}
+              value={this.state.value}
+              ref={fieldRef}
+            />
+          ) : null
         ) : (
           <select
             className="form-control"

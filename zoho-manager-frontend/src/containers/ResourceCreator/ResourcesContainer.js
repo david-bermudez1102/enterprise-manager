@@ -8,7 +8,6 @@ import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
 
 class ResourcesContainer extends Component {
-
   componentDidMount() {
     const { resources, fetchFields, fetchRecordFields } = this.props;
     resources.map(resource => {
@@ -56,4 +55,6 @@ class ResourcesContainer extends Component {
   }
 }
 
-export default connect(null, { addResource, fetchFields, fetchRecordFields })(ResourcesContainer);
+export default connect(null, { addResource, fetchFields, fetchRecordFields })(
+  ResourcesContainer
+);

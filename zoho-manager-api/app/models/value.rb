@@ -7,6 +7,7 @@ class Value < ApplicationRecord
   belongs_to :key_value, optional: true
   before_create :generate_key_value
 
+
   def generate_key_value
     unless self.record_value.nil?
       if self.record_value.key_value.nil?
@@ -16,11 +17,23 @@ class Value < ApplicationRecord
           key_value = KeyValue.where(record_key: record_key)
           count = key_value ? key_value.size : 0
           value = "#{self.created_at.strftime("%m%y")}-#{count+1}"
-          record_value.build_key_value(record_value:record_value, record_key: record_key,value: value)
-          record_value.save
+          new_key_value = record_value.build_key_value(record_value:record_value, record_key: record_key,value: value)
+          new_key_value.save
+          self.record_value.key_value_id = new_key_value.id
+          self.record_value.save
+           Value.create(record:self.record, field_id:record_key.field_id, record_field_id:record_key.field_id, content: value, key_value:new_key_value)
+           Value.where(content: "", record_field_id:record_key.field_id).update_all(content: value)
+           Record.joins(:values).where(values:{key_value: new_key_value}).map do |rec|
+            rec.values.find_or_create_by(content:value, record_field_id:record_key.field_id)
+           end
           end
         end
+      else
+        record_key = RecordKey.find_by(resource_field_id: self.record_field.field.id)
+        value = Value.create(record:self.record, field_id:record_key.field_id, record_field_id:record_key.field_id, content: record_value.key_value.value, key_value:record_value.key_value)
+        Value.where(content: "", record_field_id:record_key.field_id).update_all(content: record_value.key_value.value)
       end
     end
   end
+
 end

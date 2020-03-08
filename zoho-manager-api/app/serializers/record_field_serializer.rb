@@ -3,6 +3,9 @@
 class RecordFieldSerializer
   include FastJsonapi::ObjectSerializer
   attributes :id, :field_id, :name, :field_type, :form_id
+  attribute :record_key do |record_field|
+    record_field.field ? record_field.field.record_key : nil
+  end
   attribute :selectable_resource, if: proc { |field|
                           field.field_type == "selectable"
                         } do |object|

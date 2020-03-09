@@ -7,9 +7,11 @@ import { recordsReducer } from "./recordsReducer";
 import { valuesReducer } from "./valuesReducer";
 import { sessionReducer } from "./sessionReducer";
 import { recordFieldsReducer } from "./recordFieldsReducer";
+import { accountsReducer } from "./accountsReducer";
 
 export const rootReducer = combineReducers({
   session: sessionReducer,
+  accounts: accountsReducer,
   organizations: organizationReducer,
   admins: adminsReducer,
   resources: resourcesReducer,

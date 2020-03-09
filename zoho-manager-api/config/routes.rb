@@ -11,9 +11,10 @@ Rails.application.routes.draw do
       end
     end
     resources :accounts
-    resources :employees
-    resources :managers
-    resources :admins
+    resources :admins do
+      resources :employees
+      resources :managers
+    end
     resources :sessions, only: %i[create]
     get '/current_user', to: 'sessions#show'
     delete '/delete_session', to: 'sessions#destroy'

@@ -8,6 +8,21 @@ export default class RecordsHeader extends Component {
     this.state = { orders: [] };
   }
 
+  componentDidMount() {
+    const { recordFields, resource } = this.props;
+    this.setState({
+      orders: recordFields
+        .filter(field => field.formId === resource.id)
+        .map(field => {
+          return {
+            recordFieldId: field.id,
+            ascendant: true,
+            usedToSort: false
+          };
+        })
+    });
+  }
+
   componentDidUpdate(prevProps) {
     const { recordFields, resource } = this.props;
     if (prevProps.recordFields !== recordFields)
@@ -15,7 +30,11 @@ export default class RecordsHeader extends Component {
         orders: recordFields
           .filter(field => field.formId === resource.id)
           .map(field => {
-            return { recordFieldId: field.id, ascendant: true };
+            return {
+              recordFieldId: field.id,
+              ascendant: true,
+              usedToSort: false
+            };
           })
       });
   }
@@ -25,8 +44,12 @@ export default class RecordsHeader extends Component {
       orders: [
         ...this.state.orders.map(order =>
           order.recordFieldId === fieldId
-            ? { ...order, ascendant: order.ascendant ? false : true }
-            : { ...order, ascendant: true }
+            ? {
+                ...order,
+                ascendant: order.ascendant ? false : true,
+                usedToSort: true
+              }
+            : { ...order, ascendant: true, usedToSort: false }
         )
       ]
     });
@@ -35,17 +58,31 @@ export default class RecordsHeader extends Component {
 
   render() {
     const { match, recordFields, resource } = this.props;
+    const { orders } = this.state;
     return (
       <thead>
         <tr>
           {recordFields.map(field => {
+            const order = orders.find(
+              order => order.recordFieldId === field.id
+            );
             return field.formId === resource.id ? (
               <th key={cuid()}>
                 <span className="d-flex w-100 align-items-center">
                   <button
-                    className="btn btn-transparent px-0 pr-1 shadow-none"
+                    className="btn btn-transparent px-0 pr-1 shadow-none text-primary"
                     onClick={() => this.handleSortBy(field.id)}>
-                    <i className="fas fa-sort"></i>
+                    {order && order.usedToSort ? (
+                      order.ascendant ? (
+                        <i
+                          className="fad fa-sort fa-swap-opacity"
+                          title="Sort ascendant"></i>
+                      ) : (
+                        <i className="fad fa-sort" title="Sort descendant"></i>
+                      )
+                    ) : (
+                      <i className="fas fa-sort"></i>
+                    )}
                   </button>
                   <Options
                     url={`${match.url}/record_fields`}

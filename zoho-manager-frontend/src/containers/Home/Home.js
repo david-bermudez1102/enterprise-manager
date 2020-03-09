@@ -52,7 +52,9 @@ class Home extends Component {
               </Route>
               <Route
                 path={`/accounts`}
-                render={props => <AccountsContainer {...props} />}
+                render={props => (
+                  <AccountsContainer {...props} session={session} />
+                )}
               />
             </Switch>
           </main>

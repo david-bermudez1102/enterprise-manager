@@ -1,11 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchEmployees, fetchManagers } from "../../actions/accountActions";
+import {
+  fetchEmployees,
+  fetchManagers,
+  addManager,
+  addEmployee
+} from "../../actions/accountActions";
 import AdminsList from "../../components/Accounts/AdminsList";
 import ManagersList from "../../components/Accounts/ManagersList";
 import EmployeesList from "../../components/Accounts/EmployeesList";
 import { Switch, Route } from "react-router-dom";
 import AccountForm from "../../components/Accounts/AccountForm";
+import { FormCard } from "../../components/Cards/Cards";
+import { addAdmin } from "../../actions/adminActions";
 
 class AccountsContainer extends Component {
   componentDidMount() {
@@ -23,12 +30,20 @@ class AccountsContainer extends Component {
   }
 
   render() {
-    const { accounts, admins, match } = this.props;
+    const {
+      accounts,
+      admins,
+      match,
+      addEmployee,
+      addManager,
+      addAdmin,
+      session
+    } = this.props;
     const managers = accounts.filter(account => account.type === "manager");
     const employees = accounts.filter(account => account.type === "employee");
     return (
       <div className="row">
-        <div className="col-lg-6">
+        <div className="col-lg-5">
           <div className="list-group">
             <AdminsList admins={admins} />
           </div>
@@ -39,11 +54,28 @@ class AccountsContainer extends Component {
             <EmployeesList employees={employees} />
           </div>
         </div>
-        <div className="col-lg-6">
+        <div className="col-lg-7">
           <Switch>
             <Route
               path={`${match.path}/add`}
-              render={props => <AccountForm {...props} />}
+              render={props => (
+                <FormCard
+                  header={
+                    <span
+                      className="card-title display-4"
+                      style={{ fontSize: "32px" }}>
+                      Add Account
+                    </span>
+                  }>
+                  <AccountForm
+                    {...props}
+                    addEmployee={addEmployee}
+                    addManager={addManager}
+                    addAdmin={addAdmin}
+                    adminId={session.currentUser.id}
+                  />
+                </FormCard>
+              )}
             />
           </Switch>
         </div>
@@ -56,6 +88,10 @@ const mapStateToProps = ({ accounts, admins }) => {
   return { accounts, admins };
 };
 
-export default connect(mapStateToProps, { fetchEmployees, fetchManagers })(
-  AccountsContainer
-);
+export default connect(mapStateToProps, {
+  fetchEmployees,
+  fetchManagers,
+  addManager,
+  addEmployee,
+  addAdmin
+})(AccountsContainer);

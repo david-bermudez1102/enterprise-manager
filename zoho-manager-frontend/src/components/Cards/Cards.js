@@ -4,7 +4,7 @@ export const FormCard = ({ header, children, footer }) => (
   <div className="card border-0 shadow-sm">
     <CardHeader>{header}</CardHeader>
     <CardBody>{children}</CardBody>
-    <CardFooter>{footer}</CardFooter>
+    {footer ? <CardFooter>{footer}</CardFooter> : null}
   </div>
 );
 

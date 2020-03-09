@@ -1,9 +1,10 @@
 import React from "react";
 import cuid from "cuid";
 
-const Record = ({ record, recordFields, values, resourceId }) => {
+const Record = ({ records, record, recordFields, values, resourceId }) => {
   return (
-    <tr key={cuid()}>
+    <tr>
+      <th>{records.indexOf(record) + 1}</th>
       {recordFields
         .filter(recordField => recordField.formId === resourceId)
         .map(recordField => (

@@ -14,7 +14,9 @@ class RecordsList extends Component {
     const { values, records } = this.props;
     const RecordsList = this.myRef.current.getBoundingClientRect();
     window.scrollTo(RecordsList.x, RecordsList.y);
-    this.setState({ sortedRecords: this.sortBy("default", records, values) });
+    this.setState({
+      sortedRecords: this.sortBy("default", records, values, false)
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -31,7 +33,7 @@ class RecordsList extends Component {
           sortBy,
           records,
           values,
-          order ? order.ascendant : true
+          order ? order.ascendant : false
         )
       });
     }
@@ -66,7 +68,7 @@ class RecordsList extends Component {
         return ascendant ? sortedRecords : sortedRecords.reverse();
       }
     } else {
-      return records;
+      return ascendant ? [...records] : [...records].reverse();
     }
   };
 
@@ -87,6 +89,7 @@ class RecordsList extends Component {
                     recordFields={recordFields}
                     resourceId={resource.id}
                     values={values}
+                    records={records}
                   />
                 ) : null
               )

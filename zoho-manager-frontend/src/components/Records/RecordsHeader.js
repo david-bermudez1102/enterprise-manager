@@ -11,23 +11,9 @@ export default class RecordsHeader extends Component {
   componentDidMount() {
     const { recordFields, resource } = this.props;
     this.setState({
-      orders: recordFields
-        .filter(field => field.formId === resource.id)
-        .map(field => {
-          return {
-            recordFieldId: field.id,
-            ascendant: true,
-            usedToSort: false
-          };
-        })
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    const { recordFields, resource } = this.props;
-    if (prevProps.recordFields !== recordFields)
-      this.setState({
-        orders: recordFields
+      orders: [
+        { recordFieldId: "default", ascendant: true, usedToSort: true },
+        ...recordFields
           .filter(field => field.formId === resource.id)
           .map(field => {
             return {
@@ -36,6 +22,26 @@ export default class RecordsHeader extends Component {
               usedToSort: false
             };
           })
+      ]
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    const { recordFields, resource } = this.props;
+    if (prevProps.recordFields !== recordFields)
+      this.setState({
+        orders: [
+          { recordFieldId: "default", ascendant: true, usedToSort: true },
+          ...recordFields
+            .filter(field => field.formId === resource.id)
+            .map(field => {
+              return {
+                recordFieldId: field.id,
+                ascendant: true,
+                usedToSort: false
+              };
+            })
+        ]
       });
   }
 
@@ -59,9 +65,32 @@ export default class RecordsHeader extends Component {
   render() {
     const { match, recordFields, resource } = this.props;
     const { orders } = this.state;
+    const defaultOrder = orders.find(
+      order => order.recordFieldId === "default"
+    );
     return (
       <thead>
         <tr>
+          <th key={cuid()}>
+            <span className="d-flex w-100 align-items-center">
+              <button
+                className="btn btn-transparent px-0 pr-1 shadow-none text-primary"
+                onClick={() => this.handleSortBy("default")}>
+                {defaultOrder && defaultOrder.usedToSort ? (
+                  defaultOrder.ascendant ? (
+                    <i
+                      className="fad fa-sort fa-swap-opacity"
+                      title="Sort Ascendant"></i>
+                  ) : (
+                    <i className="fad fa-sort" title="Sort Descendant"></i>
+                  )
+                ) : (
+                  <i className="fas fa-sort" title="Sort Ascendant"></i>
+                )}
+              </button>
+              #
+            </span>
+          </th>
           {recordFields.map(field => {
             const order = orders.find(
               order => order.recordFieldId === field.id
@@ -76,12 +105,12 @@ export default class RecordsHeader extends Component {
                       order.ascendant ? (
                         <i
                           className="fad fa-sort fa-swap-opacity"
-                          title="Sort ascendant"></i>
+                          title="Sort Ascendant"></i>
                       ) : (
-                        <i className="fad fa-sort" title="Sort descendant"></i>
+                        <i className="fad fa-sort" title="Sort Descendant"></i>
                       )
                     ) : (
-                      <i className="fas fa-sort"></i>
+                      <i className="fas fa-sort" title="Sort Ascendant"></i>
                     )}
                   </button>
                   <Options

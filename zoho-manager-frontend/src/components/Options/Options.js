@@ -61,9 +61,7 @@ export default class Options extends Component {
               <i className="fad fa-trash" style={{ fontSize: fontSize }}></i>
             </button>
             <Link to={`${url}/${content.id}/edit`}>
-              <button
-                className="btn btn-transparent text-primary px-0"
-                onClick={this.handleShowModal}>
+              <button className="btn btn-transparent text-primary px-0">
                 <i className="fad fa-edit" style={{ fontSize: fontSize }}></i>
               </button>
             </Link>

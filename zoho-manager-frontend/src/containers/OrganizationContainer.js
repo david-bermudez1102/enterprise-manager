@@ -28,24 +28,24 @@ class OrganizationContainer extends Component {
   render() {
     const { match, addOrganization, resources } = this.props;
     return (
-        <Switch>
-          <Route
-            path={`${match.path}/new`}
-            render={props => (
-              <OrganizationInput {...props} addOrganization={addOrganization} />
-            )}
-          />
-          <Route
-            path={`${match.path}/:organizationId/resources`}
-            render={props => (
-              <ResourcesContainer {...props} resources={resources} />
-            )}
-          />
-          <Route
-            path={`${match.path}/:organizationId`}
-            render={props => <Organization {...props} />}
-          />
-        </Switch>
+      <Switch>
+        <Route
+          path={`${match.path}/new`}
+          render={props => (
+            <OrganizationInput {...props} addOrganization={addOrganization} />
+          )}
+        />
+        <Route
+          path={`${match.path}/:organizationId/resources`}
+          render={props => (
+            <ResourcesContainer {...props} resources={resources} />
+          )}
+        />
+        <Route
+          path={`${match.path}/:organizationId`}
+          render={props => <Organization {...props} />}
+        />
+      </Switch>
     );
   }
 }

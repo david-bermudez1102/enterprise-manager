@@ -6,6 +6,7 @@ import LoginContainer from "../LoginContainer";
 import OrganizationContainer from "../OrganizationContainer";
 import AdminContainer from "../AdminContainer";
 import LogoutContainer from "../LogoutContainer";
+import AccountsContainer from "../Accounts/AccountsContainer";
 
 class Home extends Component {
   render() {
@@ -42,7 +43,6 @@ class Home extends Component {
                   />
                 )}
               />
-
               <Route
                 path={`/logout`}
                 render={() => <LogoutContainer removeSession={removeSession} />}
@@ -50,6 +50,10 @@ class Home extends Component {
               <Route path="/accounts/new">
                 <AdminContainer organizations={organizations} admins={admins} />
               </Route>
+              <Route
+                path={`/accounts`}
+                render={props => <AccountsContainer {...props} />}
+              />
             </Switch>
           </main>
         </div>

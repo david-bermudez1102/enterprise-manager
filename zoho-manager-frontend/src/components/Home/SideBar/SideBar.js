@@ -45,27 +45,23 @@ export default class SideBar extends Component {
     return (
       <div
         className="py-3 bg-secondary sticky-top shadow-lg text-light"
-        style={{ minWidth: "200px" }}
-      >
+        style={{ minWidth: "200px" }}>
         <div className="w-100 d-flex align-items-center justify-content-center">
           <i
             className="fad fa-user-circle text-shadow"
-            style={{ fontSize: "40px" }}
-          ></i>{" "}
+            style={{ fontSize: "40px" }}></i>{" "}
           {currentUser.name}
         </div>
         <nav
           className="p-3 nav nav-dark nav-pills flex-column min-vh-100 "
-          style={{ zIndex: 999 }}
-        >
+          style={{ zIndex: 999 }}>
           {this.state.links.map(link => (
             <NavLink
               exact
               to={link.path}
               className={link.className}
               key={cuid()}
-              activeClassName="bg-info active shadow"
-            >
+              activeClassName="bg-info active shadow">
               <i className={link.icon}></i> {link.text}
             </NavLink>
           ))}

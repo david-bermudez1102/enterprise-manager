@@ -3,13 +3,36 @@ import cuid from "cuid";
 import Options from "../Options/Options";
 
 export default class RecordsHeader extends Component {
-  state = { order: "asc" };
+  constructor(props) {
+    super(props);
+    this.state = { orders: [] };
+  }
+
+  componentDidUpdate(prevProps) {
+    const { recordFields, resource } = this.props;
+    if (prevProps.recordFields !== recordFields)
+      this.setState({
+        orders: recordFields
+          .filter(field => field.formId === resource.id)
+          .map(field => {
+            return { recordFieldId: field.id, ascendant: true };
+          })
+      });
+  }
 
   handleSortBy = fieldId => {
-    this.setState({ order: this.state.order === "asc" ? "desc" : "asc" }, () =>
-      this.props.handleSortBy(fieldId)
-    );
+    this.setState({
+      orders: [
+        ...this.state.orders.map(order =>
+          order.recordFieldId === fieldId
+            ? { ...order, ascendant: order.ascendant ? false : true }
+            : { ...order, ascendant: true }
+        )
+      ]
+    });
+    this.props.handleSortBy(fieldId, this.state.orders);
   };
+
   render() {
     const { match, recordFields, resource } = this.props;
     return (

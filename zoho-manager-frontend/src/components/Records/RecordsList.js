@@ -7,7 +7,7 @@ class RecordsList extends Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
-    this.state = { sortBy: "default", sortedRecords: [] };
+    this.state = { sortBy: "default", sortedRecords: [], orders: [] };
   }
 
   componentDidMount() {
@@ -19,16 +19,29 @@ class RecordsList extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { values, records } = this.props;
-    const { sortBy } = this.state;
-    if (prevProps.values !== values || prevState.sortBy !== sortBy)
-      this.setState({ sortedRecords: this.sortBy(sortBy, records, values) });
+    const { sortBy, orders } = this.state;
+    if (
+      prevProps.values !== values ||
+      prevState.sortBy !== sortBy ||
+      prevState.orders !== orders
+    ) {
+      const order = orders.find(order => order.recordFieldId === sortBy);
+      this.setState({
+        sortedRecords: this.sortBy(
+          sortBy,
+          records,
+          values,
+          order ? order.ascendant : true
+        )
+      });
+    }
   }
 
-  handleSortBy = recordFieldId => {
-    this.setState({ sortBy: recordFieldId });
+  handleSortBy = (recordFieldId, orders) => {
+    this.setState({ sortBy: recordFieldId, orders: orders });
   };
 
-  sortBy = (recordFieldId, records, values) => {
+  sortBy = (recordFieldId, records, values, ascendant) => {
     if (recordFieldId !== "default") {
       const { resource } = this.props;
 
@@ -41,7 +54,7 @@ class RecordsList extends Component {
         });
 
       if (sortedValues.length > 0) {
-        return records
+        const sortedRecords = records
           .filter(record => record.formId === resource.id)
           .sort((rec, memo) => {
             const x = sortedValues.find(value => value.recordId === rec.id);
@@ -50,6 +63,7 @@ class RecordsList extends Component {
             const valueB = y && y.content ? y.content.toUpperCase() : "";
             return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
           });
+        return ascendant ? sortedRecords : sortedRecords.reverse();
       }
     } else {
       return records;
@@ -59,6 +73,7 @@ class RecordsList extends Component {
   render() {
     const { records, recordFields, resource, values } = this.props;
     const { sortedRecords } = this.state;
+    console.log(this.state);
     return (
       <table ref={this.myRef} className="table table-striped table-sm w-100">
         <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />

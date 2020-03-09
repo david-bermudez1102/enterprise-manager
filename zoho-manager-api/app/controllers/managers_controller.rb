@@ -9,7 +9,7 @@ class ManagersController < ApplicationController
   def create
     manager = @admin.managers.new
     one_time_password = SecureRandom.hex
-    account = manager.build_account(manager_params, password: one_time_password)
+    account = manager.build_account(name: manager_params[:name], email:manager_params[:email], password: one_time_password)
     render json: ManagerSerializer.new(manager, one_time_password: one_time_password) if account.save
   end
 

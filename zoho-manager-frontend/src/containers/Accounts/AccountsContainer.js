@@ -51,11 +51,7 @@ class AccountsContainer extends Component {
         <div className="col-lg-5">
           <div className="list-group">
             <AdminsList admins={admins} />
-          </div>
-          <div className="list-group">
             <ManagersList managers={managers} />
-          </div>
-          <div className="list-group">
             <EmployeesList employees={employees} />
           </div>
         </div>

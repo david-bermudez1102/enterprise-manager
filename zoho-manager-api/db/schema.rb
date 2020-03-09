@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_09_020758) do
+ActiveRecord::Schema.define(version: 2020_03_09_183412) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -48,6 +48,8 @@ ActiveRecord::Schema.define(version: 2020_03_09_020758) do
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "organization_id"
+    t.index ["organization_id"], name: "index_admins_on_organization_id"
   end
 
   create_table "checkbox_options", force: :cascade do |t|
@@ -62,6 +64,8 @@ ActiveRecord::Schema.define(version: 2020_03_09_020758) do
   create_table "employees", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "admin_id"
+    t.index ["admin_id"], name: "index_employees_on_admin_id"
   end
 
   create_table "fields", force: :cascade do |t|
@@ -98,6 +102,8 @@ ActiveRecord::Schema.define(version: 2020_03_09_020758) do
   create_table "managers", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "admin_id"
+    t.index ["admin_id"], name: "index_managers_on_admin_id"
   end
 
   create_table "options", force: :cascade do |t|

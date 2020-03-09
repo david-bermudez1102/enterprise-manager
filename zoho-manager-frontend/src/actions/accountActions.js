@@ -1,4 +1,4 @@
-export const addEmployee = employee => {
+export const addEmployee = (adminId, employee) => {
   return dispatch => {
     fetch(`/api/v1/${adminId}/employees`, {
       method: "POST",
@@ -22,7 +22,7 @@ export const fetchEmployees = adminId => {
   };
 };
 
-export const addManager = manager => {
+export const addManager = (adminId, manager) => {
   return dispatch => {
     fetch(`/api/v1/${adminId}/managers`, {
       method: "POST",

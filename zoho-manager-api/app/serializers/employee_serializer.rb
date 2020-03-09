@@ -11,4 +11,8 @@ class EmployeeSerializer
   attribute :email do |object|
     object.account.email
   end 
+
+  attribute :type do |object|
+    object.account.accountable_type
+  end 
 end

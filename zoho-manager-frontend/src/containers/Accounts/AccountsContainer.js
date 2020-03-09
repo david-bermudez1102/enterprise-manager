@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchEmployees, fetchManagers } from "../../actions/accountActions";
+import AdminsList from "../../components/Accounts/AdminsList";
+import ManagersList from "../../components/Accounts/ManagersList";
+import EmployeesList from "../../components/Accounts/EmployeesList";
+import { Switch, Route } from "react-router-dom";
+import AccountForm from "../../components/Accounts/AccountForm";
 
 class AccountsContainer extends Component {
   componentDidMount() {
@@ -18,8 +23,32 @@ class AccountsContainer extends Component {
   }
 
   render() {
-    const { accounts, admins } = this.props;
-    return <div className="list-group">{admins.map(admin => admin.name)}</div>;
+    const { accounts, admins, match } = this.props;
+    const managers = accounts.filter(account => account.type === "manager");
+    const employees = accounts.filter(account => account.type === "employee");
+    return (
+      <div className="row">
+        <div className="col-lg-6">
+          <div className="list-group">
+            <AdminsList admins={admins} />
+          </div>
+          <div className="list-group">
+            <ManagersList managers={managers} />
+          </div>
+          <div className="list-group">
+            <EmployeesList employees={employees} />
+          </div>
+        </div>
+        <div className="col-lg-6">
+          <Switch>
+            <Route
+              path={`${match.path}/add`}
+              render={props => <AccountForm {...props} />}
+            />
+          </Switch>
+        </div>
+      </div>
+    );
   }
 }
 

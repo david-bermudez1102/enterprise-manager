@@ -6,10 +6,8 @@ class AccountForm extends Component {
     super(props);
     this.state = {
       roles: ["Select", "Admin", "Manager", "Employee"],
-      account: {
-        name: "",
-        email: ""
-      },
+      name: "",
+      email: "",
       role: "Select"
     };
   }
@@ -20,23 +18,24 @@ class AccountForm extends Component {
       account: {
         ...this.state.account,
         [event.target.name]: event.target.value
-      }
+      },
+      [event.target.name]: event.target.value
     });
   };
 
   handleSubmit = event => {
-    const { addAdmin, addEmployee, addManager, admin } = this.props;
-    const { role, account } = this.state;
+    const { addAdmin, addEmployee, addManager, adminId } = this.props;
+    const { role, name, email } = this.state;
     event.preventDefault();
     switch (role) {
       case "Admin":
-        addAdmin({ admin: { ...account } });
+        addAdmin({ admin: { name, email } });
         break;
       case "Manager":
-        addEmployee(admin.id, { manager: { ...account } });
+        addManager(adminId, { manager: { name, email } });
         break;
       case "Employee":
-        addManager(admin.id, { employee: { ...account } });
+        addEmployee(adminId, { employee: { name, email } });
         break;
       default:
         break;
@@ -82,7 +81,6 @@ class AccountForm extends Component {
           </select>
         </div>
         <input type="submit" className="btn btn-primary shadow" />
-        {email}
       </form>
     );
   }

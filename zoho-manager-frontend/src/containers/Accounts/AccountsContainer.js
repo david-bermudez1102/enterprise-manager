@@ -17,15 +17,20 @@ import { addAdmin } from "../../actions/adminActions";
 class AccountsContainer extends Component {
   componentDidMount() {
     const { admins, fetchEmployees, fetchManagers } = this.props;
-    admins.map(admin => fetchEmployees(admin.id));
-    admins.map(admin => fetchManagers(admin.id));
+
+    admins.map(admin => {
+      fetchEmployees(admin.id);
+      return fetchManagers(admin.id);
+    });
   }
 
   componentDidUpdate(prevProps) {
     const { admins, fetchEmployees, fetchManagers } = this.props;
     if (prevProps.admins !== admins) {
-      admins.map(admin => fetchEmployees(admin.id));
-      admins.map(admin => fetchManagers(admin.id));
+      admins.map(admin => {
+        fetchEmployees(admin.id);
+        return fetchManagers(admin.id);
+      });
     }
   }
 
@@ -39,8 +44,8 @@ class AccountsContainer extends Component {
       addAdmin,
       session
     } = this.props;
-    const managers = accounts.filter(account => account.type === "manager");
-    const employees = accounts.filter(account => account.type === "employee");
+    const managers = accounts.filter(account => account.type === "Manager");
+    const employees = accounts.filter(account => account.type === "Employee");
     return (
       <div className="row">
         <div className="col-lg-5">

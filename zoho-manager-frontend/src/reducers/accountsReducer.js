@@ -3,6 +3,12 @@ export const accountsReducer = (state = [], action) => {
     case "ADD_EMPLOYEE":
       return [...state, action.employee];
     case "FETCH_EMPLOYEES":
+      console.log([
+        ...state,
+        ...action.employees.filter(
+          employee => !state.some(e => employee.id === e.id)
+        )
+      ]);
       return [
         ...state,
         ...action.employees.filter(

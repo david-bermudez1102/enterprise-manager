@@ -1,6 +1,6 @@
 export const addEmployee = (adminId, employee) => {
   return dispatch => {
-    fetch(`/api/v1/${adminId}/employees`, {
+    fetch(`/api/v1/admins/${adminId}/employees`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -18,13 +18,13 @@ export const fetchEmployees = adminId => {
     fetch(`/api/v1/admins/${adminId}/employees`)
       .then(response => response.json())
       .then(employees => employees.data.map(employee => employee.attributes))
-      .then(employees => dispatch({ type: "ADD_EMPLOYEES", employees }));
+      .then(employees => dispatch({ type: "FETCH_EMPLOYEES", employees }));
   };
 };
 
 export const addManager = (adminId, manager) => {
   return dispatch => {
-    fetch(`/api/v1/${adminId}/managers`, {
+    fetch(`/api/v1/admins/${adminId}/managers`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -42,6 +42,6 @@ export const fetchManagers = adminId => {
     fetch(`/api/v1/admins/${adminId}/managers`)
       .then(response => response.json())
       .then(managers => managers.data.map(manager => manager.attributes))
-      .then(managers => dispatch({ type: "ADD_MANAGERS", managers }));
+      .then(managers => dispatch({ type: "FETCH_MANAGERS", managers }));
   };
 };

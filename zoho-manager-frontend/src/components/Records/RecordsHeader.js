@@ -12,7 +12,7 @@ export default class RecordsHeader extends Component {
     const { recordFields, resource } = this.props;
     this.setState({
       orders: [
-        { recordFieldId: "default", ascendant: true, usedToSort: true },
+        { recordFieldId: 0, ascendant: true, usedToSort: true },
         ...recordFields
           .filter(field => field.formId === resource.id)
           .map(field => {
@@ -31,7 +31,7 @@ export default class RecordsHeader extends Component {
     if (prevProps.recordFields !== recordFields)
       this.setState({
         orders: [
-          { recordFieldId: "default", ascendant: true, usedToSort: true },
+          { recordFieldId: 0, ascendant: true, usedToSort: true },
           ...recordFields
             .filter(field => field.formId === resource.id)
             .map(field => {
@@ -46,6 +46,7 @@ export default class RecordsHeader extends Component {
   }
 
   handleSortBy = fieldId => {
+    const { handleSortBy } = this.props;
     this.setState({
       orders: [
         ...this.state.orders.map(order =>
@@ -59,15 +60,13 @@ export default class RecordsHeader extends Component {
         )
       ]
     });
-    this.props.handleSortBy(fieldId, this.state.orders);
+    handleSortBy(fieldId, this.state.orders);
   };
 
   render() {
     const { match, recordFields, resource } = this.props;
     const { orders } = this.state;
-    const defaultOrder = orders.find(
-      order => order.recordFieldId === "default"
-    );
+    const defaultOrder = orders.find(order => order.recordFieldId === 0);
     return (
       <thead>
         <tr>
@@ -75,7 +74,7 @@ export default class RecordsHeader extends Component {
             <span className="d-flex w-100 align-items-center">
               <button
                 className="btn btn-transparent px-0 pr-1 shadow-none text-primary"
-                onClick={() => this.handleSortBy("default")}>
+                onClick={() => this.handleSortBy(0)}>
                 {defaultOrder && defaultOrder.usedToSort ? (
                   defaultOrder.ascendant ? (
                     <i

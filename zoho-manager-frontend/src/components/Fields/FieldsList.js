@@ -58,7 +58,6 @@ class FieldsList extends Component {
         })
     };
     addRecord(record, resource.organizationId, resource.id);
-    console.log(record);
   };
 
   render() {

@@ -47,8 +47,10 @@ export default class Options extends Component {
         <div
           onMouseEnter={this.handleOpen}
           onMouseLeave={this.handleClose}
-          className="w-100 d-flex justify-content-between align-items-end">
-          <label htmlFor={content.name}>{this.contentName()}</label>
+          className="w-100 d-flex justify-content-between align-items-center">
+          <label htmlFor={content.name} className="p-0 m-0">
+            {this.contentName()}
+          </label>
           <div
             className="d-flex justify-content-between"
             style={{

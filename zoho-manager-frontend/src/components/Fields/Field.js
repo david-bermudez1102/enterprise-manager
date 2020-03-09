@@ -42,7 +42,7 @@ class Field extends Component {
       case "selectable":
         inputField = (
           <select
-            className="form-control"
+            className="form-control rounded-pill"
             name={recordField.id}
             id={field.name}
             placeholder={`Enter ${field.name}`}
@@ -75,9 +75,9 @@ class Field extends Component {
         break;
       case "radio":
         inputField = (
-          <div className="form-check form-check-inline" ref={fieldRef}>
+          <fieldset ref={fieldRef}>
             {field.options.map(option => (
-              <React.Fragment key={cuid()}>
+              <div className="form-check form-check-inline" key={cuid()}>
                 <input
                   className="form-check-input"
                   type={field.fieldType}
@@ -93,16 +93,16 @@ class Field extends Component {
                   className="form-check-label">
                   {option.value}
                 </label>
-              </React.Fragment>
+              </div>
             ))}
-          </div>
+          </fieldset>
         );
         break;
       case "checkbox":
         inputField = (
-          <div className="form-check form-check-inline" ref={fieldRef}>
+          <fieldset ref={fieldRef}>
             {field.options.map(option => (
-              <fieldset key={cuid()}>
+              <div className="form-check form-check-inline" key={cuid()}>
                 <input
                   className="form-check-input"
                   type={field.fieldType}
@@ -118,15 +118,15 @@ class Field extends Component {
                   className="form-check-label">
                   {option.value}
                 </label>
-              </fieldset>
+              </div>
             ))}
-          </div>
+          </fieldset>
         );
         break;
       default:
         inputField = (
           <input
-            className="form-control"
+            className="form-control rounded-pill"
             type={field.fieldType}
             name={recordField.id}
             id={field.name}
@@ -140,7 +140,9 @@ class Field extends Component {
     }
     return (
       <div className="form-group">
-        <Options url={`${match.url}/fields`} content={field} />
+        {field.fieldType !== "key_field" ? (
+          <Options url={`${match.url}/fields`} content={field} />
+        ) : null}
         {inputField}
       </div>
     );

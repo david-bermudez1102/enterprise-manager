@@ -4,7 +4,11 @@ import cuid from "cuid";
 const Record = ({ records, record, recordFields, values, resourceId }) => {
   return (
     <tr>
-      <th>{records.indexOf(record) + 1}</th>
+      <th>
+        {records
+          .filter(record => record.formId === resourceId)
+          .indexOf(record) + 1}
+      </th>
       {recordFields
         .filter(recordField => recordField.formId === resourceId)
         .map(recordField => (

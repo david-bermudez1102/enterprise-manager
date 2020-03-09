@@ -43,6 +43,7 @@ class RecordsContainer extends Component {
               <div className="bg-white shadow-sm">
                 {records.length > 0 ? (
                   <RecordsList
+                    history={props.history}
                     match={match}
                     recordFields={recordFields}
                     resource={resource}

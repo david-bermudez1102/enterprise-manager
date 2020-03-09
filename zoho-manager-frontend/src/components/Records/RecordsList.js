@@ -7,7 +7,7 @@ class RecordsList extends Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
-    this.state = { sortBy: "default", sortedRecords: [], orders: [] };
+    this.state = { sortBy: 0, sortedRecords: [], orders: [] };
   }
 
   componentDidMount() {
@@ -15,7 +15,7 @@ class RecordsList extends Component {
     const RecordsList = this.myRef.current.getBoundingClientRect();
     window.scrollTo(RecordsList.x, RecordsList.y);
     this.setState({
-      sortedRecords: this.sortBy("default", records, values, false)
+      sortedRecords: this.sortBy(this.state.sortBy, records, values, false)
     });
   }
 
@@ -44,7 +44,7 @@ class RecordsList extends Component {
   };
 
   sortBy = (recordFieldId, records, values, ascendant) => {
-    if (recordFieldId !== "default") {
+    if (recordFieldId !== 0) {
       const { resource } = this.props;
 
       const sortedValues = [...values]
@@ -75,7 +75,6 @@ class RecordsList extends Component {
   render() {
     const { records, recordFields, resource, values } = this.props;
     const { sortedRecords } = this.state;
-    console.log(this.state);
     return (
       <table ref={this.myRef} className="table table-striped table-sm w-100">
         <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />

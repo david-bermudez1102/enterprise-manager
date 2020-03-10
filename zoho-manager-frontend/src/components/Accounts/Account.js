@@ -9,8 +9,8 @@ const Account = ({ account }) => {
   const icon = icons.find(icon => icon.type === account.type);
   return (
     <div
-      className="row border-0 shadow-sm rounded list-group-item py-md-5 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4"
-      style={{ fontSize: "20px" }}>
+      className="row border-0 shadow-sm rounded list-group-item py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 list-group-item-action"
+      style={{ fontSize: "20px", cursor: "pointer" }}>
       <span className="order-sm-2 order-md-1 py-3 col-sm-12 col-xl-7 col-lg-8 col-md-8">
         <i className={`${icon.className} text-primary`} title="Employee"></i>{" "}
         {account.name}

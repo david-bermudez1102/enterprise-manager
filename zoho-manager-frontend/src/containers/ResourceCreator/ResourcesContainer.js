@@ -8,6 +8,7 @@ import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
 import Resource from "../../components/Resources/Resource";
 import cuid from "cuid";
+import { FormCard } from "../../components/Cards/Cards";
 
 class ResourcesContainer extends Component {
   componentDidMount() {
@@ -28,7 +29,7 @@ class ResourcesContainer extends Component {
   }
 
   render() {
-    const { match, addResource, resources } = this.props;
+    const { match, addResource, resources, location, history } = this.props;
     const { organizationId } = match.params;
     return (
       <div className="row">
@@ -36,6 +37,8 @@ class ResourcesContainer extends Component {
           <div className="list-group">
             <ResourcesList
               match={match}
+              location={location}
+              history={history}
               resources={resources}
               organizationId={organizationId}
             />
@@ -46,13 +49,26 @@ class ResourcesContainer extends Component {
             path={`${match.path}/new`}
             render={props => (
               <div className="col-lg-7">
-                <ResourceForm
-                  {...props}
-                  addResource={addResource}
-                  organizationId={organizationId}
-                />
+                <FormCard
+                  header={
+                    <span
+                      className="card-title display-4"
+                      style={{ fontSize: "32px" }}>
+                      New Resource
+                    </span>
+                  }>
+                  <ResourceForm
+                    {...props}
+                    addResource={addResource}
+                    organizationId={organizationId}
+                  />
+                </FormCard>
               </div>
             )}
+          />
+          <Route
+            path={`${match.path}/:formAlias/delete`}
+            render={props => <Resource {...props} key={cuid()} />}
           />
           <Route
             path={`${match.path}/:formAlias`}

@@ -29,7 +29,7 @@ class App extends Component {
     } = this.props;
     return (
       <Router>
-        <div className="bg-light container-fluid d-flex p-0 flex-column min-vh-100">
+        <div className="bg-light container-fluid d-flex p-0 flex-column min-h-100">
           {!session.isLoggedIn && organizations.length > 0 ? (
             <Navbar session={session} organizations={organizations} />
           ) : null}

@@ -96,7 +96,7 @@ export default class SideBar extends Component {
           <span className="ml-2"> {currentUser.name}</span>
         </div>
         <nav
-          className="px-2 py-3 nav nav-dark nav-pills flex-column min-vh-100 "
+          className="px-2 py-3 nav nav-dark nav-pills flex-column min-h-100 "
           style={{ zIndex: 999 }}>
           {this.state.links.map(link => (
             <span key={cuid()}>

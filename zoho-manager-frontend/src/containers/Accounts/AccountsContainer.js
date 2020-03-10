@@ -78,6 +78,12 @@ class AccountsContainer extends Component {
                 </FormCard>
               )}
             />
+            <Route
+              path={`${match.path}`}
+              render={props => (
+                <div className="w-100 h-100 bg-white">Accounts Component</div>
+              )}
+            />
           </Switch>
         </div>
       </div>

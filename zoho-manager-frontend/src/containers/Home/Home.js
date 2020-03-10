@@ -11,6 +11,7 @@ import AccountsContainer from "../Accounts/AccountsContainer";
 class Home extends Component {
   render() {
     const {
+      location,
       organizations,
       admins,
       addSession,
@@ -19,9 +20,15 @@ class Home extends Component {
     } = this.props;
     return (
       <div className="w-100 d-flex flex-grow-1">
-        {session.isLoggedIn ? <SideBar session={session} /> : null}
+        {session.isLoggedIn ? (
+          <SideBar
+            session={session}
+            location={location}
+            organizations={organizations}
+          />
+        ) : null}
         <div className="w-100">
-          {session.isLoggedIn && organizations.length > 0 ? (
+          {session.isLoggedIn ? (
             <Navbar session={session} organizations={organizations} />
           ) : null}
           <main className="w-100 align-items-center justify-content-center bg-transparent p-4">

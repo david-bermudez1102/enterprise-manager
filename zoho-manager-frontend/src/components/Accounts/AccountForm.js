@@ -48,28 +48,34 @@ class AccountForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
+          <label htmlFor="account_name">Employee Name:</label>
           <input
             type="text"
             name="name"
+            id="account_name"
             className="form-control"
             onChange={this.handleChange}
             value={name}
-            placeholder="Employee name..."
+            placeholder="Enter name..."
           />
         </div>
         <div className="form-group">
+          <label htmlFor="account_email">Employee Email:</label>
           <input
             type="text"
             name="email"
+            id="account_email"
             className="form-control"
             onChange={this.handleChange}
             value={email}
-            placeholder="Employee email..."
+            placeholder="Enter email..."
           />
         </div>
         <div className="form-group">
+          <label htmlFor="account_role">Employee Role:</label>
           <select
             name="role"
+            id="account_role"
             onChange={this.handleChange}
             value={role}
             className="form-control">

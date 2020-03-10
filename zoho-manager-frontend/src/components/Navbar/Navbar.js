@@ -52,7 +52,7 @@ class Navbar extends Component {
   render() {
     const { session, organizations } = this.props;
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-1">
         {organizations.length > 0 ? (
           <NavLink to="#" className="navbar-brand">
             <Logo organization={organizations[0]} />

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Logo = ({organization}) => {
+const Logo = ({ organization }) => {
   return (
     <img
       src={`http://localhost:3001/${organization.logo}`}
@@ -8,6 +8,6 @@ const Logo = ({organization}) => {
       alt={organization.name}
     />
   );
-}
+};
 
 export default Logo;

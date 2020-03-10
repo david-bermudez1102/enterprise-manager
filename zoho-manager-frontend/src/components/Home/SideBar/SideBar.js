@@ -123,7 +123,8 @@ export default class SideBar extends Component {
                 ? link.subLinks.map(subLink => (
                     <NavLink
                       to={subLink.path}
-                      className={`${subLink.className} mt-1`}
+                      className={`${subLink.className} mt-1 text-center`}
+                      style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
                       key={cuid()}
                       activeClassName="bg-light text-dark active shadow">
                       <i className={subLink.icon}></i> {subLink.text}{" "}

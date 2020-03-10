@@ -6,6 +6,8 @@ import { addResource } from "../../actions/resourceActions";
 import ResourcesList from "../../components/Resources/ResourcesList";
 import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
+import Resource from "../../components/Resources/Resource";
+import cuid from "cuid";
 
 class ResourcesContainer extends Component {
   componentDidMount() {
@@ -29,28 +31,35 @@ class ResourcesContainer extends Component {
     const { match, addResource, resources } = this.props;
     const { organizationId } = match.params;
     return (
-      <Switch>
-        <Route
-          path={`${match.path}/new`}
-          render={props => (
-            <ResourceForm
-              {...props}
-              addResource={addResource}
-              organizationId={organizationId}
-            />
-          )}
-        />
-        <Route
-          path={`${match.path}`}
-          render={props => (
+      <div className="row">
+        <div className="col-lg-5">
+          <div className="list-group">
             <ResourcesList
-              {...props}
+              match={match}
               resources={resources}
               organizationId={organizationId}
             />
-          )}
-        />
-      </Switch>
+          </div>
+        </div>
+        <Switch>
+          <Route
+            path={`${match.path}/new`}
+            render={props => (
+              <div className="col-lg-7">
+                <ResourceForm
+                  {...props}
+                  addResource={addResource}
+                  organizationId={organizationId}
+                />
+              </div>
+            )}
+          />
+          <Route
+            path={`${match.path}/:formAlias`}
+            render={props => <Resource {...props} key={cuid()} />}
+          />
+        </Switch>
+      </div>
     );
   }
 }

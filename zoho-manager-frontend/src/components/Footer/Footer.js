@@ -4,8 +4,8 @@ export default class Footer extends Component {
   render() {
     const { organization } = this.props;
     return (
-      <footer className="page-footer bg-dark">
-        <div className="footer-copyright py-5 w-100">
+      <footer className="page-footer bg-secondary">
+        <div className="footer-copyright py-3 w-100">
           <div className="container text-white">{`${organization.name} © 2020`}</div>
         </div>
       </footer>

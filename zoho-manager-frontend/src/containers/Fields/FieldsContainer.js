@@ -21,7 +21,7 @@ class FieldsContainer extends Component {
     } = this.props;
 
     return (
-      <div className="col-lg-8">
+      <div className="col-lg-7">
         <div className="card border-0 shadow-sm">
           <FieldsList
             match={match}

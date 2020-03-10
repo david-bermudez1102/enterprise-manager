@@ -16,6 +16,11 @@ class FormsController < ApplicationController
     render json: FormSerializer.new(form)
   end
 
+  def destroy
+    form = @organization.forms.find_by(id: params[:id])
+    render json: { id: params[:id], message: 'Success' } if form.destroy
+  end
+
   private
 
   def form_params

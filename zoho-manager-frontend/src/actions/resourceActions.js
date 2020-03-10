@@ -31,3 +31,25 @@ export const fetchResources = organizationId => {
       .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }));
   };
 };
+
+export const removeResource = (organizationId, formId, resourceId) => {
+  return dispatch => {
+    return fetch(
+      `/api/v1/organizations/${organizationId}/forms/${formId}/resources/${resourceId}`,
+      {
+        method: "DELETE"
+      }
+    )
+      .then(response => response.json())
+      .then(field => camelcaseKeys(field))
+      .then(field =>
+        field.message
+          ? dispatch({
+              type: "REMOVE_RESOURCE",
+              resourceId,
+              status: "deleted"
+            })
+          : null
+      );
+  };
+};

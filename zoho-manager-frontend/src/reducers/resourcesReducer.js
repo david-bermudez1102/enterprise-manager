@@ -9,6 +9,10 @@ export const resourcesReducer = (state = [], action) => {
           resource => !state.some(res => resource.id === res.id)
         )
       ];
+    case "REMOVE_RESOURCE":
+      return [
+        ...state.filter(resource => resource.id !== parseInt(action.resourceId))
+      ];
     default:
       return state;
   }

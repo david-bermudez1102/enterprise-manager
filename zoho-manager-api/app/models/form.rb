@@ -7,13 +7,13 @@ class Form < ApplicationRecord
   validates :name, length: { in: 2..12 }
   has_many :selectable_resources, dependent: :delete_all
   before_create :generate_form_alias
-
+  
   def name
     self[:name].split.map(&:capitalize).join(' ')
   end
   
   def form_alias
-    self.update_attribute(:form_alias, generate_form_alias) if self[:form_alias].nil? || :name_changed?
+    self.update_attribute(:form_alias, generate_form_alias) if self[:form_alias].nil? || self.name_changed?
     self[:form_alias]
   end
 

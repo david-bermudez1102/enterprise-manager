@@ -5,8 +5,20 @@ class Integrations extends Component {
     return (
       <div>
         Account is not connected to any Accounting Software.
-        <button>Connect with Zoho Books</button>
-        <button>Connect with QuickBooks</button>
+        <button>
+          <img
+            src="https://books.zoho.com/favicon.ico"
+            style={{ width: "24px" }}
+          />
+          Connect with Zoho Books
+        </button>
+        <button>
+          <img
+            src="https://quickbooks.intuit.com/etc/designs/harmony/images/favicon/quickbooks/apple-touch-icon-60x60.png"
+            style={{ width: "24px" }}
+          />
+          Connect with QuickBooks
+        </button>
       </div>
     );
   }

@@ -141,7 +141,11 @@ class Field extends Component {
     return (
       <div className="form-group">
         {field.fieldType !== "key_field" ? (
-          <Options url={`${match.url}/fields`} content={field} />
+          <Options
+            url={`${match.url}/fields`}
+            content={field}
+            deletionMessage="The field will be deleted from the resource."
+          />
         ) : null}
         {inputField}
       </div>

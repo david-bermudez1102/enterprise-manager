@@ -1,6 +1,8 @@
 import React from "react";
 import { NavLink, Link, matchPath } from "react-router-dom";
 import cuid from "cuid";
+import ToggleContent from "../ToggleContent";
+import { DeletionModal } from "../Modal/Modals";
 
 const pluralize = require("pluralize");
 
@@ -13,10 +15,14 @@ const ResourcesList = ({ match, resources, location, history }) => {
     return (
       <div
         className={`row border-0 shadow-sm rounded list-group-item list-group-item-action py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 ${
-          isActive ? "active text-white" : null
+          isActive ? "active text-white" : ""
         }`}
         key={cuid()}
-        style={{ cursor: "pointer", fontSize: "20px" }}
+        style={{
+          cursor: "pointer",
+          fontSize: "20px",
+          zIndex: "inherit"
+        }}
         onClick={e => {
           history.push(
             `/organizations/${resource.organizationId}/resources/${resource.formAlias}`
@@ -53,12 +59,28 @@ const ResourcesList = ({ match, resources, location, history }) => {
             onClick={e => e.stopPropagation()}>
             <i className="fas fa-cog"></i>
           </Link>
-          <Link
-            to={`${match.url}/${resource.formAlias}/delete`}
-            style={{ color: "inherit" }}
-            onClick={e => e.stopPropagation()}>
-            <i className="fas fa-trash-alt"></i>
-          </Link>
+          <ToggleContent
+            toggle={show => (
+              <button
+                className="btn btn-transparent"
+                style={{ color: "inherit" }}
+                onClick={show}>
+                <i className="fas fa-trash"></i>
+              </button>
+            )}
+            content={hide => (
+              <DeletionModal
+                title={`Delete resource ${pluralize(resource.name)}`}
+                handleClose={hide}
+                deletionMessage="All of the associated content will be deleted!">
+                <Link to={`${match.url}/${resource.id}/delete`}>
+                  <button type="button" className="btn btn-danger">
+                    Delete resource
+                  </button>
+                </Link>
+              </DeletionModal>
+            )}
+          />
         </span>
       </div>
     );

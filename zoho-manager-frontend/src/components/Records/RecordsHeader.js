@@ -114,6 +114,7 @@ export default class RecordsHeader extends Component {
                   </button>
                   <Options
                     url={`${match.url}/record_fields`}
+                    title={`Delete Field "${field.name}"?`}
                     content={field}
                     fontSize="14px"
                     deletionMessage="The entire column and all of it's data associated will be deleted."

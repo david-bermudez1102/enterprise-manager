@@ -1,19 +1,30 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-export const DeletionModal = ({ content, url, handleClose, children }) => {
+export const DeletionModal = ({
+  title,
+  handleClose,
+  deletionMessage,
+  children
+}) => {
+  console.log(title);
   return (
-    <div className="">
+    <div
+      className="d-block w-100 h-100 fixed-top m-0 text-dark"
+      style={{
+        backgroundColor: "rgba(0,0,0,0.5)",
+        top: 0,
+        left: 0
+      }}>
       <div className="modal d-block" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Delete Field "{content.name}"?</h5>
-              <button type="button" className="close">
+              <h5 className="modal-title">{title}</h5>
+              <button type="button" className="close" onClick={handleClose}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">{children}</div>
+            <div className="modal-body">{deletionMessage}</div>
             <div className="modal-footer">
               <button
                 type="button"
@@ -21,11 +32,7 @@ export const DeletionModal = ({ content, url, handleClose, children }) => {
                 onClick={handleClose}>
                 Cancel
               </button>
-              <Link to={`${url}/${content.id}/delete`}>
-                <button type="button" className="btn btn-danger">
-                  Delete column and field
-                </button>
-              </Link>
+              {children}
             </div>
           </div>
         </div>

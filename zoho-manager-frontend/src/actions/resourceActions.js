@@ -41,9 +41,9 @@ export const removeResource = (organizationId, formId, resourceId) => {
       }
     )
       .then(response => response.json())
-      .then(field => camelcaseKeys(field))
-      .then(field =>
-        field.message
+      .then(resource => camelcaseKeys(resource))
+      .then(resource =>
+        resource.message
           ? dispatch({
               type: "REMOVE_RESOURCE",
               resourceId,

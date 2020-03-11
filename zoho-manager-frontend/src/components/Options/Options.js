@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { DeletionModal } from "../Modal/Modals";
+import ToggleContent from "../ToggleContent";
 
 export default class Options extends Component {
   constructor(props) {
     super(props);
-    this.state = { isOpen: false, showModal: false };
+    this.state = { isOpen: false };
   }
 
   handleOpen = () => {
@@ -14,16 +15,6 @@ export default class Options extends Component {
 
   handleClose = () => {
     this.setState({ isOpen: false });
-  };
-
-  handleShowModal = event => {
-    event.preventDefault();
-    this.setState({ showModal: true });
-  };
-
-  handleCloseModal = event => {
-    event.preventDefault();
-    this.setState({ showModal: false });
   };
 
   contentName = () => {
@@ -36,17 +27,12 @@ export default class Options extends Component {
 
   render() {
     const { content, url, fontSize, deletionMessage } = this.props;
-    const { isOpen, showModal } = this.state;
+    const { isOpen } = this.state;
     return (
       <>
-        {showModal ? (
-          <DeletionModal {...this.props} handleClose={this.handleCloseModal}>
-            {deletionMessage}
-          </DeletionModal>
-        ) : null}
         <div
-          onMouseEnter={this.handleOpen}
-          onMouseLeave={this.handleClose}
+          onMouseOver={this.handleOpen}
+          onMouseOut={this.handleClose}
           className="w-100 d-flex justify-content-between align-items-center">
           <label htmlFor={content.name} className="p-0 m-0">
             {this.contentName()}
@@ -57,16 +43,34 @@ export default class Options extends Component {
               minWidth: "40px",
               visibility: isOpen ? "visible" : "hidden"
             }}>
-            <button
-              className="btn btn-transparent text-primary px-0"
-              onClick={this.handleShowModal}>
-              <i className="fad fa-trash" style={{ fontSize: fontSize }}></i>
-            </button>
             <Link to={`${url}/${content.id}/edit`}>
               <button className="btn btn-transparent text-primary px-0">
                 <i className="fad fa-edit" style={{ fontSize: fontSize }}></i>
               </button>
             </Link>
+            <ToggleContent
+              toggle={show => (
+                <button
+                  className="btn btn-transparent text-primary px-0"
+                  onClick={show}>
+                  <i
+                    className="fad fa-trash"
+                    style={{ fontSize: fontSize }}></i>
+                </button>
+              )}
+              content={hide => (
+                <DeletionModal
+                  {...this.props}
+                  handleClose={hide}
+                  deletionMessage={deletionMessage}>
+                  <Link to={`${url}/${content.id}/delete`}>
+                    <button type="button" className="btn btn-danger">
+                      Delete column and field
+                    </button>
+                  </Link>
+                </DeletionModal>
+              )}
+            />
           </div>
         </div>
       </>

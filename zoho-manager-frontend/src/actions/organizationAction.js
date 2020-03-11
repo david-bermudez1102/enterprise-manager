@@ -1,4 +1,5 @@
 import jsonToFormData from "json-form-data";
+const camelcaseKeys = require("camelcase-keys");
 
 export const addOrganization = organization => {
   return dispatch => {
@@ -23,6 +24,23 @@ export const fetchOrganizations = () => {
       )
       .then(organizations =>
         dispatch({ type: "FETCH_ORGANIZATIONS", organizations })
+      );
+  };
+};
+
+export const updateOrganization = (organization, organizationId) => {
+  return dispatch => {
+    fetch(`/api/v1/organizations/${organizationId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ organization: { ...organization } })
+    })
+      .then(response => response.json())
+      .then(organization => camelcaseKeys(organization.data.attributes))
+      .then(organization =>
+        dispatch({ type: "UPDATE_ORGANIZATION", organizationId, organization })
       );
   };
 };

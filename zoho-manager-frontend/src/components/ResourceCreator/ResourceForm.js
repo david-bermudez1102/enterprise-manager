@@ -22,9 +22,7 @@ class ResourceForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      prevProps.match.params.formAlias !== this.props.match.params.formAlias
-    ) {
+    if (prevProps.match !== this.props.match) {
       const { match, resources } = this.props;
       const resource = resources
         ? resources.find(

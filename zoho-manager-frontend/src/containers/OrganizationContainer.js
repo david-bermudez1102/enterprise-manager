@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import ResourcesContainer from "./ResourceCreator/ResourcesContainer";
 import Organization from "../components/Organizations/Organization";
 import { fetchResources } from "../actions/resourceActions";
+import Settings from "./Settings/Settings";
 
 class OrganizationContainer extends Component {
   componentDidMount() {
@@ -34,6 +35,10 @@ class OrganizationContainer extends Component {
           render={props => (
             <OrganizationInput {...props} addOrganization={addOrganization} />
           )}
+        />
+        <Route
+          path={`${match.path}/:organizationId/settings`}
+          render={props => <Settings {...props} resources={resources} />}
         />
         <Route
           path={`${match.path}/:organizationId/resources`}

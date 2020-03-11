@@ -34,7 +34,7 @@ class Navbar extends Component {
           loginRequired: true
         },
         {
-          path: `/settings`,
+          path: `/organizations/${props.organizations[0].id}/settings`,
           text: "Settings",
           icon: "fas fa-cog",
           loginRequired: true
@@ -58,10 +58,12 @@ class Navbar extends Component {
             <Logo organization={organizations[0]} />
           </NavLink>
         ) : null}
-        {session.isLoggedIn ? (
-          <SearchBar organization={organizations[0]} />
-        ) : null}
-        <div className="collapse navbar-collapse" id="navbarNav">
+        <div
+          className="collapse navbar-collapse d-flex justify-content-end"
+          id="navbarNav">
+          {session.isLoggedIn ? (
+            <SearchBar organization={organizations[0]} />
+          ) : null}
           <ul className="navbar-nav nav-pills">
             {session.isLoggedIn
               ? this.state.links.map(link =>

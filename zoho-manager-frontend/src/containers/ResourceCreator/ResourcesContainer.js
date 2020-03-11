@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { addResource } from "../../actions/resourceActions";
+import { addResource, removeResource } from "../../actions/resourceActions";
 import ResourcesList from "../../components/Resources/ResourcesList";
 import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
 import Resource from "../../components/Resources/Resource";
 import cuid from "cuid";
 import { FormCard } from "../../components/Cards/Cards";
+import ResourceDelete from "../../components/Resources/ResourceDelete";
 
 class ResourcesContainer extends Component {
   componentDidMount() {
@@ -29,7 +30,14 @@ class ResourcesContainer extends Component {
   }
 
   render() {
-    const { match, addResource, resources, location, history } = this.props;
+    const {
+      match,
+      addResource,
+      removeResource,
+      resources,
+      location,
+      history
+    } = this.props;
     const { organizationId } = match.params;
     return (
       <div className="row">
@@ -67,8 +75,15 @@ class ResourcesContainer extends Component {
             )}
           />
           <Route
-            path={`${match.path}/:formAlias/delete`}
-            render={props => <Resource {...props} key={cuid()} />}
+            path={`${match.path}/:resourceId/delete`}
+            render={props => (
+              <ResourceDelete
+                {...props}
+                redirectTo={`${match.url}`}
+                organizationId={organizationId}
+                removeResource={removeResource}
+              />
+            )}
           />
           <Route
             path={`${match.path}/:formAlias`}
@@ -80,6 +95,9 @@ class ResourcesContainer extends Component {
   }
 }
 
-export default connect(null, { addResource, fetchFields, fetchRecordFields })(
-  ResourcesContainer
-);
+export default connect(null, {
+  addResource,
+  removeResource,
+  fetchFields,
+  fetchRecordFields
+})(ResourcesContainer);

@@ -6,7 +6,7 @@ class Value < ApplicationRecord
   belongs_to :record_value, class_name:"Value", optional: true
   belongs_to :key_value, optional: true
   before_create :generate_key_value
-  has_many :checkbox_options
+  has_many :checkbox_options, dependent: :delete_all
 
   accepts_nested_attributes_for :checkbox_options, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 

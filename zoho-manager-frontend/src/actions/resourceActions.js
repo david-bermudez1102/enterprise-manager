@@ -32,10 +32,10 @@ export const fetchResources = organizationId => {
   };
 };
 
-export const removeResource = (organizationId, formId, resourceId) => {
+export const removeResource = (organizationId, resourceId) => {
   return dispatch => {
     return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${formId}/resources/${resourceId}`,
+      `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
       {
         method: "DELETE"
       }

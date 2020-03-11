@@ -5,7 +5,7 @@ class Form < ApplicationRecord
   has_many :record_fields, dependent: :delete_all
   has_many :values, through: :records
   validates :name, length: { in: 2..12 }
-
+  has_many :selectable_resources, dependent: :delete_all
   before_create :generate_form_alias
 
   def name

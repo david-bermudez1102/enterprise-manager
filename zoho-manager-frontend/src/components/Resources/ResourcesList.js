@@ -24,6 +24,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
           zIndex: "inherit"
         }}
         onClick={e => {
+          e.stopPropagation();
           history.push(
             `/organizations/${resource.organizationId}/resources/${resource.formAlias}`
           );
@@ -74,7 +75,10 @@ const ResourcesList = ({ match, resources, location, history }) => {
                 handleClose={hide}
                 deletionMessage="All of the associated content will be deleted!">
                 <Link to={`${match.url}/${resource.id}/delete`}>
-                  <button type="button" className="btn btn-danger">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={e => e.stopPropagation()}>
                     Delete resource
                   </button>
                 </Link>

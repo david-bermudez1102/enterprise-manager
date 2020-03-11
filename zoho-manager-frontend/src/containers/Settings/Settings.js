@@ -6,7 +6,7 @@ import AccountSettings from "../../components/Settings/AccountSettings";
 
 class Settings extends Component {
   render() {
-    const { match } = this.props;
+    const { match, organization } = this.props;
     return (
       <div className="row">
         <div className="col-lg-5">
@@ -24,11 +24,15 @@ class Settings extends Component {
             />
             <Route
               path={`${match.path}/integrations`}
-              render={props => <Integrations {...props} />}
+              render={props => (
+                <Integrations {...props} organization={organization} />
+              )}
             />
             <Route
               path={`${match.path}/account`}
-              render={props => <AccountSettings {...props} />}
+              render={props => (
+                <AccountSettings {...props} organization={organization} />
+              )}
             />
           </Switch>
         </div>

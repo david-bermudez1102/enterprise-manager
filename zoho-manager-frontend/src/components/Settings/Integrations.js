@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import { Switch, Route } from "react-router-dom";
+import ZohoBooksForm from "../Integrations/ZohoBooksForm";
+import { connect } from "react-redux";
+import { updateOrganization } from "../../actions/organizationAction";
 
 class Integrations extends Component {
   render() {
+    const { match, organization, session, updateOrganization } = this.props;
     return (
       <div>
         Account is not connected to any Accounting Software.
@@ -19,9 +24,26 @@ class Integrations extends Component {
           />
           Connect with QuickBooks
         </button>
+        <div>
+          <Switch>
+            <Route
+              path={`${match.url}/zoho_books/edit`}
+              render={props => (
+                <ZohoBooksForm
+                  organization={organization}
+                  updateOrganization={updateOrganization}
+                  session={session}
+                />
+              )}
+            />
+          </Switch>
+        </div>
       </div>
     );
   }
 }
 
-export default Integrations;
+const mapStateToProps = ({ session }) => {
+  return { session };
+};
+export default connect(mapStateToProps, { updateOrganization })(Integrations);

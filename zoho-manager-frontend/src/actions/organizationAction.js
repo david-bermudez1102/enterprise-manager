@@ -20,7 +20,9 @@ export const fetchOrganizations = () => {
     fetch("/api/v1/organizations")
       .then(response => response.json())
       .then(organizations =>
-        organizations.data.map(organization => organization.attributes)
+        organizations.data.map(organization =>
+          camelcaseKeys(organization.attributes)
+        )
       )
       .then(organizations =>
         dispatch({ type: "FETCH_ORGANIZATIONS", organizations })
@@ -30,7 +32,7 @@ export const fetchOrganizations = () => {
 
 export const updateOrganization = (organization, organizationId) => {
   return dispatch => {
-    fetch(`/api/v1/organizations/${organizationId}`, {
+    return fetch(`/api/v1/organizations/${organizationId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -40,7 +42,13 @@ export const updateOrganization = (organization, organizationId) => {
       .then(response => response.json())
       .then(organization => camelcaseKeys(organization.data.attributes))
       .then(organization =>
-        dispatch({ type: "UPDATE_ORGANIZATION", organizationId, organization })
+        organization.message === "success"
+          ? dispatch({
+              type: "UPDATE_ORGANIZATION",
+              organizationId,
+              organization
+            })
+          : console.log(organization.messages)
       );
   };
 };

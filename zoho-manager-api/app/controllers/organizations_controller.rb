@@ -4,6 +4,15 @@ class OrganizationsController < ApplicationController
     render json: OrganizationSerializer.new(organization) if organization.save
   end
 
+  def update
+    organization = Organization.find_by(id: params[:id])
+    if organization.update(organization_params)
+      render json: OrganizationSerializer.new(organization)
+    else
+      render json: { messages: field.errors.full_messages}
+    end
+  end
+
   def index
     organizations = Organization.all
     render json: OrganizationSerializer.new(organizations)
@@ -12,6 +21,6 @@ class OrganizationsController < ApplicationController
   private
 
   def organization_params
-    params.require(:organization).permit(:name, :logo)
+    params.require(:organization).permit(:name, :logo, zoho_integration_attributes: [:auth_token, :account_id], quickbooks_integration_attributes: [:auth_token])
   end
 end

@@ -27,7 +27,7 @@ class OrganizationContainer extends Component {
   }
 
   render() {
-    const { match, addOrganization, resources } = this.props;
+    const { match, addOrganization, resources, organizations } = this.props;
     return (
       <Switch>
         <Route
@@ -38,7 +38,13 @@ class OrganizationContainer extends Component {
         />
         <Route
           path={`${match.path}/:organizationId/settings`}
-          render={props => <Settings {...props} resources={resources} />}
+          render={props => (
+            <Settings
+              {...props}
+              resources={resources}
+              organization={organizations[0]}
+            />
+          )}
         />
         <Route
           path={`${match.path}/:organizationId/resources`}

@@ -12,7 +12,7 @@ export const organizationReducer = (state = [], action) => {
       ];
     case "UPDATE_ORGANIZATION":
       const organization = state.find(
-        organization => organization.id === parseInt(action.organization_id)
+        organization => organization.id === parseInt(action.organizationId)
       );
       return [...state].map(org =>
         org.id === organization.id ? organization : org

@@ -15,4 +15,6 @@ class AdminSerializer
   attribute :type do |object|
     object.account.accountable_type
   end
+
+  attribute :organization_id
 end

@@ -9,6 +9,11 @@ export const resourcesReducer = (state = [], action) => {
           resource => !state.some(res => resource.id === res.id)
         )
       ];
+    case "UPDATE_RESOURCE":
+      const resource = state.find(
+        resource => resource.id === parseInt(action.resourceId)
+      );
+      return [...state.map(r => (r.id === resource.id ? action.resource : r))];
     case "REMOVE_RESOURCE":
       return [
         ...state.filter(resource => resource.id !== parseInt(action.resourceId))

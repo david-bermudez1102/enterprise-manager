@@ -3,7 +3,38 @@ import React, { Component } from "react";
 class ResourceForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: "", organization_id: props.organizationId };
+    this.state = {
+      name: "",
+      organization_id: props.organizationId
+    };
+  }
+
+  componentDidMount() {
+    const { match, resources } = this.props;
+    const resource = resources
+      ? resources.find(
+          resource => resource.formAlias === match.params.formAlias
+        )
+      : null;
+    return resource
+      ? this.setState({ name: resource.name, resourceId: resource.id })
+      : null;
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.match.params.formAlias !== this.props.match.params.formAlias
+    ) {
+      const { match, resources } = this.props;
+      const resource = resources
+        ? resources.find(
+            resource => resource.formAlias === match.params.formAlias
+          )
+        : null;
+      return resource
+        ? this.setState({ name: resource.name, resourceId: resource.id })
+        : null;
+    }
   }
 
   handleChange = event => {
@@ -12,11 +43,18 @@ class ResourceForm extends Component {
   };
 
   handleSubmit = event => {
+    const { addResource, updateResource, history, url } = this.props;
+    const { name, organization_id, resourceId } = this.state;
     event.preventDefault();
-    this.props.addResource(this.state, this.props.history);
+    if (addResource) addResource({ name, organization_id }, history);
+    else if (updateResource)
+      updateResource({ name }, organization_id, resourceId).then(resource =>
+        history.push(`${url}/${resource.formAlias}/edit`)
+      );
   };
 
   render() {
+    const { addResource } = this.props;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
@@ -32,7 +70,7 @@ class ResourceForm extends Component {
         </div>
         <input
           type="submit"
-          value="Create Resource"
+          value={addResource ? "Create Resource" : "Update Resource"}
           className="btn btn-primary shadow"
         />
       </form>

@@ -13,7 +13,7 @@ class Form < ApplicationRecord
   end
   
   def form_alias
-    self.update_attribute(:form_alias, generate_form_alias) if self[:form_alias].nil?
+    self.update_attribute(:form_alias, generate_form_alias) if self[:form_alias].nil? || :name_changed?
     self[:form_alias]
   end
 

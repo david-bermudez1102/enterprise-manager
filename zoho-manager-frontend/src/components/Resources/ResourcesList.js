@@ -14,7 +14,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
     );
     return (
       <div
-        className={`row border-0 shadow-sm rounded list-group-item list-group-item-action py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 ${
+        className={`row mx-0 border-0 shadow-sm rounded list-group-item list-group-item-action py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 ${
           isActive ? "active text-white" : ""
         }`}
         key={cuid()}
@@ -40,7 +40,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
             </span>
           </NavLink>
         </span>
-        <span className="order-sm-1 order-md-2 py-3 col-sm-12 col-xl-5 col-lg-4 col-md-4 d-flex justify-content-between align-items-center">
+        <span className="order-sm-1 order-md-2 pl-0 py-3 col-sm-12 col-xl-5 col-lg-4 col-md-4 d-flex justify-content-between align-items-center">
           <Link
             to={`${match.url}/${resource.formAlias}/records`}
             style={{ color: "inherit" }}
@@ -55,7 +55,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
             </button>
           </Link>
           <Link
-            to="settings"
+            to={`${match.url}/${resource.formAlias}/edit`}
             style={{ color: "inherit" }}
             onClick={e => e.stopPropagation()}>
             <i className="fas fa-cog"></i>

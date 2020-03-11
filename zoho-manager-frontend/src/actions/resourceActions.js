@@ -32,6 +32,27 @@ export const fetchResources = organizationId => {
   };
 };
 
+export const updateResource = (resource, organizationId, resourceId) => {
+  return dispatch => {
+    return fetch(
+      `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ form: { ...resource } })
+      }
+    )
+      .then(response => response.json())
+      .then(resource => camelcaseKeys(resource.data.attributes))
+      .then(resource => {
+        dispatch({ type: "UPDATE_RESOURCE", resourceId, resource });
+        return resource;
+      });
+  };
+};
+
 export const removeResource = (organizationId, resourceId) => {
   return dispatch => {
     return fetch(

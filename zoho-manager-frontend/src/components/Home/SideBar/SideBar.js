@@ -21,14 +21,21 @@ export default class SideBar extends Component {
           className: navLinkClass,
           exact: true,
           text: "Organizations",
-          icon: "fas fa-sitemap",
+          icon: "fas fa-briefcase",
           levels: ["admin"]
+        },
+        {
+          path: `/organizations/${props.organizations[0].id}/records`,
+          className: `${navLinkClass}`,
+          text: "Records",
+          icon: "fas fa-th-list",
+          levels: ["admin", "manager", "employee"]
         },
         {
           path: "/accounts",
           className: navLinkClass,
           text: "Accounts",
-          icon: "fas fa-users",
+          icon: "fas fa-users-cog mr-n1 pr-2",
           levels: ["admin"],
           dropdown: true,
           status: activePath.includes("/accounts") ? "open" : "closed",
@@ -44,7 +51,7 @@ export default class SideBar extends Component {
         {
           path: `/organizations/${props.organizations[0].id}/resources`,
           dropdown: true,
-          className: `${navLinkClass} dropdown`,
+          className: `${navLinkClass}`,
           text: "Resources",
           icon: "fas fa-layer-group",
           levels: ["admin", "manager", "employee"],
@@ -60,7 +67,6 @@ export default class SideBar extends Component {
       ]
     };
   }
-
   componentDidMount() {
     this.setState({
       links: this.state.links.map((link, id) => {
@@ -82,19 +88,21 @@ export default class SideBar extends Component {
   };
 
   render() {
-    console.log(this.state);
     const { session } = this.props;
     const currentUser = session.currentUser;
     return (
       <div
         className="py-3 bg-secondary sticky-top shadow-lg text-light"
-        style={{ minWidth: "200px" }}>
+        style={{ minWidth: "200px", fontSize: "16px" }}>
         <div className="px-3 w-100 d-flex align-items-center">
           <span>
-            <i className="fad fa-user-circle" style={{ fontSize: "40px" }}></i>
+            <i
+              className="fas fa-user-circle text-light"
+              style={{ fontSize: "40px" }}></i>
           </span>
-          <span className="ml-2"> {currentUser.name}</span>
+          <span className="ml-2">{currentUser.name}</span>
         </div>
+        <hr className="mb-0" style={{ background: "rgba(0,0,0,0.2)" }} />
         <nav
           className="px-2 py-3 nav nav-dark nav-pills flex-column min-h-100 "
           style={{ zIndex: 999 }}>
@@ -103,18 +111,19 @@ export default class SideBar extends Component {
               <NavLink
                 exact={link.exact}
                 to={link.path}
-                className={`${link.className} justify-content-between d-flex`}
+                className={`${link.className} justify-content-between d-flex mb-1`}
                 activeClassName="bg-info active shadow"
                 onClick={() => this.toggleDropDown(link.id)}>
                 <span>
-                  <i className={link.icon}></i> {link.text}
+                  <i className={`${link.icon} mr-2`}></i>
+                  {link.text}
                 </span>
                 <span>
                   {link.dropdown ? (
                     link.status === "open" ? (
                       <i className="fas fa-chevron-down"></i>
                     ) : (
-                      <i className="fas fa-chevron-right"></i>
+                      <i className="fas fa-chevron-left"></i>
                     )
                   ) : null}
                 </span>
@@ -123,11 +132,13 @@ export default class SideBar extends Component {
                 ? link.subLinks.map(subLink => (
                     <NavLink
                       to={subLink.path}
-                      className={`${subLink.className} mt-1 text-center`}
-                      style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
+                      className={`${subLink.className} mt-1`}
+                      style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
                       key={cuid()}
                       activeClassName="bg-light text-dark active shadow">
-                      <i className={subLink.icon}></i> {subLink.text}{" "}
+                      <i className="fas fa-chevron-right mr-3"></i>
+                      <i className={`${subLink.icon} mr-1`}></i>
+                      {subLink.text}
                     </NavLink>
                   ))
                 : null}

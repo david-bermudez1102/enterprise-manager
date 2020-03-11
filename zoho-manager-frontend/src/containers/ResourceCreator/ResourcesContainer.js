@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { addResource, removeResource } from "../../actions/resourceActions";
+import {
+  addResource,
+  updateResource,
+  removeResource
+} from "../../actions/resourceActions";
 import ResourcesList from "../../components/Resources/ResourcesList";
 import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
@@ -33,6 +37,7 @@ class ResourcesContainer extends Component {
     const {
       match,
       addResource,
+      updateResource,
       removeResource,
       resources,
       location,
@@ -74,6 +79,33 @@ class ResourcesContainer extends Component {
               </div>
             )}
           />
+          {resources.length > 0 ? (
+            <Route
+              path={`${match.path}/:formAlias/edit`}
+              render={props => (
+                <div className="col-lg-7">
+                  <FormCard
+                    header={
+                      <span
+                        className="card-title display-4"
+                        style={{ fontSize: "32px" }}>
+                        Edit Resource
+                      </span>
+                    }>
+                    <ResourceForm
+                      {...props}
+                      url={`${match.url}`}
+                      updateResource={updateResource}
+                      organizationId={organizationId}
+                      resources={resources}
+                    />
+                  </FormCard>
+                </div>
+              )}
+            />
+          ) : (
+            ""
+          )}
           <Route
             path={`${match.path}/:resourceId/delete`}
             render={props => (
@@ -97,6 +129,7 @@ class ResourcesContainer extends Component {
 
 export default connect(null, {
   addResource,
+  updateResource,
   removeResource,
   fetchFields,
   fetchRecordFields

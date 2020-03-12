@@ -41,14 +41,19 @@ export const updateOrganization = (organization, organizationId) => {
     })
       .then(response => response.json())
       .then(organization => camelcaseKeys(organization.data.attributes))
-      .then(organization =>
-        organization.message === "success"
-          ? dispatch({
-              type: "UPDATE_ORGANIZATION",
-              organizationId,
-              organization
-            })
-          : console.log(organization.messages)
-      );
+      .then(organization => {
+        if (organization.message === "success") {
+          dispatch({
+            type: "UPDATE_ORGANIZATION",
+            organizationId,
+            organization
+          });
+          return organization;
+        } else if (organization.message === "error") {
+          console.log(organization.messages);
+          return organization;
+        }
+      })
+      .catch(console.log);
   };
 };

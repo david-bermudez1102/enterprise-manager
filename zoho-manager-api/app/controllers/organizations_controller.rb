@@ -9,7 +9,7 @@ class OrganizationsController < ApplicationController
     if organization.update(organization_params)
       render json: OrganizationSerializer.new(organization)
     else
-      render json: { messages: field.errors.full_messages}
+      render json: { messages: organization.errors.full_messages}
     end
   end
 

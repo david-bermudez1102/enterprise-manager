@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import Alert from "../Alerts/Alert";
 
 export default class ZohoBooksForm extends Component {
   constructor() {
     super();
-    this.state = { auth_token: "" };
+    this.state = { auth_token: "", status: "", message: "" };
   }
 
   componentDidMount() {
@@ -20,6 +21,7 @@ export default class ZohoBooksForm extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.organization !== this.props.organization) {
       const { organization } = this.props;
+      this.hideAlert();
       return organization
         ? this.setState({
             auth_token: organization.zohoIntegration
@@ -30,10 +32,12 @@ export default class ZohoBooksForm extends Component {
     }
   }
 
+  hideAlert = () =>
+    setTimeout(() => this.setState({ status: "", message: "" }), 3000);
+
   handleChange = event => {
     event.persist();
     this.setState({
-      ...this.state,
       [event.target.name]: event.target.value
     });
   };
@@ -42,24 +46,34 @@ export default class ZohoBooksForm extends Component {
     event.preventDefault();
     const { updateOrganization, organization, session } = this.props;
     const { auth_token } = this.state;
-    updateOrganization(
-      {
-        zoho_integration_attributes: {
-          auth_token,
-          account_id: session.currentUser.id
-        }
-      },
-      organization.id
-    ).then(org =>
-      org
-        ? this.setState({ status: "success" })
-        : this.setState({ status: "error" })
+    this.setState({ status: "", message: "" }, () =>
+      updateOrganization(
+        {
+          zoho_integration_attributes: {
+            auth_token,
+            account_id: session.currentUser.id
+          }
+        },
+        organization.id
+      ).then(org =>
+        org
+          ? this.setState({
+              status: "success",
+              message: "Zoho Books Auth Token was updated successfully"
+            })
+          : this.setState({
+              status: "error",
+              message: "Could not be updated"
+            })
+      )
     );
   };
 
   render() {
+    const { status, message } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
+        <Alert type={status}>{message}</Alert>
         <div className="form-group">
           <input
             type="text"

@@ -15,7 +15,7 @@ export const organizationReducer = (state = [], action) => {
         organization => organization.id === parseInt(action.organizationId)
       );
       return [...state].map(org =>
-        org.id === organization.id ? organization : org
+        org.id === organization.id ? action.organization : org
       );
     default:
       return state;

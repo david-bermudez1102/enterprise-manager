@@ -51,7 +51,8 @@ export default class ZohoBooksForm extends Component {
         {
           zoho_integration_attributes: {
             auth_token,
-            account_id: session.currentUser.id
+            account_id: session.currentUser.id,
+            organization_id: organization.id
           }
         },
         organization.id

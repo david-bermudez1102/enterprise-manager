@@ -21,6 +21,6 @@ class OrganizationsController < ApplicationController
   private
 
   def organization_params
-    params.require(:organization).permit(:name, :logo, zoho_integration_attributes: [:auth_token, :account_id], quickbooks_integration_attributes: [:auth_token])
+    params.require(:organization).permit(:name, :logo, zoho_integration_attributes: [:auth_token, :account_id, :organization_id], quickbooks_integration_attributes: [:auth_token])
   end
 end

@@ -88,14 +88,17 @@ ActiveRecord::Schema.define(version: 2020_03_11_170821) do
   end
 
   create_table "integrations", force: :cascade do |t|
-    t.integer "type"
     t.string "auth_token"
     t.integer "organization_id"
     t.integer "account_id"
+    t.integer "zoho_integration_id"
+    t.integer "quickbooks_integration_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_integrations_on_account_id"
     t.index ["organization_id"], name: "index_integrations_on_organization_id"
+    t.index ["quickbooks_integration_id"], name: "index_integrations_on_quickbooks_integration_id"
+    t.index ["zoho_integration_id"], name: "index_integrations_on_zoho_integration_id"
   end
 
   create_table "key_values", force: :cascade do |t|

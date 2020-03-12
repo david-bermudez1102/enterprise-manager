@@ -8,6 +8,7 @@ import { valuesReducer } from "./valuesReducer";
 import { sessionReducer } from "./sessionReducer";
 import { recordFieldsReducer } from "./recordFieldsReducer";
 import { accountsReducer } from "./accountsReducer";
+import { zohoBooksReducer } from "./zohoBooksReducer";
 
 export const rootReducer = combineReducers({
   session: sessionReducer,
@@ -18,5 +19,6 @@ export const rootReducer = combineReducers({
   fields: fieldsReducer,
   records: recordsReducer,
   recordFields: recordFieldsReducer,
-  values: valuesReducer
+  values: valuesReducer,
+  zohoBooks: zohoBooksReducer
 });

@@ -6,6 +6,9 @@ export default class ZohoBooksForm extends Component {
     super();
     this.state = {
       auth_token: "",
+      client_id: "",
+      client_secret: "",
+      redirect_uri: "",
       external_organization_id: "",
       status: "",
       message: ""
@@ -18,6 +21,15 @@ export default class ZohoBooksForm extends Component {
       ? this.setState({
           auth_token: organization.zohoIntegration
             ? organization.zohoIntegration.auth_token
+            : "",
+          client_id: organization.zohoIntegration
+            ? organization.zohoIntegration.client_id
+            : "",
+          client_secret: organization.zohoIntegration
+            ? organization.zohoIntegration.client_secret
+            : "",
+          redirect_uri: organization.zohoIntegration
+            ? organization.zohoIntegration.redirect_uri
             : "",
           external_organization_id: organization.zohoIntegration
             ? organization.zohoIntegration.external_organization_id
@@ -34,6 +46,15 @@ export default class ZohoBooksForm extends Component {
         ? this.setState({
             auth_token: organization.zohoIntegration
               ? organization.zohoIntegration.auth_token
+              : "",
+            client_id: organization.zohoIntegration
+              ? organization.zohoIntegration.client_id
+              : "",
+            client_secret: organization.zohoIntegration
+              ? organization.zohoIntegration.client_secret
+              : "",
+            redirect_uri: organization.zohoIntegration
+              ? organization.zohoIntegration.redirect_uri
               : "",
             external_organization_id: organization.zohoIntegration
               ? organization.zohoIntegration.external_organization_id
@@ -57,14 +78,23 @@ export default class ZohoBooksForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const { updateOrganization, organization, session } = this.props;
-    const { auth_token, external_organization_id } = this.state;
+    const {
+      auth_token,
+      client_id,
+      client_secret,
+      redirect_uri,
+      external_organization_id
+    } = this.state;
     this.setState({ status: "", message: "" }, () =>
       updateOrganization(
         {
           zoho_integration_attributes: {
             auth_token,
+            client_id,
+            client_secret,
             account_id: session.currentUser.id,
             organization_id: organization.id,
+            redirect_uri,
             external_organization_id
           }
         },
@@ -90,12 +120,36 @@ export default class ZohoBooksForm extends Component {
         <Alert type={status}>{message}</Alert>
         <div className="form-group">
           <input
+            type="password"
+            name="client_id"
+            className="form-control"
+            onChange={this.handleChange}
+            value={this.state.client_id}
+            placeholder="Enter Zoho Client Id"
+          />
+          <input
+            type="password"
+            name="client_secret"
+            className="form-control"
+            onChange={this.handleChange}
+            value={this.state.client_secret}
+            placeholder="Enter Zoho Client Secret"
+          />
+          <input
             type="text"
             name="auth_token"
             className="form-control"
             onChange={this.handleChange}
             value={this.state.auth_token}
             placeholder="Enter Zoho Auth Token"
+          />
+          <input
+            type="text"
+            name="redirect_uri"
+            className="form-control"
+            onChange={this.handleChange}
+            value={this.state.redirect_uri}
+            placeholder="Enter Zoho Redirect URI"
           />
           <input
             type="text"

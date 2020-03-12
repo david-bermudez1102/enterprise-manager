@@ -1,22 +1,20 @@
 const camelcaseKeys = require("camelcase-keys");
 
-export const addInvoice = (invoice, zohoOrganizationId, token) => {
+export const addInvoice = (invoice, token, zohoOrganizationId) => {
   return dispatch => {
-    return fetch(
-      `https://books.zoho.com/api/v3/invoices?organization_id=${zohoOrganizationId}`,
+    fetch(
+      `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=1000.JA69R7B1955LLMWWDAU0E4FEOTB9XH&response_type=code&redirect_uri=https://accounts.zoho.com/oauth/v2/auth?&access_type=offline`,
       {
-        method: "POST",
+        mode: "no-cors",
+        method: "GET",
+
         headers: {
-          Authorization: `Zoho-oauthtoken ${token}`
-        },
-        body: JSON.stringify({ invoice: { ...invoice } })
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
       }
     )
       .then(response => response.json())
-      .then(invoice => camelcaseKeys(invoice.data.attributes))
-      .then(f => {
-        dispatch({ type: "ADD_FIELD", invoice: f });
-        return { ...invoice, invoice_id: f.id };
-      });
+      .then(console.log)
+      .catch(console.log);
   };
 };

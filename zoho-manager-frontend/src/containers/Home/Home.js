@@ -7,6 +7,7 @@ import OrganizationContainer from "../OrganizationContainer";
 import AdminContainer from "../AdminContainer";
 import LogoutContainer from "../LogoutContainer";
 import AccountsContainer from "../Accounts/AccountsContainer";
+import ZohoBooks from "../ZohoBooks/ZohoBooks";
 
 class Home extends Component {
   render() {
@@ -63,6 +64,18 @@ class Home extends Component {
                   <AccountsContainer {...props} session={session} />
                 )}
               />
+              {organizations.length > 0 ? (
+                <Route
+                  path={`/auth/zohobooks/callback`}
+                  render={props => (
+                    <ZohoBooks
+                      {...props}
+                      session={session}
+                      organization={organizations[0]}
+                    />
+                  )}
+                />
+              ) : null}
             </Switch>
           </main>
         </div>

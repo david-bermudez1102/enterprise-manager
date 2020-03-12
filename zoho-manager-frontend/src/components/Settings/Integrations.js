@@ -3,6 +3,7 @@ import { Switch, Route, Link } from "react-router-dom";
 import ZohoBooksForm from "../Integrations/ZohoBooksForm";
 import { connect } from "react-redux";
 import { updateOrganization } from "../../actions/organizationAction";
+import { addInvoice } from "../../actions/zohoBooksActions";
 
 class Integrations extends Component {
   render() {
@@ -50,4 +51,6 @@ class Integrations extends Component {
 const mapStateToProps = ({ session }) => {
   return { session };
 };
-export default connect(mapStateToProps, { updateOrganization })(Integrations);
+export default connect(mapStateToProps, { updateOrganization, addInvoice })(
+  Integrations
+);

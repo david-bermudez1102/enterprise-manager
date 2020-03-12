@@ -14,7 +14,7 @@ class Integrations extends Component {
       updateOrganization,
       addInvoice
     } = this.props;
-    fetch("/api/v1/zoho")
+    fetch("/api/v1/organizations/1/zoho_books/items")
       .then(resp => resp.json())
       .then(console.log);
     return (

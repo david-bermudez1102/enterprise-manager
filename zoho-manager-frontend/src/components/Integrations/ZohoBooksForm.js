@@ -4,7 +4,12 @@ import Alert from "../Alerts/Alert";
 export default class ZohoBooksForm extends Component {
   constructor() {
     super();
-    this.state = { auth_token: "", status: "", message: "" };
+    this.state = {
+      auth_token: "",
+      external_organization_id: "",
+      status: "",
+      message: ""
+    };
   }
 
   componentDidMount() {
@@ -13,6 +18,9 @@ export default class ZohoBooksForm extends Component {
       ? this.setState({
           auth_token: organization.zohoIntegration
             ? organization.zohoIntegration.auth_token
+            : "",
+          external_organization_id: organization.zohoIntegration
+            ? organization.zohoIntegration.external_organization_id
             : ""
         })
       : null;
@@ -26,6 +34,9 @@ export default class ZohoBooksForm extends Component {
         ? this.setState({
             auth_token: organization.zohoIntegration
               ? organization.zohoIntegration.auth_token
+              : "",
+            external_organization_id: organization.zohoIntegration
+              ? organization.zohoIntegration.external_organization_id
               : ""
           })
         : null;
@@ -38,6 +49,7 @@ export default class ZohoBooksForm extends Component {
   handleChange = event => {
     event.persist();
     this.setState({
+      ...this.state,
       [event.target.name]: event.target.value
     });
   };
@@ -45,14 +57,15 @@ export default class ZohoBooksForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const { updateOrganization, organization, session } = this.props;
-    const { auth_token } = this.state;
+    const { auth_token, external_organization_id } = this.state;
     this.setState({ status: "", message: "" }, () =>
       updateOrganization(
         {
           zoho_integration_attributes: {
             auth_token,
             account_id: session.currentUser.id,
-            organization_id: organization.id
+            organization_id: organization.id,
+            external_organization_id
           }
         },
         organization.id
@@ -84,9 +97,16 @@ export default class ZohoBooksForm extends Component {
             value={this.state.auth_token}
             placeholder="Enter Zoho Auth Token"
           />
+          <input
+            type="text"
+            name="external_organization_id"
+            className="form-control"
+            onChange={this.handleChange}
+            value={this.state.external_organization_id}
+            placeholder="Enter Zoho Organization Id"
+          />
         </div>
         <input type="submit" className="btn btn-primary shadow" />
-        {this.state.auth_token}
       </form>
     );
   }

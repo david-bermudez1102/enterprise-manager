@@ -2,7 +2,10 @@ class OrganizationSerializer
   include FastJsonapi::ObjectSerializer
   attributes :id, :name
   attribute :zoho_integration do |obj|
-    IntegrationSerializer.new(obj.zoho_integration)
+    zi = IntegrationSerializer.new(obj.zoho_integration).serializable_hash[:data]
+    if zi 
+      zi[:attributes] 
+    end
   end
 
   attribute :quickbooks_integration do |obj|

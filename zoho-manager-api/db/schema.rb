@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 2020_03_11_170821) do
   end
 
   create_table "integrations", force: :cascade do |t|
+    t.string "external_organization_id"
     t.string "auth_token"
     t.integer "organization_id"
     t.integer "account_id"

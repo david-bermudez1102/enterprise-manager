@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import ZohoBooksForm from "../Integrations/ZohoBooksForm";
 import { connect } from "react-redux";
 import { updateOrganization } from "../../actions/organizationAction";
@@ -10,17 +10,21 @@ class Integrations extends Component {
     return (
       <div>
         Account is not connected to any Accounting Software.
-        <button>
-          <img
-            src="https://books.zoho.com/favicon.ico"
-            style={{ width: "24px" }}
-          />
-          Connect with Zoho Books
-        </button>
+        <Link to={`${match.url}/zoho_books/edit`}>
+          <button>
+            <img
+              src="https://books.zoho.com/favicon.ico"
+              style={{ width: "24px" }}
+              alt="Connect with ZohoBooks"
+            />
+            Connect with Zoho Books
+          </button>
+        </Link>
         <button>
           <img
             src="https://quickbooks.intuit.com/etc/designs/harmony/images/favicon/quickbooks/apple-touch-icon-60x60.png"
             style={{ width: "24px" }}
+            alt="Connect with QuickBooks"
           />
           Connect with QuickBooks
         </button>

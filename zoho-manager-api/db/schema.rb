@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_11_170821) do
+ActiveRecord::Schema.define(version: 2020_03_13_061605) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -59,6 +59,16 @@ ActiveRecord::Schema.define(version: 2020_03_11_170821) do
     t.datetime "updated_at", null: false
     t.index ["option_id"], name: "index_checkbox_options_on_option_id"
     t.index ["value_id"], name: "index_checkbox_options_on_value_id"
+  end
+
+  create_table "connections", force: :cascade do |t|
+    t.integer "integration_id"
+    t.integer "form_id"
+    t.integer "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_connections_on_form_id"
+    t.index ["integration_id"], name: "index_connections_on_integration_id"
   end
 
   create_table "employees", force: :cascade do |t|

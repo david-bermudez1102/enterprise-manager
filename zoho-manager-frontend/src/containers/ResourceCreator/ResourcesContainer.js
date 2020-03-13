@@ -103,9 +103,11 @@ class ResourcesContainer extends Component {
                 </div>
               )}
             />
-          ) : (
-            ""
-          )}
+          ) : null}
+          <Route
+            path={`${match.path}/:formAlias/connections/new`}
+            render={props => <div>Hey there</div>}
+          />
           <Route
             path={`${match.path}/:resourceId/delete`}
             render={props => (

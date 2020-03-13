@@ -1,19 +1,18 @@
 class ConnectionsController < ApplicationController
   before_action :set_connection, only: [:show, :update, :destroy]
+  before_action :set_organization
+  before_action :set_form
 
-  # GET /connections
   def index
-    @connections = Connection.all
+    @connections = @form.connections
 
     render json: @connections
   end
 
-  # GET /connections/1
   def show
     render json: @connection
   end
 
-  # POST /connections
   def create
     @connection = Connection.new(connection_params)
 
@@ -24,7 +23,6 @@ class ConnectionsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /connections/1
   def update
     if @connection.update(connection_params)
       render json: @connection
@@ -33,18 +31,23 @@ class ConnectionsController < ApplicationController
     end
   end
 
-  # DELETE /connections/1
   def destroy
     @connection.destroy
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_connection
-      @connection = Connection.find(params[:id])
+    def set_organization
+      @organization = Organization.find(params[:organization_id])
     end
 
-    # Only allow a trusted parameter "white list" through.
+    def set_form
+      @form = @organization.forms.find(params[:form_id])
+    end
+
+    def set_connection
+      @connection = @form.find(params[:id])
+    end
+
     def connection_params
       params.require(:connection).permit(:integration_id, :form_id, :type)
     end

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :connections
   resources :integrations
   scope 'api/v1' do
     resources :options
@@ -10,6 +9,7 @@ Rails.application.routes.draw do
         resources :records
         resources :values
         resources :key_values
+        resources :connections
       end
       namespace :zoho_books do
         resources :items

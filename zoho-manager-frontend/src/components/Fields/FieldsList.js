@@ -82,7 +82,9 @@ class FieldsList extends Component {
               title={`View all ${resource.name}`}>
               <i className="fad fa-th-list" style={{ fontSize: "24px" }}></i>
             </Link>
-            <Link to={`${match.url}/fields/new`} title="Connect to Zoho Books">
+            <Link
+              to={`${match.url}/connections/new`}
+              title="Connect to Zoho Books">
               <button className="btn btn-transparent p-0 mt-n1 d-block-inline">
                 <img
                   src="https://books.zoho.com/favicon.ico"

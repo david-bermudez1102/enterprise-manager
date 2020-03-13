@@ -1,48 +1,44 @@
 import React, { Component } from "react";
+import { updateOrganization } from "../../actions/organizationAction";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 class ZohoBooks extends Component {
   constructor(props) {
     super(props);
-    const { organization, location } = props;
-    const { zohoIntegration } = organization;
-    this.formRef = React.createRef();
+    const { location } = props;
     const query = new URLSearchParams(location.search);
     this.state = {
       code: query.get("code"),
-      client_id: zohoIntegration.client_id || "",
-      client_secret: zohoIntegration.client_secret || "",
-      redirect_uri: zohoIntegration.redirect_uri || "",
-      grant_type: "authorization_code"
+      status: "loading"
     };
   }
 
   componentDidMount() {
-    this.formRef.current.submit();
+    const { code } = this.state;
+    const { organization, updateOrganization } = this.props;
+    fetch(`/api/v1/organizations/${organization.id}/zoho_books/zoho_token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ zoho_books: { code } })
+    })
+      .then(resp => resp.json())
+      .then(resp =>
+        updateOrganization(
+          { zoho_integration_attributes: { auth_token: resp.access_token } },
+          organization.id
+        )
+      )
+      .then(() => alert("Token was generated successfully"))
+      .then(() => this.setState({ status: "done" }));
   }
 
   render() {
-    const {
-      code,
-      client_id,
-      client_secret,
-      redirect_uri,
-      grant_type
-    } = this.state;
-
-    return (
-      <form
-        action="https://accounts.zoho.com/oauth/v2/token?"
-        method="post"
-        ref={this.formRef}>
-        <input type="hidden" name="code" maxLength="1000" value={code} />
-        <input type="hidden" name="client_id" value={client_id} />
-        <input type="hidden" name="client_secret" value={client_secret} />
-        <input type="hidden" name="redirect_uri" value={redirect_uri} />
-        <input type="hidden" name="grant_type" value={grant_type} />
-        <input type="submit" />
-      </form>
-    );
+    const { redirectTo } = this.props;
+    return this.state.status === "done" ? <Redirect to={redirectTo} /> : null;
   }
 }
 
-export default ZohoBooks;
+export default connect(null, { updateOrganization })(ZohoBooks);

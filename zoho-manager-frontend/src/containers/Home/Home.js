@@ -71,6 +71,7 @@ class Home extends Component {
                     <ZohoBooks
                       {...props}
                       session={session}
+                      redirectTo={`/organizations/${organizations[0].id}/settings/integrations/zoho_books/edit`}
                       organization={organizations[0]}
                     />
                   )}

@@ -14,7 +14,7 @@ Rails.application.routes.draw do
         resources :items
         resources :clients
         resources :invoices
-
+        resources :zoho_token
       end
     end
     resources :accounts

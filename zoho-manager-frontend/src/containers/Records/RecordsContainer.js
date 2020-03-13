@@ -41,6 +41,7 @@ class RecordsContainer extends Component {
           render={props => (
             <div className="col-lg-12 pt-3">
               <div className="bg-white shadow-sm">
+                <button>Synchronize with Zoho</button>
                 {records.length > 0 ? (
                   <RecordsList
                     history={props.history}

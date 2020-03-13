@@ -19,6 +19,8 @@ class ZohoBooks::ContactsController < ApplicationController
     render json: response
   end
 
+  #Form.last.records.joins(:values => :record_field).where(values: { record_fields: {name: "Name"}, content:"County" })
+  
   def create
     headers = {
       "Content-Type" => "application/x-www-form-urlencoded;charset=UTF-8",

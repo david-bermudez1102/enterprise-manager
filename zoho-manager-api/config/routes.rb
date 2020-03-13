@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :connections
   resources :integrations
   scope 'api/v1' do
     resources :options

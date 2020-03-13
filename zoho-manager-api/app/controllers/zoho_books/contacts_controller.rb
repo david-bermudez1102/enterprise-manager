@@ -1,4 +1,4 @@
-class ZohoBooks::ClientsController < ApplicationController
+class ZohoBooks::ContactsController < ApplicationController
   require 'httparty'
 
   before_action :set_organization
@@ -7,7 +7,11 @@ class ZohoBooks::ClientsController < ApplicationController
   before_action :set_authorization
 
   def index
-    url = "#{@root_url}/?organization_id=#{@zoho_organization_id}"
+    if params[:contact_name_contains]
+      url = "#{@root_url}?contact_name_contains=#{params[:contact_name_contains]}&organization_id=#{@zoho_organization_id}"
+    else
+      url = "#{@root_url}/?organization_id=#{@zoho_organization_id}"
+    end
     headers = {
       "Authorization" => @authorization
     }

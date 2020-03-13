@@ -68,7 +68,7 @@ class FieldsList extends Component {
     return (
       <>
         <CardHeader>
-          <span className="card-title display-4">
+          <span className="card-title display-4 mb-0">
             {pluralize(resource.name)}
           </span>
           <span className="card-title">
@@ -82,6 +82,16 @@ class FieldsList extends Component {
               title={`View all ${resource.name}`}>
               <i className="fad fa-th-list" style={{ fontSize: "24px" }}></i>
             </Link>
+            <Link to={`${match.url}/fields/new`} title="Connect to Zoho Books">
+              <button className="btn btn-transparent p-0 mt-n1 d-block-inline">
+                <img
+                  src="https://books.zoho.com/favicon.ico"
+                  className="mt-n2"
+                  style={{ width: "24px" }}
+                  alt="Connect with ZohoBooks"
+                />
+              </button>
+            </Link>{" "}
           </span>
         </CardHeader>
         <CardBody>

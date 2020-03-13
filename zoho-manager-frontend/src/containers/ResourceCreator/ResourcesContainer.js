@@ -14,6 +14,7 @@ import Resource from "../../components/Resources/Resource";
 import cuid from "cuid";
 import { FormCard } from "../../components/Cards/Cards";
 import ResourceDelete from "../../components/Resources/ResourceDelete";
+import ConnectionsContainer from "../Connections/ConnectionsContainer";
 
 class ResourcesContainer extends Component {
   componentDidMount() {
@@ -104,10 +105,14 @@ class ResourcesContainer extends Component {
               )}
             />
           ) : null}
-          <Route
-            path={`${match.path}/:formAlias/connections/new`}
-            render={props => <div>Hey there</div>}
-          />
+          {resources.length > 0 ? (
+            <Route
+              path={`${match.path}/:formAlias/connections`}
+              render={props => (
+                <ConnectionsContainer {...props} resources={resources} />
+              )}
+            />
+          ) : null}
           <Route
             path={`${match.path}/:resourceId/delete`}
             render={props => (

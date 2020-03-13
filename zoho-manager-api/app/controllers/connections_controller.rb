@@ -2,9 +2,9 @@ class ConnectionsController < ApplicationController
   before_action :set_connection, only: [:show, :update, :destroy]
   before_action :set_organization
   before_action :set_form
-
+  
   def index
-    @connections = @form.connections
+    @connections = Connection.all
 
     render json: @connections
   end

@@ -54,7 +54,7 @@ class RecordsList extends Component {
           const valueB = memo.content ? memo.content.toUpperCase() : ""; // ignore upper and lowercase
           return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
         });
-
+      console.log(sortedValues);
       if (sortedValues.length > 0) {
         const sortedRecords = records
           .filter(record => record.formId === resource.id)

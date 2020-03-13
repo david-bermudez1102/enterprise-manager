@@ -7,7 +7,8 @@ export const addInvoice = (invoice, token, zohoOrganizationId) => {
       {
         mode: "no-cors",
         method: "GET",
-
+        body:
+          "scope=ZohoBooks.fullaccess.all&client_id=1000.JA69R7B1955LLMWWDAU0E4FEOTB9XH&response_type=code&redirect_uri=https://accounts.zoho.com/oauth/v2/auth?&access_type=offline",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }

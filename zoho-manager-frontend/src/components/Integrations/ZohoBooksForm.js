@@ -160,7 +160,11 @@ export default class ZohoBooksForm extends Component {
             placeholder="Enter Zoho Organization Id"
           />
         </div>
-        <input type="submit" className="btn btn-primary shadow" />
+        <input
+          type="submit"
+          className="btn btn-primary shadow"
+          value="Update"
+        />
       </form>
     );
   }

@@ -11,9 +11,9 @@ class Integrations extends Component {
     const { match, organization, session, updateOrganization } = this.props;
     return (
       <div>
-        Account is not connected to any Accounting Software.
+        <div>Account is not connected to any Accounting Software.</div>
         <Link to={`${match.url}/zoho_books/edit`}>
-          <button>
+          <button className="btn btn-info">
             <img
               src="https://books.zoho.com/favicon.ico"
               style={{ width: "24px" }}
@@ -22,7 +22,7 @@ class Integrations extends Component {
             Connect with Zoho Books
           </button>
         </Link>
-        <button>
+        <button className="btn btn-info">
           <img
             src="https://quickbooks.intuit.com/etc/designs/harmony/images/favicon/quickbooks/apple-touch-icon-60x60.png"
             style={{ width: "24px" }}

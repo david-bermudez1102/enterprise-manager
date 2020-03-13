@@ -23,17 +23,17 @@ class Value < ApplicationRecord
           new_key_value.save
           self.record_value.key_value_id = new_key_value.id
           self.record_value.save
-           Value.create(record:self.record, field_id:record_key.field_id, record_field_id:record_key.field_id, content: value, key_value:new_key_value)
-           Value.where(content: "", record_field_id:record_key.field_id).update_all(content: value)
+           Value.create(record:self.record, field_id:record_key.field_id, record_field_id:record_key.field.record_field_id, content: value, key_value:new_key_value)
+           Value.where(content: "", record_field_id:record_key.field.record_field_id).update_all(content: value)
            Record.joins(:values).where(values: {record_value_id: record_value.id}).map do |rec|
-            rec.values.find_or_create_by(content:value, record_field_id:record_key.field_id)
+            rec.values.find_or_create_by(content:value, record_field_id:record_key.field.record_field_id)
            end
           end
         end
       else
         record_key = RecordKey.find_by(resource_field_id: self.record_field.field.id)
-        value = Value.create(record:self.record, field_id:record_key.field_id, record_field_id:record_key.field_id, content: record_value.key_value.value, key_value:record_value.key_value)
-        Value.where(content: "", record_field_id:record_key.field_id).update_all(content: record_value.key_value.value)
+        value = Value.create(record:self.record, field_id:record_key.field_id, record_field_id:record_key.field.record_field_id, content: record_value.key_value.value, key_value:record_value.key_value)
+        Value.where(content: "", record_field_id:record_key.field.record_field_id).update_all(content: record_value.key_value.value)
       end
     end
   end

@@ -12,7 +12,7 @@ export default class ConnectionsForm extends Component {
       integrationId: props.integrationId,
       organizationId: props.organizationId,
       name: "",
-      type: "",
+      connectionType: "",
       status: "",
       message: ""
     };
@@ -39,7 +39,7 @@ export default class ConnectionsForm extends Component {
       integrationId: connection.integrationId,
       organizationId: organizationId,
       name: connection.name,
-      type: connection.type,
+      connectionType: connection.connectionType,
       status: "",
       message: ""
     });
@@ -62,7 +62,7 @@ export default class ConnectionsForm extends Component {
       resourceId,
       organizationId,
       name,
-      type
+      connectionType
     } = this.state;
     this.setState({ status: "", message: "" }, () =>
       this.props
@@ -72,7 +72,7 @@ export default class ConnectionsForm extends Component {
               id,
               integrationId,
               name,
-              type
+              connectionType
             }
           }),
           organizationId,
@@ -110,13 +110,15 @@ export default class ConnectionsForm extends Component {
             value={this.state.name}
             placeholder="Enter name..."
           />
-          <label htmlFor="connection_type">Connect this resource to:</label>
+          <label htmlFor="connection_connectionType">
+            Connect this resource to:
+          </label>
           <select
-            name="type"
-            id="connection_type"
+            name="connectionType"
+            id="connection_connectionType"
             className="form-control"
             onChange={this.handleChange}
-            value={this.state.type}>
+            value={this.state.connectionType}>
             <option value="select">Select</option>
             <option value="contacts">Contacts</option>
             <option value="items">Items</option>

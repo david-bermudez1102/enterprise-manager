@@ -3,6 +3,7 @@ import ConnectionsForm from "../../components/Connections/ConnectionsForm";
 import { Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { updateResource } from "../../actions/resourceActions";
+import ConnectionsList from "../../components/Connections/ConnectionsList";
 
 class ConnectionsContainer extends Component {
   constructor() {
@@ -32,7 +33,10 @@ class ConnectionsContainer extends Component {
             />
           )}
         />
-        <Route path={`${match.url}`} render={() => <ConnectionsForm />} />
+        <Route
+          path={`${match.url}`}
+          render={props => <ConnectionsList {...props} resource={resource} />}
+        />
       </Switch>
     );
   }

@@ -1,10 +1,25 @@
 import React, { Component } from "react";
+import cuid from "cuid";
 
 class ConnectionsList extends Component {
-  constructor() {}
+  constructor() {
+    super();
+  }
 
   render() {
-    return <div></div>;
+    const { resource } = this.props;
+    const connections = resource.connections;
+    return (
+      <div className={`list-group list-group-flush rounded`}>
+        {connections.map(connection => (
+          <div key={cuid()} className={`list-group-item`}>
+            {connection.name}
+            Connected to: {connection.connection_type}
+            through: {connection.connected_through}
+          </div>
+        ))}
+      </div>
+    );
   }
 }
 

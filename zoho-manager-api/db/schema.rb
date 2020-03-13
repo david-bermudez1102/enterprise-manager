@@ -62,9 +62,10 @@ ActiveRecord::Schema.define(version: 2020_03_13_061605) do
   end
 
   create_table "connections", force: :cascade do |t|
+    t.string "name"
     t.integer "integration_id"
     t.integer "form_id"
-    t.integer "type"
+    t.integer "connection_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_id"], name: "index_connections_on_form_id"

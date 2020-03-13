@@ -1,24 +1,49 @@
 import React, { Component } from "react";
 import Alert from "../Alerts/Alert";
 
+const snakeCaseKeys = require("snakecase-keys");
+
 export default class ConnectionsForm extends Component {
-  constructor() {
-    super();
-    this.state = { name: "", type: "" };
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: "",
+      resourceId: props.resourceId,
+      integrationId: props.integrationId,
+      organizationId: props.organizationId,
+      name: "",
+      type: "",
+      status: "",
+      message: ""
+    };
   }
 
   componentDidMount() {
-    const { organization } = this.props;
-    return organization ? null : null;
+    const { connection } = this.props;
+    return connection ? this.updateState() : null;
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.organization !== this.props.organization) {
-      const { organization } = this.props;
+    if (prevProps.resource !== this.props.resource) {
+      const { connection } = this.props;
       this.hideAlert();
-      return organization ? this.setState({}) : null;
+      return connection ? this.updateState() : null;
     }
   }
+
+  updateState = () => {
+    const { connection, organizationId } = this.props;
+    this.setState({
+      id: connection.id,
+      resourceId: connection.resourceId,
+      integrationId: connection.integrationId,
+      organizationId: organizationId,
+      name: connection.name,
+      type: connection.type,
+      status: "",
+      message: ""
+    });
+  };
 
   hideAlert = () =>
     setTimeout(() => this.setState({ status: "", message: "" }), 3000);
@@ -31,39 +56,39 @@ export default class ConnectionsForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { updateOrganization, organization, session } = this.props;
     const {
-      auth_token,
-      client_id,
-      client_secret,
-      redirect_uri,
-      external_organization_id
+      id,
+      integrationId,
+      resourceId,
+      organizationId,
+      name,
+      type
     } = this.state;
     this.setState({ status: "", message: "" }, () =>
-      updateOrganization(
-        {
-          zoho_integration_attributes: {
-            auth_token,
-            client_id,
-            client_secret,
-            account_id: session.currentUser.id,
-            organization_id: organization.id,
-            redirect_uri,
-            external_organization_id
-          }
-        },
-        organization.id
-      ).then(org =>
-        org
-          ? this.setState({
-              status: "success",
-              message: "Zoho Books Auth Token was updated successfully"
-            })
-          : this.setState({
-              status: "error",
-              message: "Could not be updated"
-            })
-      )
+      this.props
+        .updateResource(
+          snakeCaseKeys({
+            connectionsAttributes: {
+              id,
+              integrationId,
+              name,
+              type
+            }
+          }),
+          organizationId,
+          resourceId
+        )
+        .then(org =>
+          org
+            ? this.setState({
+                status: "success",
+                message: "Zoho Books Auth Token was updated successfully"
+              })
+            : this.setState({
+                status: "error",
+                message: "Could not be updated"
+              })
+        )
     );
   };
 

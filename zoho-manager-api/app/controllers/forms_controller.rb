@@ -29,7 +29,7 @@ class FormsController < ApplicationController
   private
 
   def form_params
-    params.require(:form).permit(:name, :organization_id)
+    params.require(:form).permit(:name, :organization_id, connections_attributes:[:id, :name, :integration_id, :contact_type])
   end
 
   def set_organization

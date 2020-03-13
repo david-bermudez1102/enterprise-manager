@@ -9,6 +9,8 @@ class Form < ApplicationRecord
   has_many :selectable_resources, dependent: :delete_all
   before_create :generate_form_alias
   
+  accepts_nested_attributes_for :connections, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
+
   def name
     self[:name].split.map(&:capitalize).join(' ')
   end

@@ -4,12 +4,6 @@ export const recordsReducer = (state = [], action) => {
       return [...state, action.record];
 
     case "FETCH_RECORDS":
-      console.log([
-        ...state,
-        ...action.records.filter(
-          record => !state.some(rec => record.id === rec.id)
-        )
-      ]);
       return [
         ...state,
         ...action.records.filter(

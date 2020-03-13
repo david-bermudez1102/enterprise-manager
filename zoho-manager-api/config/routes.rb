@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       end
       namespace :zoho_books do
         resources :items
-        resources :clients
+        resources :contacts
         resources :invoices
         resources :zoho_token
       end

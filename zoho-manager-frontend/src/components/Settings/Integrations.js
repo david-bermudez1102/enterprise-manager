@@ -4,7 +4,6 @@ import ZohoBooksForm from "../Integrations/ZohoBooksForm";
 import { connect } from "react-redux";
 import { updateOrganization } from "../../actions/organizationAction";
 import { addInvoice } from "../../actions/zohoBooksActions";
-import ZohoBooks from "../../containers/ZohoBooks/ZohoBooks";
 
 class Integrations extends Component {
   render() {

@@ -7,7 +7,7 @@ export default class ConnectionsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: "",
+      type: props.type,
       resourceId: props.resourceId,
       integrationId: props.integrationId,
       organizationId: props.organizationId,
@@ -34,12 +34,11 @@ export default class ConnectionsForm extends Component {
   updateState = () => {
     const { connection, organizationId } = this.props;
     this.setState({
-      id: connection.id,
-      resourceId: connection.resourceId,
-      integrationId: connection.integrationId,
+      resourceId: connection.form_id,
+      integrationId: connection.integration_id,
       organizationId: organizationId,
       name: connection.name,
-      connectionType: connection.connectionType,
+      connectionType: connection.connection_type,
       status: "",
       message: ""
     });
@@ -57,8 +56,8 @@ export default class ConnectionsForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const {
-      id,
       integrationId,
+      type,
       resourceId,
       organizationId,
       name,
@@ -68,11 +67,11 @@ export default class ConnectionsForm extends Component {
       this.props
         .updateResource(
           snakeCaseKeys({
-            connectionsAttributes: {
-              id,
+            [type]: {
               integrationId,
               name,
-              connectionType
+              connectionType,
+              formId: resourceId
             }
           }),
           organizationId,
@@ -128,7 +127,7 @@ export default class ConnectionsForm extends Component {
         <input
           type="submit"
           className="btn btn-primary shadow"
-          value="Create Connection"
+          value="Update Connection"
         />
       </form>
     );

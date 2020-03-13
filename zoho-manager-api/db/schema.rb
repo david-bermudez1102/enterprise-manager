@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_13_061605) do
+ActiveRecord::Schema.define(version: 2020_03_13_193750) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -66,10 +66,14 @@ ActiveRecord::Schema.define(version: 2020_03_13_061605) do
     t.integer "integration_id"
     t.integer "form_id"
     t.integer "connection_type"
+    t.integer "zoho_connection_id"
+    t.integer "quickbooks_connection_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_id"], name: "index_connections_on_form_id"
     t.index ["integration_id"], name: "index_connections_on_integration_id"
+    t.index ["quickbooks_connection_id"], name: "index_connections_on_quickbooks_connection_id"
+    t.index ["zoho_connection_id"], name: "index_connections_on_zoho_connection_id"
   end
 
   create_table "employees", force: :cascade do |t|
@@ -96,6 +100,20 @@ ActiveRecord::Schema.define(version: 2020_03_13_061605) do
     t.string "form_alias"
     t.integer "records_count"
     t.index ["organization_id"], name: "index_forms_on_organization_id"
+  end
+
+  create_table "integration_records", force: :cascade do |t|
+    t.integer "connection_id"
+    t.string "external_id"
+    t.integer "record_id"
+    t.integer "zoho_integration_record_id"
+    t.integer "quickbooks_integration_record_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["connection_id"], name: "index_integration_records_on_connection_id"
+    t.index ["quickbooks_integration_record_id"], name: "index_integration_records_on_quickbooks_integration_record_id"
+    t.index ["record_id"], name: "index_integration_records_on_record_id"
+    t.index ["zoho_integration_record_id"], name: "index_integration_records_on_zoho_integration_record_id"
   end
 
   create_table "integrations", force: :cascade do |t|

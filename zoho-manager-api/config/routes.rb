@@ -11,11 +11,13 @@ Rails.application.routes.draw do
         resources :values
         resources :key_values
         resources :connections
+        namespace :zoho_books do
+          resources :items
+          resources :contacts
+          resources :invoices
+        end
       end
       namespace :zoho_books do
-        resources :items
-        resources :contacts
-        resources :invoices
         resources :zoho_token
       end
     end

@@ -1,6 +1,7 @@
 class Form < ApplicationRecord
   belongs_to :organization
-  has_many :connections
+  has_one :zoho_connection, class_name:"Connection", foreign_key: "zoho_connection_id"
+  has_one :quickbooks_connection, class_name:"Connection", foreign_key: "quickbooks_connection_id"
   has_many :fields, dependent: :delete_all
   has_many :records, dependent: :delete_all
   has_many :record_fields, dependent: :delete_all
@@ -8,8 +9,11 @@ class Form < ApplicationRecord
   validates :name, length: { in: 2..12 }
   has_many :selectable_resources, dependent: :delete_all
   before_create :generate_form_alias
+  before_save :form_alias
   
-  accepts_nested_attributes_for :connections, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
+  accepts_nested_attributes_for :zoho_connection, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
+
+  accepts_nested_attributes_for :quickbooks_connection, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 
   def name
     self[:name].split.map(&:capitalize).join(' ')

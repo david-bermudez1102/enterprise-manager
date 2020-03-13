@@ -22,11 +22,27 @@ class ConnectionsContainer extends Component {
     return (
       <Switch>
         <Route
-          path={`${match.url}/new`}
+          path={`${match.url}/zoho/edit`}
           render={() => (
             <ConnectionsForm
               resourceId={resource.id}
               resource={resource}
+              connection={resource.zohoConnection}
+              type="zoho_connection_attributes"
+              integrationId={organization.zohoIntegration.id}
+              organizationId={organization.id}
+              updateResource={updateResource}
+            />
+          )}
+        />
+        <Route
+          path={`${match.url}/quickbooks/edit`}
+          render={() => (
+            <ConnectionsForm
+              resourceId={resource.id}
+              resource={resource}
+              connection={resource.quickbooksConnection}
+              type="quickbooks_connection_attributes"
               integrationId={organization.zohoIntegration.id}
               organizationId={organization.id}
               updateResource={updateResource}

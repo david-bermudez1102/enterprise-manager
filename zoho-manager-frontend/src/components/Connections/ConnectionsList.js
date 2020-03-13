@@ -8,7 +8,10 @@ class ConnectionsList extends Component {
 
   render() {
     const { resource } = this.props;
-    const connections = resource.connections;
+    const connections = [
+      resource.zohoConnection,
+      resource.quickbooksConnection
+    ].filter(connection => connection);
     return (
       <div className={`list-group list-group-flush rounded`}>
         {connections.map(connection => (

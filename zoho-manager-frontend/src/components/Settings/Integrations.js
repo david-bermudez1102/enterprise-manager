@@ -34,7 +34,7 @@ class Integrations extends Component {
               path={`${match.url}/zoho_books/connect`}
               component={() => {
                 const { zohoIntegration } = organization;
-                window.location.href = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=${zohoIntegration.client_id}&response_type=code&redirect_uri=http://localhost:3000/auth/zohobooks/callback&access_type=online`;
+                window.location.href = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=${zohoIntegration.client_id}&response_type=code&redirect_uri=http://localhost:3000/auth/zohobooks/callback&access_type=offline&prompt=consent`;
                 return null;
               }}
             />

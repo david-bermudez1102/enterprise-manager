@@ -4,7 +4,7 @@ class ZohoBooks::ZohoTokenController < ApplicationController
   before_action :set_organization
   before_action :set_integration
   before_action :set_root_url
-  before_action :set_body
+  before_action :set_body, only:[:create]
   
   def create
     headers = {
@@ -12,6 +12,11 @@ class ZohoBooks::ZohoTokenController < ApplicationController
     }
     token = HTTParty.post(@root_url, body:@body, headers: headers)
     render json: token
+  end
+
+  def index
+    response = HTTParty.get("https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=#{@integration.client_id}&response_type=code&redirect_uri=#{@integration.redirect_uri}&access_type=offline")
+    render json:response.message
   end
 
 

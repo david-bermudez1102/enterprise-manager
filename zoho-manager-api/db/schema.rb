@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_13_193750) do
+ActiveRecord::Schema.define(version: 2020_03_14_021613) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 2020_03_13_193750) do
     t.integer "quickbooks_integration_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "refresh_token"
     t.index ["account_id"], name: "index_integrations_on_account_id"
     t.index ["organization_id"], name: "index_integrations_on_organization_id"
     t.index ["quickbooks_integration_id"], name: "index_integrations_on_quickbooks_integration_id"

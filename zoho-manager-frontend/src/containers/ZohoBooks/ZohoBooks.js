@@ -25,9 +25,18 @@ class ZohoBooks extends Component {
       body: JSON.stringify({ zoho_books: { code } })
     })
       .then(resp => resp.json())
+      .then(resp => {
+        console.log(resp);
+        return resp;
+      })
       .then(resp =>
         updateOrganization(
-          { zoho_integration_attributes: { auth_token: resp.access_token } },
+          {
+            zoho_integration_attributes: {
+              auth_token: resp.access_token,
+              refresh_token: resp.refresh_token
+            }
+          },
           organization.id
         )
       )

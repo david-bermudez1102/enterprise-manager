@@ -114,90 +114,95 @@ export default class SideBar extends Component {
     const { session } = this.props;
     const currentUser = session.currentUser;
     const { minimized, links } = this.state;
-    const minWidth = minimized ? "25px" : "205px";
+    const minWidth = minimized ? "70px" : "205px";
     return (
       <div
-        className="py-3 bg-secondary sticky-top shadow-lg text-light"
+        className="py-3 bg-secondary shadow-lg text-light"
         style={{ minWidth, fontSize: "16px" }}>
-        <div
-          className={`w-100 d-flex align-items-center flex-wrap ${
-            minimized
-              ? "px-0 justify-content-center"
-              : "px-3 justify-content-between"
-          }`}>
-          <span
-            className={
-              minimized
-                ? "w-100 order-2 text-center"
-                : "d-flex align-items-center"
-            }>
-            <i
-              className={`fas fa-user-circle text-light ${
-                !minimized ? "mr-2" : null
-              }`}
-              style={{ fontSize: "30px" }}></i>
-            {!minimized ? currentUser.name : null}
-          </span>
-          <span className={minimized ? "w-100 order-1 text-center" : null}>
-            <button
-              className="btn btn-transparent text-light p-0 "
-              onClick={this.toggle}>
-              <i className="fas fa-bars"></i>
-            </button>
-            {minimized ? (
-              <hr className="mb-3" style={{ background: "rgba(0,0,0,0.2)" }} />
-            ) : null}
-          </span>
-        </div>
-        <hr className="mb-0" style={{ background: "rgba(0,0,0,0.2)" }} />
         <nav
-          className="px-2 py-3 nav nav-dark nav-pills flex-column"
+          className="px-0 py-0 nav nav-dark nav-pills flex-column sticky-top"
           style={{ zIndex: 999 }}>
-          {links.map(link => (
-            <span key={cuid()}>
-              <NavLink
-                exact={link.exact}
-                to={link.path}
-                className={`${link.className} d-flex mb-1 ${
-                  minimized
-                    ? "justify-content-center"
-                    : "justify-content-between"
+          <div
+            className={`w-100 d-flex align-items-center flex-wrap ${
+              minimized
+                ? "px-0 justify-content-center"
+                : "px-3 justify-content-between"
+            }`}>
+            <span
+              className={
+                minimized
+                  ? "w-100 order-2 text-center"
+                  : "d-flex align-items-center"
+              }>
+              <i
+                className={`fas fa-user-circle text-light ${
+                  !minimized ? "mr-2" : null
                 }`}
-                activeClassName="bg-info active shadow"
-                onClick={() => this.toggleDropDown(link.id)}>
-                <span>
-                  <i className={!minimized ? link.icon : link.iconMin}></i>
-                  {!minimized ? link.text : null}
-                </span>
-
-                {link.dropdown && !minimized ? (
-                  link.status === "open" ? (
-                    <span>
-                      <i className="fas fa-chevron-down"></i>
-                    </span>
-                  ) : (
-                    <span>
-                      <i className="fas fa-chevron-left"></i>
-                    </span>
-                  )
-                ) : null}
-              </NavLink>
-              {link.dropdown && link.status === "open" && !minimized
-                ? link.subLinks.map(subLink => (
-                    <NavLink
-                      to={subLink.path}
-                      className={`${subLink.className} mt-1`}
-                      style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
-                      key={cuid()}
-                      activeClassName="bg-light text-dark active shadow">
-                      <i className={`fas fa-chevron-right mr-3`}></i>
-                      <i className={`${subLink.icon} mr-1`}></i>
-                      {subLink.text}
-                    </NavLink>
-                  ))
-                : null}
+                style={{ fontSize: "30px" }}></i>
+              {!minimized ? currentUser.name : null}
             </span>
-          ))}
+            <span className={minimized ? "w-100 order-1 text-center" : null}>
+              <button
+                className="btn btn-transparent text-light p-0 m-0"
+                onClick={this.toggle}>
+                <i className="fas fa-bars"></i>
+              </button>
+              {minimized ? (
+                <hr
+                  className="mb-3"
+                  style={{ background: "rgba(0,0,0,0.2)" }}
+                />
+              ) : null}
+            </span>
+          </div>
+          <hr className="mb-0" style={{ background: "rgba(0,0,0,0.2)" }} />
+          <div className="px-2 py-2">
+            {links.map(link => (
+              <span key={cuid()}>
+                <NavLink
+                  exact={link.exact}
+                  to={link.path}
+                  className={`${link.className} d-flex mb-1 ${
+                    minimized
+                      ? "justify-content-center"
+                      : "justify-content-between"
+                  }`}
+                  activeClassName="bg-info active shadow"
+                  onClick={() => this.toggleDropDown(link.id)}>
+                  <span>
+                    <i className={!minimized ? link.icon : link.iconMin}></i>
+                    {!minimized ? link.text : null}
+                  </span>
+
+                  {link.dropdown && !minimized ? (
+                    link.status === "open" ? (
+                      <span>
+                        <i className="fas fa-chevron-down"></i>
+                      </span>
+                    ) : (
+                      <span>
+                        <i className="fas fa-chevron-left"></i>
+                      </span>
+                    )
+                  ) : null}
+                </NavLink>
+                {link.dropdown && link.status === "open" && !minimized
+                  ? link.subLinks.map(subLink => (
+                      <NavLink
+                        to={subLink.path}
+                        className={`${subLink.className} mt-1`}
+                        style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
+                        key={cuid()}
+                        activeClassName="bg-light text-dark active shadow">
+                        <i className={`fas fa-chevron-right mr-3`}></i>
+                        <i className={`${subLink.icon} mr-1`}></i>
+                        {subLink.text}
+                      </NavLink>
+                    ))
+                  : null}
+              </span>
+            ))}
+          </div>
         </nav>
       </div>
     );

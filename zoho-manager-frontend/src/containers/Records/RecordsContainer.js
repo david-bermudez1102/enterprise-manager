@@ -6,11 +6,7 @@ import { fetchRecords } from "../../actions/recordActions";
 import RecordFieldDelete from "../../components/Records/RecordFieldDelete";
 import { removeRecordField } from "../../actions/recordFieldActions";
 import { NoContent } from "../../components/NoContent";
-import {
-  addContacts,
-  updateContact,
-  updateAllContacts
-} from "../../actions/zohoBooksActions";
+import RecordsOptions from "../../components/Records/RecordsOptions";
 
 class RecordsContainer extends Component {
   componentDidMount() {
@@ -24,9 +20,6 @@ class RecordsContainer extends Component {
       resource,
       recordFields,
       removeRecordField,
-      addContacts,
-      updateContact,
-      updateAllContacts,
       records,
       values
     } = this.props;
@@ -47,32 +40,9 @@ class RecordsContainer extends Component {
         <Route
           path={`${match.path}/records`}
           render={props => (
-            <div className="col-lg-12 pt-3">
-              <div className="bg-light shadow-sm">
-                <button className="btn btn-sm btn-info m-2 shadow">
-                  Synchronize with Zoho
-                </button>
-                <button
-                  className="btn btn-sm btn-info m-2 shadow"
-                  onClick={() =>
-                    addContacts({
-                      form_id: resource.id,
-                      organization_id: resource.organizationId
-                    })
-                  }>
-                  Send Unsynchronized records to Zoho
-                </button>
-                <button
-                  className="btn btn-sm btn-info m-2 shadow"
-                  onClick={() =>
-                    updateAllContacts({
-                      record_id: 174,
-                      form_id: 6,
-                      organization_id: 1
-                    })
-                  }>
-                  Update all records to Zoho
-                </button>
+            <div className="col-lg-12 pt-4">
+              <div className="bg-white shadow-sm p-4 rounded">
+                <RecordsOptions resource={resource} />
                 {records.length > 0 ? (
                   <RecordsList
                     history={props.history}
@@ -102,8 +72,5 @@ const mapStateToProps = ({ records, values, recordFields }) => {
 
 export default connect(mapStateToProps, {
   fetchRecords,
-  removeRecordField,
-  addContacts,
-  updateContact,
-  updateAllContacts
+  removeRecordField
 })(RecordsContainer);

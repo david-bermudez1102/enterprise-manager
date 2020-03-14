@@ -48,7 +48,7 @@ class ResourcesContainer extends Component {
     return (
       <div className="row">
         <div className="col-lg-5 min-h-100">
-          <div className="bg-white rounded px-2 h-100 shadow-sm">
+          <div className="bg-white rounded p-2 h-100 shadow-sm">
             <div className="list-group">
               <ResourcesList
                 match={match}

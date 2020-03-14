@@ -40,7 +40,7 @@ require 'httparty'
         if value.record_field
           field_name = value.record_field.name.downcase
           if field_name == "name"
-            body["item_name"] = value.content
+            body["name"] = value.content
           else
             body[field_name] = value.content
           end
@@ -53,7 +53,7 @@ require 'httparty'
         RecordSerializer.new(record)
       end
     end
-    render json: records
+    render json: records.compact
   end
 
   def show

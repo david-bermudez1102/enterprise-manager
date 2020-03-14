@@ -26,7 +26,7 @@ class ZohoBooks::InvoicesController < ApplicationController
     # end
     # render json:response
     #.joins(:record).where(records: {form_id: params[:form_id]})
-    values = Value.joins(:key_value).group("key_values.value").map do |value|
+    values = Value.joins(:key_value).group("key_values.value").joins(:record).where(records:{form_id:params[:form_id]}).map do |value|
       key_value = value.key_value
       integration = key_value.record_value.record.zoho_integration_record
       connection = integration.connection
@@ -34,7 +34,30 @@ class ZohoBooks::InvoicesController < ApplicationController
       body = {}
       body[connection_type] = integration.external_id
       body[key_value.record_key.field.name] = key_value.value
-      body["line_items"] = []
+      body["line_items"] = Record.joins(:values).where(values:{content:key_value.value}, form_id:params[:form_id]).map do |record|
+        items_body = {}
+        values = record.values.select do |value| 
+          record_value = value.record_value 
+          integration_record = record_value ? record_value.record.zoho_integration_record : nil
+          connection_type = integration_record ? integration_record.connection.connection_type : nil
+          record_value && integration_record && connection_type=="items"
+        end
+
+        values.map do |value|
+          integration_record = value.record_value.record.zoho_integration_record
+          items_body["item_id"] = integration_record.external_id
+          value.record.values.map do |value|
+            if value.record_value
+              if !value.record_value.record.zoho_integration_record
+                items_body[value.record_field.name] = value.content
+              end
+            elsif !value.key_value
+              items_body[value.record_field.name] = value.content
+            end
+          end     
+        end.compact
+        items_body
+      end.delete_if &:empty?
       body
     end
 

@@ -9,7 +9,7 @@ class Form < ApplicationRecord
   validates :name, length: { in: 2..12 }
   has_many :selectable_resources, dependent: :delete_all
   before_create :generate_form_alias
-  before_save :form_alias
+  before_update :form_alias
   
   accepts_nested_attributes_for :zoho_connection, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 

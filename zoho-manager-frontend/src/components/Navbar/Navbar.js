@@ -16,12 +16,6 @@ class Navbar extends Component {
         },
         { path: "/", text: "Home", loginRequired: true },
         {
-          path: "/logout",
-          icon: "fas fa-sign-out-alt",
-          text: "Logout",
-          loginRequired: true
-        },
-        {
           path: `/organizations/${props.organizations[0].id}/resources/new`,
           text: "Add Resource",
           icon: "fas fa-plus",
@@ -43,6 +37,12 @@ class Navbar extends Component {
           path: `/notifications`,
           text: "Notifications",
           icon: "fas fa-bell",
+          loginRequired: true
+        },
+        {
+          path: "/logout",
+          icon: "fas fa-sign-out-alt",
+          text: "Logout",
           loginRequired: true
         }
       ]

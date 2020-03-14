@@ -1,21 +1,23 @@
-const camelcaseKeys = require("camelcase-keys");
-
-export const addInvoice = (invoice, token, zohoOrganizationId) => {
+export const addContacts = contact => {
   return dispatch => {
     fetch(
-      `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=1000.JA69R7B1955LLMWWDAU0E4FEOTB9XH&response_type=code&redirect_uri=https://accounts.zoho.com/oauth/v2/auth?&access_type=offline`,
+      `/api/v1/organizations/${contact.organization_id}/forms/${contact.form_id}/zoho_books/contacts`,
       {
-        mode: "no-cors",
-        method: "GET",
-        body:
-          "scope=ZohoBooks.fullaccess.all&client_id=1000.JA69R7B1955LLMWWDAU0E4FEOTB9XH&response_type=code&redirect_uri=https://accounts.zoho.com/oauth/v2/auth?&access_type=offline",
+        method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
       }
     )
       .then(response => response.json())
-      .then(console.log)
+      .then(response => {
+        console.log(response);
+        return response;
+      })
+      .then(records => records.map(record => record.data.attributes))
+      .then(records =>
+        records.map(record => dispatch({ type: "UPDATE_RECORD", record }))
+      )
       .catch(console.log);
   };
 };

@@ -33,10 +33,28 @@ class ZohoBooks::ContactsController < ApplicationController
       "Content-Type" => "application/x-www-form-urlencoded;charset=UTF-8",
       "Authorization" => @authorization
     }
-    records = Record.where("form_id = ? and id NOT IN (SELECT record_id FROM integration_records)", params[:form_id]) 
-    response = HTTParty.post(@root_url, headers: headers, body:body)
-    response = JSON.parse(response&.body || "{}")
-    render json: response
+    url = "#{@root_url}?organization_id=#{@zoho_organization_id}"
+    records = Record.where("form_id = ? and id NOT IN (SELECT record_id FROM integration_records)", params[:form_id])
+    records = records.map do |record|
+      body = {}
+      record.values.map do |value|
+        if value.record_field
+          field_name = value.record_field.name.downcase
+          if field_name == "name"
+            body["contact_name"] = value.content
+          else
+            body[field_name] = value.content
+          end
+        end
+      end
+      response = HTTParty.post(url, headers: headers, body:{JSONString: body.to_json})
+      response = JSON.parse(response&.body || "{}")
+      if response["code"] == 0
+        record.update(zoho_integration_record_attributes:{external_id:response["contact"]["contact_id"],connection:record.form.zoho_connection, record_id: record.id})
+        RecordSerializer.new(record)
+      end
+    end
+    render json: records.compact
   end
 
   def show
@@ -65,7 +83,7 @@ class ZohoBooks::ContactsController < ApplicationController
 
   private
     def contacts_params
-      params.require(:manager).permit(:name, :email, :form_id, :organization_id)
+      params.require(:contact).permit(:contact, :form_id, :organization_id)
     end
 
     def set_organization

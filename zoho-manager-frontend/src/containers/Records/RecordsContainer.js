@@ -6,6 +6,7 @@ import { fetchRecords } from "../../actions/recordActions";
 import RecordFieldDelete from "../../components/Records/RecordFieldDelete";
 import { removeRecordField } from "../../actions/recordFieldActions";
 import { NoContent } from "../../components/NoContent";
+import { addContacts } from "../../actions/zohoBooksActions";
 
 class RecordsContainer extends Component {
   componentDidMount() {
@@ -19,6 +20,7 @@ class RecordsContainer extends Component {
       resource,
       recordFields,
       removeRecordField,
+      addContacts,
       records,
       values
     } = this.props;
@@ -42,6 +44,12 @@ class RecordsContainer extends Component {
             <div className="col-lg-12 pt-3">
               <div className="bg-white shadow-sm">
                 <button>Synchronize with Zoho</button>
+                <button
+                  onClick={() =>
+                    addContacts({ form_id: 6, organization_id: 1 })
+                  }>
+                  Send Unsynchronized records to Zoho
+                </button>
                 {records.length > 0 ? (
                   <RecordsList
                     history={props.history}
@@ -69,6 +77,8 @@ const mapStateToProps = ({ records, values, recordFields }) => {
   return { records, values, recordFields };
 };
 
-export default connect(mapStateToProps, { fetchRecords, removeRecordField })(
-  RecordsContainer
-);
+export default connect(mapStateToProps, {
+  fetchRecords,
+  removeRecordField,
+  addContacts
+})(RecordsContainer);

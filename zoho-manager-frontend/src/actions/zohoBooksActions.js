@@ -1,8 +1,11 @@
+import camelcaseKeys from "camelcase-keys";
+
 export const addZohoResources = (zohoResource, type) => {
   const zoho_path = `/api/v1/organizations/${zohoResource.organization_id}/forms/${zohoResource.form_id}/zoho_books`;
   const paths = {
     contacts: `${zoho_path}/contacts`,
-    items: `${zoho_path}/items`
+    items: `${zoho_path}/items`,
+    invoices: `${zoho_path}/invoices`
   };
 
   return dispatch => {
@@ -17,7 +20,9 @@ export const addZohoResources = (zohoResource, type) => {
         console.log(response);
         return response;
       })
-      .then(records => records.map(record => record.data.attributes))
+      .then(records =>
+        records.map(record => camelcaseKeys(record.data.attributes))
+      )
       .then(records =>
         records.map(record => dispatch({ type: "UPDATE_RECORD", record }))
       )

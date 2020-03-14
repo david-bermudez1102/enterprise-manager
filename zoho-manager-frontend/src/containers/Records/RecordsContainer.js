@@ -48,12 +48,12 @@ class RecordsContainer extends Component {
           path={`${match.path}/records`}
           render={props => (
             <div className="col-lg-12 pt-3">
-              <div className="bg-white shadow-sm">
-                <button className="btn btn-info m-2">
+              <div className="bg-light shadow-sm">
+                <button className="btn btn-sm btn-info m-2 shadow">
                   Synchronize with Zoho
                 </button>
                 <button
-                  className="btn btn-info m-2"
+                  className="btn btn-sm btn-info m-2 shadow"
                   onClick={() =>
                     addContacts({
                       form_id: resource.id,
@@ -63,7 +63,7 @@ class RecordsContainer extends Component {
                   Send Unsynchronized records to Zoho
                 </button>
                 <button
-                  className="btn btn-info m-2"
+                  className="btn btn-sm btn-info m-2 shadow"
                   onClick={() =>
                     updateAllContacts({
                       record_id: 174,

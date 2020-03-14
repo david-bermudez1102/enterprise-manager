@@ -47,15 +47,17 @@ class ResourcesContainer extends Component {
     const { organizationId } = match.params;
     return (
       <div className="row">
-        <div className="col-lg-5">
-          <div className="list-group">
-            <ResourcesList
-              match={match}
-              location={location}
-              history={history}
-              resources={resources}
-              organizationId={organizationId}
-            />
+        <div className="col-lg-5 min-h-100">
+          <div className="bg-white rounded px-2 h-100 shadow-sm">
+            <div className="list-group">
+              <ResourcesList
+                match={match}
+                location={location}
+                history={history}
+                resources={resources}
+                organizationId={organizationId}
+              />
+            </div>
           </div>
         </div>
         <Switch>

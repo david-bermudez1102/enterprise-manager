@@ -8,34 +8,40 @@ export default class SideBar extends Component {
     const navLinkClass = "nav-item nav-link text-light";
     const activePath = props.location.pathname;
     this.state = {
+      minimized: false,
+      minimizedFromToggle: false,
       links: [
         {
           path: "/",
           exact: true,
           className: navLinkClass,
           text: "Home",
-          icon: "fas fa-home"
+          icon: "fas fa-home mr-2",
+          iconMin: "fas fa-home"
         },
         {
           path: "/organizations",
           className: navLinkClass,
           exact: true,
           text: "Organizations",
-          icon: "fas fa-briefcase",
+          icon: "fas fa-briefcase mr-2",
+          iconMin: "fas fa-briefcase",
           levels: ["admin"]
         },
         {
           path: `/organizations/${props.organizations[0].id}/records`,
           className: `${navLinkClass}`,
           text: "Records",
-          icon: "fas fa-th-list",
+          icon: "fas fa-th-list mr-2",
+          iconMin: "fas fa-th-list",
           levels: ["admin", "manager", "employee"]
         },
         {
           path: "/accounts",
           className: navLinkClass,
           text: "Accounts",
-          icon: "fas fa-users-cog mr-n1 pr-2",
+          icon: "fas fa-users-cog mr-n1 pr-2 mr-2",
+          iconMin: "fas fa-users-cog",
           levels: ["admin"],
           dropdown: true,
           status: activePath.includes("/accounts") ? "open" : "closed",
@@ -53,7 +59,8 @@ export default class SideBar extends Component {
           dropdown: true,
           className: `${navLinkClass}`,
           text: "Resources",
-          icon: "fas fa-layer-group",
+          icon: "fas fa-layer-group mr-2",
+          iconMin: "fas fa-layer-group",
           levels: ["admin", "manager", "employee"],
           subLinks: [
             {
@@ -67,6 +74,7 @@ export default class SideBar extends Component {
       ]
     };
   }
+
   componentDidMount() {
     this.setState({
       links: this.state.links.map((link, id) => {
@@ -87,48 +95,94 @@ export default class SideBar extends Component {
     });
   };
 
+  toggle = () => {
+    this.setState({
+      minimized: this.state.minimized ? false : true,
+      minimizedFromToggle: this.state.minimizedFromToggle ? false : true
+    });
+  };
+
+  openSideBar = () => {
+    if (this.state.minimizedFromToggle) this.setState({ minimized: false });
+  };
+
+  closeSideBar = () => {
+    if (this.state.minimizedFromToggle) this.setState({ minimized: true });
+  };
+
   render() {
     const { session } = this.props;
     const currentUser = session.currentUser;
+    const { minimized, links } = this.state;
+    const minWidth = minimized ? "25px" : "205px";
     return (
       <div
         className="py-3 bg-secondary sticky-top shadow-lg text-light"
-        style={{ minWidth: "200px", fontSize: "16px" }}>
-        <div className="px-3 w-100 d-flex align-items-center">
-          <span>
+        style={{ minWidth, fontSize: "16px" }}>
+        <div
+          className={`w-100 d-flex align-items-center flex-wrap ${
+            minimized
+              ? "px-0 justify-content-center"
+              : "px-3 justify-content-between"
+          }`}>
+          <span
+            className={
+              minimized
+                ? "w-100 order-2 text-center"
+                : "d-flex align-items-center"
+            }>
             <i
-              className="fas fa-user-circle text-light"
-              style={{ fontSize: "40px" }}></i>
+              className={`fas fa-user-circle text-light ${
+                !minimized ? "mr-2" : null
+              }`}
+              style={{ fontSize: "30px" }}></i>
+            {!minimized ? currentUser.name : null}
           </span>
-          <span className="ml-2">{currentUser.name}</span>
+          <span className={minimized ? "w-100 order-1 text-center" : null}>
+            <button
+              className="btn btn-transparent text-light p-0 "
+              onClick={this.toggle}>
+              <i className="fas fa-bars"></i>
+            </button>
+            {minimized ? (
+              <hr className="mb-3" style={{ background: "rgba(0,0,0,0.2)" }} />
+            ) : null}
+          </span>
         </div>
         <hr className="mb-0" style={{ background: "rgba(0,0,0,0.2)" }} />
         <nav
-          className="px-2 py-3 nav nav-dark nav-pills flex-column min-h-100 "
+          className="px-2 py-3 nav nav-dark nav-pills flex-column"
           style={{ zIndex: 999 }}>
-          {this.state.links.map(link => (
+          {links.map(link => (
             <span key={cuid()}>
               <NavLink
                 exact={link.exact}
                 to={link.path}
-                className={`${link.className} justify-content-between d-flex mb-1`}
+                className={`${link.className} d-flex mb-1 ${
+                  minimized
+                    ? "justify-content-center"
+                    : "justify-content-between"
+                }`}
                 activeClassName="bg-info active shadow"
                 onClick={() => this.toggleDropDown(link.id)}>
                 <span>
-                  <i className={`${link.icon} mr-2`}></i>
-                  {link.text}
+                  <i className={!minimized ? link.icon : link.iconMin}></i>
+                  {!minimized ? link.text : null}
                 </span>
-                <span>
-                  {link.dropdown ? (
-                    link.status === "open" ? (
+
+                {link.dropdown && !minimized ? (
+                  link.status === "open" ? (
+                    <span>
                       <i className="fas fa-chevron-down"></i>
-                    ) : (
+                    </span>
+                  ) : (
+                    <span>
                       <i className="fas fa-chevron-left"></i>
-                    )
-                  ) : null}
-                </span>
+                    </span>
+                  )
+                ) : null}
               </NavLink>
-              {link.dropdown && link.status === "open"
+              {link.dropdown && link.status === "open" && !minimized
                 ? link.subLinks.map(subLink => (
                     <NavLink
                       to={subLink.path}
@@ -136,7 +190,7 @@ export default class SideBar extends Component {
                       style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
                       key={cuid()}
                       activeClassName="bg-light text-dark active shadow">
-                      <i className="fas fa-chevron-right mr-3"></i>
+                      <i className={`fas fa-chevron-right mr-3`}></i>
                       <i className={`${subLink.icon} mr-1`}></i>
                       {subLink.text}
                     </NavLink>

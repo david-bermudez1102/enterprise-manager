@@ -1,14 +1,17 @@
-export const addContacts = contact => {
+export const addZohoResources = (zohoResource, type) => {
+  const zoho_path = `/api/v1/organizations/${zohoResource.organization_id}/forms/${zohoResource.form_id}/zoho_books`;
+  const paths = {
+    contacts: `${zoho_path}/contacts`,
+    items: `${zoho_path}/items`
+  };
+
   return dispatch => {
-    fetch(
-      `/api/v1/organizations/${contact.organization_id}/forms/${contact.form_id}/zoho_books/contacts`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
+    fetch(paths[type], {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
       }
-    )
+    })
       .then(response => response.json())
       .then(response => {
         console.log(response);

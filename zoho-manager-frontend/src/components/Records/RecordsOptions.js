@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addContacts, updateAllContacts } from "../../actions/zohoBooksActions";
+import {
+  addZohoResources,
+  updateAllContacts
+} from "../../actions/zohoBooksActions";
 
 class RecordsOptions extends Component {
   constructor() {
@@ -8,22 +11,26 @@ class RecordsOptions extends Component {
   }
 
   render() {
-    const { addContacts, updateAllContacts, resource } = this.props;
+    const { addZohoResources, updateAllContacts, resource } = this.props;
     if (!resource.zohoConnection) return null;
+    const connectionType = resource.zohoConnection.connection_type;
     return (
       <div className="pb-2 d-flex sticky-top w-100 bg-white">
         <button className="btn btn-sm btn-info m-2 shadow">
-          Synchronize {resource.zohoConnection.connection_type} with Zoho
+          Synchronize {connectionType} with Zoho
         </button>
         <button
           className="btn btn-sm btn-info m-2 shadow"
           onClick={() =>
-            addContacts({
-              form_id: resource.id,
-              organization_id: resource.organizationId
-            })
+            addZohoResources(
+              {
+                form_id: resource.id,
+                organization_id: resource.organizationId
+              },
+              connectionType
+            )
           }>
-          Send Unsynchronized {resource.zohoConnection.connection_type} to Zoho
+          Send Unsynchronized {connectionType} to Zoho
         </button>
         <button
           className="btn btn-sm btn-info m-2 shadow"
@@ -41,6 +48,6 @@ class RecordsOptions extends Component {
   }
 }
 
-export default connect(null, { addContacts, updateAllContacts })(
+export default connect(null, { addZohoResources, updateAllContacts })(
   RecordsOptions
 );

@@ -4,6 +4,7 @@ class ZohoBooks::ContactsController < ApplicationController
   before_action :set_organization
   before_action :set_zoho_organization_id
   before_action :set_root_url
+  before_action :set_token
   before_action :set_authorization
 
   def index
@@ -15,7 +16,7 @@ class ZohoBooks::ContactsController < ApplicationController
     headers = {
       "Authorization" => @authorization
     }
-    form =  Form.find_by(id:params[:form_id])
+    form =  @organization.forms.find_by(id:params[:form_id])
     response = HTTParty.get(url, headers: headers)
     response = JSON.parse(response&.body || "{}")
     response = response["contacts"].map do |contact|
@@ -25,8 +26,6 @@ class ZohoBooks::ContactsController < ApplicationController
     end
     render json:response
   end
-
-  #Form.last.records.joins(:values => :record_field).where(values: { record_fields: {name: "Name"}, content:"County" })
 
   def create
     headers = {
@@ -54,7 +53,7 @@ class ZohoBooks::ContactsController < ApplicationController
         RecordSerializer.new(record)
       end
     end
-    render json: records.compact
+    render json: records
   end
 
   def show
@@ -74,16 +73,64 @@ class ZohoBooks::ContactsController < ApplicationController
   end
 
   def update
+    form =  @organization.forms.find_by(id:params[:form_id])
+    record = form.records.find_by(id: contacts_params[:record_id])
+    url = "#{@root_url}/#{contacts_params[:zoho_record_id]}?organization_id=#{@zoho_organization_id}"
     headers = {
       "Authorization" => @authorization
     }
-    response = HTTParty.get(@root_url, headers: headers)
+    body = {}
+    record.values.map do |value|
+      if value.record_field
+        field_name = value.record_field.name.downcase
+        if field_name == "name"
+          body["contact_name"] = value.content
+        else
+          body[field_name] = value.content
+        end
+      end
+    end
+    response = HTTParty.put(url, headers: headers, body:{JSONString: body.to_json})
+    response = JSON.parse(response&.body || "{}")
+    if response["code"] == 0
+      record.update(zoho_integration_record_attributes:{external_id:response["contact"]["contact_id"],connection:record.form.zoho_connection, record_id: record.id})
+      RecordSerializer.new(record)
+    end
     render json: response
+  end
+
+  def update_all
+    headers = {
+      "Content-Type" => "application/x-www-form-urlencoded;charset=UTF-8",
+      "Authorization" => @authorization
+    }
+    records = Record.where("form_id = ? and id IN (SELECT record_id FROM integration_records)", params[:form_id])
+    records = records.map do |record|
+      if record.zoho_integration_record
+          contact_id = record.zoho_integration_record.external_id
+          url = "#{@root_url}/#{contact_id}?organization_id=#{@zoho_organization_id}"
+          body = {}
+          record.values.map do |value|
+            if value.record_field
+              field_name = value.record_field.name.downcase
+              if field_name == "name"
+                body["contact_name"] = value.content
+              else
+                body[field_name] = value.content
+              end
+            end
+          end
+          response = HTTParty.put(url, headers: headers, body:{JSONString: body.to_json})
+          response = JSON.parse(response&.body || "{}")
+          response
+      end
+    end
+    render json: records
   end
 
   private
     def contacts_params
-      params.require(:contact).permit(:contact, :form_id, :organization_id)
+      params.require(:contact).permit(:record_id, :zoho_record_id, :form_id, :organization_id)
     end
 
     def set_organization
@@ -98,7 +145,26 @@ class ZohoBooks::ContactsController < ApplicationController
        @root_url = "https://books.zoho.com/api/v3/contacts"
     end
 
+    def set_token
+      url = "https://accounts.zoho.com/oauth/v2/token"
+      body = {
+        refresh_token: @organization.zoho_integration.refresh_token,
+        client_id: @organization.zoho_integration.client_id,
+        client_secret: @organization.zoho_integration.client_secret,
+        redirect_uri: @organization.zoho_integration.redirect_uri,
+        grant_type: "refresh_token"
+      } 
+      headers = {
+      "Content-Type" => "application/x-www-form-urlencoded;charset=UTF-8",
+      }
+      response = HTTParty.post(url, body:body, headers: headers)
+      response = JSON.parse(response&.body || "{}")
+      @token = response["access_token"]
+      @organization.zoho_integration.auth_token = @token
+      @organization.save
+    end
+
     def set_authorization
-      @authorization = "Bearer #{@organization.zoho_integration.auth_token}"
+      @authorization = "Bearer #{@token}"
     end
 end

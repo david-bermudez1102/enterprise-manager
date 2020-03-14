@@ -14,12 +14,6 @@ class ZohoBooks::ZohoTokenController < ApplicationController
     render json: token
   end
 
-  def index
-    response = HTTParty.get("https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=#{@integration.client_id}&response_type=code&redirect_uri=#{@integration.redirect_uri}&access_type=offline")
-    render json:response.message
-  end
-
-
   private
 
     def zoho_books_params

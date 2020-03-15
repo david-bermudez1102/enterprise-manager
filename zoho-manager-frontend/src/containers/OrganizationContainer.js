@@ -7,6 +7,7 @@ import ResourcesContainer from "./ResourceCreator/ResourcesContainer";
 import Organization from "../components/Organizations/Organization";
 import { fetchResources } from "../actions/resourceActions";
 import Settings from "./Settings/Settings";
+import AllRecordsContainer from "./Records/AllRecordsContainer";
 
 class OrganizationContainer extends Component {
   componentDidMount() {
@@ -50,6 +51,12 @@ class OrganizationContainer extends Component {
           path={`${match.path}/:organizationId/resources`}
           render={props => (
             <ResourcesContainer {...props} resources={resources} />
+          )}
+        />
+        <Route
+          path={`${match.path}/:organizationId/records`}
+          render={props => (
+            <AllRecordsContainer {...props} resources={resources} />
           )}
         />
         <Route

@@ -1,5 +1,7 @@
 import React from "react";
 
+const capitalize = require("capitalize");
+
 const icons = [
   { type: "Admin", className: "fas fa-user-cog" },
   { type: "Manager", className: "fas fa-user-shield" },
@@ -13,7 +15,7 @@ const Account = ({ account }) => {
       style={{ fontSize: "20px", cursor: "pointer" }}>
       <span className="order-sm-2 order-md-1 py-3 col-sm-12 col-xl-7 col-lg-8 col-md-8">
         <i className={`${icon.className} text-primary`} title="Employee"></i>{" "}
-        {account.name}
+        {capitalize.words(account.name)}
       </span>
       <span
         className="order-sm-1 order-md-2 py-3 col-sm-12 col-xl-5 col-lg-4 col-md-4 d-flex justify-content-between text-primary"

@@ -81,7 +81,9 @@ class AccountsContainer extends Component {
             <Route
               path={`${match.path}`}
               render={props => (
-                <div className="w-100 h-100 bg-white">Accounts Component</div>
+                <div className="w-100 h-100 bg-white rounded shadow-sm d-flex justify-content-center align-items-center alert-light">
+                  Coming Soon
+                </div>
               )}
             />
           </Switch>

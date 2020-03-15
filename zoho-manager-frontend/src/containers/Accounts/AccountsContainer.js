@@ -48,7 +48,7 @@ class AccountsContainer extends Component {
     const employees = accounts.filter(account => account.type === "Employee");
     return (
       <div className="row">
-        <div className="col-lg-5">
+        <div className="col-lg-5 pr-0">
           <div className="list-group">
             <AdminsList admins={admins} />
             <ManagersList managers={managers} />

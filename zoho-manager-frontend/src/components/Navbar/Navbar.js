@@ -73,9 +73,9 @@ class Navbar extends Component {
                         to={link.path}
                         exact
                         className="nav-link"
-                        activeClassName="active bg-light">
-                        {" "}
-                        <i className={link.icon}></i> {link.text}
+                        activeClassName="active bg-light"
+                        title={link.text}>
+                        <i className={link.icon}></i>
                       </NavLink>
                     </li>
                   ) : null

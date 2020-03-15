@@ -32,7 +32,10 @@ class Home extends Component {
           {session.isLoggedIn ? (
             <Navbar session={session} organizations={organizations} />
           ) : null}
-          <main className="w-100 align-items-center justify-content-center bg-transparent p-4">
+          <main
+            className={`${
+              !session.isLoggedIn ? "h-100" : ""
+            } w-100 bg-transparent p-4`}>
             <Switch>
               <Route
                 path={`/organizations`}

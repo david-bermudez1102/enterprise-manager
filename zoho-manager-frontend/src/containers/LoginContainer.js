@@ -31,7 +31,7 @@ class LoginContainer extends Component {
 
   render() {
     return (
-      <div className="row d-flex justify-content-center">
+      <div className="row d-flex h-100 align-items-center justify-content-center">
         <div className="col-xl-5 col-lg-6 col-md-6 px-0">
           <FormCard
             header={

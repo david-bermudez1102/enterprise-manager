@@ -1,5 +1,6 @@
 class Organization < ApplicationRecord
   has_one_attached :logo
+  validates :name, presence: :true, format: { with: /\A[a-zA-Z]+\Z/ }
   has_many :forms, dependent: :delete_all
   has_many :admins, dependent: :delete_all
   has_one :zoho_integration, class_name: "Integration", foreign_key: "zoho_integration_id", primary_key: "id"

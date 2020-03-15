@@ -27,7 +27,7 @@ class FieldsContainer extends Component {
       <>
         <div
           className={`${
-            isFieldsPath ? "col-lg-4 order-2" : "col-lg-7"
+            isFieldsPath ? "col-lg-4 pr-0" : "col-lg-7"
           } min-h-100`}>
           <div className="card border-0 shadow-sm">
             <FieldsList
@@ -42,7 +42,7 @@ class FieldsContainer extends Component {
             exact
             path={`${match.path}/fields/new`}
             render={props => (
-              <div className="col-lg-4 order-1 pr-0">
+              <div className="col-lg-4">
                 <FormCard
                   header={
                     <span
@@ -83,7 +83,7 @@ class FieldsContainer extends Component {
               );
               if (field)
                 return (
-                  <div className="col-lg-4 order-1 pr-0">
+                  <div className="col-lg-4">
                     <FormCard
                       header={
                         <span

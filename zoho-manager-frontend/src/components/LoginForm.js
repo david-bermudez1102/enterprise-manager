@@ -23,7 +23,7 @@ export default class LoginForm extends Component {
           <input
             type="text"
             name="username"
-            className="form-control"
+            className="form-control rounded-pill"
             onChange={this.handleOnChange}
             value={this.state.username}
             placeholder="Email or username..."
@@ -33,14 +33,14 @@ export default class LoginForm extends Component {
           <input
             type="password"
             name="password"
-            className="form-control"
+            className="form-control rounded-pill"
             onChange={this.handleOnChange}
             value={this.state.password}
             placeholder="Your password..."
           />
         </div>
-        <input type="submit" className="btn btn-primary shadow" />
-        {this.state.name}
+        <hr />
+        <input type="submit" className="btn btn-primary shadow" value="Login" />
       </form>
     );
   }

@@ -156,7 +156,10 @@ export default class SideBar extends Component {
             </span>
           </div>
           <hr className="mb-0" style={{ background: "rgba(0,0,0,0.2)" }} />
-          <div className="px-2 py-2">
+          <div
+            className="px-2 py-2"
+            onMouseEnter={this.openSideBar}
+            onMouseLeave={this.closeSideBar}>
             {links.map(link => (
               <span key={cuid()}>
                 <NavLink

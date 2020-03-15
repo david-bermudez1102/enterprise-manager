@@ -115,6 +115,7 @@ class FieldsList extends Component {
                   />
                 ) : null;
               })}
+              <hr />
               <input
                 className="btn btn-primary shadow"
                 type="submit"

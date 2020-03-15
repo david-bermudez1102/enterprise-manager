@@ -31,11 +31,16 @@ class LoginContainer extends Component {
 
   render() {
     return (
-      <div className="row w-100">
-        <div className="col">
+      <div className="row d-flex justify-content-center">
+        <div className="col-xl-5 col-lg-6 col-md-6 px-0">
           <FormCard
-            header={<span className="card-title display-4">Login</span>}
-          >
+            header={
+              <span
+                className="card-title display-4 mb-0"
+                style={{ fontSize: "32px" }}>
+                Login
+              </span>
+            }>
             <LoginForm handleOnSubmit={this.handleOnSubmit} />
           </FormCard>
         </div>

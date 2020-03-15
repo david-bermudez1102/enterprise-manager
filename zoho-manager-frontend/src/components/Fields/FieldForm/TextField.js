@@ -31,7 +31,7 @@ const TextField = ({
         />
         <label htmlFor="text_field" className="form-check-label">
           Text Field{" "}
-          <Icon path={mdiTextbox} title="Text Field" size={2} color="#07689F" />
+          <Icon path={mdiTextbox} title="Text Field" size={1} color="#07689F" />
         </label>
       </div>
     </div>

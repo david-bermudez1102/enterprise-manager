@@ -51,6 +51,9 @@ class Field extends Component {
             data-record-value-id={this.state.recordValueId}
             data-option-value-id={this.state.optionValueId}
             ref={fieldRef}>
+            <option key={cuid()} value="" data-record-value-id="">
+              Select
+            </option>
             {field.selectableResource
               ? field.selectableResource.options.map(option => (
                   <option
@@ -139,7 +142,7 @@ class Field extends Component {
         break;
     }
     return (
-      <div className="form-group">
+      <div className="form-group mb-0">
         {field.fieldType !== "key_field" ? (
           <Options
             url={`${match.url}/fields`}

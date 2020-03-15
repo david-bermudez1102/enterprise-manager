@@ -149,13 +149,16 @@ export default class SideBar extends Component {
               </button>
               {minimized ? (
                 <hr
-                  className="mb-3"
+                  className="mb-3 w-100"
                   style={{ background: "rgba(0,0,0,0.2)" }}
                 />
               ) : null}
             </span>
           </div>
-          <hr className="mb-0" style={{ background: "rgba(0,0,0,0.2)" }} />
+          <hr
+            className="mb-0 w-100"
+            style={{ background: "rgba(0,0,0,0.2)" }}
+          />
           <div
             className="px-2 py-2"
             onMouseEnter={this.openSideBar}

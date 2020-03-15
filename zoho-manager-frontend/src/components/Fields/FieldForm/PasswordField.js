@@ -34,7 +34,7 @@ const PasswordField = ({
           <Icon
             path={mdiTextboxPassword}
             title="Password Field"
-            size={2}
+            size={1}
             color="#07689F"
           />
         </label>

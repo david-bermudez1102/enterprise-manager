@@ -21,9 +21,6 @@ class Home extends Component {
     } = this.props;
     return (
       <div className="w-100 d-flex flex-grow-1">
-        {organizations.length === 0 ? (
-          <Redirect to="/organizations/new" />
-        ) : null}
         {session.isLoggedIn ? (
           <SideBar
             session={session}
@@ -61,9 +58,14 @@ class Home extends Component {
                 path={`/logout`}
                 render={() => <LogoutContainer removeSession={removeSession} />}
               />
-              <Route path="/accounts/new">
-                <AdminContainer organizations={organizations} admins={admins} />
-              </Route>
+              {organizations.length > 0 ? (
+                <Route path="/accounts/new">
+                  <AdminContainer
+                    organizations={organizations}
+                    admins={admins}
+                  />
+                </Route>
+              ) : null}
               <Route
                 path={`/accounts`}
                 render={props => (

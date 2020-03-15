@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import Navbar from "./components/Navbar/Navbar";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
 import { fetchAdmins } from "./actions/adminActions";
@@ -28,7 +33,6 @@ class App extends Component {
       removeSession,
       session
     } = this.props;
-    console.log(organizations);
     return (
       <Router>
         <div className="bg-light container-fluid d-flex p-0 flex-column min-h-100">
@@ -36,19 +40,21 @@ class App extends Component {
             <Navbar session={session} organizations={organizations} />
           ) : null}
           <Switch>
-            <Route
-              path="/"
-              render={props => (
-                <Home
-                  organizations={organizations}
-                  session={session}
-                  {...props}
-                  admins={admins}
-                  addSession={addSession}
-                  removeSession={removeSession}
-                />
-              )}
-            />
+            {organizations.length > 0 ? (
+              <Route
+                path="/"
+                render={props => (
+                  <Home
+                    organizations={organizations}
+                    session={session}
+                    {...props}
+                    admins={admins}
+                    addSession={addSession}
+                    removeSession={removeSession}
+                  />
+                )}
+              />
+            ) : null}
           </Switch>
           {organizations[0] ? <Footer organization={organizations[0]} /> : null}
         </div>

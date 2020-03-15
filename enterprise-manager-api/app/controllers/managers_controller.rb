@@ -19,6 +19,6 @@ class ManagersController < ApplicationController
     end
 
     def set_admin
-      @admin = Admin.find(params[:admin_id])
+      @admin = Admin.joins(:account).find_by(accounts:{id:params[:admin_id]}) 
     end
 end

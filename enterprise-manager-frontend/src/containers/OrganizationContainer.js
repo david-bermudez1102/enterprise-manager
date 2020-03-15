@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import OrganizationInput from "../components/OrganizationInput";
+import OrganizationForm from "../components/OrganizationForm";
 import { connect } from "react-redux";
 import { addOrganization } from "../actions/organizationAction";
 import { Route, Switch } from "react-router-dom";
@@ -8,6 +8,7 @@ import Organization from "../components/Organizations/Organization";
 import { fetchResources } from "../actions/resourceActions";
 import Settings from "./Settings/Settings";
 import AllRecordsContainer from "./Records/AllRecordsContainer";
+import { FormCard } from "../components/Cards/Cards";
 
 class OrganizationContainer extends Component {
   componentDidMount() {
@@ -34,7 +35,23 @@ class OrganizationContainer extends Component {
         <Route
           path={`${match.path}/new`}
           render={props => (
-            <OrganizationInput {...props} addOrganization={addOrganization} />
+            <div className="row d-flex h-100 align-items-center justify-content-center">
+              <div className="col-xl-5 col-lg-6 col-md-6 px-0">
+                <FormCard
+                  header={
+                    <span
+                      className="display-4 card-title mb-0"
+                      style={{ fontSize: "32px" }}>
+                      Create new organization
+                    </span>
+                  }>
+                  <OrganizationForm
+                    {...props}
+                    addOrganization={addOrganization}
+                  />
+                </FormCard>
+              </div>
+            </div>
           )}
         />
         <Route

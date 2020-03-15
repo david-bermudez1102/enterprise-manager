@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import SideBar from "../../components/Home/SideBar/SideBar";
 import Navbar from "../../components/Navbar/Navbar";
 import LoginContainer from "../LoginContainer";
@@ -21,6 +21,9 @@ class Home extends Component {
     } = this.props;
     return (
       <div className="w-100 d-flex flex-grow-1">
+        {organizations.length === 0 ? (
+          <Redirect to="/organizations/new" />
+        ) : null}
         {session.isLoggedIn ? (
           <SideBar
             session={session}

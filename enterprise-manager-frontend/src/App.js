@@ -13,10 +13,11 @@ import {
 import Footer from "./components/Footer/Footer";
 
 class App extends Component {
-  componentDidMount() {
-    this.props.fetchOrganizations();
-    this.props.fetchAdmins();
-    this.props.fetchSession();
+  constructor(props) {
+    super(props);
+    props.fetchOrganizations();
+    props.fetchAdmins();
+    props.fetchSession();
   }
 
   render() {
@@ -27,6 +28,7 @@ class App extends Component {
       removeSession,
       session
     } = this.props;
+    console.log(organizations);
     return (
       <Router>
         <div className="bg-light container-fluid d-flex p-0 flex-column min-h-100">
@@ -34,21 +36,19 @@ class App extends Component {
             <Navbar session={session} organizations={organizations} />
           ) : null}
           <Switch>
-            {organizations.length > 0 ? (
-              <Route
-                path="/"
-                render={props => (
-                  <Home
-                    organizations={organizations}
-                    session={session}
-                    {...props}
-                    admins={admins}
-                    addSession={addSession}
-                    removeSession={removeSession}
-                  />
-                )}
-              />
-            ) : null}
+            <Route
+              path="/"
+              render={props => (
+                <Home
+                  organizations={organizations}
+                  session={session}
+                  {...props}
+                  admins={admins}
+                  addSession={addSession}
+                  removeSession={removeSession}
+                />
+              )}
+            />
           </Switch>
           {organizations[0] ? <Footer organization={organizations[0]} /> : null}
         </div>

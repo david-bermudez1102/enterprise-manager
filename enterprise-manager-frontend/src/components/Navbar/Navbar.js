@@ -14,7 +14,12 @@ class Navbar extends Component {
           text: "Login",
           loginRequired: false
         },
-        { path: "/", text: "Home", loginRequired: true },
+        {
+          path: "/",
+          text: "Home",
+          icon: "fas fa-home",
+          loginRequired: true
+        },
         {
           path: `/organizations/${props.organizations[0].id}/resources/new`,
           text: "Add Resource",

@@ -16,34 +16,53 @@ export default class AdminForm extends Component {
 
   handleOnSubmit = event => {
     event.preventDefault();
-    this.props.addAdmin(this.state)
+    this.props.addAdmin(this.state);
   };
 
   render() {
     return (
       <form onSubmit={this.handleOnSubmit}>
+        <div className="form-group">
+          <label htmlFor="admin_name">Your Name:</label>
+          <input
+            type="text"
+            name="name"
+            id="admin_name"
+            className="form-control"
+            onChange={this.handleOnChange}
+            value={this.state.name}
+            placeholder="Enter Name..."
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="admin_email">Your Email:</label>
+          <input
+            type="email"
+            name="email"
+            id="admin_email"
+            className="form-control"
+            onChange={this.handleOnChange}
+            value={this.state.email}
+            placeholder="Enter Email..."
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="admin_password">Your Password:</label>
+          <input
+            type="password"
+            name="password"
+            id="admin_password"
+            className="form-control"
+            onChange={this.handleOnChange}
+            value={this.state.password}
+            placeholder="Enter Password..."
+          />
+        </div>
         <input
-          type="text"
-          name="name"
-          onChange={this.handleOnChange}
-          value={this.state.name}
-          placeholder="Enter Name"
+          type="submit"
+          className="btn btn-primary shadow"
+          value="Create Admin"
         />
-        <input
-          type="email"
-          name="email"
-          onChange={this.handleOnChange}
-          value={this.state.email}
-          placeholder="Enter Email"
-        />
-        <input
-          type="password"
-          name="password"
-          onChange={this.handleOnChange}
-          value={this.state.password}
-          placeholder="Enter Password"
-        />
-        <input type="submit" />
       </form>
     );
   }

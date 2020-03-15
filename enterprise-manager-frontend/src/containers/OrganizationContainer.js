@@ -20,7 +20,10 @@ class OrganizationContainer extends Component {
 
   componentDidUpdate(prevProps) {
     const { organizations, session, history, fetchResources } = this.props;
-    if (prevProps.session !== session) {
+    if (
+      prevProps.session !== session ||
+      prevProps.organizations !== organizations
+    ) {
       if (organizations.length > 0) fetchResources(organizations[0].id);
       return organizations.length > 0 && !session.isLoggedIn
         ? history.push("/accounts/new")

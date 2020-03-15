@@ -72,6 +72,7 @@ class RecordsList extends Component {
   render() {
     const { records, recordFields, resource, values } = this.props;
     const { sortedRecords } = this.state;
+    console.log(resource);
     return (
       <table className="table table-sm w-100 table-hover">
         <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />

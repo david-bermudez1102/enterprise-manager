@@ -40,7 +40,7 @@ class SelectableChoice extends Component {
       selectableResourceAttributes
     } = this.props;
     return (
-      <div className="form-group">
+      <div className="form-group mb-0">
         <hr />
         <div className="form-check form-check-inline">
           <input

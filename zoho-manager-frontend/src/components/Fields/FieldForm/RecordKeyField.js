@@ -50,22 +50,25 @@ class RecordKeyField extends Component {
     );
     return (
       <>
-        <div className="form-check form-check-inline">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="field_type"
-            id="record_key_field"
-            value="key_field"
-            onChange={this.handleChange}
-            defaultChecked={fieldType === "key_field" ? true : false}
-          />
-          <label htmlFor="record_key_field" className="form-check-label">
-            Key Field <i className="fas fa-key"></i>
-          </label>
+        <div className="col-auto order-first my-auto">
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="field_type"
+              id="record_key_field"
+              value="key_field"
+              onChange={this.handleChange}
+              defaultChecked={fieldType === "key_field" ? true : false}
+            />
+            <label htmlFor="record_key_field" className="form-check-label">
+              Key Field <i className="fas fa-key"></i>
+            </label>
+          </div>
         </div>
         {fieldType === "key_field" ? (
-          <div className="form-group">
+          <div className="col-12 order-last">
+            <hr />
             <select
               onChange={this.handleFieldChange}
               value={this.state.fieldId}

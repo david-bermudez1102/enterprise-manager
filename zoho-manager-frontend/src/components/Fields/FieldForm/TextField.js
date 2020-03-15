@@ -9,29 +9,31 @@ const TextField = ({
   selectableResourceAttributes
 }) => {
   return (
-    <div className="form-check form-check-inline">
-      <input
-        className="form-check-input"
-        type="radio"
-        name="field_type"
-        id="text_field"
-        value="text"
-        onChange={event => {
-          handleChange(event);
-          handleSelectableChange(
-            {
-              ...selectableResourceAttributes,
-              _destroy: 1
-            },
-            []
-          );
-        }}
-        defaultChecked={fieldType === "text" ? true : false}
-      />
-      <label htmlFor="text_field" className="form-check-label">
-        Text Field{" "}
-        <Icon path={mdiTextbox} title="Text Field" size={2} color="#07689F" />
-      </label>
+    <div className="col-auto order-first my-auto">
+      <div className="form-check form-check-inline">
+        <input
+          className="form-check-input"
+          type="radio"
+          name="field_type"
+          id="text_field"
+          value="text"
+          onChange={event => {
+            handleChange(event);
+            handleSelectableChange(
+              {
+                ...selectableResourceAttributes,
+                _destroy: 1
+              },
+              []
+            );
+          }}
+          defaultChecked={fieldType === "text" ? true : false}
+        />
+        <label htmlFor="text_field" className="form-check-label">
+          Text Field{" "}
+          <Icon path={mdiTextbox} title="Text Field" size={2} color="#07689F" />
+        </label>
+      </div>
     </div>
   );
 };

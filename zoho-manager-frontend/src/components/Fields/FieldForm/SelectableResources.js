@@ -64,7 +64,7 @@ class SelectableResources extends Component {
     const { resources, fields, field } = this.props;
     return (
       <>
-        <div className="form-group">
+        <div className="form-group mb-0">
           <hr />
           <label htmlFor="selectable_resource">Connect to:</label>
           <select

@@ -68,7 +68,9 @@ class FieldsList extends Component {
     return (
       <>
         <CardHeader>
-          <span className="card-title display-4 mb-0">
+          <span
+            className="card-title display-4 mb-0"
+            style={{ fontSize: "32px" }}>
             {pluralize(resource.name)}
           </span>
           <span className="card-title">

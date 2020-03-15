@@ -29,27 +29,31 @@ class CheckBoxField extends Component {
     } = this.props;
     return (
       <>
-        <div className="form-check form-check-inline">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="field_type"
-            id="checkbox_field"
-            value="checkbox"
-            onChange={this.handleChange}
-            defaultChecked={fieldType === "checkbox" ? true : false}
-          />
-          <label htmlFor="checkbox_field" className="form-check-label">
-            Checkbox Set <i className="fad fa-check-square text-primary"></i>
-          </label>
+        <div className="col-auto order-first my-auto">
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="field_type"
+              id="checkbox_field"
+              value="checkbox"
+              onChange={this.handleChange}
+              defaultChecked={fieldType === "checkbox" ? true : false}
+            />
+            <label htmlFor="checkbox_field" className="form-check-label">
+              Checkbox Set <i className="fad fa-check-square text-primary"></i>
+            </label>
+          </div>
         </div>
         {fieldType === "checkbox" ? (
-          <SelectableOptions
-            field={field}
-            fieldType={fieldType}
-            handleSelectableChange={handleSelectableChange}
-            selectableResourceAttributes={selectableResourceAttributes}
-          />
+          <div className="col-12 order-last my-auto">
+            <SelectableOptions
+              field={field}
+              fieldType={fieldType}
+              handleSelectableChange={handleSelectableChange}
+              selectableResourceAttributes={selectableResourceAttributes}
+            />
+          </div>
         ) : null}
       </>
     );

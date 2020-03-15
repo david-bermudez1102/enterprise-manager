@@ -29,27 +29,31 @@ class RadioField extends Component {
     } = this.props;
     return (
       <>
-        <div className="form-check form-check-inline">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="field_type"
-            id="radio_field"
-            value="radio"
-            onChange={this.handleChange}
-            defaultChecked={fieldType === "radio" ? true : false}
-          />
-          <label htmlFor="radio_field" className="form-check-label">
-            Radio Field <i className="fad fa-circle text-primary"></i>
-          </label>
+        <div className="col-auto order-first my-auto">
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="field_type"
+              id="radio_field"
+              value="radio"
+              onChange={this.handleChange}
+              defaultChecked={fieldType === "radio" ? true : false}
+            />
+            <label htmlFor="radio_field" className="form-check-label">
+              Radio Field <i className="fad fa-circle text-primary"></i>
+            </label>
+          </div>
         </div>
         {fieldType === "radio" ? (
-          <SelectableOptions
-            field={field}
-            fieldType={fieldType}
-            handleSelectableChange={handleSelectableChange}
-            selectableResourceAttributes={selectableResourceAttributes}
-          />
+          <div className="col-12 order-last my-auto">
+            <SelectableOptions
+              field={field}
+              fieldType={fieldType}
+              handleSelectableChange={handleSelectableChange}
+              selectableResourceAttributes={selectableResourceAttributes}
+            />
+          </div>
         ) : null}
       </>
     );

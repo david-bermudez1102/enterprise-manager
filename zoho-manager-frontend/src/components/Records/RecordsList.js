@@ -6,14 +6,11 @@ import RecordsHeader from "./RecordsHeader";
 class RecordsList extends Component {
   constructor(props) {
     super(props);
-    this.myRef = React.createRef();
     this.state = { sortBy: 0, sortedRecords: [], orders: [] };
   }
 
   componentDidMount() {
     const { values, records } = this.props;
-    const RecordsList = this.myRef.current.getBoundingClientRect();
-    window.scrollTo(RecordsList.x, RecordsList.y);
     this.setState({
       sortedRecords: this.sortBy(this.state.sortBy, records, values, false)
     });
@@ -76,7 +73,7 @@ class RecordsList extends Component {
     const { records, recordFields, resource, values } = this.props;
     const { sortedRecords } = this.state;
     return (
-      <table ref={this.myRef} className="table table-sm w-100 table-hover">
+      <table className="table table-sm w-100 table-hover">
         <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />
         <tbody>
           {sortedRecords && sortedRecords.length > 0

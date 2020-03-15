@@ -8,6 +8,27 @@ import {
 class RecordsOptions extends Component {
   constructor() {
     super();
+    this.recordsOptions = React.createRef();
+  }
+
+  componentDidMount() {
+    const recordsOptions = this.recordsOptions.current;
+    recordsOptions.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.resource.zohoConnection !== this.props.resource.zohoConnection
+    ) {
+      const recordsOptions = this.recordsOptions.current;
+      recordsOptions.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
   }
 
   render() {
@@ -15,9 +36,12 @@ class RecordsOptions extends Component {
     if (!resource.zohoConnection) return null;
     const connectionType = resource.zohoConnection.connection_type;
     return (
-      <div className="pb-2 d-flex sticky-top w-100 bg-white">
+      <div
+        className="pb-2 d-flex sticky-top w-100 bg-white"
+        ref={this.recordsOptions}>
         <button className="btn btn-sm btn-info m-2 shadow">
-          Synchronize {connectionType} with Zoho
+          <i className="fas fa-sync mr-2"></i>Synchronize {connectionType} with
+          Zoho
         </button>
         <button
           className="btn btn-sm btn-info m-2 shadow"
@@ -30,6 +54,7 @@ class RecordsOptions extends Component {
               connectionType
             )
           }>
+          <i className="far fa-share-square mr-2"></i>
           Send Unsynchronized {connectionType} to Zoho
         </button>
         <button
@@ -41,6 +66,7 @@ class RecordsOptions extends Component {
               organization_id: 1
             })
           }>
+          <i className="far fa-edit mr-2"></i>
           Update all {resource.zohoConnection.connection_type} to Zoho
         </button>
       </div>

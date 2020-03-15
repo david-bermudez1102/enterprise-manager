@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 class Resource extends Component {
   render() {
-    const { match, resources, fields } = this.props;
+    const { match, resources, fields, location } = this.props;
     const resource = resources.find(
       resource => resource.formAlias === match.params.formAlias
     );
@@ -16,6 +16,7 @@ class Resource extends Component {
           organizationId={resource.organizationId}
           resource={resource}
           fields={fields}
+          location={location}
         />
         <RecordsContainer match={match} resource={resource} />
       </>

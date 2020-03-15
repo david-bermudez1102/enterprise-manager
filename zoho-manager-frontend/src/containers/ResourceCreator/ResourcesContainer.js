@@ -45,9 +45,13 @@ class ResourcesContainer extends Component {
       history
     } = this.props;
     const { organizationId } = match.params;
+    const isFieldsPath = location.pathname.includes("fields");
     return (
       <div className="row">
-        <div className="col-lg-5 min-h-100">
+        <div
+          className={`${
+            isFieldsPath ? "col-lg-4" : "col-lg-5"
+          } col-md-12 min-h-100 pr-0`}>
           <div className="bg-white rounded p-2 h-100 shadow-sm">
             <div className="list-group">
               <ResourcesList
@@ -64,7 +68,10 @@ class ResourcesContainer extends Component {
           <Route
             path={`${match.path}/new`}
             render={props => (
-              <div className="col-lg-7">
+              <div
+                className={`${
+                  isFieldsPath ? "col-lg-4" : "col-lg-7"
+                } min-h-100`}>
                 <FormCard
                   header={
                     <span
@@ -86,7 +93,10 @@ class ResourcesContainer extends Component {
             <Route
               path={`${match.path}/:formAlias/edit`}
               render={props => (
-                <div className="col-lg-7">
+                <div
+                  className={`${
+                    isFieldsPath ? "col-lg-4" : "col-lg-7"
+                  } min-h-100`}>
                   <FormCard
                     header={
                       <span
@@ -128,7 +138,9 @@ class ResourcesContainer extends Component {
           />
           <Route
             path={`${match.path}/:formAlias`}
-            render={props => <Resource {...props} key={cuid()} />}
+            render={props => (
+              <Resource {...props} key={cuid()} location={location} />
+            )}
           />
         </Switch>
       </div>

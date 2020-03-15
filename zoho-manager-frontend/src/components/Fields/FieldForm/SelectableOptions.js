@@ -4,6 +4,7 @@ import cuid from "cuid";
 class SelectableOptions extends Component {
   constructor() {
     super();
+    this.itemValue = React.createRef();
     this.state = {
       itemValue: "",
       options_attributes: []
@@ -21,17 +22,42 @@ class SelectableOptions extends Component {
     const { selectableResourceAttributes } = this.props;
     event.persist();
     event.preventDefault();
+    const itemValue = this.itemValue.current;
+    if (itemValue.value !== "")
+      this.setState(
+        {
+          ...this.state,
+          itemValue: "",
+          options_attributes: [
+            ...this.state.options_attributes,
+            { value: this.state.itemValue }
+          ]
+        },
+        () =>
+          this.props.handleSelectableChange(
+            {
+              ...selectableResourceAttributes,
+              _destroy: 1
+            },
+            this.state.options_attributes
+          )
+      );
+    itemValue.focus();
+  };
+
+  removeItem = value => {
+    const { selectableResourceAttributes, handleSelectableChange } = this.props;
     this.setState(
       {
-        ...this.state,
         itemValue: "",
         options_attributes: [
-          ...this.state.options_attributes,
-          { value: this.state.itemValue }
+          ...this.state.options_attributes.filter(
+            option => option.value !== value
+          )
         ]
       },
       () =>
-        this.props.handleSelectableChange(
+        handleSelectableChange(
           {
             ...selectableResourceAttributes,
             _destroy: 1
@@ -39,7 +65,6 @@ class SelectableOptions extends Component {
           this.state.options_attributes
         )
     );
-    event.target.focus();
   };
 
   render() {
@@ -48,14 +73,20 @@ class SelectableOptions extends Component {
     return (
       <div className="">
         <hr />
-        <ul className="list-group list-group-flush">
+        <div className="display-4" style={{ fontSize: "20px" }}>
           {options_attributes.map(option => (
-            <li key={cuid()} className="list-group-item">
-              {option.value}
-              <span className="badge badge-primary badge-pill">14</span>
-            </li>
+            <span
+              key={cuid()}
+              className="badge badge-primary badge-pill mr-2"
+              style={{ minWidth: "100px" }}>
+              <span className="float-left h-100">{option.value}</span>
+
+              <i
+                className="fas fa-minus-square pl-2 float-right"
+                onClick={() => this.removeItem(option.value)}></i>
+            </span>
           ))}
-        </ul>
+        </div>
         <div className="form-group">
           <label htmlFor="item_value">Add items to {fieldType} field:</label>
           <input
@@ -66,6 +97,7 @@ class SelectableOptions extends Component {
             className="form-control"
             value={itemValue}
             autoFocus={true}
+            ref={this.itemValue}
           />
         </div>
         <button onClick={this.handleClick} className="btn btn-secondary shadow">

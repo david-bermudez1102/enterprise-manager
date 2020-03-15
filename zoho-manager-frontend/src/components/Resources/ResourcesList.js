@@ -29,7 +29,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
             `/organizations/${resource.organizationId}/resources/${resource.formAlias}`
           );
         }}>
-        <span className="order-sm-2 order-md-1 py-3 col-sm-12 col-xl-7 col-lg-8 col-md-8">
+        <span className="order-sm-2 order-md-1 py-3 col-xl-7 col-lg-6 col-md-8">
           <NavLink
             to={`${match.url}/${resource.formAlias}`}
             className="nav-link"
@@ -40,7 +40,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
             </span>
           </NavLink>
         </span>
-        <span className="order-sm-1 order-md-2 pl-0 py-3 col-sm-12 col-xl-5 col-lg-4 col-md-4 d-flex justify-content-between align-items-center">
+        <span className="order-sm-1 order-md-2 pl-0 py-3 col-xl-5 col-lg-6 col-md-4 d-flex justify-content-between align-items-center">
           <Link
             to={`${match.url}/${resource.formAlias}/records`}
             style={{ color: "inherit" }}

@@ -20,5 +20,6 @@ export const rootReducer = combineReducers({
   records: recordsReducer,
   recordFields: recordFieldsReducer,
   values: valuesReducer,
-  zohoBooks: zohoBooksReducer
+  zohoBooks: zohoBooksReducer,
+  requesting: false
 });

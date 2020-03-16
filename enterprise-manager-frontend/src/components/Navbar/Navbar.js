@@ -66,7 +66,7 @@ class Navbar extends Component {
       ? "collapse navbar-collapse d-block"
       : "collapse navbar-collapse";
     return (
-      <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm py-0">
+      <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm py-0 text-center">
         <NavLink to="#" className="navbar-brand">
           <Logo organization={organizations[0]} />
         </NavLink>
@@ -77,11 +77,13 @@ class Navbar extends Component {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className={collapseClassName} id="navbarNav">
-          <div className="w-100 d-flex justify-content-end">
+          <div className="w-100 d-flex justify-content-between">
             {session.isLoggedIn ? (
-              <SearchBar organization={organizations[0]} />
+              <div className="w-50 d-flex justify-content-center order-sm-last order-md-last">
+                <SearchBar organization={organizations[0]} />
+              </div>
             ) : null}
-            <ul className="navbar-nav nav-pills">
+            <ul className="navbar-nav nav-pills order-sm-first order-md-last">
               {session.isLoggedIn
                 ? links.map(link =>
                     link.loginRequired ? (
@@ -91,7 +93,8 @@ class Navbar extends Component {
                           exact
                           className="nav-link"
                           activeClassName="active bg-light"
-                          title={link.text}>
+                          title={link.text}
+                          onClick={this.collapse}>
                           <i className={link.icon}></i>
                         </NavLink>
                       </li>

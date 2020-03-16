@@ -8,6 +8,7 @@ class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      collapse: false,
       links: [
         {
           path: "/login",
@@ -54,51 +55,63 @@ class Navbar extends Component {
     };
   }
 
+  collapse = () => {
+    this.setState({ collapse: !this.state.collapse });
+  };
+
   render() {
     const { session, organizations } = this.props;
+    const { collapse, links } = this.state;
+    const collapseClassName = collapse
+      ? "collapse navbar-collapse d-block"
+      : "collapse navbar-collapse";
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-0">
-        {organizations.length > 0 ? (
-          <NavLink to="#" className="navbar-brand">
-            <Logo organization={organizations[0]} />
-          </NavLink>
-        ) : null}
-        <div
-          className="collapse navbar-collapse d-flex justify-content-end"
-          id="navbarNav">
-          {session.isLoggedIn ? (
-            <SearchBar organization={organizations[0]} />
-          ) : null}
-          <ul className="navbar-nav nav-pills">
-            {session.isLoggedIn
-              ? this.state.links.map(link =>
-                  link.loginRequired ? (
-                    <li className="nav-item" key={cuid()}>
-                      <NavLink
-                        to={link.path}
-                        exact
-                        className="nav-link"
-                        activeClassName="active bg-light"
-                        title={link.text}>
-                        <i className={link.icon}></i>
-                      </NavLink>
-                    </li>
-                  ) : null
-                )
-              : this.state.links.map(link =>
-                  !link.loginRequired ? (
-                    <li className="nav-item" key={cuid()}>
-                      <NavLink
-                        to={link.path}
-                        exact
-                        className="nav-link"
-                        activeClassName="active bg-light">
-                        <i className={link.icon}></i> {link.text}
-                      </NavLink>
-                    </li>
-                  ) : null
-                )}
-          </ul>
+      <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm py-0">
+        <NavLink to="#" className="navbar-brand">
+          <Logo organization={organizations[0]} />
+        </NavLink>
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={this.collapse}>
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className={collapseClassName} id="navbarNav">
+          <div className="w-100 d-flex justify-content-end">
+            {session.isLoggedIn ? (
+              <SearchBar organization={organizations[0]} />
+            ) : null}
+            <ul className="navbar-nav nav-pills">
+              {session.isLoggedIn
+                ? links.map(link =>
+                    link.loginRequired ? (
+                      <li className="nav-item" key={cuid()}>
+                        <NavLink
+                          to={link.path}
+                          exact
+                          className="nav-link"
+                          activeClassName="active bg-light"
+                          title={link.text}>
+                          <i className={link.icon}></i>
+                        </NavLink>
+                      </li>
+                    ) : null
+                  )
+                : links.map(link =>
+                    !link.loginRequired ? (
+                      <li className="nav-item" key={cuid()}>
+                        <NavLink
+                          to={link.path}
+                          exact
+                          className="nav-link"
+                          activeClassName="active bg-light">
+                          <i className={link.icon}></i> {link.text}
+                        </NavLink>
+                      </li>
+                    ) : null
+                  )}
+            </ul>
+          </div>
         </div>
       </nav>
     );

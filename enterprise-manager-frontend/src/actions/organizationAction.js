@@ -3,7 +3,8 @@ const camelcaseKeys = require("camelcase-keys");
 
 export const addOrganization = organization => {
   return dispatch => {
-    return fetch("/api/v1/organizations", {
+    dispatch({ type: "REQUESTING_DATA" });
+    fetch("/api/v1/organizations", {
       method: "POST",
       body: jsonToFormData(organization)
     })
@@ -11,12 +12,14 @@ export const addOrganization = organization => {
       .then(organization => organization.data.attributes)
       .then(organization =>
         dispatch({ type: "ADD_ORGANIZATION", organization })
-      );
+      )
+      .then(() => dispatch({ type: "FINISHED_REQUESTING" }));
   };
 };
 
 export const fetchOrganizations = () => {
   return dispatch => {
+    dispatch({ type: "REQUESTING_DATA" });
     fetch("/api/v1/organizations")
       .then(response => response.json())
       .then(organizations =>
@@ -26,7 +29,8 @@ export const fetchOrganizations = () => {
       )
       .then(organizations =>
         dispatch({ type: "FETCH_ORGANIZATIONS", organizations })
-      );
+      )
+      .then(() => dispatch({ type: "FINISHED_REQUESTING" }));
   };
 };
 

@@ -1,4 +1,4 @@
-export const organizationReducer = (state = [], action) => {
+export const organizationsReducer = (state = [], action) => {
   switch (action.type) {
     case "ADD_ORGANIZATION":
       return [...state, action.organization];

@@ -27,12 +27,14 @@ class App extends Component {
 
   render() {
     const {
+      requesting,
       organizations,
       admins,
       addSession,
       removeSession,
       session
     } = this.props;
+    console.log(requesting);
     return (
       <Router>
         <div className="bg-light container-fluid d-flex p-0 flex-column min-h-100">
@@ -63,8 +65,9 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ organizations, admins, session }) => {
+const mapStateToProps = ({ requesting, organizations, admins, session }) => {
   return {
+    requesting,
     organizations,
     admins,
     session

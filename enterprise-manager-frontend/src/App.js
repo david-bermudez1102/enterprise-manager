@@ -20,29 +20,33 @@ import Footer from "./components/Footer/Footer";
 class App extends Component {
   constructor(props) {
     super(props);
-    props.fetchOrganizations();
-    props.fetchAdmins();
-    props.fetchSession();
+    this.state = { loaded: false };
+  }
+
+  componentDidMount() {
+    this.props
+      .fetchOrganizations()
+      .then(() => this.props.fetchAdmins())
+      .then(() => this.props.fetchSession())
+      .then(() => this.setState({ loaded: true }));
   }
 
   render() {
     const {
-      requesting,
       organizations,
       admins,
       addSession,
       removeSession,
       session
     } = this.props;
-    console.log(requesting);
     return (
       <Router>
-        <div className="bg-light container-fluid d-flex p-0 flex-column min-h-100">
-          {!session.isLoggedIn && organizations.length > 0 ? (
-            <Navbar session={session} organizations={organizations} />
-          ) : null}
-          <Switch>
-            {organizations.length > 0 ? (
+        {this.state.loaded ? (
+          <div className="bg-light container-fluid d-flex p-0 flex-column min-h-100">
+            {!session.isLoggedIn && organizations.length > 0 ? (
+              <Navbar session={session} organizations={organizations} />
+            ) : null}
+            <Switch>
               <Route
                 path="/"
                 render={props => (
@@ -56,10 +60,12 @@ class App extends Component {
                   />
                 )}
               />
+            </Switch>
+            {organizations[0] ? (
+              <Footer organization={organizations[0]} />
             ) : null}
-          </Switch>
-          {organizations[0] ? <Footer organization={organizations[0]} /> : null}
-        </div>
+          </div>
+        ) : null}
       </Router>
     );
   }

@@ -19,13 +19,13 @@ class OrganizationContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { organizations, session, history, fetchResources } = this.props;
     if (
-      prevProps.session !== session ||
-      prevProps.organizations !== organizations
+      prevProps.admins !== this.props.admins ||
+      prevProps.organizations !== this.props.organizations
     ) {
+      const { organizations, admins, history, fetchResources } = this.props;
       if (organizations.length > 0) fetchResources(organizations[0].id);
-      return organizations.length > 0 && !session.isLoggedIn
+      return organizations.length > 0 && admins.length === 0
         ? history.push("/accounts/new")
         : "";
     }
@@ -88,9 +88,10 @@ class OrganizationContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ resources, organizations }) => {
+const mapStateToProps = ({ resources, admins, organizations }) => {
   return {
     resources,
+    admins,
     organizations
   };
 };

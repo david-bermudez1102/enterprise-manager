@@ -21,6 +21,11 @@ class Home extends Component {
     } = this.props;
     return (
       <div className="w-100 d-flex flex-grow-1">
+        {organizations.length === 0 ? (
+          <Redirect to="/organizations/new" />
+        ) : admins.length === 0 ? (
+          <Redirect to="/accounts/new" />
+        ) : null}
         {session.isLoggedIn ? (
           <SideBar
             session={session}
@@ -48,6 +53,7 @@ class Home extends Component {
                 render={props => (
                   <LoginContainer
                     {...props}
+                    admins={admins}
                     session={session}
                     addSession={addSession}
                     organizations={organizations}
@@ -58,33 +64,26 @@ class Home extends Component {
                 path={`/logout`}
                 render={() => <LogoutContainer removeSession={removeSession} />}
               />
-              {organizations.length > 0 ? (
-                <Route path="/accounts/new">
-                  <AdminContainer
-                    organizations={organizations}
-                    admins={admins}
-                  />
-                </Route>
-              ) : null}
+              <Route path="/accounts/new">
+                <AdminContainer organizations={organizations} admins={admins} />
+              </Route>
               <Route
                 path={`/accounts`}
                 render={props => (
                   <AccountsContainer {...props} session={session} />
                 )}
               />
-              {organizations.length > 0 ? (
-                <Route
-                  path={`/auth/zohobooks/callback`}
-                  render={props => (
-                    <ZohoBooks
-                      {...props}
-                      session={session}
-                      redirectTo={`/organizations/${organizations[0].id}/settings/integrations/zoho_books/edit`}
-                      organization={organizations[0]}
-                    />
-                  )}
-                />
-              ) : null}
+              <Route
+                path={`/auth/zohobooks/callback`}
+                render={props => (
+                  <ZohoBooks
+                    {...props}
+                    session={session}
+                    redirectTo={`/organizations/${organizations[0].id}/settings/integrations/zoho_books/edit`}
+                    organization={organizations[0]}
+                  />
+                )}
+              />
             </Switch>
           </main>
         </div>

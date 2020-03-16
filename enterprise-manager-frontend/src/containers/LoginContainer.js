@@ -4,17 +4,20 @@ import { FormCard } from "../components/Cards/Cards";
 
 class LoginContainer extends Component {
   componentDidMount() {
-    const { session, organizations } = this.props;
-    console.log(organizations);
-    return session.isLoggedIn || organizations.length === 0
-      ? this.redirect({ session, organizations })
+    const { session, organizations, admins } = this.props;
+    return session.isLoggedIn ||
+      organizations.length === 0 ||
+      admins.length === 0
+      ? this.redirect({ session, organizations, admins })
       : null;
   }
 
   componentDidUpdate() {
-    const { session, organizations } = this.props;
-    return session.isLoggedIn || organizations.length === 0
-      ? this.redirect({ session, organizations })
+    const { session, organizations, admins } = this.props;
+    return session.isLoggedIn ||
+      organizations.length === 0 ||
+      admins.length === 0
+      ? this.redirect({ session, organizations, admins })
       : null;
   }
 
@@ -23,10 +26,11 @@ class LoginContainer extends Component {
   };
 
   redirect = props => {
-    const { session, organizations } = props;
+    const { session, organizations, admins } = props;
     if (session.isLoggedIn) this.props.history.push("/");
     else if (organizations.length === 0)
       this.props.history.push("/organizations/new");
+    else if (admins.length === 0) this.props.history.push("/accounts/new");
   };
 
   render() {

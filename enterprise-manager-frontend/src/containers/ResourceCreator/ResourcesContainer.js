@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { Bar, Doughnut } from "react-chartjs-2";
 import {
   addResource,
   updateResource,

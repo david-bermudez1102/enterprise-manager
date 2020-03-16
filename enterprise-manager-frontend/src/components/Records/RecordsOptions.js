@@ -6,39 +6,12 @@ import {
 } from "../../actions/zohoBooksActions";
 
 class RecordsOptions extends Component {
-  constructor() {
-    super();
-    this.recordsOptions = React.createRef();
-  }
-
-  componentDidMount() {
-    const recordsOptions = this.recordsOptions.current;
-    recordsOptions.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      prevProps.resource.zohoConnection !== this.props.resource.zohoConnection
-    ) {
-      const recordsOptions = this.recordsOptions.current;
-      recordsOptions.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-  }
-
   render() {
     const { addZohoResources, updateAllContacts, resource } = this.props;
     if (!resource.zohoConnection) return null;
     const connectionType = resource.zohoConnection.connection_type;
     return (
-      <div
-        className="pb-2 d-flex sticky-top w-100 bg-white"
-        ref={this.recordsOptions}>
+      <div className="pb-2 d-flex sticky-top w-100 bg-white">
         <button className="btn btn-sm btn-info m-2 shadow">
           <i className="fas fa-sync mr-2"></i>Synchronize {connectionType} with
           Zoho

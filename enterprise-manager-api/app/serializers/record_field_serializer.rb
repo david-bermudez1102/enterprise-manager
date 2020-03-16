@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class RecordFieldSerializer
   include FastJsonapi::ObjectSerializer
   attributes :id, :field_id, :name, :field_type, :form_id

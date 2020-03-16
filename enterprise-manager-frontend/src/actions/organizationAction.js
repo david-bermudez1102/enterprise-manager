@@ -3,7 +3,7 @@ const camelcaseKeys = require("camelcase-keys");
 
 export const addOrganization = organization => {
   return dispatch => {
-    fetch("/api/v1/organizations", {
+    return fetch("/api/v1/organizations", {
       method: "POST",
       body: jsonToFormData(organization)
     })

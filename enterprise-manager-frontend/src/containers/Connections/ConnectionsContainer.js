@@ -19,6 +19,7 @@ class ConnectionsContainer extends Component {
     const organization = organizations.find(
       organization => organization.id === resource.organizationId
     );
+    const { zohoIntegration, quickbooksIntegration } = organization;
     return (
       <Switch>
         <Route
@@ -29,7 +30,7 @@ class ConnectionsContainer extends Component {
               resource={resource}
               connection={resource.zohoConnection}
               type="zoho_connection_attributes"
-              integrationId={organization.zohoIntegration.id}
+              integrationId={zohoIntegration ? zohoIntegration.id : null}
               organizationId={organization.id}
               updateResource={updateResource}
             />
@@ -43,7 +44,9 @@ class ConnectionsContainer extends Component {
               resource={resource}
               connection={resource.quickbooksConnection}
               type="quickbooks_connection_attributes"
-              integrationId={organization.zohoIntegration.id}
+              integrationId={
+                quickbooksIntegration ? quickbooksIntegration.id : null
+              }
               organizationId={organization.id}
               updateResource={updateResource}
             />

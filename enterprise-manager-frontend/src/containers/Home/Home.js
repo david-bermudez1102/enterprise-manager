@@ -45,7 +45,11 @@ class Home extends Component {
               <Route
                 path={`/organizations`}
                 render={props => (
-                  <OrganizationContainer session={session} {...props} />
+                  <OrganizationContainer
+                    session={session}
+                    admins={admins}
+                    {...props}
+                  />
                 )}
               />
               <Route

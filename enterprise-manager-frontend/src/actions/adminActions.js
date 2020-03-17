@@ -18,7 +18,7 @@ export const addAdmin = admin => {
 export const fetchAdmins = () => {
   return dispatch => {
     dispatch({ type: "REQUESTING_DATA" });
-    fetch("/api/v1/admins")
+    return fetch("/api/v1/admins")
       .then(response => response.json())
       .then(admins => admins.data.map(admin => admin.attributes))
       .then(admins => dispatch({ type: "ADD_ADMINS", admins }))

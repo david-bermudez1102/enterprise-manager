@@ -27,7 +27,7 @@ class OrganizationContainer extends Component {
       if (organizations.length > 0) fetchResources(organizations[0].id);
       return organizations.length > 0 && admins.length === 0
         ? history.push("/accounts/new")
-        : "";
+        : null;
     }
   }
 
@@ -88,10 +88,9 @@ class OrganizationContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ resources, admins, organizations }) => {
+const mapStateToProps = ({ resources, organizations }) => {
   return {
     resources,
-    admins,
     organizations
   };
 };

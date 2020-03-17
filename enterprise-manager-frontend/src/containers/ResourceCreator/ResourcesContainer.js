@@ -53,15 +53,13 @@ class ResourcesContainer extends Component {
             isFieldsPath ? "col-lg-4" : "col-lg-5"
           } col-md-12 min-h-100 pr-0`}>
           <div className="bg-white rounded p-2 h-100 shadow-sm">
-            <div className="list-group">
-              <ResourcesList
-                match={match}
-                location={location}
-                history={history}
-                resources={resources}
-                organizationId={organizationId}
-              />
-            </div>
+            <ResourcesList
+              match={match}
+              location={location}
+              history={history}
+              resources={resources}
+              organizationId={organizationId}
+            />
           </div>
         </div>
         <Switch>

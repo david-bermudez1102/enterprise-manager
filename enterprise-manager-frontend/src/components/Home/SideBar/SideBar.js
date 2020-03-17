@@ -1,61 +1,61 @@
-import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
-import { CSSTransition } from "react-transition-group";
-import "./styles.css";
-import cuid from "cuid";
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
+import './styles.css';
+import cuid from 'cuid';
 
 export default class SideBar extends Component {
   constructor(props) {
     super(props);
-    const navLinkClass = "nav-item nav-link text-light";
+    const navLinkClass = 'nav-item nav-link text-light';
     const activePath = props.location.pathname;
     this.state = {
       minimized: false,
       minimizedFromToggle: false,
       links: [
         {
-          path: "/",
+          path: '/',
           exact: true,
           className: navLinkClass,
-          text: "Home",
-          icon: "fas fa-home",
-          textClass: "ml-2",
-          iconMin: "fas fa-home"
+          text: 'Home',
+          icon: 'fas fa-home',
+          textClass: 'ml-2',
+          iconMin: 'fas fa-home'
         },
         {
-          path: "/organizations",
+          path: '/organizations',
           className: navLinkClass,
           exact: true,
-          text: "Organizations",
-          icon: "fas fa-briefcase",
-          iconMin: "fas fa-briefcase",
-          textClass: "ml-2",
-          levels: ["admin"]
+          text: 'Organizations',
+          icon: 'fas fa-briefcase',
+          iconMin: 'fas fa-briefcase',
+          textClass: 'ml-2',
+          levels: ['admin']
         },
         {
           path: `/organizations/${props.organizations[0].id}/records`,
           className: `${navLinkClass}`,
-          text: "Records",
-          icon: "fas fa-th-list",
-          iconMin: "fas fa-th-list",
-          textClass: "ml-2",
-          levels: ["admin", "manager", "employee"]
+          text: 'Records',
+          icon: 'fas fa-th-list',
+          iconMin: 'fas fa-th-list',
+          textClass: 'ml-2',
+          levels: ['admin', 'manager', 'employee']
         },
         {
-          path: "/accounts",
+          path: '/accounts',
           className: navLinkClass,
-          text: "Accounts",
-          icon: "fas fa-users-cog mr-n1",
-          iconMin: "fas fa-users-cog",
-          levels: ["admin"],
-          textClass: "ml-2",
+          text: 'Accounts',
+          icon: 'fas fa-users-cog mr-n1',
+          iconMin: 'fas fa-users-cog',
+          levels: ['admin'],
+          textClass: 'ml-2',
           dropdown: true,
-          status: activePath.includes("/accounts") ? "open" : "closed",
+          status: activePath.includes('/accounts') ? 'open' : 'closed',
           subLinks: [
             {
-              path: "/accounts/add",
-              text: "Add account",
-              icon: "fas fa-user-plus",
+              path: '/accounts/add',
+              text: 'Add account',
+              icon: 'fas fa-user-plus',
               className: `${navLinkClass}`
             }
           ]
@@ -64,16 +64,16 @@ export default class SideBar extends Component {
           path: `/organizations/${props.organizations[0].id}/resources`,
           dropdown: true,
           className: `${navLinkClass}`,
-          text: "Resources",
-          icon: "fas fa-layer-group",
-          iconMin: "fas fa-layer-group",
-          textClass: "ml-2",
-          levels: ["admin", "manager", "employee"],
+          text: 'Resources',
+          icon: 'fas fa-layer-group',
+          iconMin: 'fas fa-layer-group',
+          textClass: 'ml-2',
+          levels: ['admin', 'manager', 'employee'],
           subLinks: [
             {
               path: `/organizations/${props.organizations[0].id}/resources/new`,
-              text: "New Resource",
-              icon: "fas fa-layer-plus",
+              text: 'New Resource',
+              icon: 'fas fa-layer-plus',
               className: `${navLinkClass}`
             }
           ]
@@ -95,8 +95,8 @@ export default class SideBar extends Component {
       links: this.state.links.map(link =>
         link.dropdown
           ? link.id === linkId
-            ? { ...link, status: link.status === "open" ? "closed" : "open" }
-            : { ...link, status: "closed" }
+            ? { ...link, status: link.status === 'open' ? 'closed' : 'open' }
+            : { ...link, status: 'closed' }
           : { ...link }
       )
     });
@@ -121,12 +121,12 @@ export default class SideBar extends Component {
     const { session } = this.props;
     const currentUser = session.currentUser;
     const { minimized, links } = this.state;
-    const minWidth = minimized ? "70px" : "205px";
+    const minWidth = minimized ? '70px' : '205px';
     return (
       <CSSTransition in={!minimized} timeout={40} classNames="slider" appear>
         <div
           className="py-3 bg-secondary shadow-lg text-light"
-          style={{ fontSize: "16px" }}>
+          style={{ fontSize: '16px' }}>
           <nav
             className="px-0 py-0 nav nav-dark nav-pills flex-column sticky-top"
             style={{ zIndex: 999 }}
@@ -137,9 +137,9 @@ export default class SideBar extends Component {
               <span className="d-flex align-items-center">
                 <i
                   className={`fas fa-user-circle text-light ${
-                    !minimized ? "mr-2" : null
+                    !minimized ? 'mr-2' : null
                   }`}
-                  style={{ fontSize: "30px" }}></i>
+                  style={{ fontSize: '30px' }}></i>
                 <CSSTransition
                   in={!minimized}
                   timeout={50}
@@ -151,7 +151,7 @@ export default class SideBar extends Component {
             </div>
             <hr
               className="mb-0 w-100"
-              style={{ background: "rgba(0,0,0,0.2)" }}
+              style={{ background: 'rgba(0,0,0,0.2)' }}
             />
             <div className="px-2 py-2">
               {links.map(link => (
@@ -176,7 +176,7 @@ export default class SideBar extends Component {
                     </span>
 
                     {link.dropdown && !minimized ? (
-                      link.status === "open" ? (
+                      link.status === 'open' ? (
                         <span>
                           <i className="fas fa-chevron-down"></i>
                         </span>
@@ -187,12 +187,12 @@ export default class SideBar extends Component {
                       )
                     ) : null}
                   </NavLink>
-                  {link.dropdown && link.status === "open" && !minimized
+                  {link.dropdown && link.status === 'open' && !minimized
                     ? link.subLinks.map(subLink => (
                         <NavLink
                           to={subLink.path}
                           className={`${subLink.className} mt-1`}
-                          style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
+                          style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}
                           key={cuid()}
                           activeClassName="bg-light text-dark active shadow">
                           <i className={`fas fa-chevron-right mr-3`}></i>
@@ -206,18 +206,18 @@ export default class SideBar extends Component {
             </div>
           </nav>
           <div
-            className="d-flex w-100 justify-content-center align-self-end"
-            style={{ height: "fill" }}>
+            className="d-flex w-100 justify-content-center sticky-top"
+            style={{ height: 'fill' }}>
             <button
               className="btn btn-transparent btn-lg text-light"
               onClick={this.toggle}>
               <i
                 className={
                   minimized
-                    ? "fad fa-chevron-circle-right display-4"
-                    : "fad fa-chevron-circle-left display-4"
+                    ? 'fad fa-chevron-circle-right display-4'
+                    : 'fad fa-chevron-circle-left display-4'
                 }
-                style={{ fontSize: "30px" }}></i>
+                style={{ fontSize: '30px' }}></i>
             </button>
           </div>
         </div>

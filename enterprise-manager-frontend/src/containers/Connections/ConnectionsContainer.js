@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import ConnectionsForm from '../../components/Connections/ConnectionsForm';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { updateResource } from '../../actions/resourceActions';
 import ConnectionsList from '../../components/Connections/ConnectionsList';
 import { FormCard } from '../../components/Cards/Cards';
-import ZohoBooks from '../ZohoBooks/ZohoBooks';
+import { NoContent } from '../../components/NoContent';
 
 class ConnectionsContainer extends Component {
   constructor() {
@@ -36,15 +36,27 @@ class ConnectionsContainer extends Component {
                     Connect to ZohoBooks
                   </span>
                 }>
-                <ConnectionsForm
-                  resourceId={resource.id}
-                  resource={resource}
-                  connection={resource.zohoConnection}
-                  type="zoho_connection_attributes"
-                  integrationId={zohoIntegration ? zohoIntegration.id : null}
-                  organizationId={organization.id}
-                  updateResource={updateResource}
-                />
+                {zohoIntegration ? (
+                  <ConnectionsForm
+                    resourceId={resource.id}
+                    resource={resource}
+                    connection={resource.zohoConnection}
+                    type="zoho_connection_attributes"
+                    integrationId={zohoIntegration ? zohoIntegration.id : null}
+                    organizationId={organization.id}
+                    updateResource={updateResource}
+                  />
+                ) : (
+                  <NoContent>
+                    This organization is not currently integrated with Zoho.
+                    Click{' '}
+                    <Link
+                      to={`/organizations/${organization.id}/settings/integrations/zoho_books/edit`}>
+                      here
+                    </Link>{' '}
+                    to integrate it.
+                  </NoContent>
+                )}
               </FormCard>
             </div>
           )}

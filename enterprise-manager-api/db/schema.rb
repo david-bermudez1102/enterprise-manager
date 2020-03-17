@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_14_021613) do
+ActiveRecord::Schema.define(version: 2020_03_17_210807) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -89,6 +89,7 @@ ActiveRecord::Schema.define(version: 2020_03_14_021613) do
     t.integer "form_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "field_alias"
     t.index ["form_id"], name: "index_fields_on_form_id"
   end
 
@@ -177,6 +178,7 @@ ActiveRecord::Schema.define(version: 2020_03_14_021613) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "field_id"
+    t.string "field_alias"
     t.index ["field_id"], name: "index_record_fields_on_field_id"
     t.index ["form_id"], name: "index_record_fields_on_form_id"
   end

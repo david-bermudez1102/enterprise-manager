@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Link, matchPath } from "react-router-dom";
+import { NavLink, Link, matchPath, Redirect } from "react-router-dom";
 import cuid from "cuid";
 import ToggleContent from "../ToggleContent";
 import { DeletionModal } from "../Modal/Modals";
@@ -8,9 +8,17 @@ import { NoContent } from "../NoContent";
 const pluralize = require("pluralize");
 
 const ResourcesList = ({ match, resources, location, history }) => {
-  console.log(resources);
-  if (resources.length === 0)
-    return <NoContent>There are no resources created yet!</NoContent>;
+  if (resources.length === 0) {
+    return (
+      <>
+        <NoContent>
+          <i className="fas fa-exclamation-circle mr-2"></i>
+          There are no resources created yet!
+        </NoContent>
+        <Redirect to={`${match.url}/new`} />
+      </>
+    );
+  }
   return (
     <div className="list-group">
       {resources.map(resource => {

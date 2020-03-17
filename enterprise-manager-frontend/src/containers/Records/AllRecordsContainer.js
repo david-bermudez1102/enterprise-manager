@@ -8,6 +8,7 @@ import {
   removeRecordField,
   fetchRecordFields
 } from "../../actions/recordFieldActions";
+import { NoContent } from "../../components/NoContent";
 
 class AllRecordsContainer extends Component {
   constructor(props) {
@@ -37,7 +38,6 @@ class AllRecordsContainer extends Component {
   handleFetch = resourceId => {
     const { match, fetchRecords, fetchRecordFields } = this.props;
     if (resourceId) {
-      console.log("Hey");
       fetchRecords(match.params.organizationId, parseInt(resourceId));
       fetchRecordFields(match.params.organizationId, parseInt(resourceId));
     }
@@ -45,6 +45,9 @@ class AllRecordsContainer extends Component {
 
   render() {
     const { match, resources, values } = this.props;
+    if (resources.length === 0)
+      return <NoContent>There are no resources created yet!</NoContent>;
+
     return (
       <Switch>
         {resources.length && values.length > 0 ? (

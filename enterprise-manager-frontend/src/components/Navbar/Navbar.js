@@ -79,7 +79,7 @@ class Navbar extends Component {
         <div className={collapseClassName} id="navbarNav">
           <div className="w-100 d-flex justify-content-between">
             {session.isLoggedIn ? (
-              <div className="w-50 d-flex justify-content-center order-sm-last order-md-last">
+              <div className="w-50 d-flex order-sm-last order-md-last">
                 <SearchBar organization={organizations[0]} />
               </div>
             ) : null}

@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
-import cuid from "cuid";
-import Logo from "./Logo";
-import SearchBar from "./SearchBar";
+import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
+import cuid from 'cuid';
+import Logo from './Logo';
+import SearchBar from './SearchBar';
 
 class Navbar extends Component {
   constructor(props) {
@@ -11,44 +11,44 @@ class Navbar extends Component {
       collapse: false,
       links: [
         {
-          path: "/login",
-          text: "Login",
+          path: '/login',
+          text: 'Login',
           loginRequired: false
         },
         {
-          path: "/",
-          text: "Home",
-          icon: "fas fa-home",
+          path: '/',
+          text: 'Home',
+          icon: 'fas fa-home',
           loginRequired: true
         },
         {
           path: `/organizations/${props.organizations[0].id}/resources/new`,
-          text: "Add Resource",
-          icon: "fas fa-plus",
+          text: 'Add Resource',
+          icon: 'fas fa-plus',
           loginRequired: true
         },
         {
           path: `/organizations/${props.organizations[0].id}/resources`,
-          text: "Resources",
-          icon: "fas fa-layer-group",
+          text: 'Resources',
+          icon: 'fas fa-layer-group',
           loginRequired: true
         },
         {
           path: `/organizations/${props.organizations[0].id}/settings`,
-          text: "Settings",
-          icon: "fas fa-cog",
+          text: 'Settings',
+          icon: 'fas fa-cog',
           loginRequired: true
         },
         {
           path: `/notifications`,
-          text: "Notifications",
-          icon: "fas fa-bell",
+          text: 'Notifications',
+          icon: 'fas fa-bell',
           loginRequired: true
         },
         {
-          path: "/logout",
-          icon: "fas fa-sign-out-alt",
-          text: "Logout",
+          path: '/logout',
+          icon: 'fas fa-sign-out-alt',
+          text: 'Logout',
           loginRequired: true
         }
       ]
@@ -63,8 +63,8 @@ class Navbar extends Component {
     const { session, organizations } = this.props;
     const { collapse, links } = this.state;
     const collapseClassName = collapse
-      ? "collapse navbar-collapse d-block"
-      : "collapse navbar-collapse";
+      ? 'collapse navbar-collapse d-block'
+      : 'collapse navbar-collapse';
     return (
       <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm py-0 text-center">
         <NavLink to="#" className="navbar-brand">

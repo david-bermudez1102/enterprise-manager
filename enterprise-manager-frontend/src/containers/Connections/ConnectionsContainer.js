@@ -1,9 +1,11 @@
-import React, { Component } from "react";
-import ConnectionsForm from "../../components/Connections/ConnectionsForm";
-import { Switch, Route } from "react-router-dom";
-import { connect } from "react-redux";
-import { updateResource } from "../../actions/resourceActions";
-import ConnectionsList from "../../components/Connections/ConnectionsList";
+import React, { Component } from 'react';
+import ConnectionsForm from '../../components/Connections/ConnectionsForm';
+import { Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { updateResource } from '../../actions/resourceActions';
+import ConnectionsList from '../../components/Connections/ConnectionsList';
+import { FormCard } from '../../components/Cards/Cards';
+import ZohoBooks from '../ZohoBooks/ZohoBooks';
 
 class ConnectionsContainer extends Component {
   constructor() {
@@ -25,15 +27,26 @@ class ConnectionsContainer extends Component {
         <Route
           path={`${match.url}/zoho/edit`}
           render={() => (
-            <ConnectionsForm
-              resourceId={resource.id}
-              resource={resource}
-              connection={resource.zohoConnection}
-              type="zoho_connection_attributes"
-              integrationId={zohoIntegration ? zohoIntegration.id : null}
-              organizationId={organization.id}
-              updateResource={updateResource}
-            />
+            <div className="col-lg-7">
+              <FormCard
+                header={
+                  <span
+                    className={'display-4 card-title mb-0'}
+                    style={{ fontSize: '32px' }}>
+                    Connect to ZohoBooks
+                  </span>
+                }>
+                <ConnectionsForm
+                  resourceId={resource.id}
+                  resource={resource}
+                  connection={resource.zohoConnection}
+                  type="zoho_connection_attributes"
+                  integrationId={zohoIntegration ? zohoIntegration.id : null}
+                  organizationId={organization.id}
+                  updateResource={updateResource}
+                />
+              </FormCard>
+            </div>
           )}
         />
         <Route

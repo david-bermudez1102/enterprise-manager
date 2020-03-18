@@ -11,8 +11,12 @@ class Alert extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.alerts !== this.props.alerts) {
-      this.setState({ show: true });
-      setTimeout(() => this.setState({ show: false }), 5000);
+      if (this.props.alerts.length > 0) {
+        this.setState({ show: true });
+        setTimeout(() => this.setState({ show: false }), 5000);
+      } else {
+        this.setState({ show: false });
+      }
     }
   }
 

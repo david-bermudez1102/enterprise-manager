@@ -168,8 +168,7 @@ export default class SideBar extends Component {
                         <CSSTransition
                           in={!minimized}
                           timeout={50}
-                          classNames="fade"
-                          appear>
+                          classNames="fade">
                           <span className={link.textClass}>{link.text}</span>
                         </CSSTransition>
                       ) : null}

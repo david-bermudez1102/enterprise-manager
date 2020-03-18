@@ -8,17 +8,11 @@ import AdminContainer from "../AdminContainer";
 import LogoutContainer from "../LogoutContainer";
 import AccountsContainer from "../Accounts/AccountsContainer";
 import ZohoBooks from "../ZohoBooks/ZohoBooks";
+import Footer from "../../components/Footer/Footer";
 
 class Home extends Component {
   render() {
-    const {
-      location,
-      organizations,
-      admins,
-      addSession,
-      removeSession,
-      session
-    } = this.props;
+    const { location, organizations, admins, addSession, removeSession, session } = this.props;
     return (
       <div className="w-100 d-flex flex-grow-1">
         {organizations.length === 0 ? (
@@ -27,29 +21,16 @@ class Home extends Component {
           <Redirect to="/accounts/new" />
         ) : null}
         {session.isLoggedIn ? (
-          <SideBar
-            session={session}
-            location={location}
-            organizations={organizations}
-          />
+          <SideBar session={session} location={location} organizations={organizations} />
         ) : null}
-        <div className="w-100">
-          {session.isLoggedIn ? (
-            <Navbar session={session} organizations={organizations} />
-          ) : null}
-          <main
-            className={`${
-              !session.isLoggedIn ? "h-100" : ""
-            } w-100 bg-transparent p-4`}>
+        <div className="w-100 d-flex flex-column min-h-100 flex-wrap">
+          {session.isLoggedIn ? <Navbar session={session} organizations={organizations} /> : null}
+          <main className={`${!session.isLoggedIn ? "h-100" : ""} w-100 bg-transparent p-4`}>
             <Switch>
               <Route
                 path={`/organizations`}
                 render={props => (
-                  <OrganizationContainer
-                    session={session}
-                    admins={admins}
-                    {...props}
-                  />
+                  <OrganizationContainer session={session} admins={admins} {...props} />
                 )}
               />
               <Route
@@ -73,9 +54,7 @@ class Home extends Component {
               </Route>
               <Route
                 path={`/accounts`}
-                render={props => (
-                  <AccountsContainer {...props} session={session} />
-                )}
+                render={props => <AccountsContainer {...props} session={session} />}
               />
               <Route
                 path={`/auth/zohobooks/callback`}
@@ -90,6 +69,11 @@ class Home extends Component {
               />
             </Switch>
           </main>
+          {session.isLoggedIn ? (
+            <div className="d-flex mt-auto w-100">
+              <Footer organization={organizations[0]} />
+            </div>
+          ) : null}
         </div>
       </div>
     );

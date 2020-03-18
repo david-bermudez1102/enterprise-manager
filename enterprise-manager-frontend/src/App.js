@@ -1,16 +1,12 @@
-import React, { Component } from 'react';
-import Navbar from './components/Navbar/Navbar';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { fetchOrganizations } from './actions/organizationAction';
-import { fetchAdmins } from './actions/adminActions';
-import Home from './containers/Home/Home';
-import {
-  addSession,
-  removeSession,
-  fetchSession
-} from './actions/sessionActions';
-import Footer from './components/Footer/Footer';
+import React, { Component } from "react";
+import Navbar from "./components/Navbar/Navbar";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import { fetchOrganizations } from "./actions/organizationAction";
+import { fetchAdmins } from "./actions/adminActions";
+import Home from "./containers/Home/Home";
+import { addSession, removeSession, fetchSession } from "./actions/sessionActions";
+import Footer from "./components/Footer/Footer";
 
 class App extends Component {
   constructor(props) {
@@ -27,13 +23,7 @@ class App extends Component {
   }
 
   render() {
-    const {
-      organizations,
-      admins,
-      addSession,
-      removeSession,
-      session
-    } = this.props;
+    const { organizations, admins, addSession, removeSession, session } = this.props;
     return (
       <Router>
         {this.state.loaded ? (
@@ -56,7 +46,7 @@ class App extends Component {
                 )}
               />
             </Switch>
-            {organizations[0] ? (
+            {organizations[0] && !session.isLoggedIn ? (
               <Footer organization={organizations[0]} />
             ) : null}
           </div>

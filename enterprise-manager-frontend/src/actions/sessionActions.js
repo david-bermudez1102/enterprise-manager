@@ -3,7 +3,7 @@ const camelcaseKeys = require('camelcase-keys');
 
 export const addSession = data => {
   return dispatch => {
-    dispatch({ type: 'CLEAR_ERRORS' });
+    dispatch({ type: 'CLEAR_ALERTS' });
     const configObj = {
       method: 'POST',
       credentials: 'include',

@@ -7,9 +7,9 @@ class OrganizationsController < ApplicationController
   def update
     organization = Organization.find_by(id: params[:id])
     if organization.update(organization_params)
-      render json: OrganizationSerializer.new(organization)
+      render json: OrganizationSerializer.new(organization, {params: {messages:["Update with success"]}}).serialized_json
     else
-      render json: { messages: organization.errors.full_messages}
+      render json: { errors: organization.errors.full_messages}
     end
   end
 

@@ -17,8 +17,9 @@ class OrganizationSerializer
       nil
     end
   end
-  attribute :message do 
-    "success"
+  
+  attribute :messages do |object, params|
+    params[:messages]
   end
 
   attribute :logo do |object|

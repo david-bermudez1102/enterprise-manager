@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import Alert from "../Alerts/Alert";
+import React, { Component } from 'react';
+import Alert from '../Alerts/Alert';
 
-const snakeCaseKeys = require("snakecase-keys");
+const snakeCaseKeys = require('snakecase-keys');
 
 export default class ConnectionsForm extends Component {
   constructor(props) {
@@ -11,10 +11,8 @@ export default class ConnectionsForm extends Component {
       resourceId: props.resourceId,
       integrationId: props.integrationId,
       organizationId: props.organizationId,
-      name: "",
-      connectionType: "",
-      status: "",
-      message: ""
+      name: '',
+      connectionType: ''
     };
   }
 
@@ -26,7 +24,6 @@ export default class ConnectionsForm extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.resource !== this.props.resource) {
       const { connection } = this.props;
-      this.hideAlert();
       return connection ? this.updateState() : null;
     }
   }
@@ -38,14 +35,9 @@ export default class ConnectionsForm extends Component {
       integrationId: connection.integration_id,
       organizationId: organizationId,
       name: connection.name,
-      connectionType: connection.connection_type,
-      status: "",
-      message: ""
+      connectionType: connection.connection_type
     });
   };
-
-  hideAlert = () =>
-    setTimeout(() => this.setState({ status: "", message: "" }), 3000);
 
   handleChange = event => {
     this.setState({
@@ -63,39 +55,24 @@ export default class ConnectionsForm extends Component {
       name,
       connectionType
     } = this.state;
-    this.setState({ status: "", message: "" }, () =>
-      this.props
-        .updateResource(
-          snakeCaseKeys({
-            [type]: {
-              integrationId,
-              name,
-              connectionType,
-              formId: resourceId
-            }
-          }),
-          organizationId,
-          resourceId
-        )
-        .then(org =>
-          org
-            ? this.setState({
-                status: "success",
-                message: "Zoho Books Auth Token was updated successfully"
-              })
-            : this.setState({
-                status: "error",
-                message: "Could not be updated"
-              })
-        )
+    this.props.updateResource(
+      snakeCaseKeys({
+        [type]: {
+          integrationId,
+          name,
+          connectionType,
+          formId: resourceId
+        }
+      }),
+      organizationId,
+      resourceId
     );
   };
 
   render() {
-    const { status, message } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <Alert type={status}>{message}</Alert>
+        <Alert />
         <div className="form-group">
           <label htmlFor="connection_name">
             Enter a name for this connection:

@@ -121,7 +121,6 @@ export default class SideBar extends Component {
     const { session } = this.props;
     const currentUser = session.currentUser;
     const { minimized, links } = this.state;
-    const minWidth = minimized ? '70px' : '205px';
     return (
       <CSSTransition in={!minimized} timeout={40} classNames="slider" appear>
         <div

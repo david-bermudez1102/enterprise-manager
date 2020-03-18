@@ -1,17 +1,15 @@
-import React, { Component } from "react";
-import Alert from "../Alerts/Alert";
+import React, { Component } from 'react';
+import Alert from '../Alerts/Alert';
 
 export default class ZohoBooksForm extends Component {
   constructor() {
     super();
     this.state = {
-      auth_token: "",
-      client_id: "",
-      client_secret: "",
-      redirect_uri: "",
-      external_organization_id: "",
-      status: "",
-      message: ""
+      auth_token: '',
+      client_id: '',
+      client_secret: '',
+      redirect_uri: '',
+      external_organization_id: ''
     };
   }
 
@@ -21,19 +19,19 @@ export default class ZohoBooksForm extends Component {
       ? this.setState({
           auth_token: organization.zohoIntegration
             ? organization.zohoIntegration.auth_token
-            : "",
+            : '',
           client_id: organization.zohoIntegration
             ? organization.zohoIntegration.client_id
-            : "",
+            : '',
           client_secret: organization.zohoIntegration
             ? organization.zohoIntegration.client_secret
-            : "",
+            : '',
           redirect_uri: organization.zohoIntegration
             ? organization.zohoIntegration.redirect_uri
-            : "",
+            : '',
           external_organization_id: organization.zohoIntegration
             ? organization.zohoIntegration.external_organization_id
-            : ""
+            : ''
         })
       : null;
   }
@@ -41,31 +39,27 @@ export default class ZohoBooksForm extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.organization !== this.props.organization) {
       const { organization } = this.props;
-      this.hideAlert();
       return organization
         ? this.setState({
             auth_token: organization.zohoIntegration
               ? organization.zohoIntegration.auth_token
-              : "",
+              : '',
             client_id: organization.zohoIntegration
               ? organization.zohoIntegration.client_id
-              : "",
+              : '',
             client_secret: organization.zohoIntegration
               ? organization.zohoIntegration.client_secret
-              : "",
+              : '',
             redirect_uri: organization.zohoIntegration
               ? organization.zohoIntegration.redirect_uri
-              : "",
+              : '',
             external_organization_id: organization.zohoIntegration
               ? organization.zohoIntegration.external_organization_id
-              : ""
+              : ''
           })
         : null;
     }
   }
-
-  hideAlert = () =>
-    setTimeout(() => this.setState({ status: "", message: "" }), 3000);
 
   handleChange = event => {
     event.persist();
@@ -85,39 +79,26 @@ export default class ZohoBooksForm extends Component {
       redirect_uri,
       external_organization_id
     } = this.state;
-    this.setState({ status: "", message: "" }, () =>
-      updateOrganization(
-        {
-          zoho_integration_attributes: {
-            auth_token,
-            client_id,
-            client_secret,
-            account_id: session.currentUser.id,
-            organization_id: organization.id,
-            redirect_uri,
-            external_organization_id
-          }
-        },
-        organization.id
-      ).then(org =>
-        org
-          ? this.setState({
-              status: "success",
-              message: "Zoho Books Auth Token was updated successfully"
-            })
-          : this.setState({
-              status: "error",
-              message: "Could not be updated"
-            })
-      )
+    updateOrganization(
+      {
+        zoho_integration_attributes: {
+          auth_token,
+          client_id,
+          client_secret,
+          account_id: session.currentUser.id,
+          organization_id: organization.id,
+          redirect_uri,
+          external_organization_id
+        }
+      },
+      organization.id
     );
   };
 
   render() {
-    const { status, message } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <Alert type={status}>{message}</Alert>
+        <Alert />
         <div className="form-group">
           <label htmlFor="client_id">Client Id</label>
           <input

@@ -3,7 +3,11 @@ class FormsController < ApplicationController
 
   def create
     form = @organization.forms.build(form_params)
-    render json: FormSerializer.new(form) if form.save
+    if form.save
+      render json: FormSerializer.new(form, messages:["Resource was created successfully."])
+    else
+      render json: { errors: form.errors.full_messages}
+    end
   end
 
   def index
@@ -19,9 +23,9 @@ class FormsController < ApplicationController
   def update
     form = @organization.forms.find_by(id: params[:id])
     if form.update(form_params)
-      render json: FormSerializer.new(form, {params: {messages:["Changes were successfully saved"]}}) 
+      render json: FormSerializer.new(form, messages: ["Changes were successfully saved"])
     else
-      render json: { errors: form.errors.full_messages}
+      render json: { errors: form.errors.full_messages }
     end
   end
 

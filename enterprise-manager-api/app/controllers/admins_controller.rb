@@ -4,7 +4,9 @@ class AdminsController < ApplicationController
     account = admin.build_account(admin_params)
     token = encode_token({ account_id: account.id })
     if account.save && admin.save
-      render json: AdminSerializer.new(admin, jwt: token) 
+      render json: AdminSerializer.new(admin, jwt: token, messages: ["Admin was added with success."])
+    else
+      render json: { errors: account.errors.full_messages }
     end
   end
 

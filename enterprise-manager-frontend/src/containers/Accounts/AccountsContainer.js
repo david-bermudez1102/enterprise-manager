@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import {
   fetchEmployees,
   fetchManagers,
   addManager,
   addEmployee
-} from "../../actions/accountActions";
-import AdminsList from "../../components/Accounts/AdminsList";
-import ManagersList from "../../components/Accounts/ManagersList";
-import EmployeesList from "../../components/Accounts/EmployeesList";
-import { Switch, Route } from "react-router-dom";
-import AccountForm from "../../components/Accounts/AccountForm";
-import { FormCard } from "../../components/Cards/Cards";
-import { addAdmin } from "../../actions/adminActions";
+} from '../../actions/accountActions';
+import AdminsList from '../../components/Accounts/AdminsList';
+import ManagersList from '../../components/Accounts/ManagersList';
+import EmployeesList from '../../components/Accounts/EmployeesList';
+import { Switch, Route } from 'react-router-dom';
+import AccountForm from '../../components/Accounts/AccountForm';
+import { FormCard } from '../../components/Cards/Cards';
+import { addAdmin } from '../../actions/adminActions';
+import Alert from '../../components/Alerts/Alert';
 
 class AccountsContainer extends Component {
   componentDidMount() {
@@ -44,8 +45,8 @@ class AccountsContainer extends Component {
       addAdmin,
       session
     } = this.props;
-    const managers = accounts.filter(account => account.type === "Manager");
-    const employees = accounts.filter(account => account.type === "Employee");
+    const managers = accounts.filter(account => account.type === 'Manager');
+    const employees = accounts.filter(account => account.type === 'Employee');
     return (
       <div className="row">
         <div className="col-lg-5 pr-0">
@@ -56,6 +57,7 @@ class AccountsContainer extends Component {
           </div>
         </div>
         <div className="col-lg-7">
+          <Alert />
           <Switch>
             <Route
               path={`${match.path}/add`}
@@ -64,7 +66,7 @@ class AccountsContainer extends Component {
                   header={
                     <span
                       className="card-title display-4"
-                      style={{ fontSize: "32px" }}>
+                      style={{ fontSize: '32px' }}>
                       Add Account
                     </span>
                   }>

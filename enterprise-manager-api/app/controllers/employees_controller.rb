@@ -11,7 +11,11 @@ class EmployeesController < ApplicationController
     employee = @admin.employees.new
     one_time_password = SecureRandom.hex
     account = employee.build_account(name: employee_params[:name], email:employee_params[:email], password: one_time_password)
-    render json: EmployeeSerializer.new(employee, one_time_password: one_time_password) if account.save
+    if account.save && employee.save
+      render json: EmployeeSerializer.new(employee, one_time_password: one_time_password, messages: ["Employee was added with success."])
+    else
+      render json: { errors: account.errors.full_messages }
+    end
   end
 
   private

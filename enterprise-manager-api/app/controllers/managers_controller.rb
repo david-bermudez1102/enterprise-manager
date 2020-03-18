@@ -10,7 +10,11 @@ class ManagersController < ApplicationController
     manager = @admin.managers.new
     one_time_password = SecureRandom.hex
     account = manager.build_account(name: manager_params[:name], email:manager_params[:email], password: one_time_password)
-    render json: ManagerSerializer.new(manager, one_time_password: one_time_password) if account.save
+    if account.save && manager.save
+      render json: ManagerSerializer.new(manager, one_time_password: one_time_password, messages: ["Manager was added with success."])
+    else
+      render json: { errors: account.errors.full_messages}
+    end
   end
 
   private

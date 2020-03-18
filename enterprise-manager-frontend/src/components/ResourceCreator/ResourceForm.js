@@ -12,26 +12,18 @@ class ResourceForm extends Component {
   componentDidMount() {
     const { match, resources } = this.props;
     const resource = resources
-      ? resources.find(
-          resource => resource.formAlias === match.params.formAlias
-        )
+      ? resources.find(resource => resource.formAlias === match.params.formAlias)
       : null;
-    return resource
-      ? this.setState({ name: resource.name, resourceId: resource.id })
-      : null;
+    return resource ? this.setState({ name: resource.name, resourceId: resource.id }) : null;
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match !== this.props.match) {
       const { match, resources } = this.props;
       const resource = resources
-        ? resources.find(
-            resource => resource.formAlias === match.params.formAlias
-          )
+        ? resources.find(resource => resource.formAlias === match.params.formAlias)
         : null;
-      return resource
-        ? this.setState({ name: resource.name, resourceId: resource.id })
-        : null;
+      return resource ? this.setState({ name: resource.name, resourceId: resource.id }) : null;
     }
   }
 
@@ -44,10 +36,13 @@ class ResourceForm extends Component {
     const { addResource, updateResource, history, url } = this.props;
     const { name, organization_id, resourceId } = this.state;
     event.preventDefault();
-    if (addResource) addResource({ name, organization_id }, history);
+    if (addResource)
+      addResource({ name, organization_id }, history).then(resource =>
+        resource ? history.push(resource.formAlias) : null
+      );
     else if (updateResource)
-      updateResource({ name }, organization_id, resourceId).then(resource =>
-        history.push(`${url}/${resource.formAlias}/edit`)
+      updateResource({ name }, organization_id, resourceId, url).then(resource =>
+        resource ? history.push(`${url}/${resource.formAlias}/edit`) : null
       );
   };
 

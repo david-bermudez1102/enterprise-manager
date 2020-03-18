@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 export default class LoginForm extends Component {
   constructor() {
     super();
-    this.state = { username: "", password: "" };
+    this.state = { username: '', password: '' };
   }
 
   handleOnChange = event => {
@@ -12,8 +12,9 @@ export default class LoginForm extends Component {
   };
 
   handleOnSubmit = event => {
+    const { handleOnSubmit } = this.props;
     event.preventDefault();
-    this.props.handleOnSubmit(this.state);
+    handleOnSubmit(this.state);
   };
 
   render() {

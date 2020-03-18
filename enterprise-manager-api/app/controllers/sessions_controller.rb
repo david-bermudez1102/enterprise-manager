@@ -1,7 +1,6 @@
 class SessionsController < ApplicationController
   def create
-    account =
-      Account.find_by(
+    account = Account.find_by(
         "username = ? OR email = ?",
         params[:username],
         params[:username]
@@ -12,6 +11,8 @@ class SessionsController < ApplicationController
         value: token, httponly: true, expires: 24.hour.from_now,
       }
       render json: AccountSerializer.new(account)
+    else
+      render json: {errors: ["Email or password incorrect. Try again."]}
     end
   end
 
@@ -19,7 +20,7 @@ class SessionsController < ApplicationController
     if current_account
       render json: AccountSerializer.new(current_account)
     else
-      render json: { error: "Not logged in" }
+      render json: { errors: ["Not logged in"] }
     end
   end
 

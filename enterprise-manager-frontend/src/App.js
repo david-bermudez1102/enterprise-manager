@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import Navbar from "./components/Navbar/Navbar";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { connect } from "react-redux";
-import { fetchOrganizations } from "./actions/organizationAction";
-import { fetchAdmins } from "./actions/adminActions";
-import Home from "./containers/Home/Home";
+import React, { Component } from 'react';
+import Navbar from './components/Navbar/Navbar';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { fetchOrganizations } from './actions/organizationAction';
+import { fetchAdmins } from './actions/adminActions';
+import Home from './containers/Home/Home';
 import {
   addSession,
   removeSession,
   fetchSession
-} from "./actions/sessionActions";
-import Footer from "./components/Footer/Footer";
+} from './actions/sessionActions';
+import Footer from './components/Footer/Footer';
 
 class App extends Component {
   constructor(props) {

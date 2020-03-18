@@ -1,7 +1,9 @@
+import { handleErrors } from './handleErrors';
 const camelcaseKeys = require('camelcase-keys');
 
 export const addSession = data => {
   return dispatch => {
+    dispatch({ type: 'CLEAR_ERRORS' });
     const configObj = {
       method: 'POST',
       credentials: 'include',
@@ -12,18 +14,18 @@ export const addSession = data => {
       body: JSON.stringify(data)
     };
     fetch('/api/v1/sessions', configObj)
+      .then(handleErrors)
       .then(response => response.json())
       .then(account =>
-        !account.error
+        !account.errors
           ? dispatch({
               type: 'ADD_SESSION',
               isLoggedIn: true,
               currentUser: camelcaseKeys(account.data.attributes)
             })
           : dispatch({
-              type: 'ADD_SESSION',
-              isLoggedIn: false,
-              currentUser: {}
+              type: 'ADD_ERRORS',
+              errors: account.errors
             })
       )
       .catch(console.log);
@@ -37,17 +39,13 @@ export const fetchSession = () => {
     })
       .then(response => response.json())
       .then(account =>
-        !account.error
+        !account.errors
           ? dispatch({
               type: 'ADD_SESSION',
               isLoggedIn: true,
               currentUser: camelcaseKeys(account.data.attributes)
             })
-          : dispatch({
-              type: 'ADD_SESSION',
-              isLoggedIn: false,
-              currentUser: {}
-            })
+          : null
       )
       .catch(console.log);
   };

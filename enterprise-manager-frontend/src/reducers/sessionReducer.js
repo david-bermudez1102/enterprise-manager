@@ -3,13 +3,13 @@ export const sessionReducer = (
   action
 ) => {
   switch (action.type) {
-    case "ADD_SESSION": //Login
+    case 'ADD_SESSION': //Login
       return {
         ...state,
         isLoggedIn: action.isLoggedIn,
         currentUser: action.currentUser
       };
-    case "REMOVE_SESSION": //Logout
+    case 'REMOVE_SESSION': //Logout
       return {
         ...state,
         isLoggedIn: false,

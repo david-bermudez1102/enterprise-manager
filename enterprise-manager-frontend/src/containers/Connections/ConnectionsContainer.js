@@ -6,6 +6,7 @@ import { updateResource } from '../../actions/resourceActions';
 import ConnectionsList from '../../components/Connections/ConnectionsList';
 import { FormCard } from '../../components/Cards/Cards';
 import { NoContent } from '../../components/NoContent';
+import Alert from '../../components/Alerts/Alert';
 
 class ConnectionsContainer extends Component {
   constructor() {
@@ -23,65 +24,70 @@ class ConnectionsContainer extends Component {
     );
     const { zohoIntegration, quickbooksIntegration } = organization;
     return (
-      <Switch>
-        <Route
-          path={`${match.url}/zoho/edit`}
-          render={() => (
-            <div className="col-lg-7">
-              <FormCard
-                header={
-                  <span
-                    className={'display-4 card-title mb-0'}
-                    style={{ fontSize: '32px' }}>
-                    Connect to ZohoBooks
-                  </span>
-                }>
-                {zohoIntegration ? (
-                  <ConnectionsForm
-                    resourceId={resource.id}
-                    resource={resource}
-                    connection={resource.zohoConnection}
-                    type="zoho_connection_attributes"
-                    integrationId={zohoIntegration ? zohoIntegration.id : null}
-                    organizationId={organization.id}
-                    updateResource={updateResource}
-                  />
-                ) : (
-                  <NoContent>
-                    This organization is not currently integrated with Zoho.
-                    Click{' '}
-                    <Link
-                      to={`/organizations/${organization.id}/settings/integrations/zoho_books/edit`}>
-                      here
-                    </Link>{' '}
-                    to integrate it.
-                  </NoContent>
-                )}
-              </FormCard>
-            </div>
-          )}
-        />
-        <Route
-          path={`${match.url}/quickbooks/edit`}
-          render={() => (
-            <ConnectionsForm
-              resourceId={resource.id}
-              resource={resource}
-              connection={resource.quickbooksConnection}
-              type="quickbooks_connection_attributes"
-              integrationId={
-                quickbooksIntegration ? quickbooksIntegration.id : null
-              }
-              organizationId={organization.id}
-              updateResource={updateResource}
-            />
-          )}
-        />
-        <Route
-          path={`${match.url}`}
-          render={props => <ConnectionsList {...props} resource={resource} />}
-        />
-      </Switch>
+      <>
+        <Alert />
+        <Switch>
+          <Route
+            path={`${match.url}/zoho/edit`}
+            render={() => (
+              <div className="col-lg-7">
+                <FormCard
+                  header={
+                    <span
+                      className={'display-4 card-title mb-0'}
+                      style={{ fontSize: '32px' }}>
+                      Connect to ZohoBooks
+                    </span>
+                  }>
+                  {zohoIntegration ? (
+                    <ConnectionsForm
+                      resourceId={resource.id}
+                      resource={resource}
+                      connection={resource.zohoConnection}
+                      type="zoho_connection_attributes"
+                      integrationId={
+                        zohoIntegration ? zohoIntegration.id : null
+                      }
+                      organizationId={organization.id}
+                      updateResource={updateResource}
+                    />
+                  ) : (
+                    <NoContent>
+                      This organization is not currently integrated with Zoho.
+                      Click{' '}
+                      <Link
+                        to={`/organizations/${organization.id}/settings/integrations/zoho_books/edit`}>
+                        here
+                      </Link>{' '}
+                      to integrate it.
+                    </NoContent>
+                  )}
+                </FormCard>
+              </div>
+            )}
+          />
+          <Route
+            path={`${match.url}/quickbooks/edit`}
+            render={() => (
+              <ConnectionsForm
+                resourceId={resource.id}
+                resource={resource}
+                connection={resource.quickbooksConnection}
+                type="quickbooks_connection_attributes"
+                integrationId={
+                  quickbooksIntegration ? quickbooksIntegration.id : null
+                }
+                organizationId={organization.id}
+                updateResource={updateResource}
+              />
+            )}
+          />
+          <Route
+            path={`${match.url}`}
+            render={props => <ConnectionsList {...props} resource={resource} />}
+          />
+        </Switch>
+      </>
     );
   }
 }

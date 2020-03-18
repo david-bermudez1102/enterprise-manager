@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Alert from '../Alerts/Alert';
 
 export default class ZohoBooksForm extends Component {
   constructor() {
@@ -98,7 +97,6 @@ export default class ZohoBooksForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <Alert />
         <div className="form-group">
           <label htmlFor="client_id">Client Id</label>
           <input

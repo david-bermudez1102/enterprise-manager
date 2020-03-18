@@ -1,18 +1,18 @@
-const camelcaseKeys = require("camelcase-keys");
+const camelcaseKeys = require('camelcase-keys');
 
 export const addResource = (resource, history) => {
   const organizationsPath = `/api/v1/organizations/${resource.organization_id}`;
   return dispatch => {
     fetch(`${organizationsPath}/forms`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ form: { ...resource } })
     })
       .then(response => response.json())
       .then(resource => camelcaseKeys(resource.data.attributes))
-      .then(resource => dispatch({ type: "ADD_RESOURCE", resource }))
+      .then(resource => dispatch({ type: 'ADD_RESOURCE', resource }))
       .then(action =>
         history.push(
           `/organizations/${resource.organization_id}/resources/${action.resource.formAlias}`
@@ -28,28 +28,34 @@ export const fetchResources = organizationId => {
       .then(resources =>
         resources.data.map(resource => camelcaseKeys(resource.attributes))
       )
-      .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }));
+      .then(resources => dispatch({ type: 'FETCH_RESOURCES', resources }));
   };
 };
 
 export const updateResource = (resource, organizationId, resourceId) => {
   return dispatch => {
-    return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ form: { ...resource } })
-      }
-    )
+    dispatch({ type: 'CLEAR_ALERTS' });
+    fetch(`/api/v1/organizations/${organizationId}/forms/${resourceId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ form: { ...resource } })
+    })
       .then(response => response.json())
       .then(resource => camelcaseKeys(resource.data.attributes))
       .then(resource => {
-        dispatch({ type: "UPDATE_RESOURCE", resourceId, resource });
-        return resource;
-      });
+        if (!resource.errors) {
+          dispatch({ type: 'UPDATE_RESOURCE', resourceId, resource });
+          dispatch({
+            type: 'ADD_MESSAGES',
+            messages: resource.messages
+          });
+        } else {
+          dispatch({ type: 'ADD_ERRORS', errors: resource.errors });
+        }
+      })
+      .catch(console.log);
   };
 };
 
@@ -58,7 +64,7 @@ export const removeResource = (organizationId, resourceId) => {
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
       {
-        method: "DELETE"
+        method: 'DELETE'
       }
     )
       .then(response => response.json())
@@ -66,9 +72,9 @@ export const removeResource = (organizationId, resourceId) => {
       .then(resource =>
         resource.message
           ? dispatch({
-              type: "REMOVE_RESOURCE",
+              type: 'REMOVE_RESOURCE',
               resourceId,
-              status: "deleted"
+              status: 'deleted'
             })
           : null
       );

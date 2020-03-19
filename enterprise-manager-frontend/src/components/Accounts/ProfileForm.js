@@ -75,7 +75,7 @@ class ProfileForm extends Component {
             placeholder="Enter email..."></select>
         </div>
         <hr />
-        <input type="submit" className="btn btn-primary shadow" />
+        <input type="submit" className="btn btn-primary shadow" value="Save Changes" />
       </form>
     );
   }

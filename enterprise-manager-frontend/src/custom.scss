@@ -85,8 +85,6 @@ body {
 .circular--landscape {
   display: inline-block;
   position: relative;
-  width: 200px;
-  height: 200px;
   overflow: hidden;
   border-radius: 50%;
   cursor: move;
@@ -96,6 +94,5 @@ body {
   width: auto;
   height: 100%;
   top: 0px;
-  left: -50px;
   position: relative;
 }

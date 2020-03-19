@@ -11,7 +11,7 @@ class AccountSettings extends Component {
     return session.isLoggedIn ? (
       <div className="bg-white shadow-sm p-4 rounded">
         <span className="d-flex display-4 mb-0 align-items-start" style={{ fontSize: "40px" }}>
-          <Avatar currentUser={currentUser} width="150px" />
+          <Avatar currentUser={currentUser} size="150px" />
           {currentUser.name}
         </span>
         <hr />

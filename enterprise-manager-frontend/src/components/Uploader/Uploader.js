@@ -1,63 +1,42 @@
 import React, { Component } from "react";
 
 export default class Uploader extends Component {
-  constructor() {
-    super();
-    this.state = { organization: { logo: "", name: "" } };
-  }
-
-  handleOnChange = event => {
-    event.persist();
-    this.setState({
-      organization: {
-        ...this.state.organization,
-        [event.target.name]: event.target.value
-      }
-    });
-  };
-
-  handleOnChangeImage = event => {
-    this.setState({
-      organization: {
-        ...this.state.organization,
-        [event.target.name]: event.target.files[0]
-      }
-    });
-  };
+  state = { file: "", filePreview: "" };
 
   handleOnSubmit = event => {
     event.preventDefault();
     this.props.addOrganization(this.state);
   };
 
+  handleDragEnter = e => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  handleDrop = e => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  handleChange = event => {
+    URL.revokeObjectURL(this.state.filePreview);
+    this.setState({
+      [event.target.name]: event.target.files[0],
+      filePreview: URL.createObjectURL(event.target.files[0])
+    });
+  };
+
   render() {
+    console.log(this.state);
     return (
-      <form onSubmit={this.handleOnSubmit}>
-        <div className="form-group">
-          <label htmlFor="logo">Import your organization logo</label>
-          <input
-            type="file"
-            accept="image/*"
-            name="logo"
-            id="logo"
-            onChange={this.handleOnChangeImage}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="organization_name">Name of your organization</label>
-          <input
-            type="text"
-            name="name"
-            id="organization_name"
-            className="form-control"
-            onChange={this.handleOnChange}
-            value={this.state.organization.name}
-            placeholder="Enter the name of your organization"
-          />
-        </div>
-        <hr />
-        <input type="submit" className="btn btn-primary" value="Create" />
-      </form>
+      <div>
+        <form onSubmit={this.handleOnSubmit}>
+          <label className="circular--landscape" onDragEnter={this.handleDragEnter}>
+            <img src={this.state.filePreview} />
+            <input type="file" name="file" onChange={this.handleChange} />
+          </label>
+        </form>
+      </div>
     );
   }
 }

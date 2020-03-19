@@ -72,7 +72,9 @@ const ResourcesList = ({ match, resources, location, history }) => {
                 to={`${match.url}/${resource.formAlias}/edit`}
                 style={{ color: "inherit" }}
                 onClick={e => e.stopPropagation()}>
-                <i className="fas fa-cog"></i>
+                <button className="btn btn-transparent" style={{ color: "inherit" }}>
+                  <i className="fas fa-cog"></i>
+                </button>
               </Link>
               <ToggleContent
                 toggle={show => (
@@ -80,7 +82,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
                     className="btn btn-transparent"
                     style={{ color: "inherit" }}
                     onClick={show}>
-                    <i className="fas fa-trash"></i>
+                    <i className="fas fa-trash-alt"></i>
                   </button>
                 )}
                 content={hide => (

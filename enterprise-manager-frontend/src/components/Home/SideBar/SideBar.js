@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import "./styles.css";
 import cuid from "cuid";
+import Avatar from "./Avatar";
 
 export default class SideBar extends Component {
   constructor(props) {
@@ -133,9 +134,7 @@ export default class SideBar extends Component {
               <div
                 className={`w-100 d-flex align-items-center flex-wrap text-nowrap px-3 justify-content-between`}>
                 <span className="d-flex align-items-center">
-                  <i
-                    className={`fas fa-user-circle text-light ${!minimized ? "mr-2" : null}`}
-                    style={{ fontSize: "30px" }}></i>
+                  <Avatar minimized={minimized} currentUser={currentUser} width="30px" />
                   <CSSTransition in={!minimized} timeout={50} classNames="fade" appear>
                     <span>{currentUser.name}</span>
                   </CSSTransition>

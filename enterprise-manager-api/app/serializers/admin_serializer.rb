@@ -16,5 +16,14 @@ class AdminSerializer
     object.account.accountable_type
   end
 
+  attribute :avatar, if: Proc.new { |object|
+    !object.account.avatar.attachment.nil?
+  } do |object|
+    Rails.application.routes.url_helpers.rails_blob_path(
+      object.account.avatar,
+      only_path: true,
+    )
+  end
+
   attribute :organization_id
 end

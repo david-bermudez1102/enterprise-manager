@@ -34,8 +34,6 @@ export const fetchRecords = (organizationId, formId) => {
         });
         return records.map(record => camelcaseKeys(record.links.values));
       })
-      .then(values =>
-        dispatch({ type: "FETCH_VALUES", values: values.flat() })
-      );
+      .then(values => dispatch({ type: "FETCH_VALUES", values: values.flat() }));
   };
 };

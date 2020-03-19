@@ -34,3 +34,47 @@ body {
 .min-h-100 {
   min-height: 100% !important;
 }
+
+.custom-scrollbar {
+  overflow-y: scroll;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  // set style to track
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  // sets style to thumb
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.scroller::-webkit-scrollbar {
+  width: 10px;
+  height: 12px;
+}
+
+.scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+  visibility: hidden;
+}
+
+.scroller:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+
+.scroller {
+  overflow-y: auto;
+}

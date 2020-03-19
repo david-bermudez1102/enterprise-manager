@@ -45,8 +45,10 @@ class ResourcesContainer extends Component {
     const isFieldsPath = location.pathname.includes("fields");
     return (
       <div className="row">
-        <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-5"} col-md-12 min-h-100 pr-0`}>
-          <div className="bg-white rounded p-2 h-100 shadow-sm">
+        <div
+          className={`${isFieldsPath ? "col-lg-4" : "col-lg-5"} col-md-12 pr-0 min-h-100`}
+          style={{ maxHeight: "80vh" }}>
+          <div className="bg-secondary rounded p-2 h-100 shadow-sm">
             <Alert />
             <ResourcesList
               match={match}
@@ -61,7 +63,7 @@ class ResourcesContainer extends Component {
           <Route
             path={`${match.path}/new`}
             render={props => (
-              <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"} min-h-100`}>
+              <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"} h-50`}>
                 <FormCard
                   header={
                     <span className="card-title display-4" style={{ fontSize: "32px" }}>

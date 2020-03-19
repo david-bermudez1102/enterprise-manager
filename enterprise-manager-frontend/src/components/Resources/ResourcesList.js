@@ -20,7 +20,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
     );
   }
   return (
-    <div className="list-group">
+    <div className="list-group h-100 scroller">
       {resources.map(resource => {
         const isActive = !!matchPath(
           location.pathname,
@@ -28,13 +28,13 @@ const ResourcesList = ({ match, resources, location, history }) => {
         );
         return (
           <div
-            className={`row mx-0 border-0 shadow-sm rounded list-group-item list-group-item-action py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 ${
+            className={`row mx-0 border-0 shadow rounded list-group-item list-group-item-action py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 ${
               isActive ? "active text-white" : ""
             }`}
             key={cuid()}
             style={{
               cursor: "pointer",
-              fontSize: "20px",
+              fontSize: "24px",
               zIndex: "inherit"
             }}
             onClick={e => {
@@ -63,9 +63,7 @@ const ResourcesList = ({ match, resources, location, history }) => {
                   <span
                     className="badge badge-secondary shadow-sm"
                     style={{ minWidth: "60px" }}
-                    title={`${resource.recordsCount} ${pluralize(
-                      resource.name
-                    )}`}>
+                    title={`${resource.recordsCount} ${pluralize(resource.name)}`}>
                     <i className="fas fa-list-ul"></i> {resource.recordsCount}
                   </span>
                 </button>

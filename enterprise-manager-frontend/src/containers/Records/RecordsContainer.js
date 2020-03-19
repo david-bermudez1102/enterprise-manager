@@ -15,14 +15,7 @@ class RecordsContainer extends Component {
   }
 
   render() {
-    const {
-      match,
-      resource,
-      recordFields,
-      removeRecordField,
-      records,
-      values
-    } = this.props;
+    const { match, resource, recordFields, removeRecordField, records, values } = this.props;
     return (
       <Switch>
         <Route
@@ -41,7 +34,7 @@ class RecordsContainer extends Component {
           path={`${match.path}/records`}
           render={props => (
             <div className="col-lg-12 pt-4">
-              <div className="bg-white shadow-sm p-4 rounded">
+              <div className="bg-white shadow-sm p-2 rounded">
                 <RecordsOptions resource={resource} />
                 {records.length > 0 ? (
                   <RecordsList
@@ -53,9 +46,7 @@ class RecordsContainer extends Component {
                     values={values}
                   />
                 ) : (
-                  <NoContent>
-                    This resource doesn't have any records yet.
-                  </NoContent>
+                  <NoContent>This resource doesn't have any records yet.</NoContent>
                 )}
               </div>
             </div>

@@ -124,7 +124,7 @@ export default class SideBar extends Component {
     return (
       <CSSTransition in={!minimized} timeout={40} classNames="slider" appear>
         <div
-          className="pt-3 bg-secondary shadow-lg text-light vh-100 sticky-top"
+          className="pt-3 bg-secondary shadow text-light vh-100 sticky-top"
           style={{ fontSize: "16px" }}>
           <nav
             className="px-0 py-0 nav nav-dark nav-pills flex-column h-100 d-flex"
@@ -176,7 +176,7 @@ export default class SideBar extends Component {
                       ? link.subLinks.map(subLink => (
                           <NavLink
                             to={subLink.path}
-                            className={`${subLink.className} mt-1`}
+                            className={`${subLink.className} mt-1 text-nowrap`}
                             style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
                             key={cuid()}
                             activeClassName="bg-light text-dark active shadow">

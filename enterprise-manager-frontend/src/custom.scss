@@ -6,15 +6,14 @@ $font-family-base: Yantramanav;
 $headings-font-family: Poppins;
 
 $enable-grid-classes: true;
-$primary: #ff550b;
+$primary: #FF304F;
 $secondary: #303030;
 $success: #015668;
-$danger: #ff304f;
+$danger: #dc3545;
 $info: #0f81c7;
 $warning: #0de2ea;
 $light: #f4f6f9;
 $dark: #000000;
-$enable-gradients: false;
 $spacer: 1rem;
 $border-width: 1px;
 $btn-border-radius: 0.25rem;
@@ -57,7 +56,7 @@ body {
 }
 
 .scroller::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
   height: 12px;
 }
 

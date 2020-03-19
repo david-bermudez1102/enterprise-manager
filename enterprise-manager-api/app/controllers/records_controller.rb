@@ -12,12 +12,12 @@ class RecordsController < ApplicationController
   end
 
   def index
-    record = @form.records
+    record = @form.records.includes(:values, :zoho_integration_record, :quickbooks_integration_record)
     render json: RecordSerializer.new(record)
   end
 
   def show
-    record = @form.records.find_by(id: params[:id])
+    record = @form.records.includes(:values, :zoho_integration_record, :quickbooks_integration_record).find_by(id: params[:id])
     render json: RecordSerializer.new(record)
   end
 

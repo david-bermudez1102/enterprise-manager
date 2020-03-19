@@ -24,9 +24,7 @@ class FieldsList extends Component {
         .map(field => {
           const radio = field.querySelector("input[type='radio']");
           const checkbox = field.querySelector("input[type='checkbox']");
-          const checkboxFieldsList = field.querySelectorAll(
-            "input[type='checkbox'][checked]"
-          );
+          const checkboxFieldsList = field.querySelectorAll("input[type='checkbox'][checked]");
           let option;
           if (field.options) option = field.options[field.selectedIndex];
           else if (radio) option = radio;
@@ -45,10 +43,8 @@ class FieldsList extends Component {
           return {
             record_field_id: radio || checkbox ? option.name : field.name,
             content: content,
-            record_value_id:
-              optionDataSet && !checkbox ? optionDataSet.recordValueId : null,
-            option_value_id:
-              optionDataSet && !checkbox ? optionDataSet.optionValueId : null,
+            record_value_id: optionDataSet && !checkbox ? optionDataSet.recordValueId : null,
+            option_value_id: optionDataSet && !checkbox ? optionDataSet.optionValueId : null,
             checkbox_options_attributes: checkbox
               ? Array.from(checkboxFieldsList).map(cb => {
                   return { option_id: cb.dataset.optionValueId };
@@ -68,25 +64,18 @@ class FieldsList extends Component {
     return (
       <>
         <CardHeader>
-          <span
-            className="card-title display-4 mb-0"
-            style={{ fontSize: "32px" }}>
-            {pluralize(resource.name)}
+          <span className="card-title display-4 mb-0  text-primary" style={{ fontSize: "32px" }}>
+            <i className="fas fa-folder-plus mr-2"></i>
+            Add {pluralize.singular(resource.name)}
           </span>
           <span className="card-title">
             <Link to={`${match.url}/fields/new`} title="Add new field">
-              <i
-                className="fad fa-plus-circle"
-                style={{ fontSize: "24px" }}></i>
+              <i className="fad fa-plus-circle" style={{ fontSize: "24px" }}></i>
             </Link>{" "}
-            <Link
-              to={`${match.url}/records`}
-              title={`View all ${resource.name}`}>
+            <Link to={`${match.url}/records`} title={`View all ${resource.name}`}>
               <i className="fad fa-th-list" style={{ fontSize: "24px" }}></i>
             </Link>
-            <Link
-              to={`${match.url}/connections/zoho/edit`}
-              title="Connect to Zoho Books">
+            <Link to={`${match.url}/connections/zoho/edit`} title="Connect to Zoho Books">
               <button className="btn btn-transparent p-0 mt-n1 d-block-inline">
                 <img
                   src="https://books.zoho.com/favicon.ico"
@@ -102,9 +91,7 @@ class FieldsList extends Component {
           {fields.filter(field => field.formId === resource.id).length > 0 ? (
             <form onSubmit={this.handleSubmit}>
               {fields.map((field, index) => {
-                const recordField = recordFields.find(
-                  f => f.fieldId === field.id
-                );
+                const recordField = recordFields.find(f => f.fieldId === field.id);
                 return field.formId === resource.id && recordField ? (
                   <Field
                     key={cuid()}

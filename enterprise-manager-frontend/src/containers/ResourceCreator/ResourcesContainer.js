@@ -48,7 +48,7 @@ class ResourcesContainer extends Component {
         <div
           className={`${isFieldsPath ? "col-lg-4" : "col-lg-5"} col-md-12 pr-0 min-h-100`}
           style={{ maxHeight: "80vh" }}>
-          <div className="bg-secondary rounded p-2 h-100 shadow-sm">
+          <div className="bg-light rounded p-2 h-100 shadow-sm">
             <Alert />
             <ResourcesList
               match={match}
@@ -63,11 +63,13 @@ class ResourcesContainer extends Component {
           <Route
             path={`${match.path}/new`}
             render={props => (
-              <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"} h-50`}>
+              <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"}`}>
                 <FormCard
                   header={
-                    <span className="card-title display-4" style={{ fontSize: "32px" }}>
-                      New Resource
+                    <span
+                      className="card-title display-4 mb-0 text-primary"
+                      style={{ fontSize: "32px" }}>
+                      <i className="fas fa-layer-plus mr-2"></i>New Resource
                     </span>
                   }>
                   <ResourceForm
@@ -86,8 +88,10 @@ class ResourcesContainer extends Component {
                 <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"} min-h-100`}>
                   <FormCard
                     header={
-                      <span className="card-title display-4" style={{ fontSize: "32px" }}>
-                        Edit Resource
+                      <span
+                        className="card-title display-4 mb-0 text-primary"
+                        style={{ fontSize: "32px" }}>
+                        <i className="far fa-edit mr-2"></i>Edit Resource
                       </span>
                     }>
                     <ResourceForm

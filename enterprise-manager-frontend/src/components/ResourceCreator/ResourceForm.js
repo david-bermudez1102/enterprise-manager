@@ -58,7 +58,7 @@ class ResourceForm extends Component {
             placeholder="Enter name..."
             onChange={this.handleChange}
             value={this.state.name}
-            className="form-control"
+            className="form-control rounded-pill"
           />
         </div>
         <input

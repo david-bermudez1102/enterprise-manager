@@ -1,45 +1,20 @@
 import React, { Component } from "react";
 import defaultAvatar from "../../default_user.png";
+import DragDrop from "./DragDrop";
+import Draggable from "./Draggable";
+
 export default class Uploader extends Component {
-  state = { file: "", filePreview: "", dragging: false };
+  constructor(props) {
+    super(props);
+    this.state = { file: "", filePreview: props.file || "" };
+  }
 
-  handleOnSubmit = event => {
-    event.preventDefault();
-    this.props.addOrganization(this.state);
-  };
-
-  handleDragOver = e => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  handleDragEnter = e => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
-      this.setState({ dragging: true });
-    }
-  };
-
-  handleDragLeave = e => {
-    e.preventDefault();
-    e.stopPropagation();
-    this.setState({ dragging: false });
-  };
-
-  handleDrop = e => {
-    e.preventDefault();
-    e.stopPropagation();
-    this.setState({ dragging: false });
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      URL.revokeObjectURL(this.state.filePreview);
-      this.setState({
-        file: e.dataTransfer.files[0],
-        filePreview: URL.createObjectURL(e.dataTransfer.files[0])
-      });
-      e.dataTransfer.clearData();
-      this.dragCounter = 0;
-    }
+  handleDrop = file => {
+    URL.revokeObjectURL(this.state.filePreview);
+    this.setState({
+      file,
+      filePreview: URL.createObjectURL(file)
+    });
   };
 
   handleChange = event => {
@@ -53,23 +28,20 @@ export default class Uploader extends Component {
 
   render() {
     console.log(this.state);
+    const { size } = this.props;
     return (
-      <div
-        onDragEnter={this.handleDragEnter}
-        onDragOver={this.handleDragOver}
-        onDragLeave={this.handleDragLeave}
-        onDrop={this.handleDrop}>
-        <form onSubmit={this.handleOnSubmit}>
-          <label className="circular--landscape shadow" style={{ width: "150px", height: "150px" }}>
-            {this.state.filePreview !== "" ? (
+      <DragDrop handleDrop={this.handleDrop}>
+        <label className="circular--landscape shadow" style={{ width: size, height: size }}>
+          {this.state.filePreview !== "" ? (
+            <Draggable>
               <img src={this.state.filePreview} />
-            ) : (
-              <img src={defaultAvatar} width="100%" />
-            )}
-            <input type="file" name="file" className="d-none" onChange={this.handleChange} />
-          </label>
-        </form>
-      </div>
+            </Draggable>
+          ) : (
+            <img src={defaultAvatar} width="100%" />
+          )}
+          <input type="file" name="file" className="d-none" onChange={this.handleChange} />
+        </label>
+      </DragDrop>
     );
   }
 }

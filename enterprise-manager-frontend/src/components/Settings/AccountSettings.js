@@ -15,7 +15,7 @@ class AccountSettings extends Component {
           {currentUser.name}
         </span>
         <hr />
-        <Uploader />
+        <Uploader size="150px" />
         <ProfileForm currentUser={currentUser} />
       </div>
     ) : null;

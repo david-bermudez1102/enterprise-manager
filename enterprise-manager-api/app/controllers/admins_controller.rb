@@ -15,9 +15,17 @@ class AdminsController < ApplicationController
     render json: AdminSerializer.new(admins)
   end
 
+  def update
+    if current_account.update(admin_params)
+      render json: AdminSerializer.new(admin, jwt: token, messages: ["Admin was added with success."])
+    else
+      render json: { errors: account.errors.full_messages }
+    end
+  end
+
   private
 
   def admin_params
-    params.require(:admin).permit(:name, :email, :password)
+    params.require(:admin).permit(:account_id, :name, :email, :password, :avatar, :avatar_margin_left, :avatar_margin_top)
   end
 end

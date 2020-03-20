@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import cuid from "cuid";
+import FileUploader from "../Uploader/FileUploader";
+import AvatarUploader from "../Uploader/AvatarUploader";
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -26,10 +27,17 @@ class ProfileForm extends Component {
 
   render() {
     const { avatar, name, email, gender } = this.state;
-    console.log(avatar);
+    console.log(this.state);
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="form-group"></div>
+        <div className="form-group">
+          <FileUploader
+            className="circular--landscape shadow bg-light"
+            size="150px"
+            filePreview={avatar}>
+            <AvatarUploader />
+          </FileUploader>
+        </div>
         <div className="form-group">
           <label htmlFor="account_name">Your Name:</label>
           <input

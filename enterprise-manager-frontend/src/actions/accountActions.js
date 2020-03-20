@@ -1,10 +1,10 @@
 export const addEmployee = (adminId, employee) => {
   return dispatch => {
-    dispatch({ type: 'CLEAR_ALERTS' });
+    dispatch({ type: "CLEAR_ALERTS" });
     fetch(`/api/v1/admins/${adminId}/employees`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(employee)
     })
@@ -12,15 +12,15 @@ export const addEmployee = (adminId, employee) => {
       .then(employee => {
         if (!employee.errors) {
           dispatch({
-            type: 'ADD_EMPLOYEE',
+            type: "ADD_EMPLOYEE",
             employee: employee.data.attributes
           });
           dispatch({
-            type: 'ADD_MESSAGES',
+            type: "ADD_MESSAGES",
             messages: employee.messages
           });
         } else {
-          dispatch({ type: 'ADD_ERRORS', errors: employee.errors });
+          dispatch({ type: "ADD_ERRORS", errors: employee.errors });
         }
       })
       .catch(console.log);
@@ -32,30 +32,30 @@ export const fetchEmployees = adminId => {
     fetch(`/api/v1/admins/${adminId}/employees`)
       .then(response => response.json())
       .then(employees => employees.data.map(employee => employee.attributes))
-      .then(employees => dispatch({ type: 'FETCH_EMPLOYEES', employees }));
+      .then(employees => dispatch({ type: "FETCH_EMPLOYEES", employees }));
   };
 };
 
 export const addManager = (adminId, manager) => {
   return dispatch => {
-    dispatch({ type: 'CLEAR_ALERTS' });
+    dispatch({ type: "CLEAR_ALERTS" });
     fetch(`/api/v1/admins/${adminId}/managers`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(manager)
     })
       .then(response => response.json())
       .then(manager => {
         if (!manager.errors) {
-          dispatch({ type: 'ADD_MANAGER', manager: manager.data.attributes });
+          dispatch({ type: "ADD_MANAGER", manager: manager.data.attributes });
           dispatch({
-            type: 'ADD_MESSAGES',
+            type: "ADD_MESSAGES",
             messages: manager.messages
           });
         } else {
-          dispatch({ type: 'ADD_ERRORS', errors: manager.errors });
+          dispatch({ type: "ADD_ERRORS", errors: manager.errors });
         }
       })
       .catch(console.log);
@@ -67,6 +67,6 @@ export const fetchManagers = adminId => {
     fetch(`/api/v1/admins/${adminId}/managers`)
       .then(response => response.json())
       .then(managers => managers.data.map(manager => manager.attributes))
-      .then(managers => dispatch({ type: 'FETCH_MANAGERS', managers }));
+      .then(managers => dispatch({ type: "FETCH_MANAGERS", managers }));
   };
 };

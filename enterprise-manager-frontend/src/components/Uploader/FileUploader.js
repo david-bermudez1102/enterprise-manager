@@ -4,7 +4,7 @@ import DragDrop from "./DragDrop";
 export default class FileUploader extends Component {
   constructor(props) {
     super(props);
-    this.state = { file: "", filePreview: props.file || "" };
+    this.state = { file: "", filePreview: props.filePreview || "" };
   }
 
   handleDrop = file => {

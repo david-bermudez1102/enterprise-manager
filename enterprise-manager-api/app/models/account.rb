@@ -5,4 +5,8 @@ class Account < ApplicationRecord
   validates :password, presence: true, length: { in: 6..50 }, format: { without: /\s/ }, :on => :create
   has_one_attached :avatar
   has_secure_password
+
+  def avatar_path
+    ActiveStorage::Blob.service.path_for(avatar.key)
+  end
 end

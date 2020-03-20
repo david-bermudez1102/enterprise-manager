@@ -9,19 +9,25 @@ export default class FileUploader extends Component {
 
   handleDrop = file => {
     URL.revokeObjectURL(this.state.filePreview);
-    this.setState({
-      file,
-      filePreview: URL.createObjectURL(file)
-    });
+    this.setState(
+      {
+        file,
+        filePreview: URL.createObjectURL(file)
+      },
+      () => this.props.handleChange(this.state.file)
+    );
   };
 
   handleChange = event => {
     URL.revokeObjectURL(this.state.filePreview);
     if (event.target.files.length > 0)
-      this.setState({
-        [event.target.name]: event.target.files[0],
-        filePreview: URL.createObjectURL(event.target.files[0])
-      });
+      this.setState(
+        {
+          [event.target.name]: event.target.files[0],
+          filePreview: URL.createObjectURL(event.target.files[0])
+        },
+        () => this.props.handleChange(this.state.file)
+      );
   };
 
   render() {

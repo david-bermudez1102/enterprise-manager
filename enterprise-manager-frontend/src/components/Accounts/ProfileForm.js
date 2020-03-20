@@ -1,41 +1,70 @@
 import React, { Component } from "react";
 import FileUploader from "../Uploader/FileUploader";
 import AvatarUploader from "../Uploader/AvatarUploader";
+import snakecaseKeys from "snakecase-keys";
 
 class ProfileForm extends Component {
   constructor(props) {
     super(props);
     const { currentUser } = props;
+    const avatar = currentUser.avatar ? currentUser.avatar : null;
     this.state = {
-      avatar: currentUser.avatar || "",
+      avatar: undefined,
       name: currentUser.name,
       email: currentUser.email,
-      gender: "Select"
+      gender: "Select",
+      avatarMarginLeft: avatar ? avatar.margin_left : 0,
+      avatarMarginTop: avatar ? avatar.margin_top : 0,
+      avatarUrl: avatar ? `http://localhost:3001${avatar.url}` : ""
     };
   }
 
   handleChange = event => {
     event.persist();
     this.setState({
-      account: {
-        ...this.state.account,
-        [event.target.name]: event.target.value
-      },
       [event.target.name]: event.target.value
     });
   };
 
+  handleAvatarChange = file => {
+    this.setState({
+      avatar: file
+    });
+  };
+
+  handleAvatarCoordinates = (x, y) => {
+    this.setState({
+      avatarMarginLeft: x,
+      avatarMarginTop: y
+    });
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const { updateAdmin, currentUser } = this.props;
+    const { avatar, name, email, gender, avatarMarginLeft, avatarMarginTop } = this.state;
+    const formData = {
+      avatar,
+      ...snakecaseKeys({ name, email, gender, avatarMarginLeft, avatarMarginTop })
+    };
+    updateAdmin(formData, currentUser.id);
+  };
+
   render() {
-    const { avatar, name, email, gender } = this.state;
-    console.log(this.state);
+    const { avatarUrl, name, email, gender, avatarMarginLeft, avatarMarginTop } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <FileUploader
             className="circular--landscape shadow bg-light"
             size="150px"
-            filePreview={avatar}>
-            <AvatarUploader />
+            filePreview={avatarUrl}
+            handleChange={this.handleAvatarChange}>
+            <AvatarUploader
+              x={avatarMarginLeft}
+              y={avatarMarginTop}
+              handleCoordinates={this.handleAvatarCoordinates}
+            />
           </FileUploader>
         </div>
         <div className="form-group">

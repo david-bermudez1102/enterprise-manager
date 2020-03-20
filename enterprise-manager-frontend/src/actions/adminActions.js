@@ -1,5 +1,5 @@
-import { jsonToFormData } from "json-form-data";
-
+import jsonToFormData from "json-form-data";
+import camelcaseKeys from "camelcase-keys";
 export const addAdmin = admin => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
@@ -13,7 +13,7 @@ export const addAdmin = admin => {
       .then(response => response.json())
       .then(admin => {
         if (!admin.errors) {
-          dispatch({ type: "ADD_ADMIN", admin: admin.data.attributes });
+          dispatch({ type: "ADD_ADMIN", admin: camelcaseKeys(admin.data.attributes) });
           dispatch({
             type: "ADD_MESSAGES",
             messages: admin.messages
@@ -26,17 +26,20 @@ export const addAdmin = admin => {
   };
 };
 
-export const updateAdmin = admin => {
+export const updateAdmin = (admin, adminId) => {
   return dispatch => {
-    return fetch("/api/v1/admins", {
+    dispatch({ type: "CLEAR_ALERTS" });
+    fetch(`/api/v1/admins/${adminId}`, {
       credentials: "include",
       method: "PATCH",
-      body: jsonToFormData(admin)
+      body: jsonToFormData({ admin })
     })
       .then(response => response.json())
       .then(admin => {
         if (!admin.errors) {
-          dispatch({ type: "UPDATE_ADMIN", admin: admin.data.attributes });
+          console.log(admin.data.attributes);
+          dispatch({ type: "UPDATE_ADMIN", admin: camelcaseKeys(admin.data.attributes), adminId });
+          dispatch({ type: "UPDATE_SESSION", currentUser: camelcaseKeys(admin.data.attributes) });
           dispatch({
             type: "ADD_MESSAGES",
             messages: admin.messages
@@ -54,7 +57,7 @@ export const fetchAdmins = () => {
     dispatch({ type: "REQUESTING_DATA" });
     return fetch("/api/v1/admins")
       .then(response => response.json())
-      .then(admins => admins.data.map(admin => admin.attributes))
+      .then(admins => admins.data.map(admin => camelcaseKeys(admin.attributes)))
       .then(admins => dispatch({ type: "ADD_ADMINS", admins }))
       .then(() => dispatch({ type: "FINISHED_REQUESTING" }));
   };

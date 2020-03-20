@@ -1,6 +1,9 @@
 class AccountSerializer
   include FastJsonapi::ObjectSerializer
   attribute :id, :name, :email
+  attribute :type do |object|
+    object.accountable_type
+  end
   attribute :avatar, if: Proc.new { |object|
     !object.avatar.attachment.nil?
   } do |object|

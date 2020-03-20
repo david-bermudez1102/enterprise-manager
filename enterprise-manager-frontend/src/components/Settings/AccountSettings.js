@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import ProfileForm from "../Accounts/ProfileForm";
 import { connect } from "react-redux";
+import { updateAdmin } from "../../actions/adminActions";
 
 class AccountSettings extends Component {
   render() {
-    const { session } = this.props;
+    const { session, updateAdmin } = this.props;
     const { currentUser } = session;
     return session.isLoggedIn ? (
       <div className="bg-white shadow-sm p-4 rounded">
@@ -12,7 +13,7 @@ class AccountSettings extends Component {
           {currentUser.name}
         </span>
         <hr />
-        <ProfileForm currentUser={currentUser} />
+        <ProfileForm currentUser={currentUser} updateAdmin={updateAdmin} />
       </div>
     ) : null;
   }
@@ -21,4 +22,4 @@ class AccountSettings extends Component {
 const mapStateToProps = ({ session }) => {
   return { session };
 };
-export default connect(mapStateToProps)(AccountSettings);
+export default connect(mapStateToProps, { updateAdmin })(AccountSettings);

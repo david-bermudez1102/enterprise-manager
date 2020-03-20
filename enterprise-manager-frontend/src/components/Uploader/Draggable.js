@@ -6,12 +6,12 @@ export default class Draggable extends Component {
     this.container = React.createRef();
     this.state = {
       dragging: false,
-      x: 0,
-      y: 0,
+      x: props.x || 0,
+      y: props.y || 0,
       xRel: 0,
       yRel: 0,
-      prevX: 0,
-      prevY: 0,
+      prevX: props.x || 0,
+      prevY: props.y || 0,
       moved: false
     };
   }
@@ -47,7 +47,10 @@ export default class Draggable extends Component {
     e.stopPropagation();
     e.preventDefault();
     const { xRel, yRel } = this.state;
-    if (this.state.dragging) this.setState({ x: e.pageX - xRel, y: e.pageY - yRel });
+    if (this.state.dragging)
+      this.setState({ x: e.pageX - xRel, y: e.pageY - yRel }, () =>
+        this.props.handleCoordinates(this.state.x, this.state.y)
+      );
   };
 
   handleClick = e => {
@@ -58,7 +61,6 @@ export default class Draggable extends Component {
   };
 
   render() {
-    console.log(this.state);
     const { children } = this.props;
     const { x, y } = this.state;
     return (
@@ -69,8 +71,6 @@ export default class Draggable extends Component {
         onMouseMove={this.handleMouseMove}
         onMouseUp={this.handleMouseUp}
         onClick={this.handleClick}
-        data-margin-left={x}
-        data-margin-top={y}
         style={{
           marginLeft: x + "px",
           marginTop: y + "px"

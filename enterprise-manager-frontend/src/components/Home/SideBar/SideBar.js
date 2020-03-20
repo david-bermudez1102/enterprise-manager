@@ -134,7 +134,7 @@ export default class SideBar extends Component {
               <div
                 className={`w-100 d-flex align-items-center flex-wrap text-nowrap px-3 justify-content-between`}>
                 <span className="d-flex align-items-center">
-                  <Avatar minimized={minimized} currentUser={currentUser} size="30px" />
+                  <Avatar minimized={minimized} currentUser={currentUser} size="30" />
                   <CSSTransition in={!minimized} timeout={50} classNames="fade" appear>
                     <span>{currentUser.name}</span>
                   </CSSTransition>

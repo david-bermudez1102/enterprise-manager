@@ -2,9 +2,9 @@ import React from "react";
 import defaultAvatar from "../../default_user.png";
 import Draggable from "./Draggable";
 
-const AvatarUploader = ({ filePreview }) =>
+const AvatarUploader = ({ filePreview, handleCoordinates, x, y }) =>
   filePreview !== "" ? (
-    <Draggable>
+    <Draggable x={x} y={y} handleCoordinates={handleCoordinates}>
       <img src={filePreview} />
     </Draggable>
   ) : (

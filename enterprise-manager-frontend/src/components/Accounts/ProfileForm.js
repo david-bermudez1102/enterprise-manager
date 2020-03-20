@@ -29,16 +29,7 @@ class ProfileForm extends Component {
     console.log(avatar);
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <input
-            type="file"
-            name="avatar"
-            id="account_avatar"
-            className="form-control"
-            files={avatar[0]}
-            onChange={this.handleChange}
-          />
-        </div>
+        <div className="form-group"></div>
         <div className="form-group">
           <label htmlFor="account_name">Your Name:</label>
           <input

@@ -60,17 +60,20 @@ export default class Draggable extends Component {
   render() {
     console.log(this.state);
     const { children } = this.props;
+    const { x, y } = this.state;
     return (
       <div
-        className="d-flex w-100 h-100"
+        className="w-100 h-100"
         ref={this.container}
         onMouseDown={this.handleMouseDown}
         onMouseMove={this.handleMouseMove}
         onMouseUp={this.handleMouseUp}
         onClick={this.handleClick}
+        data-margin-left={x}
+        data-margin-top={y}
         style={{
-          marginLeft: this.state.x + "px",
-          marginTop: this.state.y + "px"
+          marginLeft: x + "px",
+          marginTop: y + "px"
         }}>
         {children}
       </div>

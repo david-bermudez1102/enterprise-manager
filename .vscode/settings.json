@@ -1,9 +1,10 @@
 {
-  "editor.fontSize": 16,
+  "editor.fontSize": 17,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "prettier.jsxBracketSameLine": true,
   "prettier.printWidth": 100,
   "editor.tabSize": 2,
-  "editor.fontWeight": "bold"
+  "editor.fontWeight": "bold",
+  "editor.fontFamily": "Consolas"
 }

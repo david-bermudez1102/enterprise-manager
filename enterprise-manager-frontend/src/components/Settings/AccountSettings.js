@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import ProfileForm from "../Accounts/ProfileForm";
 import { connect } from "react-redux";
 import Avatar from "../Home/SideBar/Avatar";
-import Uploader from "../Uploader/Uploader";
+import AvatarUploader from "../Uploader/AvatarUploader";
+import FileUploader from "../Uploader/FileUploader";
 
 class AccountSettings extends Component {
   render() {
@@ -15,7 +16,9 @@ class AccountSettings extends Component {
           {currentUser.name}
         </span>
         <hr />
-        <Uploader size="150px" />
+        <FileUploader className="circular--landscape shadow bg-light" size="150px">
+          <AvatarUploader />
+        </FileUploader>
         <ProfileForm currentUser={currentUser} />
       </div>
     ) : null;

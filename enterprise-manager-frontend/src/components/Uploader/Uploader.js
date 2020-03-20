@@ -27,7 +27,6 @@ export default class Uploader extends Component {
   };
 
   render() {
-    console.log(this.state);
     const { size } = this.props;
     return (
       <DragDrop handleDrop={this.handleDrop}>

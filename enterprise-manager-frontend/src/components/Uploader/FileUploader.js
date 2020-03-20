@@ -29,7 +29,7 @@ export default class FileUploader extends Component {
     return (
       <DragDrop handleDrop={this.handleDrop}>
         <label className={className} style={{ width: size, height: size }}>
-          {React.cloneElement(children, { filePreview: this.state.filePreview })}
+          {React.cloneElement(children, { ...this.state })}
           <input type="file" name="file" className="d-none" onChange={this.handleChange} />
         </label>
       </DragDrop>

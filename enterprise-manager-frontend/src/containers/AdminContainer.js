@@ -25,7 +25,10 @@ class AdminContainer extends Component {
                     Create First Admin
                   </span>
                 }>
-                <AdminForm addAdmin={this.props.addAdmin} />
+                <AdminForm
+                  addAdmin={this.props.addAdmin}
+                  organizationId={organizations[0].id}
+                />
               </FormCard>
             </div>
           </div>

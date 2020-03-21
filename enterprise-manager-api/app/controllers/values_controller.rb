@@ -15,8 +15,9 @@ class ValuesController < ApplicationController
   private
 
   def value_params
-    params.require(:value).permit(:)
+    params.require(:value).permit(:organization_id, :form_id)
   end
+
   def set_organization
     @organization = Organization.find_by(id: params[:organization_id])
   end

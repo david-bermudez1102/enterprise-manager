@@ -7,6 +7,12 @@ export const valuesReducer = (state = [], action) => {
           value => !state.some(val => val.id === value.id)
         )
       ];
+
+    case "UPDATE_VALUE":
+      return [...state].values.map(value =>
+        value.id === parseInt(action.value.id) ? action.value : value
+      );
+
     case "FETCH_VALUES":
       return [
         ...state,

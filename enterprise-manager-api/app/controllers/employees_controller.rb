@@ -10,7 +10,7 @@ class EmployeesController < ApplicationController
   def create
     employee = @admin.employees.new
     one_time_password = SecureRandom.hex
-    account = employee.build_account(name: employee_params[:name], email:employee_params[:email], password: one_time_password)
+    account = employee.build_account(organization_id:employee_params[:organization_id], name: employee_params[:name], email:employee_params[:email], password: one_time_password)
     if account.save && employee.save
       render json: EmployeeSerializer.new(employee, one_time_password: one_time_password, messages: ["Employee was added with success."])
     else
@@ -20,7 +20,7 @@ class EmployeesController < ApplicationController
 
   private
     def employee_params
-      params.require(:employee).permit(:name, :email)
+      params.require(:employee).permit(:organization_id, :name, :email)
     end
 
     def set_admin

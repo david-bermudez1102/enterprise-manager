@@ -16,6 +16,10 @@ class AdminSerializer
     object.account.accountable_type
   end
 
+  attribute :organization_id do |object|
+    object.account.organization_id
+  end
+
   attribute :avatar, if: Proc.new { |object|
     !object.account.avatar.attachment.nil?
   } do |object|
@@ -24,6 +28,4 @@ class AdminSerializer
       only_path: true,
     ), margin_left: object.account.avatar_margin_left, margin_top: object.account.avatar_margin_top }
   end
-
-  attribute :organization_id
 end

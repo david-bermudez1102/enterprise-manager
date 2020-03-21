@@ -1,9 +1,16 @@
 import React, { Component } from "react";
 
 export default class AdminForm extends Component {
-  constructor() {
-    super();
-    this.state = { admin: { name: "", email: "", password: "" } };
+  constructor(props) {
+    super(props);
+    this.state = {
+      admin: {
+        name: "",
+        email: "",
+        password: "",
+        organization_id: props.organizationId
+      }
+    };
   }
 
   handleOnChange = event => {

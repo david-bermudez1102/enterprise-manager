@@ -9,7 +9,7 @@ class ManagersController < ApplicationController
   def create
     manager = @admin.managers.new
     one_time_password = SecureRandom.hex
-    account = manager.build_account(name: manager_params[:name], email:manager_params[:email], password: one_time_password)
+    account = manager.build_account(organization_id:manager_params[:organization_id], name: manager_params[:name], email:manager_params[:email], password: one_time_password)
     if account.save && manager.save
       render json: ManagerSerializer.new(manager, one_time_password: one_time_password, messages: ["Manager was added with success."])
     else
@@ -19,7 +19,7 @@ class ManagersController < ApplicationController
 
   private
     def manager_params
-      params.require(:manager).permit(:name, :email)
+      params.require(:manager).permit(:organization_id, :name, :email)
     end
 
     def set_admin

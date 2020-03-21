@@ -52,8 +52,6 @@ ActiveRecord::Schema.define(version: 2020_03_21_201509) do
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "organization_id"
-    t.index ["organization_id"], name: "index_admins_on_organization_id"
   end
 
   create_table "checkbox_options", force: :cascade do |t|

@@ -25,7 +25,7 @@ class Form < ApplicationRecord
   end
 
   def nullify_form_alias
-      self.update_attribute(:form_alias, nil)
+    self.update_attribute(:form_alias, nil)
   end
 
   def generate_form_alias

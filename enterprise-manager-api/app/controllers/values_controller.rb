@@ -3,17 +3,20 @@ class ValuesController < ApplicationController
   before_action :set_form
 
   def index
-    values = @form.values
+    values = @form.values.includes(:record,:record_field,:record,:form)
     render json: ValueSerializer.new(values)
   end
 
   def show
-    record = @form.records.find_by(id: params[:id])
-    render json: RecordSerializer.new(record)
+    record = @form.values.includes(:record,:record_field,:record,:form).find_by(id: params[:id])
+    render json: ValueSerializer.new(record)
   end
 
   private
 
+  def value_params
+    params.require(:value).permit(:)
+  end
   def set_organization
     @organization = Organization.find_by(id: params[:organization_id])
   end

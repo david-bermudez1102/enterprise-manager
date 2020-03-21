@@ -1,6 +1,7 @@
 import React from "react";
 import Avatar from "../Home/SideBar/Avatar";
 import IconWrapper from "../Icons/IconWrapper";
+import cuid from "cuid";
 
 const capitalize = require("capitalize");
 
@@ -39,7 +40,7 @@ const Account = ({ account }) => {
       </span>
       <span className={classNames.secondCol} style={{ fontSize: "18px" }}>
         {menuIcons.map(icon => (
-          <IconWrapper size="30px">
+          <IconWrapper size="30px" key={cuid()}>
             <i {...icon}></i>
           </IconWrapper>
         ))}

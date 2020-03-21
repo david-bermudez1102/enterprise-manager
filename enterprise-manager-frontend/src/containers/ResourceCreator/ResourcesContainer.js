@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
 import { Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
-import { addResource, updateResource, removeResource } from "../../actions/resourceActions";
+import {
+  addResource,
+  updateResource,
+  removeResource
+} from "../../actions/resourceActions";
 import ResourcesList from "../../components/Resources/ResourcesList";
 import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
@@ -33,6 +37,7 @@ class ResourcesContainer extends Component {
 
   render() {
     const {
+      loaded,
       match,
       addResource,
       updateResource,
@@ -46,7 +51,9 @@ class ResourcesContainer extends Component {
     return (
       <div className="row">
         <div
-          className={`${isFieldsPath ? "col-lg-4" : "col-lg-5"} col-md-12 pr-0 min-h-100`}
+          className={`${
+            isFieldsPath ? "col-lg-4" : "col-lg-5"
+          } col-md-12 pr-0 min-h-100`}
           style={{ maxHeight: "80vh" }}>
           <div className="bg-light rounded p-2 h-100 shadow-sm">
             <Alert />
@@ -56,6 +63,7 @@ class ResourcesContainer extends Component {
               history={history}
               resources={resources}
               organizationId={organizationId}
+              loaded={loaded}
             />
           </div>
         </div>
@@ -85,7 +93,10 @@ class ResourcesContainer extends Component {
             <Route
               path={`${match.path}/:formAlias/edit`}
               render={props => (
-                <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"} min-h-100`}>
+                <div
+                  className={`${
+                    isFieldsPath ? "col-lg-4" : "col-lg-7"
+                  } min-h-100`}>
                   <FormCard
                     header={
                       <span
@@ -109,7 +120,9 @@ class ResourcesContainer extends Component {
           {resources.length > 0 ? (
             <Route
               path={`${match.path}/:formAlias/connections`}
-              render={props => <ConnectionsContainer {...props} resources={resources} />}
+              render={props => (
+                <ConnectionsContainer {...props} resources={resources} />
+              )}
             />
           ) : null}
           <Route
@@ -125,7 +138,9 @@ class ResourcesContainer extends Component {
           />
           <Route
             path={`${match.path}/:formAlias`}
-            render={props => <Resource {...props} key={cuid()} location={location} />}
+            render={props => (
+              <Resource {...props} key={cuid()} location={location} />
+            )}
           />
           />
         </Switch>

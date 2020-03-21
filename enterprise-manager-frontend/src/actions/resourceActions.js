@@ -34,9 +34,11 @@ export const addResource = resource => {
 
 export const fetchResources = organizationId => {
   return dispatch => {
-    fetch(`/api/v1/organizations/${organizationId}/forms`)
+    return fetch(`/api/v1/organizations/${organizationId}/forms`)
       .then(response => response.json())
-      .then(resources => resources.data.map(resource => camelcaseKeys(resource.attributes)))
+      .then(resources =>
+        resources.data.map(resource => camelcaseKeys(resource.attributes))
+      )
       .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }))
       .catch(console.log);
   };
@@ -45,14 +47,17 @@ export const fetchResources = organizationId => {
 export const updateResource = (resource, organizationId, resourceId) => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
-    return fetch(`/api/v1/organizations/${organizationId}/forms/${resourceId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({ form: { ...resource } })
-    })
+    return fetch(
+      `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify({ form: { ...resource } })
+      }
+    )
       .then(response => response.json())
       .then(resource => {
         if (!resource.errors) {
@@ -76,9 +81,12 @@ export const updateResource = (resource, organizationId, resourceId) => {
 
 export const removeResource = (organizationId, resourceId) => {
   return dispatch => {
-    return fetch(`/api/v1/organizations/${organizationId}/forms/${resourceId}`, {
-      method: "DELETE"
-    })
+    return fetch(
+      `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
+      {
+        method: "DELETE"
+      }
+    )
       .then(response => response.json())
       .then(resource => camelcaseKeys(resource))
       .then(resource =>

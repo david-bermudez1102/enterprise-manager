@@ -7,8 +7,8 @@ import { NoContent } from "../NoContent";
 
 const pluralize = require("pluralize");
 
-const ResourcesList = ({ match, resources, location, history }) => {
-  if (resources.length === 0) {
+const ResourcesList = ({ loaded, match, resources, location, history }) => {
+  if (resources.length === 0 && loaded) {
     return (
       <>
         <NoContent>
@@ -63,7 +63,9 @@ const ResourcesList = ({ match, resources, location, history }) => {
                   <span
                     className="badge badge-secondary shadow-sm"
                     style={{ minWidth: "60px" }}
-                    title={`${resource.recordsCount} ${pluralize(resource.name)}`}>
+                    title={`${resource.recordsCount} ${pluralize(
+                      resource.name
+                    )}`}>
                     <i className="fas fa-list-ul"></i> {resource.recordsCount}
                   </span>
                 </button>
@@ -72,7 +74,9 @@ const ResourcesList = ({ match, resources, location, history }) => {
                 to={`${match.url}/${resource.formAlias}/edit`}
                 style={{ color: "inherit" }}
                 onClick={e => e.stopPropagation()}>
-                <button className="btn btn-transparent" style={{ color: "inherit" }}>
+                <button
+                  className="btn btn-transparent"
+                  style={{ color: "inherit" }}>
                   <i className="fas fa-cog"></i>
                 </button>
               </Link>

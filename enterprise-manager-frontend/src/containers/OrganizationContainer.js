@@ -11,10 +11,14 @@ import AllRecordsContainer from "./Records/AllRecordsContainer";
 import { FormCard } from "../components/Cards/Cards";
 
 class OrganizationContainer extends Component {
+  state = { loaded: false };
+
   componentDidMount() {
     const { organizations, fetchResources } = this.props;
     return organizations.length > 0
-      ? fetchResources(organizations[0].id)
+      ? fetchResources(organizations[0].id).then(() =>
+          this.setState({ loaded: true })
+        )
       : null;
   }
 
@@ -24,7 +28,10 @@ class OrganizationContainer extends Component {
       prevProps.organizations !== this.props.organizations
     ) {
       const { organizations, admins, history, fetchResources } = this.props;
-      if (organizations.length > 0) fetchResources(organizations[0].id);
+      if (organizations.length > 0)
+        fetchResources(organizations[0].id).then(() =>
+          this.setState({ loaded: true })
+        );
       return organizations.length > 0 && admins.length === 0
         ? history.push("/accounts/new")
         : null;
@@ -33,6 +40,7 @@ class OrganizationContainer extends Component {
 
   render() {
     const { match, addOrganization, resources, organizations } = this.props;
+    const { loaded } = this.state;
     return (
       <Switch>
         <Route
@@ -76,7 +84,11 @@ class OrganizationContainer extends Component {
         <Route
           path={`${match.path}/:organizationId/records`}
           render={props => (
-            <AllRecordsContainer {...props} resources={resources} />
+            <AllRecordsContainer
+              {...props}
+              resources={resources}
+              loaded={loaded}
+            />
           )}
         />
         <Route

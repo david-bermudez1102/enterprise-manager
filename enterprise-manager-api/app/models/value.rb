@@ -2,6 +2,7 @@ class Value < ApplicationRecord
   belongs_to :field, optional: true
   belongs_to :record_field, optional: true
   belongs_to :record
+  has_one :form, through: :record
   belongs_to :option, optional: true
   belongs_to :record_value, class_name:"Value", optional: true
   belongs_to :key_value, optional: true

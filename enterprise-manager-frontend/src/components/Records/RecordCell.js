@@ -20,7 +20,7 @@ class RecordCell extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.setState({ editing: false });
+    this.setState({ editing: false, valueId: e.target.dataId });
   };
 
   render() {
@@ -33,23 +33,25 @@ class RecordCell extends Component {
     const content = value.map(value => value.content)[0];
 
     return (
-      <td onDoubleClick={this.handleDoubleClick} className="position-relative">
+      <td onDoubleClick={this.handleDoubleClick}>
         {editing ? (
-          <form
-            onSubmit={this.handleSubmit}
-            className="m-0 w-100 position-absolute">
-            <input
-              className="p-0 m-0 overflow-hidden w-100"
-              style={{ border: 0, outline: 0 }}
-              name="newContent"
-              data-id={value.id}
-              type="text"
-              value={this.state.newContent || content}
-              onBlur={this.handleBlur}
-              onChange={this.handleChange}
-              autoFocus
-            />
-          </form>
+          <div className="position-relative w-100">
+            <form
+              onSubmit={this.handleSubmit}
+              className="m-0 w-100 position-absolute">
+              <input
+                className="p-0 m-0 overflow-hidden w-100"
+                style={{ border: 0, outline: 0 }}
+                name="newContent"
+                data-id={value.id}
+                type="text"
+                value={this.state.newContent || content}
+                onBlur={this.handleBlur}
+                onChange={this.handleChange}
+                autoFocus
+              />
+            </form>
+          </div>
         ) : (
           content
         )}

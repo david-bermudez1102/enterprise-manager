@@ -1,13 +1,25 @@
 import React, { Component } from "react";
 
 class RecordCell extends Component {
-  state = { editing: false };
+  constructor(props) {
+    super(props);
+    this.state = { editing: false, newContent: null };
+  }
 
   handleDoubleClick = () => {
     this.setState({ editing: true });
   };
 
   handleBlur = () => {
+    this.setState({ editing: false });
+  };
+
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
     this.setState({ editing: false });
   };
 
@@ -21,14 +33,23 @@ class RecordCell extends Component {
     const content = value.map(value => value.content)[0];
 
     return (
-      <td onDoubleClick={this.handleDoubleClick}>
+      <td onDoubleClick={this.handleDoubleClick} className="position-relative">
         {editing ? (
-          <input
-            type="text"
-            value={content}
-            onBlur={this.handleBlur}
-            autoFocus
-          />
+          <form
+            onSubmit={this.handleSubmit}
+            className="m-0 w-100 position-absolute">
+            <input
+              className="p-0 m-0 overflow-hidden w-100"
+              style={{ border: 0, outline: 0 }}
+              name="newContent"
+              data-id={value.id}
+              type="text"
+              value={this.state.newContent || content}
+              onBlur={this.handleBlur}
+              onChange={this.handleChange}
+              autoFocus
+            />
+          </form>
         ) : (
           content
         )}

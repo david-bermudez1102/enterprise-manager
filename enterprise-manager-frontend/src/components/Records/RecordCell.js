@@ -7,6 +7,10 @@ class RecordCell extends Component {
     this.setState({ editing: true });
   };
 
+  handleBlur = () => {
+    this.setState({ editing: false });
+  };
+
   render() {
     const { values, recordField, record } = this.props;
     const { editing } = this.state;
@@ -18,7 +22,16 @@ class RecordCell extends Component {
 
     return (
       <td onDoubleClick={this.handleDoubleClick}>
-        {editing ? content : content}
+        {editing ? (
+          <input
+            type="text"
+            value={content}
+            onBlur={this.handleBlur}
+            autoFocus
+          />
+        ) : (
+          content
+        )}
       </td>
     );
   }

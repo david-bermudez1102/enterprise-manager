@@ -54,9 +54,9 @@ class ProfileForm extends Component {
     const { avatarUrl, name, email, gender, avatarMarginLeft, avatarMarginTop } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
+        <div className="d-flex display-4 mb-0 align-items-center" style={{ fontSize: "40px" }}>
           <FileUploader
-            className="circular--landscape shadow bg-light"
+            className="circular--landscape shadow bg-light mr-2"
             size="150px"
             filePreview={avatarUrl}
             handleChange={this.handleAvatarChange}>
@@ -66,7 +66,9 @@ class ProfileForm extends Component {
               handleCoordinates={this.handleAvatarCoordinates}
             />
           </FileUploader>
+          <span>{name}</span>
         </div>
+        <hr />
         <div className="form-group">
           <label htmlFor="account_name">Your Name:</label>
           <input

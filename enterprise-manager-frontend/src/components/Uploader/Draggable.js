@@ -53,6 +53,11 @@ export default class Draggable extends Component {
       );
   };
 
+  handleWheel = e => {
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
   handleClick = e => {
     if (this.state.moved) {
       e.stopPropagation();
@@ -70,10 +75,12 @@ export default class Draggable extends Component {
         onMouseDown={this.handleMouseDown}
         onMouseMove={this.handleMouseMove}
         onMouseUp={this.handleMouseUp}
+        onWheel={this.handleWheel}
         onClick={this.handleClick}
         style={{
           marginLeft: x + "px",
-          marginTop: y + "px"
+          marginTop: y + "px",
+          cursor: this.state.dragging ? "move" : "pointer"
         }}>
         {children}
       </div>

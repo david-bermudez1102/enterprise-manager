@@ -42,7 +42,7 @@ export const updateAdmin = (admin, adminId) => {
           dispatch({ type: "UPDATE_SESSION", currentUser: camelcaseKeys(admin.data.attributes) });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: admin.messages
+            messages: admin.messages || ["Profile updated successfully."]
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: admin.errors });

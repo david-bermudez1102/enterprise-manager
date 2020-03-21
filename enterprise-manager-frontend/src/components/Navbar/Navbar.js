@@ -89,7 +89,7 @@ class Navbar extends Component {
                         <NavLink
                           to={link.path}
                           exact
-                          className="nav-link"
+                          className="nav-link text-dark"
                           activeClassName="active bg-light"
                           title={link.text}
                           onClick={this.collapse}>

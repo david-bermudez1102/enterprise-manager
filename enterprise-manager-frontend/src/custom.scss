@@ -13,7 +13,7 @@ $danger: #dc3545;
 $info: #0f81c7;
 $warning: #0de2ea;
 $light: #f4f6f9;
-$dark: #000000;
+$dark: #343a40;
 $spacer: 1rem;
 $border-width: 1px;
 $btn-border-radius: 0.25rem;
@@ -87,7 +87,6 @@ body {
   position: relative;
   overflow: hidden;
   border-radius: 50%;
-  cursor: move;
 }
 
 .circular--landscape img {

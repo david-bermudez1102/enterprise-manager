@@ -125,22 +125,23 @@ export default class SideBar extends Component {
     return (
       <CSSTransition in={!minimized} timeout={40} classNames="slider" appear>
         <div
-          className="pt-3 bg-secondary shadow text-light vh-100 sticky-top"
+          className="pt-0 bg-secondary shadow text-light vh-100 sticky-top"
           style={{ fontSize: "16px" }}>
           <nav
             className="px-0 py-0 nav nav-dark nav-pills flex-column h-100 d-flex"
             style={{ zIndex: 999 }}>
             <div className="" onMouseEnter={this.openSideBar} onMouseLeave={this.closeSideBar}>
               <div
-                className={`w-100 d-flex align-items-center flex-wrap text-nowrap px-3 justify-content-between`}>
+                className={`w-100 d-flex align-items-center flex-wrap text-nowrap px-2 justify-content-center`}
+                style={{ height: "60.59px" }}>
                 <span className="d-flex align-items-center">
-                  <Avatar minimized={minimized} currentUser={currentUser} size="30" />
+                  <Avatar minimized={minimized} currentUser={currentUser} size="35" />
                   <CSSTransition in={!minimized} timeout={50} classNames="fade" appear>
                     <span>{currentUser.name}</span>
                   </CSSTransition>
                 </span>
               </div>
-              <hr className="mb-0 w-100" style={{ background: "rgba(0,0,0,0.2)" }} />
+              <hr className="m-0 w-100" style={{ background: "rgba(0,0,0,0.2)" }} />
               <div className="px-2 py-2">
                 {links.map(link => (
                   <span key={cuid()}>
@@ -189,8 +190,8 @@ export default class SideBar extends Component {
                 ))}
               </div>
             </div>
-            <div className="d-flex align-self-end w-100 justify-content-center flex-wrap mt-auto mb-0">
-              <hr className="mb-0 w-100" style={{ background: "rgba(0,0,0,0.2)" }} />
+            <div className="text-center w-100 justify-content-center flex-wrap mt-auto mb-0">
+              <hr className="mb-0" />
               <button
                 className="btn btn-transparent btn-lg text-light shadow-none"
                 onClick={this.toggle}>

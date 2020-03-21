@@ -1,12 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { updateValue } from "../../actions/valueActions";
+import CellForm from "./CellForm";
 
 class RecordCell extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { editing: false, newContent: null };
-  }
+  state = { editing: false };
 
-  handleDoubleClick = () => {
+  handleClick = () => {
     this.setState({ editing: true });
   };
 
@@ -14,49 +14,33 @@ class RecordCell extends Component {
     this.setState({ editing: false });
   };
 
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    this.setState({ editing: false, valueId: e.target.dataId });
-  };
-
   render() {
-    const { values, recordField, record } = this.props;
+    const { values, recordField, record, updateValue, session } = this.props;
     const { editing } = this.state;
-    const value = values.filter(
+    const value = values.find(
       value =>
         value.recordFieldId === recordField.id && value.recordId === record.id
     );
-    const content = value.map(value => value.content)[0];
-
     return (
-      <td onDoubleClick={this.handleDoubleClick}>
+      <td onClick={this.handleClick}>
         {editing ? (
           <div className="position-relative w-100">
-            <form
-              onSubmit={this.handleSubmit}
-              className="m-0 w-100 position-absolute">
-              <input
-                className="p-0 m-0 overflow-hidden w-100"
-                style={{ border: 0, outline: 0 }}
-                name="newContent"
-                data-id={value.id}
-                type="text"
-                value={this.state.newContent || content}
-                onBlur={this.handleBlur}
-                onChange={this.handleChange}
-                autoFocus
-              />
-            </form>
+            <CellForm
+              value={value}
+              handleBlur={this.handleBlur}
+              updateValue={updateValue}
+              session={session}
+            />
           </div>
         ) : (
-          content
+          value.content
         )}
       </td>
     );
   }
 }
-export default RecordCell;
+
+const mapStateToProps = ({ session }) => {
+  return { session };
+};
+export default connect(mapStateToProps, { updateValue })(RecordCell);

@@ -49,102 +49,110 @@ class ResourcesContainer extends Component {
     const { organizationId } = match.params;
     const isFieldsPath = location.pathname.includes("fields");
     return (
-      <div className="row">
-        <div
-          className={`${
-            isFieldsPath ? "col-lg-4" : "col-lg-5"
-          } col-md-12 pr-0 min-h-100`}
-          style={{ maxHeight: "80vh" }}>
-          <div className="bg-light rounded p-2 h-100 shadow-sm">
-            <Alert />
-            <ResourcesList
-              match={match}
-              location={location}
-              history={history}
-              resources={resources}
-              organizationId={organizationId}
-              loaded={loaded}
-            />
+      <>
+        <Alert
+          className="sticky-top"
+          style={{
+            zIndex: 2,
+            width: "100%"
+          }}
+        />
+        <div className="row" style={{ zIndex: 1 }}>
+          <div
+            className={`${
+              isFieldsPath ? "col-lg-4" : "col-lg-5"
+            } col-md-12 pr-0 min-h-100`}
+            style={{ maxHeight: "80vh" }}>
+            <div className="bg-light rounded p-2 h-100 shadow-sm">
+              <ResourcesList
+                match={match}
+                location={location}
+                history={history}
+                resources={resources}
+                organizationId={organizationId}
+                loaded={loaded}
+              />
+            </div>
           </div>
-        </div>
-        <Switch>
-          <Route
-            path={`${match.path}/new`}
-            render={props => (
-              <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"}`}>
-                <FormCard
-                  header={
-                    <span
-                      className="card-title display-4 mb-0 text-primary"
-                      style={{ fontSize: "32px" }}>
-                      <i className="fas fa-layer-plus mr-2"></i>New Resource
-                    </span>
-                  }>
-                  <ResourceForm
-                    {...props}
-                    addResource={addResource}
-                    organizationId={organizationId}
-                  />
-                </FormCard>
-              </div>
-            )}
-          />
-          {resources.length > 0 ? (
+          <Switch>
             <Route
-              path={`${match.path}/:formAlias/edit`}
+              path={`${match.path}/new`}
               render={props => (
-                <div
-                  className={`${
-                    isFieldsPath ? "col-lg-4" : "col-lg-7"
-                  } min-h-100`}>
+                <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"}`}>
                   <FormCard
                     header={
                       <span
                         className="card-title display-4 mb-0 text-primary"
                         style={{ fontSize: "32px" }}>
-                        <i className="far fa-edit mr-2"></i>Edit Resource
+                        <i className="fas fa-layer-plus mr-2"></i>New Resource
                       </span>
                     }>
                     <ResourceForm
                       {...props}
-                      url={`${match.url}`}
-                      updateResource={updateResource}
+                      addResource={addResource}
                       organizationId={organizationId}
-                      resources={resources}
                     />
                   </FormCard>
                 </div>
               )}
             />
-          ) : null}
-          {resources.length > 0 ? (
+            {resources.length > 0 ? (
+              <Route
+                path={`${match.path}/:formAlias/edit`}
+                render={props => (
+                  <div
+                    className={`${
+                      isFieldsPath ? "col-lg-4" : "col-lg-7"
+                    } min-h-100`}>
+                    <FormCard
+                      header={
+                        <span
+                          className="card-title display-4 mb-0 text-primary"
+                          style={{ fontSize: "32px" }}>
+                          <i className="far fa-edit mr-2"></i>Edit Resource
+                        </span>
+                      }>
+                      <ResourceForm
+                        {...props}
+                        url={`${match.url}`}
+                        updateResource={updateResource}
+                        organizationId={organizationId}
+                        resources={resources}
+                      />
+                    </FormCard>
+                  </div>
+                )}
+              />
+            ) : null}
+            {resources.length > 0 ? (
+              <Route
+                path={`${match.path}/:formAlias/connections`}
+                render={props => (
+                  <ConnectionsContainer {...props} resources={resources} />
+                )}
+              />
+            ) : null}
             <Route
-              path={`${match.path}/:formAlias/connections`}
+              path={`${match.path}/:resourceId/delete`}
               render={props => (
-                <ConnectionsContainer {...props} resources={resources} />
+                <ResourceDelete
+                  {...props}
+                  redirectTo={`${match.url}`}
+                  organizationId={organizationId}
+                  removeResource={removeResource}
+                />
               )}
             />
-          ) : null}
-          <Route
-            path={`${match.path}/:resourceId/delete`}
-            render={props => (
-              <ResourceDelete
-                {...props}
-                redirectTo={`${match.url}`}
-                organizationId={organizationId}
-                removeResource={removeResource}
-              />
-            )}
-          />
-          <Route
-            path={`${match.path}/:formAlias`}
-            render={props => (
-              <Resource {...props} key={cuid()} location={location} />
-            )}
-          />
-          />
-        </Switch>
-      </div>
+            <Route
+              path={`${match.path}/:formAlias`}
+              render={props => (
+                <Resource {...props} key={cuid()} location={location} />
+              )}
+            />
+            />
+          </Switch>
+        </div>
+      </>
     );
   }
 }

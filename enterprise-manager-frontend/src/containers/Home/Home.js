@@ -38,7 +38,7 @@ const Home = ({
       <main
         className={`${
           !session.isLoggedIn ? "h-100" : ""
-        } w-100 bg-transparent p-4`}>
+        } w-100 bg-transparent p-4 position-relative`}>
         <Switch>
           <Route
             path={`/organizations`}

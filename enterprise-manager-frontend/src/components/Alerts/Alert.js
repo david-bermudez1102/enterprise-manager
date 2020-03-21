@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { CSSTransition } from 'react-transition-group';
-import './styles.css';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { CSSTransition } from "react-transition-group";
+import "./styles.css";
+import { connect } from "react-redux";
 
 class Alert extends Component {
   constructor(props) {
@@ -21,9 +21,9 @@ class Alert extends Component {
   }
 
   render() {
-    const { alerts } = this.props;
-    const error = alerts.find(alert => alert.type === 'error');
-    const success = alerts.find(alert => alert.type === 'success');
+    const { alerts, className, style } = this.props;
+    const error = alerts.find(alert => alert.type === "error");
+    const success = alerts.find(alert => alert.type === "success");
     if (success)
       return (
         <CSSTransition
@@ -32,12 +32,20 @@ class Alert extends Component {
           unmountOnExit
           classNames="fade"
           appear>
-          <div className="alert alert-success d-flex align-items-center">
+          <div
+            className={`alert alert-success shadow d-flex align-items-center justify-content-between ${className}`}
+            style={style}>
             <ul className="mb-0">
               {success.messages.map((message, id) => (
                 <li key={id}>{message}</li>
               ))}
             </ul>
+            <button
+              type="button"
+              className="close"
+              onClick={() => this.setState({ show: false })}>
+              &times;
+            </button>
           </div>
         </CSSTransition>
       );
@@ -49,16 +57,24 @@ class Alert extends Component {
           unmountOnExit
           classNames="fade"
           appear>
-          <div className="alert alert-danger d-flex align-items-center">
+          <div
+            className={`alert alert-danger d-flex align-items-center justify-content-between ${className}`}
+            style={style}>
             <ul className="mb-0">
               {error.messages.map((message, id) => (
                 <li key={id}>{message}</li>
               ))}
             </ul>
+            <button
+              type="button"
+              className="close"
+              onClick={() => this.setState({ show: false })}>
+              &times;
+            </button>
           </div>
         </CSSTransition>
       );
-    else return <></>;
+    else return null;
   }
 }
 

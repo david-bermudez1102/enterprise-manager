@@ -78,17 +78,17 @@ class OrganizationContainer extends Component {
         <Route
           path={`${match.path}/:organizationId/resources`}
           render={props => (
-            <ResourcesContainer {...props} resources={resources} />
+            <ResourcesContainer
+              {...props}
+              resources={resources}
+              loaded={loaded}
+            />
           )}
         />
         <Route
           path={`${match.path}/:organizationId/records`}
           render={props => (
-            <AllRecordsContainer
-              {...props}
-              resources={resources}
-              loaded={loaded}
-            />
+            <AllRecordsContainer {...props} resources={resources} />
           )}
         />
         <Route

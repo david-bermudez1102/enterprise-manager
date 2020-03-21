@@ -9,7 +9,7 @@ export const valuesReducer = (state = [], action) => {
       ];
 
     case "UPDATE_VALUE":
-      return [...state].values.map(value =>
+      return [...state].map(value =>
         value.id === parseInt(action.value.id) ? action.value : value
       );
 

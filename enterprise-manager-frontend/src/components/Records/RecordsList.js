@@ -25,10 +25,19 @@ class RecordsList extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { values, records } = this.props;
     const { sortBy, orders } = this.state;
-    if (prevProps.values !== values || prevState.sortBy !== sortBy || prevState.orders !== orders) {
+    if (
+      prevProps.values !== values ||
+      prevState.sortBy !== sortBy ||
+      prevState.orders !== orders
+    ) {
       const order = orders.find(order => order.recordFieldId === sortBy);
       this.setState({
-        sortedRecords: this.sortBy(sortBy, records, values, order ? order.ascendant : false)
+        sortedRecords: this.sortBy(
+          sortBy,
+          records,
+          values,
+          order ? order.ascendant : false
+        )
       });
     }
   }
@@ -69,9 +78,10 @@ class RecordsList extends Component {
   render() {
     const { records, recordFields, resource, values } = this.props;
     const { sortedRecords } = this.state;
-    console.log(recordFields);
     return (
-      <table className="table table-sm w-100 mb-0 table-hover border-0" ref={this.recordsOptions}>
+      <table
+        className="table table-sm w-100 mb-0 table-hover border-0"
+        ref={this.recordsOptions}>
         <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />
         <tbody>
           {sortedRecords && sortedRecords.length > 0

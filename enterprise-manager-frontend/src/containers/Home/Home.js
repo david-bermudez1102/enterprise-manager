@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import SideBar from "../../components/Home/SideBar/SideBar";
 import Navbar from "../../components/Navbar/Navbar";
@@ -10,7 +10,14 @@ import AccountsContainer from "../Accounts/AccountsContainer";
 import ZohoBooks from "../ZohoBooks/ZohoBooks";
 import Footer from "../../components/Footer/Footer";
 
-const Home = ({ location, organizations, admins, addSession, removeSession, session }) => (
+const Home = ({
+  location,
+  organizations,
+  admins,
+  addSession,
+  removeSession,
+  session
+}) => (
   <div className="w-100 d-flex flex-grow-1">
     {organizations.length === 0 ? (
       <Redirect to="/organizations/new" />
@@ -18,15 +25,30 @@ const Home = ({ location, organizations, admins, addSession, removeSession, sess
       <Redirect to="/accounts/new" />
     ) : null}
     {session.isLoggedIn ? (
-      <SideBar session={session} location={location} organizations={organizations} />
+      <SideBar
+        session={session}
+        location={location}
+        organizations={organizations}
+      />
     ) : null}
     <div className="w-100 d-flex flex-column min-h-100 flex-wrap">
-      {session.isLoggedIn ? <Navbar session={session} organizations={organizations} /> : null}
-      <main className={`${!session.isLoggedIn ? "h-100" : ""} w-100 bg-transparent p-4`}>
+      {session.isLoggedIn ? (
+        <Navbar session={session} organizations={organizations} />
+      ) : null}
+      <main
+        className={`${
+          !session.isLoggedIn ? "h-100" : ""
+        } w-100 bg-transparent p-4`}>
         <Switch>
           <Route
             path={`/organizations`}
-            render={props => <OrganizationContainer session={session} admins={admins} {...props} />}
+            render={props => (
+              <OrganizationContainer
+                session={session}
+                admins={admins}
+                {...props}
+              />
+            )}
           />
           <Route
             path={`/login`}

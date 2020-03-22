@@ -38,7 +38,7 @@ class CheckBoxField extends Component {
               id="checkbox_field"
               value="checkbox"
               onChange={this.handleChange}
-              defaultChecked={fieldType === "checkbox" ? true : false}
+              checked={fieldType === "checkbox" ? true : false}
             />
             <label htmlFor="checkbox_field" className="form-check-label">
               Checkbox Set <i className="fad fa-check-square text-primary"></i>

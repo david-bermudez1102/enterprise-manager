@@ -42,9 +42,9 @@ class Field extends Component {
       case "selectable":
         inputField = (
           <select
-            className="form-control rounded-pill"
+            className="form-control form-control-sm rounded-pill"
             name={recordField.id}
-            id={field.name}
+            id={field.fieldAlias}
             placeholder={`Enter ${field.name}`}
             onChange={this.handleChange}
             value={this.state.value}
@@ -129,10 +129,10 @@ class Field extends Component {
       default:
         inputField = (
           <input
-            className="form-control rounded-pill"
+            className="form-control form-control-sm rounded-pill"
             type={field.fieldType}
             name={recordField.id}
-            id={field.name}
+            id={field.fieldAlias}
             placeholder={`Enter ${this.fieldName()}`}
             onChange={this.handleChange}
             value={this.state.value}

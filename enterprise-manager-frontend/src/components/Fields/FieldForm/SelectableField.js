@@ -19,7 +19,7 @@ const SelectableField = ({
             id="selectable_field"
             value="selectable"
             onChange={handleChange}
-            defaultChecked={fieldType === "selectable" ? true : false}
+            checked={fieldType === "selectable" ? true : false}
           />
           <label htmlFor="selectable_field" className="form-check-label">
             <i className="fad fa-chevron-square-down"></i> Selectable Field

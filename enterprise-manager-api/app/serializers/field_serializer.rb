@@ -1,6 +1,7 @@
 class FieldSerializer
   include FastJsonapi::ObjectSerializer
-  attributes :id, :name, :field_type, :form_id, :record_key
+  attributes :id, :name, :field_type, :form_id, :record_key, :field_alias
+
   attribute :key_values do  |field|
     if field.record_key 
       key_values = KeyValueSerializer.new(field.record_key.key_values).serializable_hash[:data]

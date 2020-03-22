@@ -38,7 +38,7 @@ class RadioField extends Component {
               id="radio_field"
               value="radio"
               onChange={this.handleChange}
-              defaultChecked={fieldType === "radio" ? true : false}
+              checked={fieldType === "radio" ? true : false}
             />
             <label htmlFor="radio_field" className="form-check-label">
               Radio Field <i className="fad fa-circle text-primary"></i>

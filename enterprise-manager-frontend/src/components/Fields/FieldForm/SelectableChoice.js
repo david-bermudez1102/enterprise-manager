@@ -49,7 +49,7 @@ class SelectableChoice extends Component {
             name="choice"
             value="connect"
             onChange={this.handleChange}
-            defaultChecked={this.state.choice === "connect" ? true : false}
+            checked={this.state.choice === "connect" ? true : false}
           />
           <label htmlFor="selectable_field" className="form-check-label">
             Connect to a Resource

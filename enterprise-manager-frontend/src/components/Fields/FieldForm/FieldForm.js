@@ -68,7 +68,6 @@ export default class FieldForm extends Component {
     if (updateField) updateField(this.state, organizationId, field.id);
     if (addField)
       this.setState({
-        ...this.state,
         field_type: "",
         name: ""
       });
@@ -82,7 +81,7 @@ export default class FieldForm extends Component {
         <div className="form-group">
           <label htmlFor="field_name">Field Name:</label>
           <input
-            className="form-control"
+            className="form-control form-control-sm rounded-pill"
             type="text"
             name="name"
             id="field_name"

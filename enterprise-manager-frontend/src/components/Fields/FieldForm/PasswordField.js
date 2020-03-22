@@ -27,7 +27,7 @@ const PasswordField = ({
               []
             );
           }}
-          defaultChecked={fieldType === "password" ? true : false}
+          checked={fieldType === "password" ? true : false}
         />
         <label htmlFor="password_field" className="form-check-label">
           Password Field{" "}

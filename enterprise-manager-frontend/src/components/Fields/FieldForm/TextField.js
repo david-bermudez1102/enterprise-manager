@@ -8,6 +8,7 @@ const TextField = ({
   handleSelectableChange,
   selectableResourceAttributes
 }) => {
+  console.log(fieldType === "text");
   return (
     <div className="col-auto order-first my-auto">
       <div className="form-check form-check-inline">
@@ -27,7 +28,7 @@ const TextField = ({
               []
             );
           }}
-          defaultChecked={fieldType === "text" ? true : false}
+          checked={fieldType === "text" ? true : false}
         />
         <label htmlFor="text_field" className="form-check-label">
           Text Field{" "}

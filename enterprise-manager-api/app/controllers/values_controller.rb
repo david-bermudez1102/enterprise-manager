@@ -46,11 +46,11 @@ class ValuesController < ApplicationController
   end
 
   def set_record_field
-    @record_field = @form.record_fields.find_by(id: params[:record_field_id])
+    @record_field = @form.record_fields.find_by(id: value_params[:record_field_id])
   end
 
   def set_record
-    @record = @form.records.find_by(id: params[:record_id])
+    @record = @form.records.find_by(id: value_params[:record_id])
   end
 
   def set_value

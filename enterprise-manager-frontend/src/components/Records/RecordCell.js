@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateValue } from "../../actions/valueActions";
+import { addValue, updateValue } from "../../actions/valueActions";
 import CellForm from "./CellForm";
 
 class RecordCell extends Component {
@@ -15,7 +15,14 @@ class RecordCell extends Component {
   };
 
   render() {
-    const { values, recordField, record, updateValue, session } = this.props;
+    const {
+      values,
+      recordField,
+      record,
+      addValue,
+      updateValue,
+      session
+    } = this.props;
     const { editing } = this.state;
     const value = values.filter(
       value =>
@@ -39,7 +46,7 @@ class RecordCell extends Component {
                 recordFieldId={recordField.id}
                 recordId={record.id}
                 handleBlur={this.handleBlur}
-                addValue={updateValue}
+                addValue={addValue}
                 session={session}
               />
             )}
@@ -55,4 +62,4 @@ class RecordCell extends Component {
 const mapStateToProps = ({ session }) => {
   return { session };
 };
-export default connect(mapStateToProps, { updateValue })(RecordCell);
+export default connect(mapStateToProps, { addValue, updateValue })(RecordCell);

@@ -24,9 +24,9 @@ export default class CellForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { updateValue } = this.props;
-    if (this.state.content !== this.props.value.content)
-      updateValue(this.state);
+    const { addValue, updateValue, value } = this.props;
+    if (value && this.state.content !== value.content) updateValue(this.state);
+    if (!value && addValue) addValue(this.state);
   };
 
   render() {

@@ -8,7 +8,7 @@ const AvatarUploader = ({ filePreview, handleCoordinates, x, y }) =>
       <img src={filePreview} />
     </Draggable>
   ) : (
-    <img src={defaultAvatar} width="100%" />
+    <img src={defaultAvatar} width="100%" style={{ cursor: "pointer" }} />
   );
 
 export default AvatarUploader;

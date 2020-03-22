@@ -17,23 +17,35 @@ class RecordCell extends Component {
   render() {
     const { values, recordField, record, updateValue, session } = this.props;
     const { editing } = this.state;
-    const value = values.find(
+    const value = values.filter(
       value =>
         value.recordFieldId === recordField.id && value.recordId === record.id
     );
+    const content = value.map(value => value.content)[0];
     return (
       <td onClick={this.handleClick}>
         {editing ? (
           <div className="position-relative w-100">
-            <CellForm
-              value={value}
-              handleBlur={this.handleBlur}
-              updateValue={updateValue}
-              session={session}
-            />
+            {value[0] ? (
+              <CellForm
+                value={value[0]}
+                handleBlur={this.handleBlur}
+                updateValue={updateValue}
+                session={session}
+              />
+            ) : (
+              <CellForm
+                formId={record.formId}
+                recordFieldId={recordField.id}
+                recordId={record.id}
+                handleBlur={this.handleBlur}
+                addValue={updateValue}
+                session={session}
+              />
+            )}
           </div>
         ) : (
-          value.content
+          content
         )}
       </td>
     );

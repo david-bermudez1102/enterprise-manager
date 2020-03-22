@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import snakecaseKeys from "snakecase-keys";
 
 export default class CellForm extends Component {
   constructor(props) {
     super(props);
-    const { value, session } = props;
+    const { value, formId, recordId, recordFieldId, session } = props;
     this.state = {
-      content: value.content,
-      id: value.id,
-      formId: value.formId,
-      organizationId: session.currentUser.organization_id
+      content: value ? value.content : "",
+      id: value ? value.id : undefined,
+      formId: value ? value.formId : formId,
+      recordId: recordId || undefined,
+      recordFieldId: recordFieldId || undefined,
+      organizationId: session.currentUser.organizationId
     };
   }
 

@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
-import ZohoBooksForm from '../Integrations/ZohoBooksForm';
-import { connect } from 'react-redux';
-import { updateOrganization } from '../../actions/organizationAction';
-import { FormCard } from '../Cards/Cards';
-import { NoContent } from '../NoContent';
-import Alert from '../Alerts/Alert';
+import React, { Component } from "react";
+import { Switch, Route, Link } from "react-router-dom";
+import ZohoBooksForm from "../Integrations/ZohoBooksForm";
+import { connect } from "react-redux";
+import { updateOrganization } from "../../actions/organizationAction";
+import { FormCard } from "../Cards/Cards";
+import { NoContent } from "../NoContent";
+import zohoBooksIcon from "../../containers/ZohoBooks/favicon.ico";
+import Alert from "../Alerts/Alert";
 
 class Integrations extends Component {
   render() {
     const { match, organization, session, updateOrganization } = this.props;
     const { zohoIntegration, quickbooksIntegration } = organization;
     const currentlyConnectedTo = [];
-    if (zohoIntegration) currentlyConnectedTo.push('Zoho Books');
-    if (quickbooksIntegration) currentlyConnectedTo.push('QuickBooks');
+    if (zohoIntegration) currentlyConnectedTo.push("Zoho Books");
+    if (quickbooksIntegration) currentlyConnectedTo.push("QuickBooks");
     return (
       <div>
         {!zohoIntegration && !quickbooksIntegration ? (
@@ -23,17 +24,17 @@ class Integrations extends Component {
         ) : (
           <div className="alert alert-primary shadow-sm">
             <i className="fas fa-info-circle mr-2"></i>
-            This organization is currently connected to{' '}
-            {currentlyConnectedTo.join(' and ')}.
+            This organization is currently connected to{" "}
+            {currentlyConnectedTo.join(" and ")}.
           </div>
         )}
         <div className="alert alert-light d-flex justify-content-around shadow-sm rounded">
           <Link to={`${match.url}/zoho_books/edit`}>
             <button className="btn btn-info shadow">
               <img
-                src="https://books.zoho.com/favicon.ico"
+                src={zohoBooksIcon}
                 className="pr-1"
-                style={{ width: '24px' }}
+                style={{ width: "24px" }}
                 alt="Connect with ZohoBooks"
               />
               Connect to Zoho Books
@@ -43,7 +44,7 @@ class Integrations extends Component {
             <button className="btn btn-info shadow">
               <img
                 src="https://quickbooks.intuit.com/etc/designs/harmony/images/favicon/quickbooks/apple-touch-icon-60x60.png"
-                style={{ width: '24px' }}
+                style={{ width: "24px" }}
                 className="pr-1"
                 alt="Connect with QuickBooks"
               />
@@ -69,7 +70,7 @@ class Integrations extends Component {
                     <>
                       <span
                         className="display-4 card-title mb-0"
-                        style={{ fontSize: '32px' }}>
+                        style={{ fontSize: "32px" }}>
                         Connect to Zoho
                       </span>
                       <Link

@@ -2,10 +2,6 @@ import React, { Component } from "react";
 import cuid from "cuid";
 
 class ConnectionsList extends Component {
-  constructor() {
-    super();
-  }
-
   render() {
     const { resource } = this.props;
     const connections = [

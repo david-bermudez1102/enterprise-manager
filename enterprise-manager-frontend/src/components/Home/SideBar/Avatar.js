@@ -19,11 +19,16 @@ const Avatar = ({ currentUser, size }) => {
           <img
             src={`http://localhost:3001/${currentUser.avatar.url}`}
             alt={currentUser.name}
+            title={currentUser.name}
             className="d-flex"
           />
         </div>
       ) : (
-        <img src={defaultAvatar} />
+        <img
+          src={defaultAvatar}
+          alt={currentUser.name}
+          title={currentUser.name}
+        />
       )}
     </div>
   );

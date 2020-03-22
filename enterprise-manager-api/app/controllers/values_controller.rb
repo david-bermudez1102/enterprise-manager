@@ -34,7 +34,7 @@ class ValuesController < ApplicationController
   private
 
   def value_params
-    params.require(:value).permit(:content, :record_id, :record_field_id)
+    params.require(:value).permit(:content, :record_id, :record_field_id, :option_id, :record_value_id, checkbox_options_attributes:[:option_id])
   end
 
   def set_organization

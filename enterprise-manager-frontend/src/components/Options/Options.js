@@ -78,4 +78,4 @@ export default class Options extends Component {
   }
 }
 
-Options.defaultProps = { fontSize: "18px" };
+Options.defaultProps = { fontSize: "14px" };

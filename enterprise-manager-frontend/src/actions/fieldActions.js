@@ -2,6 +2,7 @@ const camelcaseKeys = require("camelcase-keys");
 
 export const addField = (field, organizationId) => {
   return dispatch => {
+    dispatch({ type: "CLEAR_ALERTS" });
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${field.form_id}/fields`,
       {
@@ -13,11 +14,22 @@ export const addField = (field, organizationId) => {
       }
     )
       .then(response => response.json())
-      .then(field => camelcaseKeys(field.data.attributes))
       .then(f => {
-        dispatch({ type: "ADD_FIELD", field: f });
-        return { ...field, field_id: f.id };
-      });
+        if (!f.errors) {
+          dispatch({
+            type: "ADD_FIELD",
+            field: camelcaseKeys(f.data.attributes)
+          });
+          dispatch({
+            type: "ADD_MESSAGES",
+            messages: f.messages || ["Field added successfully."]
+          });
+          return { ...field, field_id: f.data.id };
+        } else {
+          dispatch({ type: "ADD_ERRORS", errors: f.errors });
+        }
+      })
+      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp.errors }));
   };
 };
 
@@ -32,6 +44,7 @@ export const fetchFields = (organizationId, formId) => {
 
 export const updateField = (field, organizationId, fieldId) => {
   return dispatch => {
+    dispatch({ type: "CLEAR_ALERTS" });
     fetch(
       `/api/v1/organizations/${organizationId}/forms/${field.form_id}/fields/${fieldId}`,
       {
@@ -39,12 +52,22 @@ export const updateField = (field, organizationId, fieldId) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ field: { ...field } })
+        body: JSON.stringify({ field })
       }
     )
       .then(response => response.json())
-      .then(field => camelcaseKeys(field.data.attributes))
-      .then(field => dispatch({ type: "UPDATE_FIELD", fieldId, field }));
+      .then(field => {
+        if (!field.errors) {
+          dispatch({ type: "UPDATE_FIELD", fieldId, field });
+          dispatch({
+            type: "ADD_MESSAGES",
+            messages: field.messages || ["Field updated successfully."]
+          });
+        } else {
+          dispatch({ type: "ADD_ERRORS", errors: field.errors });
+        }
+      })
+      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp.errors }));
   };
 };
 

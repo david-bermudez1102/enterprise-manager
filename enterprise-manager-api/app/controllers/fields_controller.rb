@@ -4,7 +4,7 @@ class FieldsController < ApplicationController
   def create
     field = @form.fields.build(field_params)
     if field.save
-      render(json: FieldSerializer.new(field))
+      render(json: FieldSerializer.new(field, messages: ["Field added with success."]))
     else
       render json: { errors: field.errors.full_messages }
     end
@@ -22,7 +22,11 @@ class FieldsController < ApplicationController
 
   def update
     field = @form.fields.find_by(id: params[:id])
-    render json: FieldSerializer.new(field) if field.update(field_params)
+    if field.update(field_params)
+      render json: FieldSerializer.new(field, messages: ["Field updated with success."])
+    else
+      render json: { errors: field.errors.full_messages }
+    end
   end
 
   def destroy

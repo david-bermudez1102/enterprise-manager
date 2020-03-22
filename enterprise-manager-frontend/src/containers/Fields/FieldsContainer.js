@@ -26,10 +26,9 @@ class FieldsContainer extends Component {
     return (
       <>
         <div
-          className={`${
-            isFieldsPath ? "col-lg-4 pr-0" : "col-lg-7"
-          } min-h-100`}>
-          <div className="card border-0 shadow-sm">
+          className={`${isFieldsPath ? "col-lg-4 pr-0" : "col-lg-7"} min-h-100`}
+          style={{ maxHeight: "80vh" }}>
+          <div className="card border-0 shadow-sm h-100">
             <FieldsList
               match={match}
               resource={resource}

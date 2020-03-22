@@ -70,7 +70,7 @@ class FieldsList extends Component {
       <>
         <CardHeader>
           <span
-            className="card-title display-4 mb-0  text-primary"
+            className="card-title display-4 mb-0 text-primary"
             style={{ fontSize: "32px" }}>
             <i className="fas fa-folder-plus mr-2"></i>
             Add {pluralize.singular(resource.name)}
@@ -97,10 +97,10 @@ class FieldsList extends Component {
                   alt="Connect with ZohoBooks"
                 />
               </button>
-            </Link>{" "}
+            </Link>
           </span>
         </CardHeader>
-        <CardBody>
+        <CardBody className="scroller">
           {fields.filter(field => field.formId === resource.id).length > 0 ? (
             <form onSubmit={this.handleSubmit}>
               {fields.map((field, index) => {

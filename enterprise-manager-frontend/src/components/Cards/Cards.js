@@ -14,8 +14,8 @@ export const CardHeader = ({ children }) => (
   </div>
 );
 
-export const CardBody = ({ children }) => (
-  <div className="card-body">{children}</div>
+export const CardBody = ({ className, children }) => (
+  <div className={`card-body ${className}`}>{children}</div>
 );
 export const CardFooter = ({ children }) => (
   <div className="card-footer">{children}</div>

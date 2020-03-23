@@ -61,16 +61,16 @@ export default class FieldForm extends Component {
       field
     } = this.props;
     event.preventDefault();
-    if (addField)
+    if (addField) {
       addField(this.state, organizationId).then(field =>
-        addRecordField(field, organizationId)
+        field ? addRecordField(field, organizationId) : null
       );
-    if (updateField) updateField(this.state, organizationId, field.id);
-    if (addField)
       this.setState({
         field_type: "",
         name: ""
       });
+    }
+    if (updateField) updateField(this.state, organizationId, field.id);
   };
 
   render() {

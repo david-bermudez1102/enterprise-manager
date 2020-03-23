@@ -95,7 +95,7 @@ export default class RecordsHeader extends Component {
               order => order.recordFieldId === field.id
             );
             return field.formId === resource.id ? (
-              <th key={cuid()}>
+              <th key={cuid()} className="text-nowrap">
                 <span className="d-flex w-100 align-items-center">
                   <button
                     className="btn btn-transparent px-0 pr-1 shadow-none text-primary"

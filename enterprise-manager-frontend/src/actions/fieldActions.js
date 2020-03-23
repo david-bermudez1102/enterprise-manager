@@ -58,10 +58,14 @@ export const updateField = (field, organizationId, fieldId) => {
       .then(response => response.json())
       .then(field => {
         if (!field.errors) {
-          dispatch({ type: "UPDATE_FIELD", fieldId, field });
+          dispatch({
+            type: "UPDATE_FIELD",
+            fieldId,
+            field: camelcaseKeys(field.data.attributes)
+          });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: field.messages || ["Field updated successfully."]
+            messages: field.data.messages || ["Field updated successfully."]
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: field.errors });

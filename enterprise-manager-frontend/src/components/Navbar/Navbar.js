@@ -71,7 +71,10 @@ class Navbar extends Component {
         <NavLink to="#" className="navbar-brand">
           <Logo organization={organizations[0]} />
         </NavLink>
-        <button className="navbar-toggler" type="button" onClick={this.collapse}>
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={this.collapse}>
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className={collapseClassName} id="navbarNav">

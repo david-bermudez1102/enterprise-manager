@@ -80,7 +80,7 @@ class RecordsList extends Component {
     const { sortedRecords } = this.state;
     return (
       <table
-        className="table table-sm w-100 mb-0 table-hover border-0"
+        className="table table-sm mb-0 table-hover border-0"
         ref={this.recordsOptions}>
         <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />
         <tbody>

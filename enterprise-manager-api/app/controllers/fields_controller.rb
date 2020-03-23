@@ -11,7 +11,7 @@ class FieldsController < ApplicationController
   end
 
   def index
-    fields = @form.fields
+    fields = @form.fields.includes(:record_key => :key_values)
     render json: FieldSerializer.new(fields)
   end
 

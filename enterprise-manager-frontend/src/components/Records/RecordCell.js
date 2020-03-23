@@ -30,7 +30,7 @@ class RecordCell extends Component {
     );
     const content = value.map(value => value.content)[0];
     return (
-      <td onClick={this.handleClick}>
+      <td onClick={this.handleClick} className="text-nowrap">
         {editing ? (
           <div className="position-relative w-100">
             {value[0] ? (

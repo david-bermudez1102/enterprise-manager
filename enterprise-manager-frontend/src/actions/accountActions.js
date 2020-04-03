@@ -80,12 +80,12 @@ export const removeAccount = (accountId, type) => {
       .then(account => {
         if (!account.errors) {
           dispatch({
-            type,
-            accountId
-          });
-          dispatch({
             type: "ADD_MESSAGES",
             messages: account.messages || ["Account was deleted with success."]
+          });
+          return dispatch({
+            type,
+            accountId
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: account.errors });

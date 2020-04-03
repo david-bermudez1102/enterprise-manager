@@ -2,6 +2,7 @@ import React from "react";
 import Avatar from "../Home/SideBar/Avatar";
 import IconWrapper from "../Icons/IconWrapper";
 import cuid from "cuid";
+import { Link } from "react-router-dom";
 
 const capitalize = require("capitalize");
 
@@ -16,7 +17,7 @@ const menuIcons = [
   { title: "", className: "fas fa-power-off" },
   { title: "", className: "fas fa-unlock" },
   { title: "", className: "fas fa-pen" },
-  { title: "", className: "fas fa-user-times", path: `` }
+  { title: "", className: "fas fa-user-times", action: "delete" }
 ];
 
 const Account = ({ account }) => {
@@ -43,7 +44,11 @@ const Account = ({ account }) => {
       <span className={classNames.secondCol} style={{ fontSize: "18px" }}>
         {menuIcons.map(icon => (
           <IconWrapper size="30px" key={cuid()}>
-            <i {...icon}></i>
+            <Link
+              to={`/accounts/${account.id}/${icon.action}`}
+              className="text-light">
+              <i {...icon}></i>
+            </Link>
           </IconWrapper>
         ))}
       </span>

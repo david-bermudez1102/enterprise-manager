@@ -69,7 +69,6 @@ class AccountsContainer extends Component {
                   <AccountDelete
                     {...props}
                     removeAccount={removeAccount}
-                    redirectTo={"/accounts"}
                     accounts={accounts}
                   />
                 )}

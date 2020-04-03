@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 
-export default class AccountDelete extends Component {
+class AccountDelete extends Component {
   constructor() {
     super();
     this.state = { status: "deleting" };
   }
 
   componentDidMount() {
-    const { match, type, removeAccount } = this.props;
-    removeAccount(match.params.accountId, type).then(action =>
+    const { match, accounts, removeAccount } = this.props;
+    console.log(accounts);
+    const type = accounts
+      .find(acc => acc.id === parseInt(match.params.accountId))
+      .type.toUpperCase();
+    removeAccount(match.params.accountId, `REMOVE_${type}`).then(action =>
       this.setState({ status: action ? action.status : "deleted" })
     );
   }
@@ -21,3 +25,5 @@ export default class AccountDelete extends Component {
     ) : null;
   }
 }
+
+export default AccountDelete;

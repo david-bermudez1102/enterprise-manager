@@ -71,9 +71,9 @@ export const fetchManagers = adminId => {
   };
 };
 
-export const deleteAccount = (accountId, type) => {
+export const removeAccount = (accountId, type) => {
   return dispatch => {
-    fetch(`/api/v1/accounts/${accountId}`, {
+    return fetch(`/api/v1/accounts/${accountId}`, {
       method: "DELETE"
     })
       .then(response => response.json())
@@ -81,7 +81,7 @@ export const deleteAccount = (accountId, type) => {
         if (!account.errors) {
           dispatch({
             type,
-            account: account.data.attributes
+            accountId
           });
           dispatch({
             type: "ADD_MESSAGES",

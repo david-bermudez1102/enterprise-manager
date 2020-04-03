@@ -16,13 +16,15 @@ const menuIcons = [
   { title: "", className: "fas fa-power-off" },
   { title: "", className: "fas fa-unlock" },
   { title: "", className: "fas fa-pen" },
-  { title: "", className: "fas fa-user-times" }
+  { title: "", className: "fas fa-user-times", path: `` }
 ];
 
 const Account = ({ account }) => {
   const roleIcon = roleIcons.find(icon => icon.type === account.type);
   return (
-    <div className={classNames.listItem} style={{ fontSize: "22px", cursor: "pointer" }}>
+    <div
+      className={classNames.listItem}
+      style={{ fontSize: "22px", cursor: "pointer" }}>
       <span className={classNames.firstCol}>
         <Avatar currentUser={account} style={{ zIndex: 1 }} size={50} />
         <IconWrapper

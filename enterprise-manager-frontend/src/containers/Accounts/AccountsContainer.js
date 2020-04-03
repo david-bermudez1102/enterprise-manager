@@ -4,7 +4,8 @@ import {
   fetchEmployees,
   fetchManagers,
   addManager,
-  addEmployee
+  addEmployee,
+  removeAccount
 } from "../../actions/accountActions";
 import AdminsList from "../../components/Accounts/AdminsList";
 import ManagersList from "../../components/Accounts/ManagersList";
@@ -14,6 +15,7 @@ import AccountForm from "../../components/Accounts/AccountForm";
 import { FormCard } from "../../components/Cards/Cards";
 import { addAdmin } from "../../actions/adminActions";
 import Alert from "../../components/Alerts/Alert";
+import AccountDelete from "../../components/Accounts/AccountDelete";
 
 class AccountsContainer extends Component {
   componentDidMount() {
@@ -36,7 +38,16 @@ class AccountsContainer extends Component {
   }
 
   render() {
-    const { accounts, admins, match, addEmployee, addManager, addAdmin, session } = this.props;
+    const {
+      accounts,
+      admins,
+      match,
+      addEmployee,
+      addManager,
+      addAdmin,
+      removeAccount,
+      session
+    } = this.props;
     const managers = accounts.filter(account => account.type === "Manager");
     const employees = accounts.filter(account => account.type === "Employee");
     return (
@@ -51,12 +62,27 @@ class AccountsContainer extends Component {
         <div className="col-lg-7 px-0">
           <Alert />
           <Switch>
+            {accounts.length > 0 ? (
+              <Route
+                path={`${match.path}/:accountId/delete`}
+                render={props => (
+                  <AccountDelete
+                    {...props}
+                    removeAccount={removeAccount}
+                    redirectTo={"/accounts"}
+                    accounts={accounts}
+                  />
+                )}
+              />
+            ) : null}
             <Route
               path={`${match.path}/add`}
               render={props => (
                 <FormCard
                   header={
-                    <span className="card-title display-4" style={{ fontSize: "32px" }}>
+                    <span
+                      className="card-title display-4"
+                      style={{ fontSize: "32px" }}>
                       Add Account
                     </span>
                   }>
@@ -94,5 +120,6 @@ export default connect(mapStateToProps, {
   fetchManagers,
   addManager,
   addEmployee,
-  addAdmin
+  addAdmin,
+  removeAccount
 })(AccountsContainer);

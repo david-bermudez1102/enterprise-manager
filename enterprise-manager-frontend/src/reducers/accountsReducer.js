@@ -22,7 +22,7 @@ export const accountsReducer = (state = [], action) => {
       return [...state.map(e => (e.id === employee.id ? action.employee : e))];
     case "REMOVE_EMPLOYEE":
       return [
-        ...state.filter(employee => employee.id !== parseInt(action.employeeId))
+        ...state.filter(employee => employee.id !== parseInt(action.accountId))
       ];
     case "ADD_MANAGER":
       return [...state, action.manager];
@@ -40,7 +40,7 @@ export const accountsReducer = (state = [], action) => {
       return [...state.map(m => (m.id === manager.id ? action.manager : m))];
     case "REMOVE_MANAGER":
       return [
-        ...state.filter(manager => manager.id !== parseInt(action.managerId))
+        ...state.filter(manager => manager.id !== parseInt(action.accountId))
       ];
     default:
       return state;

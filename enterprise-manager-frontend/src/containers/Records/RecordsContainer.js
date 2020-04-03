@@ -10,7 +10,7 @@ import RecordsOptions from "../../components/Records/RecordsOptions";
 import { ReactHeight } from "react-height";
 
 class RecordsContainer extends Component {
-  state = { height: 0 };
+  state = { height: 0, optionsHeight: 0 };
   componentDidMount() {
     const { resource, fetchRecords } = this.props;
     fetchRecords(resource.organizationId, resource.id);
@@ -18,6 +18,10 @@ class RecordsContainer extends Component {
 
   setListHeight = height => {
     this.setState({ height });
+  };
+
+  setOptionsHeight = optionsHeight => {
+    this.setState({ optionsHeight });
   };
 
   render() {
@@ -48,10 +52,15 @@ class RecordsContainer extends Component {
           render={props => (
             <div
               className="col-lg-12 pt-4 d-block float-left position-relative"
-              style={{ height: `${this.state.height + 50}px` }}>
+              style={{
+                height: `${this.state.height + this.state.optionsHeight + 50}px`
+              }}>
               <div className="w-100 position-relative">
                 <div className="bg-white shadow-sm p-2 d-inline-block rounded w-100 position-absolute table-responsive">
-                  <RecordsOptions resource={resource} />
+                  <ReactHeight
+                    onHeightReady={height => this.setOptionsHeight(height)}>
+                    <RecordsOptions resource={resource} />
+                  </ReactHeight>
                   {records.length > 0 ? (
                     <ReactHeight
                       onHeightReady={height => this.setListHeight(height)}>

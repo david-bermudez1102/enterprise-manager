@@ -9,6 +9,7 @@ export const addZohoResources = (zohoResource, type) => {
   };
 
   return dispatch => {
+    dispatch({ type: "CLEAR_ALERTS" });
     fetch(paths[type], {
       method: "POST",
       headers: {
@@ -16,16 +17,26 @@ export const addZohoResources = (zohoResource, type) => {
       }
     })
       .then(response => response.json())
-      .then(response => {
-        console.log(response);
-        return response;
+      .then(records => {
+        console.log(records);
+        records.map(record => {
+          if (!record.errors) {
+            dispatch({
+              type: "UPDATE_RECORD",
+              record: camelcaseKeys(record.data.attributes)
+            });
+            dispatch({
+              type: "ADD_MESSAGES",
+              messages: ["Records sent to zoho successfully"]
+            });
+          } else {
+            dispatch({
+              type: "ADD_ERRORS",
+              errors: record.errors
+            });
+          }
+        });
       })
-      .then(records =>
-        records.map(record => camelcaseKeys(record.data.attributes))
-      )
-      .then(records =>
-        records.map(record => dispatch({ type: "UPDATE_RECORD", record }))
-      )
       .catch(console.log);
   };
 };

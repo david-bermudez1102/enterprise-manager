@@ -17,7 +17,7 @@ export const addEmployee = (adminId, employee) => {
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: employee.messages
+            messages: employee.messages || ["Employee was added with success."]
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: employee.errors });
@@ -52,7 +52,7 @@ export const addManager = (adminId, manager) => {
           dispatch({ type: "ADD_MANAGER", manager: manager.data.attributes });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: manager.messages
+            messages: manager.messages || ["Manager was added with success."]
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: manager.errors });
@@ -70,3 +70,42 @@ export const fetchManagers = adminId => {
       .then(managers => dispatch({ type: "FETCH_MANAGERS", managers }));
   };
 };
+
+export const deleteAccount = (accountId, type) => {
+  return dispatch => {
+    fetch(`/api/v1/accounts/${accountId}`, {
+      method: "DELETE"
+    })
+      .then(response => response.json())
+      .then(account => {
+        if (!account.errors) {
+          dispatch({
+            type,
+            account: account.data.attributes
+          });
+          dispatch({
+            type: "ADD_MESSAGES",
+            messages: account.messages || ["Account was deleted with success."]
+          });
+        } else {
+          dispatch({ type: "ADD_ERRORS", errors: account.errors });
+        }
+      })
+      .catch(console.log);
+  };
+};
+
+/* export const accountAction = (method, action, data) => {
+  return dispatch => {
+    fetch(`/api/v1/accounts/${accountId}`, {
+      method,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: data ? JSON.stringify(data) : undefined
+    })
+      .then(resp => resp.json())
+      .then(resp => resp.data.map(manager => manager.attributes))
+      .then(managers => dispatch({ type: action, managers }));
+  };
+}; */

@@ -76,52 +76,13 @@ class ZohoBooks::InvoicesController < ApplicationController
       "Content-Type" => "application/x-www-form-urlencoded;charset=UTF-8",
       "Authorization" => @authorization
     }
-      url = "#{@root_url}?organization_id=#{@zoho_organization_id}&ignore_auto_number_generation=true"
-      records = Value.joins(:key_value).group("key_values.value").joins(:record).where(records:{form_id:params[:form_id]}).map do |value|
-      key_value = value.key_value
-      integration = key_value.record_value.record.zoho_integration_record
-      connection = integration.connection
-      connection_type = "#{connection.connection_type.singularize}_id"
-      connection_type = connection_type=="contact_id" ? "customer_id" : connection_type
-      body = {}
-      body[connection_type] = integration.external_id
-      body[key_value.record_key.field.name] = key_value.value
-      body["line_items"] = Record.joins(:values).where(values:{content:key_value.value}, form_id:params[:form_id]).map do |record|
-        items_body = {}
-        values = record.values.select do |value| 
-          record_value = value.record_value 
-          integration_record = record_value ? record_value.record.zoho_integration_record : nil
-          connection_type = integration_record ? integration_record.connection.connection_type : nil
-          record_value && integration_record && connection_type=="items"
-        end
-
-        values.map do |value|
-          integration_record = value.record_value.record.zoho_integration_record
-          items_body["item_id"] = integration_record.external_id
-          value.record.values.map do |value|
-            if value.record_value
-              if !value.record_value.record.zoho_integration_record
-                items_body[value.record_field.name] = value.content
-              end
-            elsif !value.key_value
-              items_body[value.record_field.name] = value.content
-            end
-          end     
-        end.compact
-        items_body
-      end.delete_if &:empty?
-      response = HTTParty.post(url, headers: headers, body:{JSONString: body.to_json})
-      response = JSON.parse(response&.body || "{}")
-      if response["code"] == 0
-        record = value.record
-        record.update(zoho_integration_record_attributes:{external_id:response["invoice"]["invoice_id"],connection:record.form.zoho_connection, record_id: record.id})
-        RecordSerializer.new(record)
-      else
-        response
-      end
+    url = "#{@root_url}?organization_id=#{@zoho_organization_id}&ignore_auto_number_generation=true"
+    records = ZohoBooks::Invoice.create_records(url, headers, params[:form_id])
+    if records
+      render json: records
+    else
+      render json: {errors: records.errors.full_messages}
     end
-
-    render json: records
   end
 
   def show

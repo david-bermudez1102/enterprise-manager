@@ -37,7 +37,7 @@ require 'httparty'
     records = records.map do |record|
       body = {}
       record.values.map do |value|
-        if value.record_field
+        if !value.record_field.nil?
           field_name = value.record_field.name.downcase
           if field_name == "name"
             body["name"] = value.content
@@ -51,6 +51,8 @@ require 'httparty'
       if response["code"] == 0
         record.update(zoho_integration_record_attributes:{external_id:response["item"]["item_id"],connection:record.form.zoho_connection, record_id: record.id})
         RecordSerializer.new(record)
+      else
+        response
       end
     end
     render json: records.compact

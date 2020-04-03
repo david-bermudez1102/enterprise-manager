@@ -7,7 +7,7 @@ class RecordsList extends Component {
   constructor(props) {
     super(props);
     this.recordsOptions = React.createRef();
-    this.state = { sortBy: 0, sortedRecords: [], orders: [] };
+    this.state = { sortBy: 0, sortedRecords: [], orders: [], count: 0 };
   }
 
   componentDidMount() {

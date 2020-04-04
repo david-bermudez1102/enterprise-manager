@@ -4,6 +4,16 @@ class AccountsController < ApplicationController
   before_action :set_employee
   before_action :set_manager
 
+  def update
+    if @employee && @employee.account.update(account_params)
+      render json:EmployeeSerializer.new(@employee)
+    elsif @manager && @manager.account.update(account_params)
+      render json:ManagerSerializer.new(@manager)
+    else
+      render json:{errors:["Unable to update this account."]}
+    end
+  end
+
   def destroy
     if @employee && @employee.destroy
       render json:{messages:["Account deleted with success."]}
@@ -15,6 +25,10 @@ class AccountsController < ApplicationController
   end
 
   private
+    def account_params
+      params.require(:account).permit(:name, :email)
+    end
+
     def set_organization
       @organization = current_account.organization
     end

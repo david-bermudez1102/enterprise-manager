@@ -6,6 +6,7 @@ class AccountForm extends Component {
     super(props);
     const account = props.account;
     this.state = {
+      id: account ? account.id : "",
       roles: ["Select", "Admin", "Manager", "Employee"],
       name: account ? account.name : "",
       email: account ? account.email : "",
@@ -25,23 +26,32 @@ class AccountForm extends Component {
   };
 
   handleSubmit = event => {
-    const { addAdmin, addEmployee, addManager, adminId } = this.props;
-    const { role, name, email } = this.state;
+    const {
+      addAdmin,
+      addEmployee,
+      addManager,
+      updateAccount,
+      adminId
+    } = this.props;
+    const { role, id, name, email } = this.state;
     event.preventDefault();
-    switch (role) {
-      case "Admin":
-        addAdmin({ admin: { name, email } });
-        break;
-      case "Manager":
-        addManager(adminId, { manager: { name, email } });
-        break;
-      case "Employee":
-        addEmployee(adminId, { employee: { name, email } });
-        break;
-      default:
-        break;
+    if (updateAccount) updateAccount({ id, name, email });
+    else {
+      switch (role) {
+        case "Admin":
+          addAdmin({ admin: { name, email } });
+          break;
+        case "Manager":
+          addManager(adminId, { manager: { name, email } });
+          break;
+        case "Employee":
+          addEmployee(adminId, { employee: { name, email } });
+          break;
+        default:
+          break;
+      }
+      this.setState({ name: "", email: "", role: "Select" });
     }
-    this.setState({ account: { name: "", email: "" }, role: "Select" });
   };
 
   render() {

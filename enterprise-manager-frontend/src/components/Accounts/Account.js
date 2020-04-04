@@ -13,10 +13,18 @@ const roleIcons = [
 ];
 
 const menuIcons = [
-  { title: "", className: "fas fa-envelope" },
-  { title: "", className: "fas fa-power-off", action: "edit" },
+  {
+    title: "Resent Confirmation Email",
+    className: "fas fa-envelope",
+    action: "confirmation_email"
+  },
+  {
+    title: "Suspend Account",
+    className: "fas fa-power-off",
+    action: "suspend"
+  },
   { title: "", className: "fas fa-unlock", action: "edit" },
-  { title: "", className: "fas fa-pen", action: "edit" },
+  { title: "Edit Account", className: "fas fa-pen", action: "edit" },
   {
     title: "Delete this account",
     className: "fas fa-user-times",

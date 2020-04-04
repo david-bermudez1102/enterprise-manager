@@ -5,6 +5,7 @@ import {
   fetchManagers,
   addManager,
   addEmployee,
+  updateAccount,
   removeAccount
 } from "../../actions/accountActions";
 import AdminsList from "../../components/Accounts/AdminsList";
@@ -45,6 +46,7 @@ class AccountsContainer extends Component {
       addEmployee,
       addManager,
       addAdmin,
+      updateAccount,
       removeAccount,
       session
     } = this.props;
@@ -92,6 +94,7 @@ class AccountsContainer extends Component {
                     <AccountForm
                       {...props}
                       account={account}
+                      updateAccount={updateAccount}
                       adminId={session.currentUser.id}
                     />
                   </FormCard>
@@ -144,5 +147,6 @@ export default connect(mapStateToProps, {
   addManager,
   addEmployee,
   addAdmin,
+  updateAccount,
   removeAccount
 })(AccountsContainer);

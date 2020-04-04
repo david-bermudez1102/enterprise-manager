@@ -62,6 +62,35 @@ export const addManager = (adminId, manager) => {
   };
 };
 
+export const updateAccount = account => {
+  return dispatch => {
+    dispatch({ type: "CLEAR_ALERTS" });
+    fetch(`/api/v1/accounts/${account.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ account })
+    })
+      .then(response => response.json())
+      .then(account => {
+        if (!account.errors) {
+          dispatch({
+            type: "UPDATE_ACCOUNT",
+            account: account.data.attributes
+          });
+          dispatch({
+            type: "ADD_MESSAGES",
+            messages: account.messages || ["Account updated with success."]
+          });
+        } else {
+          dispatch({ type: "ADD_ERRORS", errors: account.errors });
+        }
+      })
+      .catch(console.log);
+  };
+};
+
 export const fetchManagers = adminId => {
   return dispatch => {
     fetch(`/api/v1/admins/${adminId}/managers`)
@@ -71,7 +100,7 @@ export const fetchManagers = adminId => {
   };
 };
 
-export const removeAccount = (accountId, type) => {
+export const removeAccount = accountId => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
     return fetch(`/api/v1/accounts/${accountId}`, {
@@ -85,7 +114,7 @@ export const removeAccount = (accountId, type) => {
             messages: account.messages || ["Account was deleted with success."]
           });
           return dispatch({
-            type,
+            type: "REMOVE_ACCOUNT",
             accountId
           });
         } else {

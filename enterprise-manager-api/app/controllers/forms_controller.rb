@@ -11,12 +11,12 @@ class FormsController < ApplicationController
   end
 
   def index
-    forms = @organization.forms.includes(:zoho_connection, :quickbooks_connection)
+    forms = @organization.forms.includes({zoho_connection: :integration}, {quickbooks_connection: :integration})
     render json: FormSerializer.new(forms)
   end
 
   def show
-    form = @organization.forms.includes(:zoho_connection, :quickbooks_connection).find_by(id: params[:id])
+    form = @organization.forms.includes({zoho_connection: :integration}, {quickbooks_connection: :integration}).find_by(id: params[:id])
     render json: FormSerializer.new(form)
   end
 

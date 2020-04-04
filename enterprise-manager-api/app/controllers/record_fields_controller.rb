@@ -10,12 +10,12 @@ class RecordFieldsController < ApplicationController
   end
 
   def index
-    record_fields = @form.record_fields.includes(:field => :record_key)
+    record_fields = @form.record_fields.includes({:field => :record_key}, :options)
     render json: RecordFieldSerializer.new(record_fields)
   end
 
   def update
-    record_field = @form.record_fields.find_by(id: params[:id])
+    record_field = @form.record_fields.includes({:field => :record_key}, :options).find_by(id: params[:id])
     render json: RecordFieldSerializer.new(record_field) if record_field.update(record_field_params)
   end
 

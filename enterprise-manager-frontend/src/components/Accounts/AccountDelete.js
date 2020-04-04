@@ -1,20 +1,16 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { useEffect } from "react";
 
-class AccountDelete extends Component {
-  componentDidMount() {
-    const { match, accounts, removeAccount, history } = this.props;
+const AccountDelete = ({ match, accounts, removeAccount, history }) => {
+  useEffect(() => {
     const type = accounts
       .find(acc => acc.id === parseInt(match.params.accountId))
       .type.toUpperCase();
     removeAccount(match.params.accountId, `REMOVE_${type}`).then(action =>
       history.replace("/accounts")
     );
-  }
+  }, [match, removeAccount, accounts, history]);
 
-  render() {
-    return null;
-  }
-}
+  return null;
+};
 
 export default AccountDelete;

@@ -73,6 +73,7 @@ export const fetchManagers = adminId => {
 
 export const removeAccount = (accountId, type) => {
   return dispatch => {
+    dispatch({ type: "CLEAR_ALERTS" });
     return fetch(`/api/v1/accounts/${accountId}`, {
       method: "DELETE"
     })

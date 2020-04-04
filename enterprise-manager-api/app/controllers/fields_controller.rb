@@ -11,12 +11,12 @@ class FieldsController < ApplicationController
   end
 
   def index
-    fields = @form.fields.includes(:record_key => :key_values)
+    fields = @form.fields.includes({:record_key => :key_values}, :options)
     render json: FieldSerializer.new(fields)
   end
 
   def show
-    field = @form.fields.find_by(id: params[:id])
+    field = @form.fields.includes({:record_key => :key_values}, :options).find_by(id: params[:id])
     render json: FieldSerializer.new(field)
   end
 

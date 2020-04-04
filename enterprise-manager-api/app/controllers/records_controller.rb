@@ -12,7 +12,7 @@ class RecordsController < ApplicationController
   end
 
   def index
-    record = @form.records.includes({values: :form}, :zoho_integration_record, :quickbooks_integration_record)
+    record = @form.records.includes(:values, :form, :zoho_integration_record, :quickbooks_integration_record)
     render json: RecordSerializer.new(record)
   end
 

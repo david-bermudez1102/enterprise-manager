@@ -21,6 +21,7 @@ gem "fast_jsonapi"
 gem "jwt"
 gem "attr_encrypted", "~> 3.1.0"
 gem "httparty"
+gem "dotenv-rails"
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

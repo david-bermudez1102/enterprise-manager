@@ -14,6 +14,7 @@ class EmployeesController < ApplicationController
     account = employee.build_account(organization_id:@organization.id, name: employee_params[:name], email:employee_params[:email], password: one_time_password)
     if account.save && employee.save
       render json: EmployeeSerializer.new(employee, one_time_password: one_time_password, messages: ["Employee was added with success."])
+      AccountMailer.with(account: account, url:request.host()).welcome_email.deliver_now
     else
       render json: { errors: account.errors.full_messages }
     end

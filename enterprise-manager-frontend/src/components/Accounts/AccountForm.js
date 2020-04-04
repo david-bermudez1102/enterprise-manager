@@ -4,11 +4,12 @@ import cuid from "cuid";
 class AccountForm extends Component {
   constructor(props) {
     super(props);
+    const account = props.account;
     this.state = {
       roles: ["Select", "Admin", "Manager", "Employee"],
-      name: "",
-      email: "",
-      role: "Select"
+      name: account ? account.name : "",
+      email: account ? account.email : "",
+      role: account ? account.type : "Select"
     };
   }
 

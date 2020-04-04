@@ -75,6 +75,30 @@ class AccountsContainer extends Component {
               />
             ) : null}
             <Route
+              path={`${match.path}/:accountId/edit`}
+              render={props => {
+                const account = accounts.find(
+                  acc => acc.id === parseInt(props.match.params.accountId)
+                );
+                return account ? (
+                  <FormCard
+                    header={
+                      <span
+                        className="card-title display-4"
+                        style={{ fontSize: "32px" }}>
+                        Edit Account
+                      </span>
+                    }>
+                    <AccountForm
+                      {...props}
+                      account={account}
+                      adminId={session.currentUser.id}
+                    />
+                  </FormCard>
+                ) : null;
+              }}
+            />
+            <Route
               path={`${match.path}/add`}
               render={props => (
                 <FormCard

@@ -14,10 +14,14 @@ const roleIcons = [
 
 const menuIcons = [
   { title: "", className: "fas fa-envelope" },
-  { title: "", className: "fas fa-power-off" },
-  { title: "", className: "fas fa-unlock" },
-  { title: "", className: "fas fa-pen" },
-  { title: "", className: "fas fa-user-times", action: "delete" }
+  { title: "", className: "fas fa-power-off", action: "edit" },
+  { title: "", className: "fas fa-unlock", action: "edit" },
+  { title: "", className: "fas fa-pen", action: "edit" },
+  {
+    title: "Delete this account",
+    className: "fas fa-user-times",
+    action: "delete"
+  }
 ];
 
 const Account = ({ account }) => {
@@ -46,7 +50,7 @@ const Account = ({ account }) => {
           <IconWrapper size="30px" key={cuid()}>
             <Link
               to={`/accounts/${account.id}/${icon.action}`}
-              className="text-light">
+              className="text-light p-0 m-0">
               <i {...icon}></i>
             </Link>
           </IconWrapper>
@@ -58,11 +62,11 @@ const Account = ({ account }) => {
 
 const classNames = {
   listItem:
-    "row border-0 shadow-sm rounded list-group-item py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 list-group-item-action px-4",
+    "row border-0 shadow-sm rounded list-group-item py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 list-group-item-action px-3",
   firstCol:
-    "d-flex order-sm-2 order-md-1 py-3 col-sm-12 col-xl-7 col-lg-8 col-md-8 align-items-center",
+    "d-flex order-2 order-xl-1 py-2 py-xl-0 px-0 col-xl-6 align-items-center",
   secondCol:
-    "order-sm-1 order-md-2 py-3 col-sm-12 col-xl-5 col-lg-4 col-md-4 d-flex justify-content-between text-primary"
+    "order-1 order-xl-2 col-xl-6 px-0 py-2 py-xl-0 d-flex justify-content-between text-primary"
 };
 
 export default Account;

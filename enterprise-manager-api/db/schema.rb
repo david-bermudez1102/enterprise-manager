@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_05_035020) do
+ActiveRecord::Schema.define(version: 2020_04_05_212903) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -27,6 +27,14 @@ ActiveRecord::Schema.define(version: 2020_04_05_035020) do
     t.boolean "activated"
     t.index ["accountable_type", "accountable_id"], name: "index_accounts_on_accountable_type_and_accountable_id"
     t.index ["organization_id"], name: "index_accounts_on_organization_id"
+  end
+
+  create_table "activations", force: :cascade do |t|
+    t.integer "account_id"
+    t.text "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_activations_on_account_id"
   end
 
   create_table "active_storage_attachments", force: :cascade do |t|

@@ -14,7 +14,7 @@ const roleIcons = [
 
 const menuIcons = [
   {
-    title: "Resent Confirmation Email",
+    title: "Resend Confirmation Email",
     className: "fas fa-envelope",
     action: "confirmation_email"
   },

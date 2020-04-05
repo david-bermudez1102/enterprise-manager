@@ -3,6 +3,7 @@ class AccountMailer < ApplicationMailer
     @account = params[:account];
     @one_time_password = params[:one_time_password];
     @url  = params[:url];
+    @token = params[:token];
     mail(to: @account.email, subject: "Welcome to #{@account.organization.name}")
   end
 end

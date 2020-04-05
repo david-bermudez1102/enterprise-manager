@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  </head>
-  <body>
-    <h1>Welcome to example.com, <%= @account.name %></h1>
-    <p>
-      You have successfully signed up to example.com,
-      your username is: <%= @account.email %>.<br>
-    </p>
-    <p>
-      To login to the site, just follow this link: <%= @url %>.
-    </p>
-    <p>Thanks for joining and have a great day!</p>
-  </body>
-</html>
+<h2 class="text-dark font-weight-bolder">Welcome to <%= @account.organization.name %>, <%= @account.name %></h2>
+<hr />
+<p>
+A new <%= @account.accountable_type.downcase %> account has been created for you!
+</p>
+<p>Your username is: <span class="text-info"><%= @account.email %></span></p>
+<p>Your temporary password is: <span class="text-info"><%= @one_time_password %></span></p>
+<p>
+Please activate your account and change this password now, since it will expire in 24 hours.
+</p>
+<p>
+To activate your account and change your password, simply click <%= link_to  "here", "http://#{@url}/" %>.
+</p>
+  

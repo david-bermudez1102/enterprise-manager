@@ -2,12 +2,48 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Yantramanav&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Catamaran&display=swap" rel="stylesheet">
+
     <style>
-      /* Email styles need to be inline */
+      html, body {
+        height: 100vh !important;
+        position: relative !important;
+        font-family: 'Catamaran', sans-serif !important;
+      }
+
+      .text-info {
+        color: #0f81c7 !important;
+      }
+
+      h1, h2, h3, h4{
+        font-family: 'Catamaran', sans-serif !important;
+      }
+
+      .bg-light{
+        background: #f4f6f9 !important;
+      }
     </style>
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar bg-white shadow-sm justify-content-center">
+      <div class="w-75">
+        <a class="navbar-brand" href="#">
+          <%= image_tag rails_blob_url(@account.organization.logo, disposition: "attachment", host:"http://localhost:3001"), class:"image-fluid w-100" %>
+        </a>
+      </div>
+    </nav>
+    <main class="container py-5 shadow-sm bg-light mt-4">
+      <%= yield %>
+    </main>
+    <div class="footer fixed-bottom position-absolute bg-white w-100" style="border-top: 1px solid #dee2e6;">
+      <div class="footer-copyright py-3 w-100">
+        <div class="container text-secondary"><%= @account.organization.name %> © <%= Time.current.year  %></div>
+      </div>
+    </div>
   </body>
 </html>

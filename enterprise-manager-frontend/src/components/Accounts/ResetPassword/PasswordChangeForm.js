@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class ResetPasswordForm extends Component {
+class PasswordChangeForm extends Component {
   state = { password: "", passwordConfirmation: "" };
 
   handleChange = e => {
@@ -41,10 +41,14 @@ class ResetPasswordForm extends Component {
             placeholder="Confirm your new password..."
           />
         </div>
-        <input type="submit" className="btn btn-primary shadow" />
+        <input
+          type="submit"
+          className="btn btn-primary shadow"
+          value="Change Password"
+        />
       </form>
     );
   }
 }
 
-export default ResetPasswordForm;
+export default PasswordChangeForm;

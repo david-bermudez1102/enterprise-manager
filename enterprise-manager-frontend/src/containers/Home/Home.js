@@ -9,6 +9,7 @@ import LogoutContainer from "../LogoutContainer";
 import AccountsContainer from "../Accounts/AccountsContainer";
 import ZohoBooks from "../ZohoBooks/ZohoBooks";
 import Footer from "../../components/Footer/Footer";
+import ResetPassword from "../../components/Accounts/ResetPassword";
 
 const Home = ({
   location,
@@ -50,6 +51,7 @@ const Home = ({
               />
             )}
           />
+          <Route path={`/reset_password`} render={() => <ResetPassword />} />
           <Route
             path={`/login`}
             render={props => (

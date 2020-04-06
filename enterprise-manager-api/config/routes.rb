@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :integration_records
   resources :integrations
   scope 'api/v1' do
+    resources :activations
     resources :options
     resources :organizations do
       resources :forms do

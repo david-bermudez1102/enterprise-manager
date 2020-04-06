@@ -36,7 +36,7 @@ class EmployeesController < ApplicationController
     end
 
     def set_token
-      @token = SecureRandom.hex(32) + SecureRandom.base64(12)
+      @token = SecureRandom.hex(64)
     end
     
 end

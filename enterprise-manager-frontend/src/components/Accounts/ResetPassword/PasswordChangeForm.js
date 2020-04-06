@@ -9,6 +9,10 @@ class PasswordChangeForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    const { handleSubmit, token, history } = this.props;
+    handleSubmit(token, this.state).then(resp =>
+      resp === "success" ? history.replace("/login") : null
+    );
   };
 
   render() {
@@ -33,7 +37,7 @@ class PasswordChangeForm extends Component {
           </label>
           <input
             type="password"
-            name="password_confirmation"
+            name="passwordConfirmation"
             id="account_password_confirmation"
             className="form-control"
             onChange={this.handleChange}

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import LoginForm from '../components/LoginForm';
-import { FormCard } from '../components/Cards/Cards';
-import Alert from '../components/Alerts/Alert';
+import React, { Component } from "react";
+import LoginForm from "../components/LoginForm";
+import { FormCard } from "../components/Cards/Cards";
+import Alert from "../components/Alerts/Alert";
 
 class LoginContainer extends Component {
   componentDidMount() {
@@ -23,15 +23,20 @@ class LoginContainer extends Component {
   }
 
   handleOnSubmit = data => {
-    this.props.addSession(data);
+    const { history } = this.props;
+    this.props
+      .addSession(data)
+      .then(acc =>
+        acc.token ? history.push(`reset_password?token=${acc.token}`) : null
+      );
   };
 
   redirect = props => {
     const { session, organizations, admins } = props;
-    if (session.isLoggedIn) this.props.history.push('/');
+    if (session.isLoggedIn) this.props.history.push("/");
     else if (organizations.length === 0)
-      this.props.history.push('/organizations/new');
-    else if (admins.length === 0) this.props.history.push('/accounts/new');
+      this.props.history.push("/organizations/new");
+    else if (admins.length === 0) this.props.history.push("/accounts/new");
   };
 
   render() {
@@ -42,7 +47,7 @@ class LoginContainer extends Component {
             header={
               <span
                 className="card-title display-4 mb-0"
-                style={{ fontSize: '32px' }}>
+                style={{ fontSize: "32px" }}>
                 Login
               </span>
             }>

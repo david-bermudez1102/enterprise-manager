@@ -10,8 +10,9 @@ class ActivationsController < ApplicationController
   end
 
   def update
-    if @activation && @activation.account.update(activation_params)
+    if @activation && @activation.account.update(activation_params) && @activation.account.update(activated:true)
       @activation.destroy
+
       render json: { messages: ["Password changed successfully. You can now login."] }
     else
       render json: { errors: @activation.account.errors.full_messages }

@@ -1,10 +1,7 @@
 import React from "react";
 import Avatar from "../Home/SideBar/Avatar";
 import IconWrapper from "../Icons/IconWrapper";
-import cuid from "cuid";
-import { Link } from "react-router-dom";
-import ToggleContent from "../ToggleContent";
-import Modal from "../Modal";
+import AccountOptions from "./AccountOptions";
 
 const capitalize = require("capitalize");
 
@@ -15,28 +12,6 @@ const roleIcons = [
 ];
 
 const Account = ({ account }) => {
-  const menuIcons = [
-    {
-      title: "Resend Confirmation Email",
-      className: "fas fa-envelope",
-      action: "confirmation_email"
-    },
-    {
-      title: account.disabled ? "Enable Account" : "Disable Account",
-      className: "fas fa-power-off",
-      action: "disable",
-      showModal: true
-    },
-    { title: "", className: "fas fa-unlock", action: "edit", showModal: true },
-    { title: "Edit Account", className: "fas fa-pen", action: "edit" },
-    {
-      title: "Delete this account",
-      className: "fas fa-user-times",
-      action: "delete",
-      showModal: true
-    }
-  ];
-
   const roleIcon = roleIcons.find(icon => icon.type === account.type);
   return (
     <div className={classNames.listItem} style={{ fontSize: "22px", cursor: "pointer", zIndex: "inherit" }}>
@@ -55,38 +30,7 @@ const Account = ({ account }) => {
         </IconWrapper>
         {capitalize.words(account.name)}
       </span>
-      <span className={classNames.secondCol} style={{ fontSize: "18px" }}>
-        {menuIcons.map(icon =>
-          !icon.showModal ? (
-            <Link
-              to={`/accounts/${account.id}/${icon.action}`}
-              className="text-light p-0 m-0 d-flex text-decoration-none"
-              title={icon.title}
-              key={cuid()}>
-              <IconWrapper size="30px">
-                <i className={icon.className}></i>
-              </IconWrapper>
-            </Link>
-          ) : (
-            <ToggleContent
-              toggle={show => (
-                <IconWrapper size="30px" title={icon.title} onClick={show}>
-                  <i className={icon.className}></i>
-                </IconWrapper>
-              )}
-              content={hide => (
-                <Modal title={icon.title} handleClose={hide} message="All of the associated content will be deleted!">
-                  <Link to={`/accounts/${account.id}/${icon.action}`}>
-                    <button type="button" className="btn btn-danger" onClick={e => e.stopPropagation()}>
-                      {icon.title}
-                    </button>
-                  </Link>
-                </Modal>
-              )}
-            />
-          )
-        )}
-      </span>
+      <AccountOptions account={account} />
     </div>
   );
 };
@@ -94,8 +38,7 @@ const Account = ({ account }) => {
 const classNames = {
   listItem:
     "row border-0 shadow-sm rounded list-group-item py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 list-group-item-action px-3",
-  firstCol: "d-flex order-2 order-xl-1 py-2 py-xl-0 px-0 col-xl-6 align-items-center",
-  secondCol: "order-1 order-xl-2 col-xl-6 px-0 py-2 py-xl-0 d-flex justify-content-between text-primary"
+  firstCol: "d-flex order-2 order-xl-1 py-2 py-xl-0 px-0 col-xl-6 align-items-center"
 };
 
 export default Account;

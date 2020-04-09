@@ -54,7 +54,7 @@ const Account = ({ account }) => {
       <span className={classNames.secondCol} style={{ fontSize: "18px" }}>
         {menuIcons.map(icon => (
           <IconWrapper size="30px" key={cuid()}>
-            <Link to={`/accounts/${account.id}/${icon.action}`} className="text-light p-0 m-0">
+            <Link to={`/accounts/${account.id}/${icon.action}`} className="text-light p-0 m-0 d-flex">
               <i {...icon}></i>
             </Link>
           </IconWrapper>
@@ -68,8 +68,7 @@ const classNames = {
   listItem:
     "row border-0 shadow-sm rounded list-group-item py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 list-group-item-action px-3",
   firstCol: "d-flex order-2 order-xl-1 py-2 py-xl-0 px-0 col-xl-6 align-items-center",
-  secondCol:
-    "order-1 order-xl-2 col-xl-6 px-0 py-2 py-xl-0 d-flex justify-content-between text-primary"
+  secondCol: "order-1 order-xl-2 col-xl-6 px-0 py-2 py-xl-0 d-flex justify-content-between text-primary"
 };
 
 export default Account;

@@ -4,6 +4,5 @@
   "prettier.jsxBracketSameLine": true,
   "editor.tabSize": 2,
   "editor.fontSize": 16,
-  "editor.wordWrapColumn": 120,
-  "prettier.printWidth": 100
+  "editor.wordWrapColumn": 120
 }

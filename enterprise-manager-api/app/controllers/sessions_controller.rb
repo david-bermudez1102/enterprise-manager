@@ -5,14 +5,16 @@ class SessionsController < ApplicationController
         params[:username],
         params[:username]
       )
-    if account && account.activated && account.authenticate(params[:password])
+    if account && account.activated && account.authenticate(params[:password]) && !account.disabled
       token = encode_token({ id: account.id })
       cookies.signed[:jwt] = {
         value: token, httponly: true, expires: 24.hour.from_now,
       }
       render json: AccountSerializer.new(account)
-    elsif !account.activated
+    elsif account && account.authenticate(params[:password]) && !account.activated
       render json: {token: account.activation.token}
+    elsif account && account.authenticate(params[:password]) && account.disabled
+      render json: {errors: ["Account has been temporarily disabled. Please contact admin."]}
     else
       render json: {errors: ["Email or password incorrect. Try again."]}
     end

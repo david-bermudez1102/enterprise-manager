@@ -3,6 +3,8 @@ import Avatar from "../Home/SideBar/Avatar";
 import IconWrapper from "../Icons/IconWrapper";
 import cuid from "cuid";
 import { Link } from "react-router-dom";
+import ToggleContent from "../ToggleContent";
+import Modal from "../Modal";
 
 const capitalize = require("capitalize");
 
@@ -12,30 +14,32 @@ const roleIcons = [
   { type: "Employee", className: "fas fa-user" }
 ];
 
-const menuIcons = [
-  {
-    title: "Resend Confirmation Email",
-    className: "fas fa-envelope",
-    action: "confirmation_email"
-  },
-  {
-    title: "Disable Account",
-    className: "fas fa-power-off",
-    action: "disable"
-  },
-  { title: "", className: "fas fa-unlock", action: "edit" },
-  { title: "Edit Account", className: "fas fa-pen", action: "edit" },
-  {
-    title: "Delete this account",
-    className: "fas fa-user-times",
-    action: "delete"
-  }
-];
-
 const Account = ({ account }) => {
+  const menuIcons = [
+    {
+      title: "Resend Confirmation Email",
+      className: "fas fa-envelope",
+      action: "confirmation_email"
+    },
+    {
+      title: account.disabled ? "Enable Account" : "Disable Account",
+      className: "fas fa-power-off",
+      action: "disable",
+      showModal: true
+    },
+    { title: "", className: "fas fa-unlock", action: "edit", showModal: true },
+    { title: "Edit Account", className: "fas fa-pen", action: "edit" },
+    {
+      title: "Delete this account",
+      className: "fas fa-user-times",
+      action: "delete",
+      showModal: true
+    }
+  ];
+
   const roleIcon = roleIcons.find(icon => icon.type === account.type);
   return (
-    <div className={classNames.listItem} style={{ fontSize: "22px", cursor: "pointer" }}>
+    <div className={classNames.listItem} style={{ fontSize: "22px", cursor: "pointer", zIndex: "inherit" }}>
       <span className={classNames.firstCol}>
         <Avatar currentUser={account} style={{ zIndex: 1 }} size={50} />
         <IconWrapper
@@ -52,13 +56,36 @@ const Account = ({ account }) => {
         {capitalize.words(account.name)}
       </span>
       <span className={classNames.secondCol} style={{ fontSize: "18px" }}>
-        {menuIcons.map(icon => (
-          <IconWrapper size="30px" key={cuid()}>
-            <Link to={`/accounts/${account.id}/${icon.action}`} className="text-light p-0 m-0 d-flex">
-              <i {...icon}></i>
+        {menuIcons.map(icon =>
+          !icon.showModal ? (
+            <Link
+              to={`/accounts/${account.id}/${icon.action}`}
+              className="text-light p-0 m-0 d-flex text-decoration-none"
+              title={icon.title}
+              key={cuid()}>
+              <IconWrapper size="30px">
+                <i className={icon.className}></i>
+              </IconWrapper>
             </Link>
-          </IconWrapper>
-        ))}
+          ) : (
+            <ToggleContent
+              toggle={show => (
+                <IconWrapper size="30px" title={icon.title} onClick={show}>
+                  <i className={icon.className}></i>
+                </IconWrapper>
+              )}
+              content={hide => (
+                <Modal title={icon.title} handleClose={hide} message="All of the associated content will be deleted!">
+                  <Link to={`/accounts/${account.id}/${icon.action}`}>
+                    <button type="button" className="btn btn-danger" onClick={e => e.stopPropagation()}>
+                      {icon.title}
+                    </button>
+                  </Link>
+                </Modal>
+              )}
+            />
+          )
+        )}
       </span>
     </div>
   );

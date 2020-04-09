@@ -11,45 +11,21 @@ import ZohoBooks from "../ZohoBooks/ZohoBooks";
 import Footer from "../../components/Footer/Footer";
 import ResetPassword from "../../components/Accounts/ResetPassword";
 
-const Home = ({
-  location,
-  organizations,
-  admins,
-  addSession,
-  removeSession,
-  session
-}) => (
+const Home = ({ location, organizations, admins, addSession, removeSession, session }) => (
   <div className="w-100 d-flex flex-grow-1">
     {organizations.length === 0 ? (
       <Redirect to="/organizations/new" />
     ) : admins.length === 0 ? (
       <Redirect to="/accounts/new" />
     ) : null}
-    {session.isLoggedIn ? (
-      <SideBar
-        session={session}
-        location={location}
-        organizations={organizations}
-      />
-    ) : null}
+    {session.isLoggedIn ? <SideBar session={session} location={location} organizations={organizations} /> : null}
     <div className="w-100 d-flex flex-column min-h-100 flex-wrap">
-      {session.isLoggedIn ? (
-        <Navbar session={session} organizations={organizations} />
-      ) : null}
-      <main
-        className={`${
-          !session.isLoggedIn ? "h-100" : ""
-        } w-100 bg-transparent p-4 position-relative`}>
+      {session.isLoggedIn ? <Navbar session={session} organizations={organizations} /> : null}
+      <main className={`${!session.isLoggedIn ? "h-100" : ""} w-100 bg-transparent px-4 py-3 position-relative`}>
         <Switch>
           <Route
             path={`/organizations`}
-            render={props => (
-              <OrganizationContainer
-                session={session}
-                admins={admins}
-                {...props}
-              />
-            )}
+            render={props => <OrganizationContainer session={session} admins={admins} {...props} />}
           />
           <Route path={`/reset_password`} render={() => <ResetPassword />} />
           <Route
@@ -64,17 +40,11 @@ const Home = ({
               />
             )}
           />
-          <Route
-            path={`/logout`}
-            render={() => <LogoutContainer removeSession={removeSession} />}
-          />
+          <Route path={`/logout`} render={() => <LogoutContainer removeSession={removeSession} />} />
           <Route path="/accounts/new">
             <AdminContainer organizations={organizations} admins={admins} />
           </Route>
-          <Route
-            path={`/accounts`}
-            render={props => <AccountsContainer {...props} session={session} />}
-          />
+          <Route path={`/accounts`} render={props => <AccountsContainer {...props} session={session} />} />
           <Route
             path={`/auth/zohobooks/callback`}
             render={props => (

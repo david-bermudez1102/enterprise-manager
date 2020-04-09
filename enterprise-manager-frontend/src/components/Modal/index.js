@@ -1,6 +1,6 @@
 import React from "react";
 
-export const DeletionModal = ({ title, handleClose, deletionMessage, children }) => {
+const Modal = ({ title, handleClose, message, children }) => {
   return (
     <div
       className="d-block w-100 h-100 fixed-top m-0 text-dark"
@@ -18,7 +18,7 @@ export const DeletionModal = ({ title, handleClose, deletionMessage, children })
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body">{deletionMessage}</div>
+            <div className="modal-body">{message}</div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" onClick={handleClose}>
                 Cancel
@@ -31,3 +31,5 @@ export const DeletionModal = ({ title, handleClose, deletionMessage, children })
     </div>
   );
 };
+
+export default Modal;

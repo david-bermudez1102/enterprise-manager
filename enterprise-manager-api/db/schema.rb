@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_05_212903) do
+ActiveRecord::Schema.define(version: 2020_04_09_020631) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2020_04_05_212903) do
     t.float "avatar_margin_top"
     t.integer "organization_id"
     t.boolean "activated"
+    t.boolean "disabled", default: false, null: false
     t.index ["accountable_type", "accountable_id"], name: "index_accounts_on_accountable_type_and_accountable_id"
     t.index ["organization_id"], name: "index_accounts_on_organization_id"
   end

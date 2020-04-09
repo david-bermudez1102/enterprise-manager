@@ -16,6 +16,10 @@ class ManagerSerializer
     object.account.accountable_type
   end
 
+  attribute :disabled do |object|
+    object.account.disabled
+  end
+
   attribute :avatar, if: Proc.new { |object|
     !object.account.avatar.attachment.nil?
   } do |object|

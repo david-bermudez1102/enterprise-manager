@@ -17,6 +17,7 @@ import { FormCard } from "../../components/Cards/Cards";
 import { addAdmin } from "../../actions/adminActions";
 import Alert from "../../components/Alerts/Alert";
 import AccountDelete from "../../components/Accounts/AccountDelete";
+import AccountDisable from "../../components/Accounts/AccountDisable.js";
 
 class AccountsContainer extends Component {
   componentDidMount() {
@@ -68,11 +69,7 @@ class AccountsContainer extends Component {
               <Route
                 path={`${match.path}/:accountId/delete`}
                 render={props => (
-                  <AccountDelete
-                    {...props}
-                    removeAccount={removeAccount}
-                    accounts={accounts}
-                  />
+                  <AccountDelete {...props} removeAccount={removeAccount} accounts={accounts} />
                 )}
               />
             ) : null}
@@ -85,9 +82,7 @@ class AccountsContainer extends Component {
                 return account ? (
                   <FormCard
                     header={
-                      <span
-                        className="card-title display-4"
-                        style={{ fontSize: "32px" }}>
+                      <span className="card-title display-4" style={{ fontSize: "32px" }}>
                         Edit Account
                       </span>
                     }>
@@ -102,13 +97,20 @@ class AccountsContainer extends Component {
               }}
             />
             <Route
+              path={`${match.path}/:accountId/disable`}
+              render={props => {
+                const account = accounts.find(
+                  acc => acc.id === parseInt(props.match.params.accountId)
+                );
+                return account ? <AccountDisable url={match.path} account={account} /> : null;
+              }}
+            />
+            <Route
               path={`${match.path}/add`}
               render={props => (
                 <FormCard
                   header={
-                    <span
-                      className="card-title display-4"
-                      style={{ fontSize: "32px" }}>
+                    <span className="card-title display-4" style={{ fontSize: "32px" }}>
                       Add Account
                     </span>
                   }>

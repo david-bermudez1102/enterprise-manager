@@ -16,8 +16,12 @@ class EmployeeSerializer
     object.account.accountable_type
   end 
 
-    attribute :organization_id do |object|
+  attribute :organization_id do |object|
     object.account.organization_id
+  end
+
+  attribute :disabled do |object|
+    object.account.disabled
   end
 
   attribute :avatar, if: Proc.new { |object|

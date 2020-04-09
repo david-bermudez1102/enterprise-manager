@@ -65,7 +65,7 @@ export const addManager = (adminId, manager) => {
 export const updateAccount = account => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
-    fetch(`/api/v1/accounts/${account.id}`, {
+    return fetch(`/api/v1/accounts/${account.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json"

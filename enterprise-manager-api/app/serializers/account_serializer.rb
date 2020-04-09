@@ -1,6 +1,6 @@
 class AccountSerializer
   include FastJsonapi::ObjectSerializer
-  attribute :id, :name, :email, :organization_id
+  attribute :id, :name, :email, :organization_id, :disabled
   attribute :type do |object|
     object.accountable_type
   end

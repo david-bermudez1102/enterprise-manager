@@ -26,7 +26,7 @@ class AccountsController < ApplicationController
 
   private
     def account_params
-      params.require(:account).permit(:name, :email)
+      params.require(:account).permit(:name, :email, :disabled)
     end
 
     def set_organization

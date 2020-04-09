@@ -1,6 +1,6 @@
 class AccountSerializer
   include FastJsonapi::ObjectSerializer
-  attribute :id, :name, :email, :organization_id, :disabled
+  attribute :id, :name, :email, :organization_id, :activated, :disabled, :locked
   attribute :type do |object|
     object.accountable_type
   end
@@ -12,5 +12,4 @@ class AccountSerializer
       only_path: true,
     ),margin_left: object.avatar_margin_left, margin_top: object.avatar_margin_top }
   end
-
 end

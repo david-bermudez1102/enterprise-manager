@@ -1,8 +1,9 @@
 export const menuIcons = account => [
   {
-    title: "Resend Confirmation Email",
-    className: "fas fa-envelope",
-    action: "confirmation_email"
+    title: account.locked || !account.activated ? "Resend Confirmation Email" : "Account is currently active.",
+    className: account.locked || !account.activated ? "fas fa-envelope" : "fas fa-envelope-open",
+    action: "confirmation_email",
+    disabled: account.locked || !account.activated ? false : true
   },
   {
     title: account.disabled ? "Enable Account" : "Disable Account",
@@ -11,7 +12,7 @@ export const menuIcons = account => [
     modalTitle: account.disabled ? `Enable ${account.name}'s account?` : `Disable ${account.name}'s account?`,
     modalMessage: account.disabled
       ? "The account will gain access back."
-      : "The account won't be able to access the platform and you'll be able to enable it anytime.",
+      : "The account won't be able to access the platform and you can enable it anytime.",
     showModal: true
   },
   {

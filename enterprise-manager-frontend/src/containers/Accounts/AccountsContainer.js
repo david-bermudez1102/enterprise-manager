@@ -18,6 +18,7 @@ import { addAdmin } from "../../actions/adminActions";
 import Alert from "../../components/Alerts/Alert";
 import AccountDelete from "../../components/Accounts/AccountDelete";
 import AccountDisable from "../../components/Accounts/AccountDisable.js";
+import AccountUnlock from "../../components/Accounts/AccountUnlock";
 
 class AccountsContainer extends Component {
   componentDidMount() {
@@ -68,17 +69,13 @@ class AccountsContainer extends Component {
             {accounts.length > 0 ? (
               <Route
                 path={`${match.path}/:accountId/delete`}
-                render={props => (
-                  <AccountDelete {...props} removeAccount={removeAccount} accounts={accounts} />
-                )}
+                render={props => <AccountDelete {...props} removeAccount={removeAccount} accounts={accounts} />}
               />
             ) : null}
             <Route
               path={`${match.path}/:accountId/edit`}
               render={props => {
-                const account = accounts.find(
-                  acc => acc.id === parseInt(props.match.params.accountId)
-                );
+                const account = accounts.find(acc => acc.id === parseInt(props.match.params.accountId));
                 return account ? (
                   <FormCard
                     header={
@@ -99,10 +96,15 @@ class AccountsContainer extends Component {
             <Route
               path={`${match.path}/:accountId/disable`}
               render={props => {
-                const account = accounts.find(
-                  acc => acc.id === parseInt(props.match.params.accountId)
-                );
+                const account = accounts.find(acc => acc.id === parseInt(props.match.params.accountId));
                 return account ? <AccountDisable url={match.path} account={account} /> : null;
+              }}
+            />
+            <Route
+              path={`${match.path}/:accountId/unlock`}
+              render={props => {
+                const account = accounts.find(acc => acc.id === parseInt(props.match.params.accountId));
+                return account ? <AccountUnlock url={match.path} account={account} /> : null;
               }}
             />
             <Route

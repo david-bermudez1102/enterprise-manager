@@ -20,8 +20,16 @@ class AdminSerializer
     object.account.organization_id
   end
 
+  attribute :activated do |object|
+    object.account.activated
+  end
+
   attribute :disabled do |object|
     object.account.disabled
+  end
+
+  attribute :locked do |object|
+    object.account.locked
   end
 
   attribute :avatar, if: Proc.new { |object|

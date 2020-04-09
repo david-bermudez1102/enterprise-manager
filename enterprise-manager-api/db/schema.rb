@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 2020_04_09_210439) do
     t.integer "organization_id"
     t.boolean "activated"
     t.boolean "disabled", default: false, null: false
+    t.text "recovery_token"
+    t.integer "failed_attempts", default: 0, null: false
     t.boolean "locked", default: false, null: false
     t.index ["accountable_type", "accountable_id"], name: "index_accounts_on_accountable_type_and_accountable_id"
     t.index ["organization_id"], name: "index_accounts_on_organization_id"

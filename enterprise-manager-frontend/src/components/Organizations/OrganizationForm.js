@@ -39,11 +39,10 @@ export default class OrganizationForm extends Component {
             className="logo-uploader bg-transparent text-center"
             size="200px"
             handleChange={this.handleLogoChange}>
-            <LogoUploader handleCoordinates={this.handleCoordinates} />
+            <LogoUploader handleCoordinates={this.handleCoordinates} x={0} y={0} />
           </FileUploader>
         </div>
         <div className="form-group">
-          <label htmlFor="organization_name">Organization Name</label>
           <input
             type="text"
             name="name"
@@ -51,8 +50,12 @@ export default class OrganizationForm extends Component {
             className="form-control"
             onChange={this.handleOnChange}
             value={this.state.name}
-            placeholder="Enter the name of your organization"
+            placeholder={"Enter the name of your organization"}
+            required
           />
+          <label className="form-control-placeholder" htmlFor="organization_name">
+            Organization Name
+          </label>
         </div>
         <hr />
         <input type="submit" className="btn btn-primary" value="Create" />

@@ -14,7 +14,7 @@ const LogoUploader = ({ title, filePreview, handleCoordinates, x, y }) =>
     <div
       className="w-100 h-100 d-flex align-items-center justify-content-center flex-wrap"
       style={{ cursor: "pointer", color: "#ccc" }}>
-      <i className="fas fa-upload" style={{ fontSize: "140px" }}></i>
+      <i className="fas fa-upload" style={{ fontSize: "100px" }}></i>
       <span className="w-100">Drag your company logo</span>
     </div>
   );

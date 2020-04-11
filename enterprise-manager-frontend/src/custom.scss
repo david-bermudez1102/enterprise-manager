@@ -19,7 +19,81 @@ $spacer: 1rem;
 $border-width: 1px;
 $btn-border-radius: 0.25rem;
 
-// Add SASS theme customizations here..
+.form-group {
+  position: relative !important;
+}
+
+.form-control-placeholder {
+  position: absolute !important;
+  top: 0 !important;
+  padding: 7px 2px 0 2px !important;
+  margin-left: 12px;
+  transition: all 200ms !important;
+  opacity: 0.5 !important;
+  color: #495057;
+  cursor: text;
+}
+
+.form-control:focus+.form-control-placeholder,
+.form-control:valid+.form-control-placeholder {
+  font-size: 80% !important;
+  transform: translate3d(0, -65%, 0) !important;
+  opacity: 1 !important;
+  background: #fff;
+}
+
+.form-control:invalid {
+  box-shadow: inherit;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+::-webkit-input-placeholder {
+  opacity: 0 !important;
+}
+
+.form-control:focus::-webkit-input-placeholder {
+  opacity: 1 !important;
+  transition: all 200ms !important;
+}
+
+::-moz-placeholder {
+  opacity: 0 !important;
+}
+
+.form-control:focus::-moz-placeholder {
+  opacity: 1 !important;
+  transition: all 200ms !important;
+}
+
+:-ms-input-placeholder {
+  opacity: 0 !important;
+}
+
+.form-control:focus:-ms-input-placeholder {
+  opacity: 1 !important;
+  transition: all 200ms !important;
+}
+
+:-moz-placeholder {
+  opacity: 0 !important;
+}
+
+.form-control:focus:-moz-placeholder {
+  opacity: 1 !important;
+  transition: all 200ms !important;
+}
+
 @import "bootstrap";
 
 html,

@@ -20,7 +20,7 @@ export const menuIcons = account => [
     className: account.locked ? "fas fa-lock" : "fas fa-unlock",
     action: "unlock",
     modalTitle: `Unlock ${account.name}'s account?`,
-    modalMessage: `Account password will be reset and a new email will be sent to ${account.email} create a new password.`,
+    modalMessage: `Account password will be reset and a new email will be sent to ${account.email} to create a new password.`,
     disabled: account.locked ? false : true,
     showModal: account.locked ? true : false
   },

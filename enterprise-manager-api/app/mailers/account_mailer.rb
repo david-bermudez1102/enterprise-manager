@@ -6,4 +6,11 @@ class AccountMailer < ApplicationMailer
     @token = params[:token];
     mail(to: @account.email, subject: "Welcome to #{@account.organization.name}")
   end
+
+  def reset_password_email
+    @account = params[:account];
+    @url  = params[:url];
+    @token = params[:token];
+    mail(to: @account.email, subject: "#{@account.organization.name} | Account locked")
+  end
 end

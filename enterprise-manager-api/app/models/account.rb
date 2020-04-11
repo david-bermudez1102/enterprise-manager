@@ -11,4 +11,18 @@ class Account < ApplicationRecord
   def avatar_path
     ActiveStorage::Blob.service.path_for(avatar.key)
   end
+
+  def lock_account(account)
+    if account.failed_attempts == 3
+        account.locked = true
+        recovery_token = SecureRandom.hex(64)
+        account.recovery_token = recovery_token
+        render json: {errors: ["Account has been locked for security reasons. An email has been sent to you with the password reset instructions. If you don't have access to this email, please contact your admin."]}
+        AccountMailer.with(account: account, url:request.host(), token:recovery_token).reset_password_email.deliver_later
+      else
+        render json: {errors: ["Your password is incorrect. Your account will be locked after #{3-account.failed_attempts} more failed attempts."]}
+        account.failed_attempts = account.failed_attempts + 1
+      end
+      account.save
+  end
 end

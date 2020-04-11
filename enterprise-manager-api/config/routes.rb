@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'account_unlock/create'
   resources :integration_records
   resources :integrations
   scope 'api/v1' do

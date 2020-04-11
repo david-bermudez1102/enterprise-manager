@@ -47,7 +47,7 @@ class App extends Component {
               />
             </Switch>
             {organizations[0] && !session.isLoggedIn ? (
-              <Footer organization={organizations[0]} />
+              <Footer organization={organizations[0]} session={session} />
             ) : null}
           </div>
         ) : null}

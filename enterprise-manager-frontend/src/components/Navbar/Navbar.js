@@ -13,6 +13,7 @@ class Navbar extends Component {
         {
           path: "/login",
           text: "Login",
+          icon: "fas fa-sign-in-alt",
           loginRequired: false
         },
         {
@@ -63,58 +64,51 @@ class Navbar extends Component {
     const { session, organizations } = this.props;
     const { collapse, links } = this.state;
 
-    const collapseClassName = collapse
-      ? "collapse navbar-collapse d-block"
-      : "collapse navbar-collapse";
+    const collapseClassName = collapse ? "collapse navbar-collapse d-block" : "collapse navbar-collapse";
     return (
       <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm py-0 text-center">
-        <NavLink to="#" className="navbar-brand">
-          <Logo organization={organizations[0]} />
-        </NavLink>
-        <button
-          className="navbar-toggler"
-          type="button"
-          onClick={this.collapse}>
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className={collapseClassName} id="navbarNav">
-          <div className="w-100 d-flex justify-content-between">
-            {session.isLoggedIn ? (
-              <div className="w-50 d-flex order-sm-last order-md-last">
-                <SearchBar organization={organizations[0]} />
-              </div>
-            ) : null}
-            <ul className="navbar-nav nav-pills order-sm-first order-md-last">
-              {session.isLoggedIn
-                ? links.map(link =>
-                    link.loginRequired ? (
-                      <li className="nav-item" key={cuid()}>
-                        <NavLink
-                          to={link.path}
-                          exact
-                          className="nav-link text-dark"
-                          activeClassName="active bg-light"
-                          title={link.text}
-                          onClick={this.collapse}>
-                          <i className={link.icon}></i>
-                        </NavLink>
-                      </li>
-                    ) : null
-                  )
-                : links.map(link =>
-                    !link.loginRequired ? (
-                      <li className="nav-item" key={cuid()}>
-                        <NavLink
-                          to={link.path}
-                          exact
-                          className="nav-link"
-                          activeClassName="active bg-light">
-                          <i className={link.icon}></i> {link.text}
-                        </NavLink>
-                      </li>
-                    ) : null
-                  )}
-            </ul>
+        <div className={session.isLoggedIn ? "container-fluid p-0" : "container"}>
+          <NavLink to="#" className="navbar-brand">
+            <Logo organization={organizations[0]} />
+          </NavLink>
+          <button className="navbar-toggler" type="button" onClick={this.collapse}>
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className={collapseClassName} id="navbarNav">
+            <div className={`w-100 d-flex ${session.isLoggedIn ? "justify-content-between" : "justify-content-end"}`}>
+              {session.isLoggedIn ? (
+                <div className="w-50 d-flex order-sm-last order-md-last">
+                  <SearchBar organization={organizations[0]} />
+                </div>
+              ) : null}
+              <ul className="navbar-nav nav-pills order-sm-first order-md-last">
+                {session.isLoggedIn
+                  ? links.map(link =>
+                      link.loginRequired ? (
+                        <li className="nav-item" key={cuid()}>
+                          <NavLink
+                            to={link.path}
+                            exact
+                            className="nav-link text-dark"
+                            activeClassName="active bg-light"
+                            title={link.text}
+                            onClick={this.collapse}>
+                            <i className={link.icon}></i>
+                          </NavLink>
+                        </li>
+                      ) : null
+                    )
+                  : links.map(link =>
+                      !link.loginRequired ? (
+                        <li className="nav-item" key={cuid()}>
+                          <NavLink to={link.path} exact className="nav-link" activeClassName="active bg-light">
+                            <i className={link.icon}></i> {link.text}
+                          </NavLink>
+                        </li>
+                      ) : null
+                    )}
+              </ul>
+            </div>
           </div>
         </div>
       </nav>

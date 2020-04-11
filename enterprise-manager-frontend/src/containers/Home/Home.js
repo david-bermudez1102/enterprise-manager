@@ -60,7 +60,7 @@ const Home = ({ location, organizations, admins, addSession, removeSession, sess
       </main>
       {session.isLoggedIn ? (
         <div className="d-flex mt-auto w-100">
-          <Footer organization={organizations[0]} />
+          <Footer organization={organizations[0]} session={session} />
         </div>
       ) : null}
     </div>

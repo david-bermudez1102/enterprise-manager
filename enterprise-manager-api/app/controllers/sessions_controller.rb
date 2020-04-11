@@ -6,6 +6,7 @@ class SessionsController < ApplicationController
         params[:username]
       )
     if account && account.activated && account.authenticate(params[:password]) && !account.disabled && !account.locked
+      account.update(failed_attempts:0)
       token = encode_token({ id: account.id })
       cookies.signed[:jwt] = {
         value: token, httponly: true, expires: 24.hour.from_now,

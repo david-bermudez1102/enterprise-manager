@@ -1,3 +1,6 @@
+import snakecaseKeys from "snakecase-keys";
+import { handleErrors } from "./handleErrors";
+
 export const addEmployee = (adminId, employee) => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
@@ -119,6 +122,36 @@ export const removeAccount = accountId => {
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: account.errors });
+        }
+      })
+      .catch(console.log);
+  };
+};
+
+export const resetPassword = (token, activation) => {
+  return dispatch => {
+    dispatch({ type: "CLEAR_ALERTS" });
+    return fetch(`/api/v1/account_unlock/${token}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(snakecaseKeys({ activation }))
+    })
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(response => {
+        if (!response.errors) {
+          dispatch({
+            type: "REMOVE_TOKEN"
+          });
+          dispatch({
+            type: "ADD_MESSAGES",
+            messages: response.messages
+          });
+          return "success";
+        } else {
+          dispatch({ type: "ADD_ERRORS", errors: response.errors });
         }
       })
       .catch(console.log);

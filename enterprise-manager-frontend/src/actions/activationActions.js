@@ -9,7 +9,7 @@ export const verifyToken = token => {
       .then(resp => resp.json())
       .then(resp => {
         if (resp.message) {
-          dispatch({ type: "ADD_TOKEN", token, name: resp.name });
+          dispatch({ type: "ADD_TOKEN", token, name: resp.name, activated: resp.activated || false });
           return resp.message;
         } else dispatch({ type: "ADD_ERRORS", errors: resp.errors });
       })

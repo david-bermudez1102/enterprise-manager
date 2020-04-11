@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  get 'account_unlock/create'
   resources :integration_records
   resources :integrations
   scope 'api/v1' do
     resources :activations
+    resources :account_unlock, only: :update
     resources :options
     resources :organizations do
       resources :forms do

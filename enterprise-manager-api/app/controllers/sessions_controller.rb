@@ -16,7 +16,8 @@ class SessionsController < ApplicationController
     elsif account && account.authenticate(params[:password]) && account.disabled
       render json: {errors: ["Account has been temporarily disabled. Please contact admin."]}
     elsif account && account.accountable_type != "Admin" && !account.authenticate(params[:password]) && !account.locked && !account.disabled
-      lock_account(account)
+      account_lock = Account.lock_account(account, request.host())
+      render json: {errors: account_lock}
     elsif account && account.locked && !account.disabled
       render json: {errors: ["Account has been locked for security reasons. An email has been sent to you with the password reset instructions. If you don't have access to this email, please contact your admin."]}
     else

@@ -66,11 +66,11 @@ export default class Draggable extends Component {
   };
 
   render() {
-    const { children } = this.props;
+    const { className, children } = this.props;
     const { x, y } = this.state;
     return (
       <div
-        className="w-100 h-100"
+        className={`w-100 h-100 ${className}`}
         ref={this.container}
         onMouseDown={this.handleMouseDown}
         onMouseMove={this.handleMouseMove}

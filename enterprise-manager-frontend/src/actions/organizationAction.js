@@ -6,13 +6,11 @@ export const addOrganization = organization => {
     dispatch({ type: "REQUESTING_DATA" });
     return fetch("/api/v1/organizations", {
       method: "POST",
-      body: jsonToFormData(organization)
+      body: jsonToFormData({ organization })
     })
       .then(response => response.json())
       .then(organization => organization.data.attributes)
-      .then(organization =>
-        dispatch({ type: "ADD_ORGANIZATION", organization })
-      )
+      .then(organization => dispatch({ type: "ADD_ORGANIZATION", organization }))
       .then(() => dispatch({ type: "FINISHED_REQUESTING" }));
   };
 };
@@ -22,14 +20,8 @@ export const fetchOrganizations = () => {
     dispatch({ type: "REQUESTING_DATA" });
     return fetch("/api/v1/organizations")
       .then(response => response.json())
-      .then(organizations =>
-        organizations.data.map(organization =>
-          camelcaseKeys(organization.attributes)
-        )
-      )
-      .then(organizations =>
-        dispatch({ type: "FETCH_ORGANIZATIONS", organizations })
-      )
+      .then(organizations => organizations.data.map(organization => camelcaseKeys(organization.attributes)))
+      .then(organizations => dispatch({ type: "FETCH_ORGANIZATIONS", organizations }))
       .then(() => dispatch({ type: "FINISHED_REQUESTING" }));
   };
 };
@@ -55,9 +47,7 @@ export const updateOrganization = (organization, organizationId) => {
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: organization.messages || [
-              "Integration saved successfully."
-            ]
+            messages: organization.messages || ["Integration saved successfully."]
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: organization.errors });

@@ -2,8 +2,9 @@
 @import url(https://pro.fontawesome.com/releases/v5.10.0/css/all.css);
 @import url("https://fonts.googleapis.com/css?family=Yantramanav:300,400,700&display=swap");
 $font-family-base: Yantramanav;
-@import url("https://fonts.googleapis.com/css?family=Poppins&display=swap");
-$headings-font-family: Poppins;
+@import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
+$headings-font-family: 'Catamaran',
+sans-serif;
 
 $enable-grid-classes: true;
 $primary: #ff304f;

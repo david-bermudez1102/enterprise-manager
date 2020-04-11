@@ -9,14 +9,8 @@ export const FormCard = ({ header, children, footer }) => (
 );
 
 export const CardHeader = ({ children }) => (
-  <div className="card-header border-0 d-flex align-items-center justify-content-between">
-    {children}
-  </div>
+  <div className="card-header bg-secondary border-0 d-flex align-items-center justify-content-between">{children}</div>
 );
 
-export const CardBody = ({ className, children }) => (
-  <div className={`card-body ${className}`}>{children}</div>
-);
-export const CardFooter = ({ children }) => (
-  <div className="card-footer">{children}</div>
-);
+export const CardBody = ({ className, children }) => <div className={`card-body ${className}`}>{children}</div>;
+export const CardFooter = ({ children }) => <div className="card-footer">{children}</div>;

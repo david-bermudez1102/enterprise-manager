@@ -42,14 +42,7 @@ class ProfileForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const { updateAdmin, currentUser } = this.props;
-    const {
-      avatar,
-      name,
-      email,
-      gender,
-      avatarMarginLeft,
-      avatarMarginTop
-    } = this.state;
+    const { avatar, name, email, gender, avatarMarginLeft, avatarMarginTop } = this.state;
     const formData = {
       avatar,
       ...snakecaseKeys({
@@ -64,19 +57,10 @@ class ProfileForm extends Component {
   };
 
   render() {
-    const {
-      avatarUrl,
-      name,
-      email,
-      gender,
-      avatarMarginLeft,
-      avatarMarginTop
-    } = this.state;
+    const { avatarUrl, name, email, gender, avatarMarginLeft, avatarMarginTop } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
-        <div
-          className="d-flex display-4 mb-0 align-items-center"
-          style={{ fontSize: "40px" }}>
+        <div className="d-flex display-4 mb-0 align-items-center" style={{ fontSize: "40px" }}>
           <FileUploader
             className="circular--landscape shadow bg-light mr-2"
             size="150px"
@@ -128,11 +112,7 @@ class ProfileForm extends Component {
             placeholder="Enter email..."></select>
         </div>
         <hr />
-        <input
-          type="submit"
-          className="btn btn-primary shadow"
-          value="Save Changes"
-        />
+        <input type="submit" className="btn btn-primary shadow" value="Save Changes" />
       </form>
     );
   }

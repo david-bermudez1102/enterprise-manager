@@ -1,27 +1,28 @@
 import React, { Component } from "react";
+import FileUploader from "../Uploader/FileUploader";
+import LogoUploader from "../Uploader/LogoUploader";
+import "./styles.css";
 
 export default class OrganizationForm extends Component {
-  constructor() {
-    super();
-    this.state = { organization: { logo: "", name: "" } };
-  }
+  state = { logo: "", name: "", logoMarginLeft: 0, logoMarginTop: 0 };
 
   handleOnChange = event => {
     event.persist();
     this.setState({
-      organization: {
-        ...this.state.organization,
-        [event.target.name]: event.target.value
-      }
+      [event.target.name]: event.target.value
     });
   };
 
-  handleOnChangeImage = event => {
+  handleLogoChange = file => {
     this.setState({
-      organization: {
-        ...this.state.organization,
-        [event.target.name]: event.target.files[0]
-      }
+      logo: file
+    });
+  };
+
+  handleCoordinates = (x, y) => {
+    this.setState({
+      logoMarginLeft: x,
+      logoMarginTop: y
     });
   };
 
@@ -34,24 +35,22 @@ export default class OrganizationForm extends Component {
     return (
       <form onSubmit={this.handleOnSubmit}>
         <div className="form-group">
-          <label htmlFor="logo">Import your organization logo</label>
-          <input
-            type="file"
-            accept="image/*"
-            name="logo"
-            id="logo"
-            onChange={this.handleOnChangeImage}
-          />
+          <FileUploader
+            className="logo-uploader bg-transparent text-center"
+            size="200px"
+            handleChange={this.handleLogoChange}>
+            <LogoUploader handleCoordinates={this.handleCoordinates} />
+          </FileUploader>
         </div>
         <div className="form-group">
-          <label htmlFor="organization_name">Name of your organization</label>
+          <label htmlFor="organization_name">Organization Name</label>
           <input
             type="text"
             name="name"
             id="organization_name"
             className="form-control"
             onChange={this.handleOnChange}
-            value={this.state.organization.name}
+            value={this.state.name}
             placeholder="Enter the name of your organization"
           />
         </div>

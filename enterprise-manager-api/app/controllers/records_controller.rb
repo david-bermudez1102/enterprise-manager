@@ -1,7 +1,9 @@
 class RecordsController < ApplicationController
   before_action :set_organization
   before_action :set_form
-
+  before_action :set_limit, only: %i[index]
+  before_action :set_offset, only: %i[index]
+  
   def create
     record = @form.records.build(record_params)
     if record.save
@@ -35,5 +37,21 @@ class RecordsController < ApplicationController
 
   def set_form
     @form = @organization.forms.find_by(id: params[:form_id])
+  end
+
+  def set_limit
+    if !params[:limit] || params[:limit]< 0
+      @limit = 25
+    else
+      @limit = params[:limit]
+    end
+  end
+
+  def set_offset
+    if !params[:page] || params[:page] < 0
+      @offset = 0
+    else
+      @offset = @limit*params[:page]
+    end
   end
 end

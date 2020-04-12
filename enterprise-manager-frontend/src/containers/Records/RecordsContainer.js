@@ -26,7 +26,14 @@ class RecordsContainer extends Component {
   };
 
   render() {
-    const { match, resource, recordFields, removeRecordField, records, values } = this.props;
+    const {
+      match,
+      resource,
+      recordFields,
+      removeRecordField,
+      records,
+      values
+    } = this.props;
     return (
       <Switch>
         <Route
@@ -51,12 +58,14 @@ class RecordsContainer extends Component {
               }}>
               <div className="w-100 position-relative">
                 <div className="bg-white shadow-sm p-2 d-inline-block rounded w-100 position-absolute table-responsive">
-                  <ReactHeight onHeightReady={height => this.setOptionsHeight(height)}>
+                  <ReactHeight
+                    onHeightReady={height => this.setOptionsHeight(height)}>
                     <RecordsOptions resource={resource} />
                     <Pagination />
                   </ReactHeight>
                   {records.length > 0 ? (
-                    <ReactHeight onHeightReady={height => this.setListHeight(height)}>
+                    <ReactHeight
+                      onHeightReady={height => this.setListHeight(height)}>
                       <RecordsList
                         history={props.history}
                         match={match}
@@ -67,7 +76,9 @@ class RecordsContainer extends Component {
                       />
                     </ReactHeight>
                   ) : (
-                    <NoContent>This resource doesn't have any records yet.</NoContent>
+                    <NoContent>
+                      This resource doesn't have any records yet.
+                    </NoContent>
                   )}
                 </div>
               </div>

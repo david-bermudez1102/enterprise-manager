@@ -8,13 +8,17 @@ export const addRecord = (record, organizationId, formId) => {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-      body: JSON.stringify({ record: { ...record } })
+      body: JSON.stringify({ record })
     })
       .then(response => response.json())
       .then(record => {
         dispatch({
           type: "ADD_RECORD",
           record: camelcaseKeys(record.data.attributes)
+        });
+        dispatch({
+          type: "UPDATE_RECORDS_COUNT",
+          resourceId: formId
         });
         return camelcaseKeys(record.data.links.values);
       })
@@ -34,6 +38,8 @@ export const fetchRecords = (organizationId, formId) => {
         });
         return records.map(record => camelcaseKeys(record.links.values));
       })
-      .then(values => dispatch({ type: "FETCH_VALUES", values: values.flat() }));
+      .then(values =>
+        dispatch({ type: "FETCH_VALUES", values: values.flat() })
+      );
   };
 };

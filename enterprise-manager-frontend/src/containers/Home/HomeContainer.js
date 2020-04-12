@@ -10,8 +10,9 @@ import AccountsContainer from "../Accounts/AccountsContainer";
 import ZohoBooks from "../ZohoBooks/ZohoBooks";
 import Footer from "../../components/Footer/Footer";
 import ResetPassword from "../../components/Accounts/ResetPassword";
+import Home from "../../components/Home";
 
-const Home = ({ location, organizations, admins, addSession, removeSession, session }) => (
+const HomeContainer = ({ location, organizations, admins, addSession, removeSession, session }) => (
   <div className="w-100 d-flex flex-grow-1">
     {organizations.length === 0 ? (
       <Redirect to="/organizations/new" />
@@ -56,6 +57,7 @@ const Home = ({ location, organizations, admins, addSession, removeSession, sess
               />
             )}
           />
+          <Route exact path="/" render={props => <Home />} />
         </Switch>
       </main>
       {session.isLoggedIn ? (
@@ -67,4 +69,4 @@ const Home = ({ location, organizations, admins, addSession, removeSession, sess
   </div>
 );
 
-export default Home;
+export default HomeContainer;

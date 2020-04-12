@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
 import { fetchAdmins } from "./actions/adminActions";
-import Home from "./containers/Home/Home";
 import { addSession, removeSession, fetchSession } from "./actions/sessionActions";
 import Footer from "./components/Footer/Footer";
+import HomeContainer from "./containers/Home/HomeContainer";
 
 class App extends Component {
   constructor(props) {
@@ -35,7 +35,7 @@ class App extends Component {
               <Route
                 path="/"
                 render={props => (
-                  <Home
+                  <HomeContainer
                     organizations={organizations}
                     session={session}
                     {...props}

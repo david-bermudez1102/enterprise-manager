@@ -17,14 +17,6 @@ export default class Options extends Component {
     this.setState({ isOpen: false });
   };
 
-  contentName = () => {
-    const { content } = this.props;
-    return content.name
-      .split("_")
-      .map(word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
-      .join(" ");
-  };
-
   render() {
     const { content, url, fontSize, deletionMessage } = this.props;
     const { isOpen } = this.state;
@@ -33,10 +25,8 @@ export default class Options extends Component {
         <div
           onMouseOver={this.handleOpen}
           onMouseOut={this.handleClose}
-          className="w-100 d-flex justify-content-between align-items-center">
-          <label htmlFor={content.name} className="p-0 m-0">
-            {this.contentName()}
-          </label>
+          className="d-flex justify-content-end align-items-center position-absolute px-2"
+          style={{ right: "0", zIndex: 2 }}>
           <div
             className="d-flex justify-content-between"
             style={{
@@ -50,19 +40,12 @@ export default class Options extends Component {
             </Link>
             <ToggleContent
               toggle={show => (
-                <button
-                  className="btn btn-transparent text-primary px-0"
-                  onClick={show}>
-                  <i
-                    className="fad fa-trash"
-                    style={{ fontSize: fontSize }}></i>
+                <button className="btn btn-transparent text-primary px-0" onClick={show}>
+                  <i className="fad fa-trash" style={{ fontSize: fontSize }}></i>
                 </button>
               )}
               content={hide => (
-                <DeletionModal
-                  {...this.props}
-                  handleClose={hide}
-                  deletionMessage={deletionMessage}>
+                <DeletionModal {...this.props} handleClose={hide} deletionMessage={deletionMessage}>
                   <Link to={`${url}/${content.id}/delete`}>
                     <button type="button" className="btn btn-danger">
                       Delete column and field

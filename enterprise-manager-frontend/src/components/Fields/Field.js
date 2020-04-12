@@ -11,8 +11,7 @@ class Field extends Component {
   handleChange = event => {
     event.persist();
     let option;
-    if (event.target.options)
-      option = event.target.options[event.target.selectedIndex];
+    if (event.target.options) option = event.target.options[event.target.selectedIndex];
     else if (event.target.checked) option = event.target;
 
     const optionDataSet = option ? option.dataset : null;
@@ -42,7 +41,7 @@ class Field extends Component {
       case "selectable":
         inputField = (
           <select
-            className="form-control form-control-sm rounded-pill"
+            className="form-control rounded-pill"
             name={recordField.id}
             id={field.fieldAlias}
             placeholder={`Enter ${field.name}`}
@@ -56,18 +55,12 @@ class Field extends Component {
             </option>
             {field.selectableResource
               ? field.selectableResource.options.map(option => (
-                  <option
-                    key={cuid()}
-                    value={option.value}
-                    data-record-value-id={option.id}>
+                  <option key={cuid()} value={option.value} data-record-value-id={option.id}>
                     {option.value}
                   </option>
                 ))
               : field.options.map(option => (
-                  <option
-                    key={cuid()}
-                    value={option.value}
-                    data-option-value-id={option.id}>
+                  <option key={cuid()} value={option.value} data-option-value-id={option.id}>
                     {option.value}
                   </option>
                 ))}
@@ -91,9 +84,7 @@ class Field extends Component {
                   checked={this.state.value === option.value}
                   data-option-value-id={option.id}
                 />
-                <label
-                  htmlFor={`radio_field_${option.id}`}
-                  className="form-check-label">
+                <label htmlFor={`radio_field_${option.id}`} className="form-check-label">
                   {option.value}
                 </label>
               </div>
@@ -116,9 +107,7 @@ class Field extends Component {
                   checked={this.state.checked[`checkbox_field_${option.id}`]}
                   data-option-value-id={option.id}
                 />
-                <label
-                  htmlFor={`radio_field_${option.id}`}
-                  className="form-check-label">
+                <label htmlFor={`radio_field_${option.id}`} className="form-check-label">
                   {option.value}
                 </label>
               </div>
@@ -129,7 +118,7 @@ class Field extends Component {
       default:
         inputField = (
           <input
-            className="form-control form-control-sm rounded-pill"
+            className="form-control rounded-pill"
             type={field.fieldType}
             name={recordField.id}
             id={field.fieldAlias}
@@ -137,12 +126,13 @@ class Field extends Component {
             onChange={this.handleChange}
             value={this.state.value}
             ref={fieldRef}
+            required
           />
         );
         break;
     }
     return (
-      <div className="form-group mb-0">
+      <>
         {field.fieldType !== "key_field" ? (
           <Options
             url={`${match.url}/fields`}
@@ -150,8 +140,13 @@ class Field extends Component {
             deletionMessage="The field will be deleted from the resource."
           />
         ) : null}
-        {inputField}
-      </div>
+        <div className="form-group">
+          {inputField}
+          <label htmlFor={field.fieldAlias} className="form-control-placeholder">
+            {this.fieldName()}
+          </label>
+        </div>
+      </>
     );
   }
 }

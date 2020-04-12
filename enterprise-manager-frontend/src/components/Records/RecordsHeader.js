@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import cuid from "cuid";
 import Options from "../Options/Options";
+import capitalize from "capitalize";
 
 export default class RecordsHeader extends Component {
   constructor(props) {
@@ -77,9 +78,7 @@ export default class RecordsHeader extends Component {
                 onClick={() => this.handleSortBy(0)}>
                 {defaultOrder && defaultOrder.usedToSort ? (
                   defaultOrder.ascendant ? (
-                    <i
-                      className="fad fa-sort fa-swap-opacity"
-                      title="Sort Ascendant"></i>
+                    <i className="fad fa-sort fa-swap-opacity" title="Sort Ascendant"></i>
                   ) : (
                     <i className="fad fa-sort" title="Sort Descendant"></i>
                   )
@@ -91,20 +90,16 @@ export default class RecordsHeader extends Component {
             </span>
           </th>
           {recordFields.map(field => {
-            const order = orders.find(
-              order => order.recordFieldId === field.id
-            );
+            const order = orders.find(order => order.recordFieldId === field.id);
             return field.formId === resource.id ? (
-              <th key={cuid()} className="text-nowrap">
+              <th key={cuid()} className="text-nowrap position-relative">
                 <span className="d-flex w-100 align-items-center">
                   <button
                     className="btn btn-transparent px-0 pr-1 shadow-none text-primary"
                     onClick={() => this.handleSortBy(field.id)}>
                     {order && order.usedToSort ? (
                       order.ascendant ? (
-                        <i
-                          className="fad fa-sort fa-swap-opacity"
-                          title="Sort Ascendant"></i>
+                        <i className="fad fa-sort fa-swap-opacity" title="Sort Ascendant"></i>
                       ) : (
                         <i className="fad fa-sort" title="Sort Descendant"></i>
                       )
@@ -112,6 +107,7 @@ export default class RecordsHeader extends Component {
                       <i className="fas fa-sort" title="Sort Ascendant"></i>
                     )}
                   </button>
+                  {capitalize(field.name)}
                   <Options
                     url={`${match.url}/record_fields`}
                     title={`Delete Field "${field.name}"?`}

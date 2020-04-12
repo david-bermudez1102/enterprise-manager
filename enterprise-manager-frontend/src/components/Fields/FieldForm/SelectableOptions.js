@@ -28,10 +28,7 @@ class SelectableOptions extends Component {
         {
           ...this.state,
           itemValue: "",
-          options_attributes: [
-            ...this.state.options_attributes,
-            { value: this.state.itemValue }
-          ]
+          options_attributes: [...this.state.options_attributes, { value: this.state.itemValue }]
         },
         () =>
           this.props.handleSelectableChange(
@@ -50,11 +47,7 @@ class SelectableOptions extends Component {
     this.setState(
       {
         itemValue: "",
-        options_attributes: [
-          ...this.state.options_attributes.filter(
-            option => option.value !== value
-          )
-        ]
+        options_attributes: [...this.state.options_attributes.filter(option => option.value !== value)]
       },
       () =>
         handleSelectableChange(
@@ -75,20 +68,14 @@ class SelectableOptions extends Component {
         <hr />
         <div className="display-4" style={{ fontSize: "20px" }}>
           {options_attributes.map(option => (
-            <span
-              key={cuid()}
-              className="badge badge-primary badge-pill mr-2"
-              style={{ minWidth: "100px" }}>
+            <span key={cuid()} className="badge badge-primary badge-pill mr-2" style={{ minWidth: "100px" }}>
               <span className="float-left h-100">{option.value}</span>
 
-              <i
-                className="fas fa-minus-square pl-2 float-right"
-                onClick={() => this.removeItem(option.value)}></i>
+              <i className="fas fa-minus-square pl-2 float-right" onClick={() => this.removeItem(option.value)}></i>
             </span>
           ))}
         </div>
         <div className="form-group">
-          <label htmlFor="item_value">Add items to {fieldType} field:</label>
           <input
             type="text"
             name="itemValue"
@@ -99,6 +86,9 @@ class SelectableOptions extends Component {
             autoFocus={true}
             ref={this.itemValue}
           />
+          <label className="form-control-placeholder" htmlFor="item_value">
+            Add item to {fieldType} field
+          </label>
         </div>
         <button onClick={this.handleClick} className="btn btn-secondary shadow">
           {options_attributes.length === 0 ? "Add Item" : "Add Another Item"}

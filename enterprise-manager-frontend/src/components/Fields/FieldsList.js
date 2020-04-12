@@ -63,11 +63,11 @@ class FieldsList extends Component {
     return (
       <>
         <CardHeader>
-          <span className="card-title display-4 mb-0 text-primary" style={{ fontSize: "32px" }}>
+          <span className="card-title display-4 mb-0 text-light" style={{ fontSize: "32px" }}>
             <i className="fas fa-folder-plus mr-2"></i>
             Add {pluralize.singular(resource.name)}
           </span>
-          <span className="card-title">
+          <span className="card-title text-light">
             <Link to={`${match.url}/fields/new`} title="Add new field">
               <i className="fad fa-plus-circle" style={{ fontSize: "24px" }}></i>
             </Link>{" "}

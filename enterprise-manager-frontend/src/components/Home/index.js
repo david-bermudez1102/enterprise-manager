@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Home = () => {
-  return <h1>Welcome user</h1>;
+  const { currentUser } = useSelector(state => state.session);
+  return <h1>Welcome {currentUser.name}</h1>;
 };
 
 export default Home;

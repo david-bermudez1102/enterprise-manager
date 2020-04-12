@@ -181,6 +181,9 @@ ActiveRecord::Schema.define(version: 2020_04_09_210439) do
 
   create_table "organizations", force: :cascade do |t|
     t.string "name"
+    t.float "logo_margin_left"
+    t.float "logo_margin_top"
+    t.float "logo_width_ratio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

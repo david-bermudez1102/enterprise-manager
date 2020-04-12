@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import cuid from "cuid";
-import Logo from "./Logo";
+import Logo from "./Logo/Logo";
 import SearchBar from "./SearchBar";
 
 class Navbar extends Component {
@@ -69,7 +69,7 @@ class Navbar extends Component {
       <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm py-0 text-center">
         <div className={session.isLoggedIn ? "container-fluid p-0" : "container"}>
           <NavLink to="#" className="navbar-brand">
-            <Logo organization={organizations[0]} />
+            <Logo organization={organizations[0]} width={180} height={40} />
           </NavLink>
           <button className="navbar-toggler" type="button" onClick={this.collapse}>
             <span className="navbar-toggler-icon"></span>

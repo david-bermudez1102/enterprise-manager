@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import FileUploader from "../Uploader/FileUploader";
 import LogoUploader from "../Uploader/LogoUploader";
 import "./styles.css";
+import snakecaseKeys from "snakecase-keys";
 
 export default class OrganizationForm extends Component {
-  state = { logo: "", name: "", logoMarginLeft: 0, logoMarginTop: 0 };
+  state = { logo: "", name: "", logoMarginLeft: 0, logoMarginTop: 0, logoWidthRatio: 0 };
 
   handleOnChange = event => {
     event.persist();
@@ -26,12 +27,18 @@ export default class OrganizationForm extends Component {
     });
   };
 
+  handleLogoRatio = logoWidthRatio => {
+    this.setState({ logoWidthRatio });
+  };
+
   handleOnSubmit = event => {
     event.preventDefault();
-    this.props.addOrganization(this.state);
+    const { logo, name, logoMarginLeft, logoMarginTop } = this.state;
+    this.props.addOrganization({ logo, ...snakecaseKeys({ name, logoMarginLeft, logoMarginTop }) });
   };
 
   render() {
+    const { logoMarginLeft, logoMarginTop } = this.state;
     return (
       <form onSubmit={this.handleOnSubmit}>
         <div className="form-group">
@@ -39,7 +46,7 @@ export default class OrganizationForm extends Component {
             className="logo-uploader bg-transparent text-center"
             size="200px"
             handleChange={this.handleLogoChange}>
-            <LogoUploader handleCoordinates={this.handleCoordinates} x={0} y={0} />
+            <LogoUploader handleCoordinates={this.handleCoordinates} x={logoMarginLeft} y={logoMarginTop} />
           </FileUploader>
         </div>
         <div className="form-group">

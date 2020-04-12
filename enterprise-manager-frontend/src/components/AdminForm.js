@@ -30,7 +30,6 @@ export default class AdminForm extends Component {
     return (
       <form onSubmit={this.handleOnSubmit}>
         <div className="form-group">
-          <label htmlFor="admin_name">Your Name:</label>
           <input
             type="text"
             name="name"
@@ -38,23 +37,29 @@ export default class AdminForm extends Component {
             className="form-control"
             onChange={this.handleOnChange}
             value={this.state.name}
-            placeholder="Enter Name..."
+            placeholder="Enter your name..."
+            required
           />
+          <label className="form-control-placeholder" htmlFor="admin_name">
+            Name
+          </label>
         </div>
         <div className="form-group">
-          <label htmlFor="admin_email">Your Email:</label>
           <input
-            type="email"
+            type="text"
             name="email"
             id="admin_email"
             className="form-control"
             onChange={this.handleOnChange}
             value={this.state.email}
-            placeholder="Enter Email..."
+            placeholder="Enter your email..."
+            required
           />
+          <label className="form-control-placeholder" htmlFor="admin_email">
+            Email
+          </label>
         </div>
         <div className="form-group">
-          <label htmlFor="admin_password">Your Password:</label>
           <input
             type="password"
             name="password"
@@ -62,14 +67,14 @@ export default class AdminForm extends Component {
             className="form-control"
             onChange={this.handleOnChange}
             value={this.state.password}
-            placeholder="Enter Password..."
+            placeholder="Enter your password..."
+            required
           />
+          <label className="form-control-placeholder" htmlFor="admin_password">
+            Password
+          </label>
         </div>
-        <input
-          type="submit"
-          className="btn btn-primary shadow"
-          value="Create Admin"
-        />
+        <input type="submit" className="btn btn-primary shadow" value="Create Admin" />
       </form>
     );
   }

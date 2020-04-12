@@ -18,10 +18,14 @@ class OrganizationSerializer
     end
   end
 
-  attribute :logo do |object|
-    Rails.application.routes.url_helpers.rails_blob_path(
+  attribute :logo, if: Proc.new { |object|
+    !object.logo.attachment.nil?
+  } do |object|
+    {url: Rails.application.routes.url_helpers.rails_blob_path(
       object.logo,
       only_path: true,
-    )
+    ),margin_left: object.logo_margin_left, 
+    margin_top: object.logo_margin_top,
+    logo_width_ratio: object.logo_width_ratio}
   end
 end

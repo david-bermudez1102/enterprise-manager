@@ -1,12 +1,10 @@
-.logo-uploader {
+.logo {
   display: inline-block;
   position: relative;
   overflow: hidden;
-  width: 100% !important;
-  border: 2px dashed #ccc;
 }
 
-.logo-uploader img {
+.logo img {
   max-width: 100%;
   max-height: 100%;
   position: relative;

@@ -16,7 +16,7 @@ export const addAdmin = admin => {
           dispatch({ type: "ADD_ADMIN", admin: camelcaseKeys(admin.data.attributes) });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: admin.messages
+            messages: admin.messages || ["Account was successfully created."]
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: admin.errors });

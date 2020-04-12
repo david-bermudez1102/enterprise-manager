@@ -4,7 +4,7 @@ import defaultAvatar from "../../../default_user.png";
 const Avatar = ({ currentUser, size }) => {
   return (
     <div
-      className="circular--landscape mr-2 shadow"
+      className="circular--landscape shadow"
       style={{
         width: size + "px",
         height: size + "px"
@@ -24,11 +24,7 @@ const Avatar = ({ currentUser, size }) => {
           />
         </div>
       ) : (
-        <img
-          src={defaultAvatar}
-          alt={currentUser.name}
-          title={currentUser.name}
-        />
+        <img src={defaultAvatar} alt={currentUser.name} title={currentUser.name} />
       )}
     </div>
   );

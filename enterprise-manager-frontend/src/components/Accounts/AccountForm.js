@@ -26,13 +26,7 @@ class AccountForm extends Component {
   };
 
   handleSubmit = event => {
-    const {
-      addAdmin,
-      addEmployee,
-      addManager,
-      updateAccount,
-      adminId
-    } = this.props;
+    const { addAdmin, addEmployee, addManager, updateAccount, adminId } = this.props;
     const { role, id, name, email } = this.state;
     event.preventDefault();
     if (updateAccount) updateAccount({ id, name, email });
@@ -59,7 +53,6 @@ class AccountForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <label htmlFor="account_name">Employee Name:</label>
           <input
             type="text"
             name="name"
@@ -68,10 +61,13 @@ class AccountForm extends Component {
             onChange={this.handleChange}
             value={name}
             placeholder="Enter name..."
+            required
           />
+          <label className="form-control-placeholder" htmlFor="account_name">
+            Employee Name
+          </label>
         </div>
         <div className="form-group">
-          <label htmlFor="account_email">Employee Email:</label>
           <input
             type="text"
             name="email"
@@ -80,22 +76,29 @@ class AccountForm extends Component {
             onChange={this.handleChange}
             value={email}
             placeholder="Enter email..."
+            required
           />
+          <label className="form-control-placeholder" htmlFor="account_email">
+            Employee Email
+          </label>
         </div>
         <div className="form-group">
-          <label htmlFor="account_role">Employee Role:</label>
           <select
             name="role"
             id="account_role"
             onChange={this.handleChange}
             value={role}
-            className="form-control">
+            className="form-control"
+            required>
             {roles.map(role => (
               <option value={role} key={cuid()}>
                 {role}
               </option>
             ))}
           </select>
+          <label className="form-control-placeholder" htmlFor="account_role">
+            Employee Role
+          </label>
         </div>
         <input type="submit" className="btn btn-primary shadow" />
       </form>

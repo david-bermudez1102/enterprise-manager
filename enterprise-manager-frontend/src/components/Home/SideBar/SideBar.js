@@ -124,20 +124,16 @@ export default class SideBar extends Component {
     const { minimized, links } = this.state;
     return (
       <CSSTransition in={!minimized} timeout={40} classNames="slider" appear>
-        <div
-          className="pt-0 bg-secondary shadow text-light vh-100 sticky-top"
-          style={{ fontSize: "16px" }}>
-          <nav
-            className="px-0 py-0 nav nav-dark nav-pills flex-column h-100 d-flex"
-            style={{ zIndex: 999 }}>
+        <div className="sidebar pt-0 bg-secondary shadow text-light vh-100 sticky-top" style={{ fontSize: "16px" }}>
+          <nav className="px-0 py-0 nav nav-dark nav-pills flex-column h-100 d-flex" style={{ zIndex: 999 }}>
             <div className="" onMouseEnter={this.openSideBar} onMouseLeave={this.closeSideBar}>
               <div
                 className={`w-100 d-flex align-items-center flex-wrap text-nowrap px-2 justify-content-center`}
                 style={{ height: "60.59px" }}>
                 <span className="d-flex align-items-center">
-                  <Avatar minimized={minimized} currentUser={currentUser} size="35" />
+                  <Avatar currentUser={currentUser} size="35" />
                   <CSSTransition in={!minimized} timeout={50} classNames="fade" appear>
-                    <span>{currentUser.name}</span>
+                    <span className="ml-2">{currentUser.name}</span>
                   </CSSTransition>
                 </span>
               </div>
@@ -192,14 +188,10 @@ export default class SideBar extends Component {
             </div>
             <div className="text-center w-100 justify-content-center flex-wrap mt-auto mb-0">
               <hr className="mb-0" />
-              <button
-                className="btn btn-transparent btn-lg text-light shadow-none"
-                onClick={this.toggle}>
+              <button className="btn btn-transparent btn-lg text-light shadow-none" onClick={this.toggle}>
                 <i
                   className={
-                    minimized
-                      ? "fad fa-chevron-circle-right display-4"
-                      : "fad fa-chevron-circle-left display-4"
+                    minimized ? "fad fa-chevron-circle-right display-4" : "fad fa-chevron-circle-left display-4"
                   }
                   style={{ fontSize: "30px" }}></i>
               </button>

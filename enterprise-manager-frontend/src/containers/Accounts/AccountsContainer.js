@@ -79,8 +79,8 @@ class AccountsContainer extends Component {
                 return account ? (
                   <FormCard
                     header={
-                      <span className="card-title display-4" style={{ fontSize: "32px" }}>
-                        Edit Account
+                      <span className="card-title display-4">
+                        <h2>Edit Account</h2>
                       </span>
                     }>
                     <AccountForm
@@ -112,8 +112,10 @@ class AccountsContainer extends Component {
               render={props => (
                 <FormCard
                   header={
-                    <span className="card-title display-4" style={{ fontSize: "32px" }}>
-                      Add Account
+                    <span className="card-title text-white mb-0 display-4">
+                      <h2 className="mb-0">
+                        <i className="fad fa-plus-circle mr-2"></i>Add Account
+                      </h2>
                     </span>
                   }>
                   <AccountForm

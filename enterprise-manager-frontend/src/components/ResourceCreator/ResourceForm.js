@@ -11,18 +11,14 @@ class ResourceForm extends Component {
 
   componentDidMount() {
     const { match, resources } = this.props;
-    const resource = resources
-      ? resources.find(resource => resource.formAlias === match.params.formAlias)
-      : null;
+    const resource = resources ? resources.find(resource => resource.formAlias === match.params.formAlias) : null;
     return resource ? this.setState({ name: resource.name, resourceId: resource.id }) : null;
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match !== this.props.match) {
       const { match, resources } = this.props;
-      const resource = resources
-        ? resources.find(resource => resource.formAlias === match.params.formAlias)
-        : null;
+      const resource = resources ? resources.find(resource => resource.formAlias === match.params.formAlias) : null;
       return resource ? this.setState({ name: resource.name, resourceId: resource.id }) : null;
     }
   }
@@ -51,15 +47,19 @@ class ResourceForm extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <label>Resource Name</label>
           <input
             name="name"
+            id="resource_name"
             type="text"
             placeholder="Enter name..."
             onChange={this.handleChange}
             value={this.state.name}
             className="form-control rounded-pill"
+            required
           />
+          <label className="form-control-placeholder" htmlFor="resource_name">
+            Resource Name
+          </label>
         </div>
         <input
           type="submit"

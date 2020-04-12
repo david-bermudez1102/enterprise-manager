@@ -15,10 +15,15 @@ const SearchBar = ({ organization }) => {
         <div className="col col-sm-12">
           <input
             type="search"
+            id="query"
             className="form-control pl-5 rounded-pill"
             placeholder="Search..."
             style={{ zIndex: 1 }}
+            required
           />
+          <label className="form-control-placeholder" htmlFor="query" style={{ marginLeft: "-4.8em" }}>
+            Search
+          </label>
         </div>
       </div>
     </form>

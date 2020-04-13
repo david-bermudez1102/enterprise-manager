@@ -7,15 +7,20 @@ class RecordsList extends Component {
   constructor(props) {
     super(props);
     this.recordsOptions = React.createRef();
-    this.state = { sortBy: 0, sortedRecords: [], orders: [], count: 0 };
+    this.state = {
+      sortBy: 0,
+      sortedRecords: [],
+      orders: [],
+      count: 0,
+      limit: 25
+    };
   }
 
   componentDidMount() {
     const { values, records } = this.props;
     const recordsOptions = this.recordsOptions.current;
     recordsOptions.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+      behavior: "smooth"
     });
     this.setState({
       sortedRecords: this.sortBy(this.state.sortBy, records, values, false)
@@ -77,7 +82,7 @@ class RecordsList extends Component {
 
   render() {
     const { records, recordFields, resource, values } = this.props;
-    const { sortedRecords } = this.state;
+    const { sortedRecords, limit } = this.state;
     return (
       <table
         className="table table-sm mb-0 table-hover border-0"
@@ -85,18 +90,20 @@ class RecordsList extends Component {
         <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />
         <tbody>
           {sortedRecords && sortedRecords.length > 0
-            ? sortedRecords.map(record =>
-                record.formId === resource.id ? (
-                  <Record
-                    key={cuid()}
-                    record={record}
-                    recordFields={recordFields}
-                    resourceId={resource.id}
-                    values={values}
-                    records={records}
-                  />
-                ) : null
-              )
+            ? sortedRecords
+                .slice(0, limit)
+                .map(record =>
+                  record.formId === resource.id ? (
+                    <Record
+                      key={cuid()}
+                      record={record}
+                      recordFields={recordFields}
+                      resourceId={resource.id}
+                      values={values}
+                      records={records}
+                    />
+                  ) : null
+                )
             : null}
         </tbody>
       </table>

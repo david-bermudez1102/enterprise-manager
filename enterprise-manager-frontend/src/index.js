@@ -6,17 +6,20 @@ import * as serviceWorker from "./serviceWorker";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-
 import { rootReducer } from "./reducers/rootReducer";
 import { loadState, saveState } from "./localStorage/loadState";
+import throttle from "lodash/throttle";
 
 const persistedState = loadState();
 
 const store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
 
-store.subscribe(() => {
-  saveState(store.getState());
-});
+store.subscribe(
+  throttle(() => {
+    saveState(store.getState());
+  }, 1000)
+);
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

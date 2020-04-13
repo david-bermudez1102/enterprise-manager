@@ -61,7 +61,7 @@ class RecordsContainer extends Component {
                   <ReactHeight
                     onHeightReady={height => this.setOptionsHeight(height)}>
                     <RecordsOptions resource={resource} />
-                    <Pagination />
+                    <Pagination resource={resource} />
                   </ReactHeight>
                   {records.length > 0 ? (
                     <ReactHeight

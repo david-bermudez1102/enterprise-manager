@@ -61,6 +61,8 @@ GEM
       railties (>= 3.2, < 6.1)
     encryptor (3.0.0)
     erubi (1.9.0)
+    faker (2.11.0)
+      i18n (>= 1.6, < 2)
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
     ffi (1.12.2)
@@ -80,7 +82,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.4.0)
+    loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -109,7 +111,7 @@ GEM
       mini_portile2 (~> 2.4.0)
     nokogiri (1.10.9-x86-mingw32)
       mini_portile2 (~> 2.4.0)
-    prettier (0.18.0)
+    prettier (0.18.1)
     puma (3.12.4)
     puma (3.12.4-java)
     rack (2.2.2)
@@ -184,6 +186,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   dotenv-rails
+  faker
   fast_jsonapi
   foreman
   httparty

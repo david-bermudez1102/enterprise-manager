@@ -11,6 +11,7 @@ import { accountsReducer } from "./accountsReducer";
 import { zohoBooksReducer } from "./zohoBooksReducer";
 import { alerts } from "./alertsReducer";
 import { token } from "./tokenReducer";
+import { pagination } from "./paginationReducer";
 
 const requesting = (state = false, action) => {
   switch (action.type) {
@@ -36,5 +37,6 @@ export const rootReducer = combineReducers({
   zohoBooks: zohoBooksReducer,
   requesting,
   alerts,
-  token
+  token,
+  pagination
 });

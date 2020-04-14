@@ -2,33 +2,41 @@ import React, { Component } from "react";
 import Record from "./Record";
 import cuid from "cuid";
 import RecordsHeader from "./RecordsHeader";
+import { connect } from "react-redux";
+import Pagination from "../Pagination";
+import { chunk } from "lodash";
 
 class RecordsList extends Component {
   constructor(props) {
     super(props);
+    const location = props.history.location;
+    const queryParams = new URLSearchParams(location.search);
+    const page =
+      parseInt(queryParams.get("page")) >
+      Math.ceil(props.resource.recordsCount / props.pagination.limit)
+        ? 0
+        : parseInt(queryParams.get("page"));
+
     this.recordsOptions = React.createRef();
     this.state = {
       sortBy: 0,
       sortedRecords: [],
       orders: [],
       count: 0,
-      limit: 25
+      page: page || 1,
+      scrolled: false
     };
   }
 
   componentDidMount() {
     const { values, records } = this.props;
-    const recordsOptions = this.recordsOptions.current;
-    recordsOptions.scrollIntoView({
-      behavior: "smooth"
-    });
     this.setState({
       sortedRecords: this.sortBy(this.state.sortBy, records, values, false)
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { values, records } = this.props;
+    const { values, records, pagination } = this.props;
     const { sortBy, orders } = this.state;
     if (
       prevProps.values !== values ||
@@ -44,6 +52,27 @@ class RecordsList extends Component {
           order ? order.ascendant : false
         )
       });
+    }
+
+    if (
+      prevProps.pagination.limit !== pagination.limit &&
+      this.state.page > 1
+    ) {
+      const currentValue = chunk(
+        this.state.sortedRecords,
+        prevProps.pagination.limit
+      )[this.state.page - 1][0];
+
+      this.setState({
+        page:
+          chunk(this.state.sortedRecords, pagination.limit).findIndex(e =>
+            e.includes(currentValue)
+          ) + 1
+      });
+    }
+    if (!this.state.scrolled) {
+      this.recordsOptions.current.scrollIntoView();
+      this.state.scrolled = true;
     }
   }
 
@@ -81,18 +110,17 @@ class RecordsList extends Component {
   };
 
   render() {
-    const { records, recordFields, resource, values } = this.props;
-    const { sortedRecords, limit } = this.state;
+    const { records, pagination, recordFields, resource, values } = this.props;
+    const { sortedRecords, page } = this.state;
+
     return (
-      <table
-        className="table table-sm mb-0 table-hover border-0"
-        ref={this.recordsOptions}>
-        <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />
-        <tbody>
-          {sortedRecords && sortedRecords.length > 0
-            ? sortedRecords
-                .slice(0, limit)
-                .map(record =>
+      <div ref={this.recordsOptions}>
+        <Pagination resource={resource} page={page} />
+        <table className="table table-sm mb-0 table-hover border-0">
+          <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />
+          <tbody>
+            {sortedRecords && sortedRecords.length > 0
+              ? chunk(sortedRecords, pagination.limit)[page - 1].map(record =>
                   record.formId === resource.id ? (
                     <Record
                       key={cuid()}
@@ -104,10 +132,15 @@ class RecordsList extends Component {
                     />
                   ) : null
                 )
-            : null}
-        </tbody>
-      </table>
+              : null}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
-export default RecordsList;
+
+const mapStateToProps = ({ pagination }) => {
+  return { pagination };
+};
+export default connect(mapStateToProps)(RecordsList);

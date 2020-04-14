@@ -7,11 +7,11 @@ import RecordFieldDelete from "../../components/Records/RecordFieldDelete";
 import { removeRecordField } from "../../actions/recordFieldActions";
 import { NoContent } from "../../components/NoContent";
 import RecordsOptions from "../../components/Records/RecordsOptions";
-import { ReactHeight } from "react-height";
-import Pagination from "../../components/Pagination";
+import ReactHeight from "react-height";
 
 class RecordsContainer extends Component {
   state = { height: 0, optionsHeight: 0 };
+
   componentDidMount() {
     const { resource, fetchRecords } = this.props;
     fetchRecords(resource.organizationId, resource.id);
@@ -57,11 +57,10 @@ class RecordsContainer extends Component {
                 height: `${this.state.height + this.state.optionsHeight + 50}px`
               }}>
               <div className="w-100 position-relative">
-                <div className="bg-white shadow-sm p-2 d-inline-block rounded w-100 position-absolute table-responsive">
+                <div className="bg-white shadow-sm p-2 d-inline-block rounded w-100 position-absolute">
                   <ReactHeight
                     onHeightReady={height => this.setOptionsHeight(height)}>
                     <RecordsOptions resource={resource} />
-                    <Pagination resource={resource} />
                   </ReactHeight>
                   {records.length > 0 ? (
                     <ReactHeight
@@ -90,8 +89,8 @@ class RecordsContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ records, values, recordFields }) => {
-  return { records, values, recordFields };
+const mapStateToProps = ({ records, values, recordFields, pagination }) => {
+  return { records, values, recordFields, pagination };
 };
 
 export default connect(mapStateToProps, {

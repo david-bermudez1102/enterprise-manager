@@ -13,8 +13,13 @@ class RecordsContainer extends Component {
   state = { height: 0, optionsHeight: 0 };
 
   componentDidMount() {
-    const { resource, fetchRecords } = this.props;
-    fetchRecords(resource.organizationId, resource.id);
+    const { records, resource, fetchRecords } = this.props;
+    const lastRecord = Math.max(
+      ...records.filter(record => record.formId === resource.id).map(r => r.id),
+      0
+    ); // return the most recent record,
+
+    fetchRecords(resource.organizationId, resource.id, lastRecord);
   }
 
   setListHeight = height => {

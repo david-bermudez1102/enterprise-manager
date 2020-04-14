@@ -26,9 +26,13 @@ export const addRecord = (record, organizationId, formId) => {
   };
 };
 
-export const fetchRecords = (organizationId, formId) => {
+export const fetchRecords = (organizationId, formId, offset) => {
+  const query = offset ? `?offset=${offset}` : "";
+  console.log(offset);
   return dispatch => {
-    fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/records`)
+    fetch(
+      `/api/v1/organizations/${organizationId}/forms/${formId}/records${query}`
+    )
       .then(response => response.json())
       .then(records => records.data.map(record => record))
       .then(records => {

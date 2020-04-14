@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import cuid from "cuid";
 import { useSelector, useDispatch } from "react-redux";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useHistory, useLocation } from "react-router-dom";
 
 const limitOptions = [
   { value: 5, key: cuid() },
@@ -15,70 +15,120 @@ const Pagination = ({ resource, page }) => {
   const pagination = useSelector(state => state.pagination);
   const pagesCount = Math.ceil(resource.recordsCount / pagination.limit);
   const pages =
-    pagesCount > 5 ? [1, 2, 3, 4, "...", pagesCount] : [1, 2, 3, 4, 5];
+    pagesCount > 5
+      ? page < 4
+        ? [1, 2, 3, 4, "...", pagesCount]
+        : page < pagesCount - 2
+        ? [
+            1,
+            "...",
+            ...Array.from({ length: 3 }, (v, i) => page + i),
+            "...",
+            pagesCount
+          ]
+        : [
+            1,
+            "...",
+            ...Array.from({ length: 3 }, (v, i) => pagesCount - i).reverse()
+          ]
+      : [...Array.from({ length: pagesCount }, (v, i) => i + 1)];
 
   const dispatch = useDispatch();
+  const [goToField, setGoToField] = useState({ field: null, isOpen: false });
 
-  useEffect(() => {
-    dispatch({
-      type: "SET_LIMIT",
-      limit: pagination.limit,
-      id: limitOptions.findIndex(x => x.value === pagination.limit) + 1
-    });
-  }, []);
+  const history = useHistory();
+  const location = useLocation();
 
-  const handleChange = e => {
+  const handleLimitChange = e => {
     e.persist();
     dispatch({
       type: "SET_LIMIT",
-      limit: parseInt(e.target.value),
-      id: parseInt(e.target.selectedIndex) + 1
+      limit: parseInt(e.target.value)
     });
   };
 
+  const handleGoToClick = name => {
+    setGoToField({ field: name, isOpen: true });
+  };
+
+  const handleGoToBlur = (name, e) => {
+    e.persist();
+    setGoToField({ field: name, isOpen: false });
+    if (
+      e.target.value !== page &&
+      e.target.value > 1 &&
+      e.target.value < pagesCount
+    )
+      history.push(`${location.pathname}?page=${e.target.value}`);
+  };
+
   return (
-    <div className="d-flex flex-nowrap">
+    <div className="d-flex flex-nowrap justify-content-end">
       <select
         className="form-control form-control-sm w-auto"
         name="pageLimit"
-        onChange={handleChange}
+        onChange={handleLimitChange}
         value={pagination.limit}>
         {limitOptions.map(o => (
           <option {...o}>{o.value}</option>
         ))}
       </select>
       <nav aria-label="Page navigation example" className="float-right">
-        <div className="pagination pagination-sm">
+        <div className="pagination pagination-sm  h-100">
           <Link
             to={location => ({
               pathname: location.pathname,
-              search: `?page=${page - 1}`
+              search: `?page=${page > 1 ? page - 1 : pagesCount}`
             })}
             className="page-item page-link"
             aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </Link>
-          {pages.map(page => (
-            <NavLink
-              to={location => ({
-                pathname: location.pathname,
-                search: `?page=${page}`
-              })}
-              isActive={(match, location) =>
-                location.search === `?page=${page}`
-              }
-              className="page-item page-link"
-              activeClassName="bg-primary text-light"
-              aria-current="page"
-              key={cuid()}>
-              {page}
-            </NavLink>
-          ))}
+          {pages.map((page, i) =>
+            page !== "..." ? (
+              <NavLink
+                to={location => ({
+                  pathname: location.pathname,
+                  search: `?page=${page}`
+                })}
+                isActive={(match, location) =>
+                  location.search === `?page=${page}`
+                }
+                className="page-item page-link"
+                activeClassName="bg-primary text-light"
+                aria-current="page"
+                key={cuid()}>
+                {page}
+              </NavLink>
+            ) : (
+              <span
+                className="page-item page-link p-0 text-center"
+                style={{ width: "40px", cursor: "pointer" }}
+                key={cuid()}
+                name={`goTo${i}`}
+                onClick={() => handleGoToClick(`goTo${i}`)}>
+                {goToField.field === `goTo${i}` && goToField.isOpen ? (
+                  <input
+                    type="text"
+                    className="text-center form-control form-control-sm w-100 border-0 p-0 m-0 h-100 my-auto"
+                    onBlur={e => handleGoToBlur(`goTo${i}`, e)}
+                    onKeyUp={e =>
+                      e.keyCode === 13 ? handleGoToBlur(`goTo${i}`, e) : null
+                    }
+                    placeholder="Go to"
+                    autoFocus
+                  />
+                ) : (
+                  page
+                )}
+              </span>
+            )
+          )}
           <Link
             to={location => ({
               ...location,
               pathname: location.pathname,
-              search: `?page=${page + 1}`
+              search: `?page=${page < pagesCount ? page + 1 : 1}`
             })}
             className="page-item page-link"
             aria-label="Next">

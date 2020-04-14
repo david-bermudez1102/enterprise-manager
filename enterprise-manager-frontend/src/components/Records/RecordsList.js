@@ -72,7 +72,7 @@ class RecordsList extends Component {
     }
     if (!this.state.scrolled) {
       this.recordsOptions.current.scrollIntoView();
-      this.state.scrolled = true;
+      this.setState({ scrolled: true });
     }
   }
 

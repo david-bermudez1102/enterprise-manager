@@ -31,3 +31,15 @@ export const recordsReducer = (state = [], action) => {
       return state;
   }
 };
+
+export const recordsSortedBy = (state = [], action) => {
+  switch (action.type) {
+    case "SET_SORTED_BY":
+      return [
+        ...state.filter(res => res.id !== action.resource.id),
+        action.resource
+      ];
+    default:
+      return state;
+  }
+};

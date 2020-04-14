@@ -9,4 +9,11 @@ class Record < ApplicationRecord
   accepts_nested_attributes_for :quickbooks_integration_record, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 
   accepts_nested_attributes_for :values
+
+  def self.cache_key(records)
+    {
+      serializer: 'records',
+      stat_record: records.maximum(:updated_at)
+    }
+  end
 end

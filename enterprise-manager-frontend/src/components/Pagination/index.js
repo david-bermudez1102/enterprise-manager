@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import cuid from "cuid";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, Link, useHistory, useLocation } from "react-router-dom";
@@ -61,6 +61,24 @@ const Pagination = ({ resource, page }) => {
     )
       history.push(`${location.pathname}?page=${e.target.value}`);
   };
+
+  const handleKeyUp = e => {
+    if (e.key === "ArrowLeft")
+      history.push(
+        `${location.pathname}?page=${page > 1 ? page - 1 : pagesCount}`
+      );
+    else if (e.key === "ArrowRight")
+      history.push(
+        `${location.pathname}?page=${page < pagesCount ? page + 1 : 1}`
+      );
+  };
+
+  useEffect(() => {
+    document.addEventListener("keyup", handleKeyUp);
+    return () => {
+      document.removeEventListener("keyup", handleKeyUp);
+    };
+  });
 
   return (
     <div className="d-flex flex-nowrap justify-content-end">

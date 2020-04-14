@@ -28,7 +28,6 @@ export const addRecord = (record, organizationId, formId) => {
 
 export const fetchRecords = (organizationId, formId, offset) => {
   const query = offset ? `?offset=${offset}` : "";
-  console.log(offset);
   return dispatch => {
     fetch(
       `/api/v1/organizations/${organizationId}/forms/${formId}/records${query}`
@@ -46,4 +45,8 @@ export const fetchRecords = (organizationId, formId, offset) => {
         dispatch({ type: "FETCH_VALUES", values: values.flat() })
       );
   };
+};
+
+export const setRecordsSortedBy = resource => {
+  return dispatch => dispatch({ type: "SET_SORTED_BY", resource });
 };

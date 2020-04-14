@@ -3,7 +3,7 @@ import { organizationsReducer } from "./organizationsReducer";
 import { adminsReducer } from "./adminsReducer";
 import { resourcesReducer } from "./resourcesReducer";
 import { fieldsReducer } from "./fieldsReducer";
-import { recordsReducer } from "./recordsReducer";
+import { recordsReducer, recordsSortedBy } from "./recordsReducer";
 import { valuesReducer } from "./valuesReducer";
 import { sessionReducer } from "./sessionReducer";
 import { recordFieldsReducer } from "./recordFieldsReducer";
@@ -33,6 +33,7 @@ export const rootReducer = combineReducers({
   fields: fieldsReducer,
   records: recordsReducer,
   recordFields: recordFieldsReducer,
+  recordsSortedBy,
   values: valuesReducer,
   zohoBooks: zohoBooksReducer,
   requesting,

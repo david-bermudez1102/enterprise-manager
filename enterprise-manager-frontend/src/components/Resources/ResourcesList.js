@@ -63,10 +63,11 @@ const ResourcesList = ({ loaded, match, resources, location, history }) => {
                   <span
                     className="badge badge-secondary shadow-sm"
                     style={{ minWidth: "60px" }}
-                    title={`${resource.recordsCount} ${pluralize(
+                    title={`${resource.recordsCount || 0} ${pluralize(
                       resource.name
                     )}`}>
-                    <i className="fas fa-list-ul"></i> {resource.recordsCount}
+                    <i className="fas fa-list-ul"></i>{" "}
+                    {resource.recordsCount || 0}
                   </span>
                 </button>
               </Link>

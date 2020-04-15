@@ -1,5 +1,6 @@
 class RecordSerializer
   include FastJsonapi::ObjectSerializer
+  cache_options enabled: true
   attributes :id, :form_id
   attribute :zoho_record_id do |obj|
     if obj.zoho_integration_record

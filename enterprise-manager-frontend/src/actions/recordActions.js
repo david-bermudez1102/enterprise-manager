@@ -29,7 +29,7 @@ export const addRecord = (record, organizationId, formId) => {
 export const fetchRecords = (organizationId, formId, offset) => {
   const query = offset ? `?offset=${offset}` : "";
   return dispatch => {
-    fetch(
+    return fetch(
       `/api/v1/organizations/${organizationId}/forms/${formId}/records${query}`
     )
       .then(response => response.json())

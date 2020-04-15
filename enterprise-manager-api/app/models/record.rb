@@ -10,10 +10,4 @@ class Record < ApplicationRecord
 
   accepts_nested_attributes_for :values
 
-  def self.cache_key(records)
-    {
-      serializer: 'records',
-      stat_record: records.maximum(:updated_at)
-    }
-  end
 end

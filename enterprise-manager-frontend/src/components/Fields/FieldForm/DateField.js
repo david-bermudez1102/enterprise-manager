@@ -1,8 +1,8 @@
 import React from "react";
 import Icon from "@mdi/react";
-import { mdiTextarea } from "@mdi/js";
+import { mdiCalendarRange } from "@mdi/js";
 
-const TextAreaField = ({
+const DateField = ({
   fieldType,
   handleChange,
   handleSelectableChange,
@@ -15,8 +15,8 @@ const TextAreaField = ({
           className="form-check-input"
           type="radio"
           name="field_type"
-          id="textarea_field"
-          value="textarea"
+          id="date_field"
+          value="date_field"
           onChange={event => {
             handleChange(event);
             handleSelectableChange(
@@ -27,13 +27,13 @@ const TextAreaField = ({
               []
             );
           }}
-          checked={fieldType === "textarea" ? true : false}
+          checked={fieldType === "date_field" ? true : false}
         />
-        <label htmlFor="textarea_field" className="form-check-label">
-          Text Area
+        <label htmlFor="date_field" className="form-check-label">
+          Date Field
           <Icon
-            path={mdiTextarea}
-            title="Text Area Field"
+            path={mdiCalendarRange}
+            title="Date Field"
             size={1}
             color="#07689F"
           />
@@ -42,4 +42,4 @@ const TextAreaField = ({
     </div>
   );
 };
-export default TextAreaField;
+export default DateField;

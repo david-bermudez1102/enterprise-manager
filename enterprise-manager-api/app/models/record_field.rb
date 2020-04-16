@@ -2,7 +2,7 @@ class RecordField < ApplicationRecord
   belongs_to :form
   belongs_to :field, optional: true, dependent: :destroy
   has_many :values, dependent: :delete_all
-  enum field_type: %w[text password selectable checkbox radio key_field]
+  enum field_type: %w[text password selectable checkbox radio textarea date_field key_field]
   has_one :selectable_resource, dependent: :destroy
   has_many :options, dependent: :delete_all
 

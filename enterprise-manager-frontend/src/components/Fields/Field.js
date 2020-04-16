@@ -74,6 +74,35 @@ class Field extends Component {
           </select>
         );
         break;
+      case "textarea":
+        inputField = (
+          <textarea
+            className="form-control rounded-pill"
+            type={field.fieldType}
+            name={recordField.id}
+            id={field.fieldAlias}
+            placeholder={`Enter ${this.fieldName()}`}
+            onChange={this.handleChange}
+            value={this.state.value}
+            ref={fieldRef}
+            required
+          />
+        );
+        break;
+      case "date_field":
+        inputField = (
+          <input
+            className="form-control rounded-pill"
+            type={"date"}
+            name={recordField.id}
+            id={field.fieldAlias}
+            placeholder={`Enter ${this.fieldName()}`}
+            onChange={this.handleChange}
+            value={this.state.value}
+            ref={fieldRef}
+          />
+        );
+        break;
       case "key_field":
         break;
       case "radio":
@@ -142,6 +171,11 @@ class Field extends Component {
         );
         break;
     }
+    const isLabelable =
+      field.fieldType !== "text" &&
+      field.fieldType !== "selectable" &&
+      field.fieldType !== "textarea" &&
+      field.fieldType !== "date_field"; // Used to check if label should be inside field.
     return (
       <>
         {field.fieldType !== "key_field" ? (
@@ -151,22 +185,13 @@ class Field extends Component {
             deletionMessage="The field will be deleted from the resource."
           />
         ) : null}
-        <div
-          className={
-            field.fieldType !== "text" && field.fieldType !== "selectable"
-              ? "form-group mb-0"
-              : "form-group"
-          }>
+        <div className={isLabelable ? "form-group mb-0" : "form-group"}>
           {inputField}
           <label
             htmlFor={field.fieldAlias}
-            className={
-              field.fieldType !== "text" && field.fieldType !== "selectable"
-                ? "ml-1"
-                : "form-control-placeholder"
-            }
+            className={isLabelable ? "ml-1" : "form-control-placeholder"}
             style={
-              field.fieldType !== "text" && field.fieldType !== "selectable"
+              isLabelable
                 ? { fontSize: "16px", marginTop: "-55px", position: "absolute" }
                 : undefined
             }>

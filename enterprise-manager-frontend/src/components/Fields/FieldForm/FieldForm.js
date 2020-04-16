@@ -5,6 +5,7 @@ import SelectableField from "./SelectableField";
 import RecordKeyField from "./RecordKeyField";
 import RadioField from "./RadioField";
 import CheckBoxField from "./CheckBoxField";
+import TextAreaField from "./TextAreaField";
 
 export default class FieldForm extends Component {
   constructor(props) {
@@ -17,10 +18,13 @@ export default class FieldForm extends Component {
       form_id: resourceId,
       selectable_resource_attributes: {
         form_id: selectableResource ? selectableResource.resource_id || "" : "",
-        resource_field_id: selectableResource ? selectableResource.resource_field_id || "" : ""
+        resource_field_id: selectableResource
+          ? selectableResource.resource_field_id || ""
+          : ""
       },
       record_key_attributes: {
-        resource_field_id: field && field.recordKey ? field.recordKey.resource_field_id : ""
+        resource_field_id:
+          field && field.recordKey ? field.recordKey.resource_field_id : ""
       }
     };
   }
@@ -33,7 +37,10 @@ export default class FieldForm extends Component {
     });
   };
 
-  handleSelectableChange = (selectableResourceAttributes, options_attributes) => {
+  handleSelectableChange = (
+    selectableResourceAttributes,
+    options_attributes
+  ) => {
     this.setState({
       selectable_resource_attributes: selectableResourceAttributes,
       options_attributes
@@ -47,10 +54,18 @@ export default class FieldForm extends Component {
   };
 
   handleOnSubmit = event => {
-    const { addField, addRecordField, updateField, organizationId, field } = this.props;
+    const {
+      addField,
+      addRecordField,
+      updateField,
+      organizationId,
+      field
+    } = this.props;
     event.preventDefault();
     if (addField) {
-      addField(this.state, organizationId).then(field => (field ? addRecordField(field, organizationId) : null));
+      addField(this.state, organizationId).then(field =>
+        field ? addRecordField(field, organizationId) : null
+      );
       this.setState({
         field_type: "",
         name: ""
@@ -91,35 +106,54 @@ export default class FieldForm extends Component {
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             handleKeyFieldChange={this.handleKeyFieldChange}
-            selectableResourceAttributes={this.state.selectable_resource_attributes}
+            selectableResourceAttributes={
+              this.state.selectable_resource_attributes
+            }
           />
           <TextField
             field={field}
             fieldType={this.state.field_type}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
-            selectableResourceAttributes={this.state.selectable_resource_attributes}
+            selectableResourceAttributes={
+              this.state.selectable_resource_attributes
+            }
+          />
+          <TextAreaField
+            field={field}
+            fieldType={this.state.field_type}
+            handleChange={this.handleChange}
+            handleSelectableChange={this.handleSelectableChange}
+            selectableResourceAttributes={
+              this.state.selectable_resource_attributes
+            }
           />
           <PasswordField
             field={field}
             fieldType={this.state.field_type}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
-            selectableResourceAttributes={this.state.selectable_resource_attributes}
+            selectableResourceAttributes={
+              this.state.selectable_resource_attributes
+            }
           />
           <SelectableField
             field={field}
             fieldType={this.state.field_type}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
-            selectableResourceAttributes={this.state.selectable_resource_attributes}
+            selectableResourceAttributes={
+              this.state.selectable_resource_attributes
+            }
           />
           <RadioField
             field={field}
             fieldType={this.state.field_type}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
-            selectableResourceAttributes={this.state.selectable_resource_attributes}
+            selectableResourceAttributes={
+              this.state.selectable_resource_attributes
+            }
             handleKeyFieldChange={this.handleKeyFieldChange}
           />
           <CheckBoxField
@@ -127,12 +161,18 @@ export default class FieldForm extends Component {
             fieldType={this.state.field_type}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
-            selectableResourceAttributes={this.state.selectable_resource_attributes}
+            selectableResourceAttributes={
+              this.state.selectable_resource_attributes
+            }
             handleKeyFieldChange={this.handleKeyFieldChange}
           />
         </div>
         <hr />
-        <input type="submit" value={action} className="btn btn-primary shadow" />
+        <input
+          type="submit"
+          value={action}
+          className="btn btn-primary shadow"
+        />
       </form>
     );
   }

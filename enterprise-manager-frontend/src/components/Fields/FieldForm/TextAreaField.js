@@ -1,8 +1,8 @@
 import React from "react";
 import Icon from "@mdi/react";
-import { mdiTextbox } from "@mdi/js";
+import { mdiTextarea } from "@mdi/js";
 
-const TextField = ({
+const TextAreaField = ({
   fieldType,
   handleChange,
   handleSelectableChange,
@@ -15,8 +15,8 @@ const TextField = ({
           className="form-check-input"
           type="radio"
           name="field_type"
-          id="text_field"
-          value="text"
+          id="text_area_field"
+          value="text_area"
           onChange={event => {
             handleChange(event);
             handleSelectableChange(
@@ -27,14 +27,19 @@ const TextField = ({
               []
             );
           }}
-          checked={fieldType === "text" ? true : false}
+          checked={fieldType === "text_area" ? true : false}
         />
-        <label htmlFor="text_field" className="form-check-label">
-          Text Field{" "}
-          <Icon path={mdiTextbox} title="Text Field" size={1} color="#07689F" />
+        <label htmlFor="text_area_field" className="form-check-label">
+          Text Area
+          <Icon
+            path={mdiTextarea}
+            title="Text Area Field"
+            size={1}
+            color="#07689F"
+          />
         </label>
       </div>
     </div>
   );
 };
-export default TextField;
+export default TextAreaField;

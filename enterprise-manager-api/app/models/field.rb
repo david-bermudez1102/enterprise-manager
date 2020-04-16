@@ -1,6 +1,6 @@
 class Field < ApplicationRecord
   belongs_to :form
-  enum field_type: %w[text password selectable checkbox radio key_field]
+  enum field_type: %w[text password selectable checkbox radio textarea date_field key_field]
   has_one :selectable_resource, dependent: :nullify
   has_one :record_key, dependent: :nullify
   has_one :record_field, dependent: :nullify

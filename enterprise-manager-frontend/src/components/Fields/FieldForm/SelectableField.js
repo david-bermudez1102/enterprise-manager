@@ -1,5 +1,7 @@
 import React from "react";
 import SelectableChoice from "./SelectableChoice";
+import Icon from "@mdi/react";
+import { mdiSelectPlace } from "@mdi/js";
 
 const SelectableField = ({
   field,
@@ -22,7 +24,13 @@ const SelectableField = ({
             checked={fieldType === "selectable" ? true : false}
           />
           <label htmlFor="selectable_field" className="form-check-label">
-            <i className="fad fa-chevron-square-down"></i> Selectable Field
+            Selectable Field
+            <Icon
+              path={mdiSelectPlace}
+              title="Selectable Field"
+              size={1}
+              color="#07689F"
+            />
           </label>
         </div>
       </div>

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SelectableOptions from "./SelectableOptions";
+import Icon from "@mdi/react";
+import { mdiCheckboxMultipleMarkedOutline } from "@mdi/js";
 
 class CheckBoxField extends Component {
   handleChange = event => {
@@ -41,7 +43,13 @@ class CheckBoxField extends Component {
               checked={fieldType === "checkbox" ? true : false}
             />
             <label htmlFor="checkbox_field" className="form-check-label">
-              Checkbox Set <i className="fad fa-check-square text-primary"></i>
+              Checkbox Set{" "}
+              <Icon
+                path={mdiCheckboxMultipleMarkedOutline}
+                title="Checkbox Field"
+                size={1}
+                color="#07689F"
+              />
             </label>
           </div>
         </div>

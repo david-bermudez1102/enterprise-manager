@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import SelectableOptions from "./SelectableOptions";
+import Icon from "@mdi/react";
+import { mdiCheckboxMultipleMarkedCircleOutline } from "@mdi/js";
 
 class RadioField extends Component {
   handleChange = event => {
@@ -41,7 +43,13 @@ class RadioField extends Component {
               checked={fieldType === "radio" ? true : false}
             />
             <label htmlFor="radio_field" className="form-check-label">
-              Radio Field <i className="fad fa-circle text-primary"></i>
+              Radio Field
+              <Icon
+                path={mdiCheckboxMultipleMarkedCircleOutline}
+                title="Radio Field"
+                size={1}
+                color="#07689F"
+              />
             </label>
           </div>
         </div>

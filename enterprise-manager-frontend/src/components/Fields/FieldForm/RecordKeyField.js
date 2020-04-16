@@ -62,7 +62,8 @@ class RecordKeyField extends Component {
               checked={fieldType === "key_field" ? true : false}
             />
             <label htmlFor="record_key_field" className="form-check-label">
-              Key Field <i className="fas fa-key"></i>
+              Key Field{" "}
+              <i className="fas fa-key" style={{ color: "#07689F" }}></i>
             </label>
           </div>
         </div>

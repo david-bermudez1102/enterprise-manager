@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Pagination from "../Pagination";
 import { chunk } from "lodash";
 import { setRecordsSortedBy } from "../../actions/recordActions";
+import { addInfoAlert } from "../../actions/alertsActions";
 
 class RecordsList extends Component {
   constructor(props) {
@@ -109,7 +110,6 @@ class RecordsList extends Component {
           const valueB = memo.content ? memo.content.toUpperCase() : ""; // ignore upper and lowercase
           return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
         });
-
       if (sortedValues.length > 0) {
         const sortedRecords = records
           .filter(record => record.formId === resource.id)
@@ -120,7 +120,13 @@ class RecordsList extends Component {
             const valueB = y && y.content ? y.content.toUpperCase() : "";
             return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
           });
+
         return ascendant ? sortedRecords : sortedRecords.reverse();
+      } else {
+        this.props.addInfoAlert([
+          "This column has no values. Using default column (#) to sort table."
+        ]);
+        return ascendant ? [...records] : [...records].reverse();
       }
     } else {
       return ascendant ? [...records] : [...records].reverse();
@@ -131,9 +137,8 @@ class RecordsList extends Component {
     const { records, pagination, recordFields, resource, values } = this.props;
     const { sortedRecords, page } = this.state;
     const chunkOfRecords = chunk(sortedRecords, pagination.limit)[page - 1];
-
     return (
-      <div ref={this.recordsOptions}>
+      <div ref={this.recordsOptions} className="table-responsive">
         <Pagination resource={resource} page={page} />
         <table className="table table-sm mb-0 table-hover border-0">
           <RecordsHeader {...this.props} handleSortBy={this.handleSortBy} />
@@ -163,4 +168,6 @@ const mapStateToProps = ({ pagination, recordsSortedBy }) => {
   return { pagination, recordsSortedBy };
 };
 
-export default connect(mapStateToProps, { setRecordsSortedBy })(RecordsList);
+export default connect(mapStateToProps, { setRecordsSortedBy, addInfoAlert })(
+  RecordsList
+);

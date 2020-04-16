@@ -6,10 +6,14 @@ export const recordsReducer = (state = [], action) => {
     case "FETCH_RECORDS":
       return [
         ...state
-          .filter(record => action.records.some(rec => rec.id === record.id))
+          .filter(
+            record =>
+              record.formId !== action.formId ||
+              action.records.some(rec => rec.id === record.id)
+          )
           .map(record => {
             const updatedRecord = action.records.find(r => r.id === record.id);
-            if (record !== updatedRecord) return updatedRecord;
+            if (record !== updatedRecord && updatedRecord) return updatedRecord;
             return record;
           }),
         ...action.records.filter(

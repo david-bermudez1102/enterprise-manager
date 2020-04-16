@@ -81,18 +81,25 @@ const Pagination = ({ resource, page }) => {
   });
 
   return (
-    <div className="d-flex flex-nowrap justify-content-end">
-      <select
-        className="form-control form-control-sm w-auto"
-        name="pageLimit"
-        onChange={handleLimitChange}
-        value={pagination.limit}>
-        {limitOptions.map(o => (
-          <option {...o}>{o.value}</option>
-        ))}
-      </select>
-      <nav aria-label="Page navigation example" className="float-right">
-        <div className="pagination pagination-sm  h-100">
+    <div className="d-flex flex-nowrap justify-content-end align-items-center py-2">
+      <div className="form-group mb-0 mr-2">
+        <select
+          className="form-control form-control-sm w-auto"
+          name="pageLimit"
+          onChange={handleLimitChange}
+          value={pagination.limit}>
+          {limitOptions.map(o => (
+            <option {...o}>{o.value}</option>
+          ))}
+        </select>
+        <label className="form-control-placeholder" htmlFor="pageLimit">
+          Rows
+        </label>
+      </div>
+      <nav
+        aria-label="Page navigation example"
+        className="form-group float-right mb-0">
+        <div className="pagination pagination-sm">
           <Link
             to={location => ({
               pathname: location.pathname,
@@ -100,7 +107,7 @@ const Pagination = ({ resource, page }) => {
             })}
             className="page-item page-link"
             aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
+            <i className="fas fa-angle-double-left"></i>
           </Link>
           {pages.map((page, i) =>
             page !== "..." ? (
@@ -110,7 +117,8 @@ const Pagination = ({ resource, page }) => {
                   search: `?page=${page}`
                 })}
                 isActive={(match, location) =>
-                  location.search === `?page=${page}`
+                  location.search === `?page=${page}` ||
+                  (location.search === `` && i === 0)
                 }
                 className="page-item page-link"
                 activeClassName="bg-primary text-light"
@@ -150,7 +158,7 @@ const Pagination = ({ resource, page }) => {
             })}
             className="page-item page-link"
             aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
+            <i className="fas fa-angle-double-right"></i>
           </Link>
         </div>
       </nav>

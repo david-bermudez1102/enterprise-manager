@@ -82,7 +82,10 @@ class RecordsHeader extends Component {
     return (
       <thead>
         <tr>
-          <th key={cuid()}>
+          <th
+            key={cuid()}
+            className="w-auto text-truncate"
+            style={{ maxWidth: "30px" }}>
             <span className="d-flex w-100 align-items-center">
               <button
                 className="btn btn-transparent px-0 pr-1 shadow-none text-primary"

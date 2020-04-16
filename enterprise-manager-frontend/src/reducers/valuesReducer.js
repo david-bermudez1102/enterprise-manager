@@ -19,10 +19,14 @@ export const valuesReducer = (state = [], action) => {
     case "FETCH_VALUES":
       return [
         ...state
-          .filter(value => action.values.some(val => value.id === val.id))
+          .filter(
+            value =>
+              value.formId !== action.formId ||
+              action.values.some(val => value.id === val.id)
+          )
           .map(val => {
             const newVal = action.values.find(v => v.id === val.id);
-            if (val !== newVal) return newVal;
+            if (newVal && val !== newVal) return newVal;
             return val;
           }),
         ...action.values.filter(

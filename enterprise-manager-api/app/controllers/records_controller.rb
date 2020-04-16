@@ -9,7 +9,7 @@ class RecordsController < ApplicationController
     if record.save
       render json: RecordSerializer.new(record)
     else
-      render json: record.errors.full_messages
+      render json: {errors: record.errors.full_messages}
     end
   end
 

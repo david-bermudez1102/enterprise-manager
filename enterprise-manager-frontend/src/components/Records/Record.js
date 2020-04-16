@@ -9,7 +9,7 @@ class Record extends Component {
     const { records, record, recordFields, values, resourceId } = this.props;
     return (
       <tr>
-        <th>
+        <th className="w-auto text-truncate" style={{ maxWidth: "30px" }}>
           {records
             .filter(record => record.formId === resourceId)
             .indexOf(record) + 1}

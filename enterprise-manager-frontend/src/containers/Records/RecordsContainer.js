@@ -67,7 +67,8 @@ class RecordsContainer extends Component {
                     onHeightReady={height => this.setOptionsHeight(height)}>
                     <RecordsOptions resource={resource} />
                   </ReactHeight>
-                  {records.length > 0 ? (
+                  {records.filter(record => record.formId === resource.id)
+                    .length > 0 ? (
                     <ReactHeight
                       onHeightReady={height => this.setListHeight(height)}>
                       <RecordsList
@@ -75,14 +76,21 @@ class RecordsContainer extends Component {
                         match={match}
                         recordFields={recordFields}
                         resource={resource}
-                        records={records}
-                        values={values}
+                        records={records.filter(
+                          record => record.formId === resource.id
+                        )}
+                        values={values.filter(
+                          value => value.formId === resource.id
+                        )}
                       />
                     </ReactHeight>
                   ) : (
-                    <NoContent>
-                      This resource doesn't have any records yet.
-                    </NoContent>
+                    <ReactHeight
+                      onHeightReady={height => this.setListHeight(height)}>
+                      <NoContent>
+                        This resource doesn't have any records yet.
+                      </NoContent>
+                    </ReactHeight>
                   )}
                 </div>
               </div>

@@ -11,7 +11,8 @@ class Field extends Component {
   handleChange = event => {
     event.persist();
     let option;
-    if (event.target.options) option = event.target.options[event.target.selectedIndex];
+    if (event.target.options)
+      option = event.target.options[event.target.selectedIndex];
     else if (event.target.checked) option = event.target;
 
     const optionDataSet = option ? option.dataset : null;
@@ -55,12 +56,18 @@ class Field extends Component {
             </option>
             {field.selectableResource
               ? field.selectableResource.options.map(option => (
-                  <option key={cuid()} value={option.value} data-record-value-id={option.id}>
+                  <option
+                    key={cuid()}
+                    value={option.value}
+                    data-record-value-id={option.id}>
                     {option.value}
                   </option>
                 ))
               : field.options.map(option => (
-                  <option key={cuid()} value={option.value} data-option-value-id={option.id}>
+                  <option
+                    key={cuid()}
+                    value={option.value}
+                    data-option-value-id={option.id}>
                     {option.value}
                   </option>
                 ))}
@@ -84,7 +91,9 @@ class Field extends Component {
                   checked={this.state.value === option.value}
                   data-option-value-id={option.id}
                 />
-                <label htmlFor={`radio_field_${option.id}`} className="form-check-label">
+                <label
+                  htmlFor={`radio_field_${option.id}`}
+                  className="form-check-label">
                   {option.value}
                 </label>
               </div>
@@ -94,7 +103,7 @@ class Field extends Component {
         break;
       case "checkbox":
         inputField = (
-          <fieldset ref={fieldRef}>
+          <fieldset ref={fieldRef} className="form-control border-0 mt-4">
             {field.options.map(option => (
               <div className="form-check form-check-inline" key={cuid()}>
                 <input
@@ -107,7 +116,9 @@ class Field extends Component {
                   checked={this.state.checked[`checkbox_field_${option.id}`]}
                   data-option-value-id={option.id}
                 />
-                <label htmlFor={`radio_field_${option.id}`} className="form-check-label">
+                <label
+                  htmlFor={`radio_field_${option.id}`}
+                  className="form-check-label">
                   {option.value}
                 </label>
               </div>
@@ -140,9 +151,25 @@ class Field extends Component {
             deletionMessage="The field will be deleted from the resource."
           />
         ) : null}
-        <div className="form-group">
+        <div
+          className={
+            field.fieldType !== "text" && field.fieldType !== "selectable"
+              ? "form-group mb-0"
+              : "form-group"
+          }>
           {inputField}
-          <label htmlFor={field.fieldAlias} className="form-control-placeholder">
+          <label
+            htmlFor={field.fieldAlias}
+            className={
+              field.fieldType !== "text" && field.fieldType !== "selectable"
+                ? "ml-1"
+                : "form-control-placeholder"
+            }
+            style={
+              field.fieldType !== "text" && field.fieldType !== "selectable"
+                ? { fontSize: "16px", marginTop: "-55px", position: "absolute" }
+                : undefined
+            }>
             {this.fieldName()}
           </label>
         </div>

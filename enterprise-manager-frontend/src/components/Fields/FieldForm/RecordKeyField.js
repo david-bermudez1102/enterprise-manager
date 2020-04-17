@@ -55,9 +55,9 @@ class RecordKeyField extends Component {
             <input
               className="form-check-input"
               type="radio"
-              name="field_type"
+              name="fieldType"
               id="record_key_field"
-              value="key_field"
+              value="keyField"
               onChange={this.handleChange}
               checked={fieldType === "key_field" ? true : false}
             />
@@ -67,7 +67,7 @@ class RecordKeyField extends Component {
             </label>
           </div>
         </div>
-        {fieldType === "key_field" ? (
+        {fieldType === "keyField" ? (
           <div className="col-12 order-last">
             <hr />
             <div className="form-group">

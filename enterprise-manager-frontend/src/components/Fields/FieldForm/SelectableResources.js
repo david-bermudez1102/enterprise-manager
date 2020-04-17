@@ -12,7 +12,9 @@ class SelectableResources extends Component {
       selected: selectableResource ? selectableResource.resource_id : "0",
       selectable_resource_attributes: {
         form_id: selectableResource ? selectableResource.resource_id || "" : "",
-        resource_field_id: selectableResource ? selectableResource.resource_field_id || "" : ""
+        resource_field_id: selectableResource
+          ? selectableResource.resource_field_id || ""
+          : ""
       }
     };
   }
@@ -65,7 +67,7 @@ class SelectableResources extends Component {
         <div className="form-group mb-0">
           <hr />
           <select
-            name="form_id"
+            name="formId"
             id="selectable_resource"
             onChange={this.handleChange}
             value={this.state.selected}
@@ -79,12 +81,16 @@ class SelectableResources extends Component {
               </option>
             ))}
           </select>
-          <label className="form-control-placeholder" htmlFor="selectable_resource">
+          <label
+            className="form-control-placeholder"
+            htmlFor="selectable_resource">
             Connect to
           </label>
         </div>
         <SelectableResourcesOptions
-          resourceFieldId={field ? field.selectableResource.resource_field_id || "" : ""}
+          resourceFieldId={
+            field ? field.selectableResource.resource_field_id || "" : ""
+          }
           fields={fields}
           selected={this.state.selected}
           handleChange={this.handleResourcesOptionsChange}

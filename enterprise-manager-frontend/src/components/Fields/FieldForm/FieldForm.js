@@ -14,18 +14,20 @@ export default class FieldForm extends Component {
     const { field, resourceId } = props;
     const selectableResource = field ? field.selectableResource : null;
     this.state = {
-      field_type: field ? field.fieldType : "",
+      fieldType: field ? field.fieldType : "",
       name: field ? field.name : "",
-      form_id: resourceId,
-      selectable_resource_attributes: {
-        form_id: selectableResource ? selectableResource.resource_id || "" : "",
-        resource_field_id: selectableResource
-          ? selectableResource.resource_field_id || ""
+      formId: resourceId,
+      isRequired: field ? field.isRequired : false,
+      defaultValue: field ? field.defaultValue : "",
+      selectableResourceAttributes: {
+        formId: selectableResource ? selectableResource.resource_id || "" : "",
+        resourceFieldId: selectableResource
+          ? selectableResource.resourceFieldId || ""
           : ""
       },
-      record_key_attributes: {
-        resource_field_id:
-          field && field.recordKey ? field.recordKey.resource_field_id : ""
+      recordKeyAttributes: {
+        resourceFieldId:
+          field && field.recordKey ? field.recordKey.resourceFieldId : ""
       }
     };
   }
@@ -40,17 +42,17 @@ export default class FieldForm extends Component {
 
   handleSelectableChange = (
     selectableResourceAttributes,
-    options_attributes
+    optionsAttributes
   ) => {
     this.setState({
-      selectable_resource_attributes: selectableResourceAttributes,
-      options_attributes
+      selectableResourceAttributes: selectableResourceAttributes,
+      optionsAttributes
     });
   };
 
-  handleKeyFieldChange = KeyFieldAttributes => {
+  handleKeyFieldChange = keyFieldAttributes => {
     this.setState({
-      record_key_attributes: KeyFieldAttributes
+      recordKeyAttributes: keyFieldAttributes
     });
   };
 
@@ -68,7 +70,7 @@ export default class FieldForm extends Component {
         field ? addRecordField(field, organizationId) : null
       );
       this.setState({
-        field_type: "",
+        fieldType: "",
         name: ""
       });
     }
@@ -97,83 +99,83 @@ export default class FieldForm extends Component {
         </div>
         <hr />
         <div className="form-group row">
-          <label htmlFor="field_type" className="col-12 order-first">
+          <label htmlFor="fieldType" className="col-12 order-first">
             Field Type:
           </label>
           <RecordKeyField
             field={field}
             resourceId={resourceId}
-            fieldType={this.state.field_type}
+            fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             handleKeyFieldChange={this.handleKeyFieldChange}
             selectableResourceAttributes={
-              this.state.selectable_resource_attributes
+              this.state.selectableResourceAttributes
             }
           />
           <TextField
             field={field}
-            fieldType={this.state.field_type}
+            fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             selectableResourceAttributes={
-              this.state.selectable_resource_attributes
+              this.state.selectableResourceAttributes
             }
           />
           <TextAreaField
             field={field}
-            fieldType={this.state.field_type}
+            fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             selectableResourceAttributes={
-              this.state.selectable_resource_attributes
+              this.state.selectableResourceAttributes
             }
           />
           <PasswordField
             field={field}
-            fieldType={this.state.field_type}
+            fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             selectableResourceAttributes={
-              this.state.selectable_resource_attributes
+              this.state.selectableResourceAttributes
             }
           />
           <SelectableField
             field={field}
-            fieldType={this.state.field_type}
+            fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             selectableResourceAttributes={
-              this.state.selectable_resource_attributes
+              this.state.selectableResourceAttributes
             }
           />
           <RadioField
             field={field}
-            fieldType={this.state.field_type}
+            fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             selectableResourceAttributes={
-              this.state.selectable_resource_attributes
+              this.state.selectableResourceAttributes
             }
             handleKeyFieldChange={this.handleKeyFieldChange}
           />
           <CheckBoxField
             field={field}
-            fieldType={this.state.field_type}
+            fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             selectableResourceAttributes={
-              this.state.selectable_resource_attributes
+              this.state.selectableResourceAttributes
             }
             handleKeyFieldChange={this.handleKeyFieldChange}
           />
           <DateField
             field={field}
-            fieldType={this.state.field_type}
+            fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
             selectableResourceAttributes={
-              this.state.selectable_resource_attributes
+              this.state.selectableResourceAttributes
             }
           />
         </div>
@@ -183,6 +185,9 @@ export default class FieldForm extends Component {
             type="checkbox"
             name="isRequired"
             className="form-check-input"
+            onChange={e =>
+              this.setState({ isRequired: e.target.checked ? true : false })
+            }
           />
           <label className="form-check-label" htmlFor="isRequired">
             Required

@@ -14,7 +14,7 @@ const PasswordField = ({
         <input
           className="form-check-input"
           type="radio"
-          name="field_type"
+          name="fieldType"
           id="password_field"
           value="password"
           onChange={event => {

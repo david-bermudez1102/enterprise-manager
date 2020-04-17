@@ -1,4 +1,5 @@
-const camelcaseKeys = require("camelcase-keys");
+import snakecaseKeys from "snakecase-keys";
+import camelcaseKeys from "camelcase-keys";
 
 export const addField = (field, organizationId) => {
   return dispatch => {
@@ -10,7 +11,7 @@ export const addField = (field, organizationId) => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ field: { ...field } })
+        body: JSON.stringify(snakecaseKeys({ field }))
       }
     )
       .then(response => response.json())

@@ -36,7 +36,7 @@ class RadioField extends Component {
             <input
               className="form-check-input"
               type="radio"
-              name="field_type"
+              name="fieldType"
               id="radio_field"
               value="radio"
               onChange={this.handleChange}

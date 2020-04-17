@@ -14,7 +14,7 @@ const TextAreaField = ({
         <input
           className="form-check-input"
           type="radio"
-          name="field_type"
+          name="fieldType"
           id="textarea_field"
           value="textarea"
           onChange={event => {

@@ -14,9 +14,9 @@ const DateField = ({
         <input
           className="form-check-input"
           type="radio"
-          name="field_type"
+          name="fieldType"
           id="date_field"
-          value="date_field"
+          value="dateField"
           onChange={event => {
             handleChange(event);
             handleSelectableChange(
@@ -27,7 +27,7 @@ const DateField = ({
               []
             );
           }}
-          checked={fieldType === "date_field" ? true : false}
+          checked={fieldType === "dateField" ? true : false}
         />
         <label htmlFor="date_field" className="form-check-label">
           Date Field

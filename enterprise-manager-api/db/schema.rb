@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_210439) do
+ActiveRecord::Schema.define(version: 2020_04_17_014321) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -104,6 +104,8 @@ ActiveRecord::Schema.define(version: 2020_04_09_210439) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "field_alias"
+    t.boolean "is_required"
+    t.string "default_value"
     t.index ["form_id"], name: "index_fields_on_form_id"
   end
 
@@ -196,6 +198,8 @@ ActiveRecord::Schema.define(version: 2020_04_09_210439) do
     t.datetime "updated_at", null: false
     t.integer "field_id"
     t.string "field_alias"
+    t.boolean "is_required"
+    t.string "default_value"
     t.index ["field_id"], name: "index_record_fields_on_field_id"
     t.index ["form_id"], name: "index_record_fields_on_form_id"
   end

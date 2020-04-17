@@ -41,6 +41,8 @@ class FieldsController < ApplicationController
       :name,
       :field_type,
       :form_id,
+      :is_required,
+      :default_value,
       selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
       options_attributes: [:value],
       record_key_attributes: [:resource_field_id]

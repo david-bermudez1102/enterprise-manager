@@ -36,7 +36,7 @@ class CheckBoxField extends Component {
             <input
               className="form-check-input"
               type="radio"
-              name="field_type"
+              name="fieldType"
               id="checkbox_field"
               value="checkbox"
               onChange={this.handleChange}

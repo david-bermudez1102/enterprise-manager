@@ -22,7 +22,7 @@ class SelectableResourcesOptions extends Component {
         <label htmlFor="selectable_resource_options">Column:</label>
 
         <select
-          name="resource_field_id"
+          name="resourceFieldId"
           onChange={this.handleChange}
           value={this.state.value}
           className="form-control"

@@ -25,12 +25,12 @@ export const addZohoResources = (zohoResource, type) => {
               type: "UPDATE_RECORD",
               record: camelcaseKeys(record.data.attributes)
             });
-            dispatch({
+            return dispatch({
               type: "ADD_MESSAGES",
               messages: ["Records sent to zoho successfully"]
             });
           } else {
-            dispatch({
+            return dispatch({
               type: "ADD_ERRORS",
               errors: record.errors
             });
@@ -70,7 +70,7 @@ export const updateContact = contact => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: { contact: { ...contact } }
+        body: { contact }
       }
     )
       .then(response => response.json())

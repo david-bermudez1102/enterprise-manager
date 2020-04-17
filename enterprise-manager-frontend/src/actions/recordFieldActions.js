@@ -1,17 +1,16 @@
-const camelcaseKeys = require("camelcase-keys");
+import snakecaseKeys from "snakecase-keys";
+import camelcaseKeys from "camelcase-keys";
 
 export const addRecordField = (recordField, organizationId) => {
   return dispatch => {
     fetch(
-      `/api/v1/organizations/${organizationId}/forms/${recordField.form_id}/record_fields`,
+      `/api/v1/organizations/${organizationId}/forms/${recordField.formId}/record_fields`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          record_field: { ...recordField }
-        })
+        body: JSON.stringify(snakecaseKeys({ recordField }))
       }
     )
       .then(response => response.json())

@@ -23,7 +23,7 @@ const AccountOptions = ({ account }) => {
               </IconWrapper>
             </Link>
           ) : (
-            <IconWrapper size="30px">
+            <IconWrapper size="30px" key={cuid()}>
               <i className={icon.className} title={icon.title}></i>
             </IconWrapper>
           )
@@ -44,14 +44,21 @@ const AccountOptions = ({ account }) => {
               <Modal
                 title={
                   <span className="d-flex align-items-center">
-                    <Avatar currentUser={account} style={{ zIndex: 1 }} size={40} />
+                    <Avatar
+                      currentUser={account}
+                      style={{ zIndex: 1 }}
+                      size={40}
+                    />
                     {icon.modalTitle}
                   </span>
                 }
                 handleClose={hide}
                 message={icon.modalMessage}>
                 <Link to={`/accounts/${account.id}/${icon.action}`}>
-                  <button type="button" className="btn btn-danger" onClick={e => e.stopPropagation()}>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={e => e.stopPropagation()}>
                     {icon.title}
                   </button>
                 </Link>
@@ -65,7 +72,8 @@ const AccountOptions = ({ account }) => {
 };
 
 const classNames = {
-  accountOptions: "order-1 order-xl-2 col-xl-6 px-0 py-2 py-xl-0 d-flex justify-content-between text-primary"
+  accountOptions:
+    "order-1 order-xl-2 col-xl-6 px-0 py-2 py-xl-0 d-flex justify-content-between text-primary"
 };
 
 export default AccountOptions;

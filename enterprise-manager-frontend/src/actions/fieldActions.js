@@ -5,7 +5,7 @@ export const addField = (field, organizationId) => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
     return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${field.form_id}/fields`,
+      `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields`,
       {
         method: "POST",
         headers: {
@@ -25,7 +25,7 @@ export const addField = (field, organizationId) => {
             type: "ADD_MESSAGES",
             messages: f.messages || ["Field added successfully."]
           });
-          return { ...field, field_id: f.data.id };
+          return { ...field, fieldId: f.data.id };
         } else {
           dispatch({ type: "ADD_ERRORS", errors: f.errors });
         }

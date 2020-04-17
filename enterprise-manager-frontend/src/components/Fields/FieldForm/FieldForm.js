@@ -178,6 +178,17 @@ export default class FieldForm extends Component {
           />
         </div>
         <hr />
+        <div className="form-check form-check-inline">
+          <input
+            type="checkbox"
+            name="isRequired"
+            className="form-check-input"
+          />
+          <label className="form-check-label" htmlFor="isRequired">
+            Required
+          </label>
+        </div>
+        <hr />
         <input
           type="submit"
           value={action}

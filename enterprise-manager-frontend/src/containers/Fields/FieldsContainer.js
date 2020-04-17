@@ -44,11 +44,10 @@ class FieldsContainer extends Component {
               <div className="col-lg-4">
                 <FormCard
                   header={
-                    <span
-                      className="card-title display-4 mb-0"
-                      style={{ fontSize: "32px" }}>
-                      Add Field to {plural(resource.name)}
-                    </span>
+                    <h2 className="card-title mb-0 text-white">
+                      <i className="fad fa-plus-circle mr-2"></i>Add Field to{" "}
+                      {plural(resource.name)}
+                    </h2>
                   }>
                   <FieldForm
                     addField={addField}

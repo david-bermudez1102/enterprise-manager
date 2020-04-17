@@ -11,7 +11,9 @@ class RecordFieldsController < ApplicationController
 
   def index
     record_fields = @form.record_fields.includes({:field => :record_key}, :options)
-    render json: RecordFieldSerializer.new(record_fields)
+    if stale?(record_fields)
+      render json: RecordFieldSerializer.new(record_fields)
+    end
   end
 
   def update

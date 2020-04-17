@@ -10,4 +10,7 @@ class Record < ApplicationRecord
 
   accepts_nested_attributes_for :values
 
+  def cache_key
+    "/records/#{id}-#{updated_at}"
+  end
 end

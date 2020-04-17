@@ -1,6 +1,7 @@
 class RecordFieldSerializer
   include FastJsonapi::ObjectSerializer
   attributes :id, :field_id, :name, :field_type, :form_id, :field_alias
+  cache_options enabled: true, cache_length: 12.hours
   attribute :record_key do |record_field|
     record_field.field ? record_field.field.record_key : nil
   end

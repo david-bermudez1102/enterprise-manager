@@ -14,13 +14,17 @@ class RecordsController < ApplicationController
   end
 
   def index
-    record = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
-    render json: RecordSerializer.new(record), cached: true
+    records = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
+    if stale?(records,public:true)
+      render json: RecordSerializer.new(records)
+    end
   end
 
   def show
     record = @form.records.find_by(id: params[:id]).includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
-    render json: RecordSerializer.new(record)
+    if stale?(record,public:true)
+      render json: RecordSerializer.new(record)
+    end
   end
 
   private

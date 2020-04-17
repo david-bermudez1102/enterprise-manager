@@ -62,6 +62,7 @@ export const updateValue = value => {
       .then(response => response.json())
       .then(value => {
         if (!value.errors) {
+          console.log(value);
           dispatch({
             type: "UPDATE_VALUE",
             value: camelcaseKeys(value.data.attributes)

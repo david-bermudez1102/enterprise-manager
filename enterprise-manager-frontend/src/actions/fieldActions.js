@@ -38,7 +38,7 @@ export const fetchFields = (organizationId, formId) => {
     fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/fields`)
       .then(response => response.json())
       .then(fields => fields.data.map(field => camelcaseKeys(field.attributes)))
-      .then(fields => dispatch({ type: "FETCH_FIELDS", fields }));
+      .then(fields => dispatch({ type: "FETCH_FIELDS", fields, formId }));
   };
 };
 

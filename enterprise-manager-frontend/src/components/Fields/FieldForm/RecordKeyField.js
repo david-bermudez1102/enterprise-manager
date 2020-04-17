@@ -70,17 +70,26 @@ class RecordKeyField extends Component {
         {fieldType === "key_field" ? (
           <div className="col-12 order-last">
             <hr />
-            <select
-              onChange={this.handleFieldChange}
-              value={this.state.fieldId}
-              className="form-control">
-              <option value="">Select a field</option>
-              {fields.map(field => (
-                <option key={cuid()} value={field.id}>
-                  {field.name}
-                </option>
-              ))}
-            </select>
+            <div className="form-group">
+              <select
+                onChange={this.handleFieldChange}
+                value={this.state.fieldId}
+                className="form-control">
+                <option value="">Select a field</option>
+                {fields.map(field => (
+                  <option key={cuid()} value={field.id}>
+                    {field.name}
+                  </option>
+                ))}
+              </select>
+              <label className="form-control-placeholder">Grouped by</label>
+            </div>
+            <p
+              className="small text-muted text-justify"
+              style={{ lineHeight: "16px" }}>
+              The key field won't be visible in the form. It will be assigned
+              automatically whenever a new record is submitted.
+            </p>
           </div>
         ) : null}
       </>

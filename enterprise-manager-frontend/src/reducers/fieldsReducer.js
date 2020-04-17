@@ -4,7 +4,17 @@ export const fieldsReducer = (state = [], action) => {
       return [...state, action.field];
     case "FETCH_FIELDS":
       return [
-        ...state,
+        ...state
+          .filter(
+            field =>
+              field.formId !== action.formId ||
+              action.fields.some(f => f.id === field.id)
+          )
+          .map(field => {
+            const updatedField = action.fields.find(f => f.id === field.id);
+            if (updatedField && field !== updatedField) return updatedField;
+            return field;
+          }),
         ...action.fields.filter(field => !state.some(f => field.id === f.id))
       ];
     case "UPDATE_FIELD":

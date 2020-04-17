@@ -84,6 +84,7 @@ class SelectableOptions extends Component {
               <i
                 className="fas fa-minus-square pl-2 float-right"
                 style={{ cursor: "pointer" }}
+                title="Remove Item"
                 onClick={() => this.removeItem(option.value)}></i>
             </span>
           ))}

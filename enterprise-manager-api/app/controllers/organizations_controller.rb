@@ -15,7 +15,9 @@ class OrganizationsController < ApplicationController
 
   def index
     organizations = Organization.all
-    render json: OrganizationSerializer.new(organizations)
+    if stale?(organizations)
+      render json: OrganizationSerializer.new(organizations)
+    end
   end
 
   private

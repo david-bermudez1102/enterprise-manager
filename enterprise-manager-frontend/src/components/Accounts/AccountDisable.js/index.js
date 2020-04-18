@@ -6,7 +6,9 @@ import { Redirect } from "react-router-dom";
 const AccountDisable = ({ account, updateAccount, url }) => {
   const [updated, setUpdated] = useState(false);
   useEffect(() => {
-    updateAccount({ id: account.id, disabled: !account.disabled }).then(() => setUpdated(true));
+    updateAccount({ id: account.id, disabled: !account.disabled }).then(() =>
+      setUpdated(true)
+    );
   }, []);
 
   return updated ? <Redirect to={url} /> : null;

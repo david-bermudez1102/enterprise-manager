@@ -44,25 +44,33 @@ export const addRecord = (record, organizationId, formId) => {
 };
 
 export const fetchRecords = (organizationId, formId, offset) => {
-  const query = offset ? `?offset=${offset}` : "";
+  //const query = offset ? `?offset=${offset}` : "";
   return dispatch => {
     return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${formId}/records${query}`
+      `/api/v1/organizations/${organizationId}/forms/${formId}/records`,
+      { cache: "default" }
     )
       .then(response => response.json())
       .then(records => records.data.map(record => record))
       .then(records => {
         dispatch({
           type: "FETCH_RECORDS",
-          records: records.map(record => camelcaseKeys(record.attributes)),
+          records: records.map((record, i) => ({
+            ...camelcaseKeys(record.attributes),
+            listingId: i + 1
+          })),
           formId
         });
         return records.map(record => camelcaseKeys(record.links.values));
       })
-      .then(values =>
-        dispatch({ type: "FETCH_VALUES", values: values.flat(), formId })
-      );
+      .then(values => {
+        dispatch({ type: "FETCH_VALUES", values: values.flat(), formId });
+      });
   };
+};
+
+export const setSortedRecords = (records, formId) => {
+  return dispatch => dispatch({ type: "SET_SORTED_RECORDS", records, formId });
 };
 
 export const setRecordsSortedBy = resource => {

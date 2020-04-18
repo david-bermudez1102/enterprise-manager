@@ -1,8 +1,7 @@
 export const recordsReducer = (state = [], action) => {
   switch (action.type) {
     case "ADD_RECORD":
-      return [...state, action.record];
-
+      return [...state, { ...action.record, listingId: state.length + 1 }];
     case "FETCH_RECORDS":
       return [
         ...state
@@ -42,6 +41,18 @@ export const recordsSortedBy = (state = [], action) => {
       return [
         ...state.filter(res => res.id !== action.resource.id),
         action.resource
+      ];
+    default:
+      return state;
+  }
+};
+
+export const sortedRecords = (state = [], action) => {
+  switch (action.type) {
+    case "SET_SORTED_RECORDS":
+      return [
+        ...state.filter(record => record.formId !== action.formId),
+        ...action.records
       ];
     default:
       return state;

@@ -1,8 +1,8 @@
 class RecordsController < ApplicationController
   before_action :set_organization
   before_action :set_form
-  before_action :set_limit, only: %i[index]
-  before_action :set_offset, only: %i[index]
+  # before_action :set_limit, only: %i[index]
+  # before_action :set_offset, only: %i[index]
   
   def create
     record = @form.records.build(record_params)
@@ -15,7 +15,7 @@ class RecordsController < ApplicationController
 
   def index
     records = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
-    if stale?(records,public:true)
+    if stale?(records, public:true)
       render json: RecordSerializer.new(records)
     end
   end

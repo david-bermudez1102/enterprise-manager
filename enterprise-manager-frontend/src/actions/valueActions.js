@@ -12,6 +12,10 @@ export const fetchValues = (organizationId, formId) => {
   };
 };
 
+export const setSortedValues = (values, formId) => {
+  return dispatch => dispatch({ type: "SET_SORTED_VALUES", values, formId });
+};
+
 export const addValue = value => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
@@ -62,7 +66,6 @@ export const updateValue = value => {
       .then(response => response.json())
       .then(value => {
         if (!value.errors) {
-          console.log(value);
           dispatch({
             type: "UPDATE_VALUE",
             value: camelcaseKeys(value.data.attributes)

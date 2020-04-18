@@ -18,7 +18,7 @@ class RecordsHeader extends Component {
       orders: currentRecordsSortedBy
         ? currentRecordsSortedBy.orders
         : [
-            { recordFieldId: 0, ascendant: true, usedToSort: true },
+            { recordFieldId: 0, ascendant: false, usedToSort: true },
             ...recordFields
               .filter(field => field.formId === resource.id)
               .map(field => {
@@ -42,7 +42,7 @@ class RecordsHeader extends Component {
         orders: currentRecordsSortedBy
           ? currentRecordsSortedBy.orders
           : [
-              { recordFieldId: 0, ascendant: true, usedToSort: true },
+              { recordFieldId: 0, ascendant: false, usedToSort: true },
               ...recordFields
                 .filter(field => field.formId === resource.id)
                 .map(field => {

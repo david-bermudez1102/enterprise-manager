@@ -11,7 +11,6 @@ import ResourcesList from "../../components/Resources/ResourcesList";
 import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
 import Resource from "../../components/Resources/Resource";
-import cuid from "cuid";
 import { FormCard } from "../../components/Cards/Cards";
 import ResourceDelete from "../../components/Resources/ResourceDelete";
 import ConnectionsContainer from "../Connections/ConnectionsContainer";
@@ -139,9 +138,7 @@ class ResourcesContainer extends Component {
             />
             <Route
               path={`${match.path}/:formAlias`}
-              render={props => (
-                <Resource {...props} key={cuid()} location={location} />
-              )}
+              render={props => <Resource {...props} location={location} />}
             />
             />
           </Switch>

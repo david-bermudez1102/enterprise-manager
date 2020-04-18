@@ -10,7 +10,7 @@ import RecordsOptions from "../../components/Records/RecordsOptions";
 import ReactHeight from "react-height";
 
 class RecordsContainer extends Component {
-  state = { height: 0, optionsHeight: 0 };
+  state = { height: 0, optionsHeight: 0, requesting: true };
 
   componentDidMount() {
     const { records, resource, fetchRecords } = this.props;
@@ -20,6 +20,12 @@ class RecordsContainer extends Component {
     ); // return the most recent record,
 
     fetchRecords(resource.organizationId, resource.id, lastRecord);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { resource, fetchRecords } = this.props;
+    if (prevProps.resource !== resource)
+      fetchRecords(resource.organizationId, resource.id);
   }
 
   setListHeight = height => {
@@ -37,6 +43,7 @@ class RecordsContainer extends Component {
       recordFields,
       removeRecordField,
       records,
+      sortedRecords,
       values
     } = this.props;
     return (
@@ -72,12 +79,15 @@ class RecordsContainer extends Component {
                     <ReactHeight
                       onHeightReady={height => this.setListHeight(height)}>
                       <RecordsList
-                        history={props.history}
-                        match={match}
-                        recordFields={recordFields}
+                        recordFields={recordFields.filter(
+                          f => f.formId === resource.id
+                        )}
                         resource={resource}
                         records={records.filter(
                           record => record.formId === resource.id
+                        )}
+                        sortedRecords={sortedRecords.filter(
+                          r => r.formId === resource.id
                         )}
                         values={values.filter(
                           value => value.formId === resource.id
@@ -102,8 +112,14 @@ class RecordsContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ records, values, recordFields, pagination }) => {
-  return { records, values, recordFields, pagination };
+const mapStateToProps = ({
+  records,
+  values,
+  recordFields,
+  pagination,
+  sortedRecords
+}) => {
+  return { records, values, recordFields, pagination, sortedRecords };
 };
 
 export default connect(mapStateToProps, {

@@ -7,6 +7,7 @@ import RadioField from "./RadioField";
 import CheckBoxField from "./CheckBoxField";
 import TextAreaField from "./TextAreaField";
 import DateField from "./DateField";
+import NumberField from "./NumberField";
 
 export default class FieldForm extends Component {
   constructor(props) {
@@ -114,6 +115,15 @@ export default class FieldForm extends Component {
             }
           />
           <TextField
+            field={field}
+            fieldType={this.state.fieldType}
+            handleChange={this.handleChange}
+            handleSelectableChange={this.handleSelectableChange}
+            selectableResourceAttributes={
+              this.state.selectableResourceAttributes
+            }
+          />
+          <NumberField
             field={field}
             fieldType={this.state.fieldType}
             handleChange={this.handleChange}

@@ -181,7 +181,6 @@ class Field extends Component {
       field.fieldType !== "selectable" &&
       field.fieldType !== "textarea" &&
       field.fieldType !== "date_field"; // Used to check if label should be inside field.
-    console.log(this.state);
     return (
       <>
         {/*field.fieldType !== "key_field" ? (

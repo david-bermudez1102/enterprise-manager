@@ -7,9 +7,12 @@ const SelectableInput = props => {
   const [isListVisible, setIsListVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
+
   const { options, fieldRef, children, onChange, ...newProps } = props;
   const listRef = useRef();
   const optionRef = useRef();
+
+  const inputRef = useRef(fieldRef);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleBlur);
@@ -24,7 +27,6 @@ const SelectableInput = props => {
         options.filter(
           o =>
             o.value
-
               .split(" ")
               .some(v =>
                 v
@@ -57,7 +59,6 @@ const SelectableInput = props => {
   }, [isListVisible, selectedOption]);
 
   useEffect(() => {
-    setIsListVisible(false);
     onChange(selectedValue);
   }, [selectedValue]);
 
@@ -86,6 +87,7 @@ const SelectableInput = props => {
   const handleEnter = e => {
     e.preventDefault();
     setSelectedValue(ops[selectedOption]);
+    setIsListVisible(false);
   };
 
   const handleClick = (e, option) => {
@@ -126,6 +128,28 @@ const SelectableInput = props => {
         ref={fieldRef}
       />
       {children}
+      <div
+        className="position-absolute pr-0"
+        style={{
+          zIndex: ops.length > 0 && isListVisible ? 1 : "auto",
+          right: 0,
+          top: 0
+        }}>
+        {ops.length > 0 && isListVisible ? (
+          <button className="btn h-100 shadow-none">
+            <i className={"fas fa-chevron-down text-primary"}></i>
+          </button>
+        ) : (
+          <label
+            htmlFor={props.id}
+            className="btn h-100 shadow-none"
+            onClick={() => setOps(options)}>
+            <i
+              className={"fas fa-chevron-right"}
+              style={{ color: "#495057", opacity: "0.5" }}></i>
+          </label>
+        )}
+      </div>
       {ops.length > 0 && isListVisible ? (
         <div
           className="pt-0 pb-2 px-1 position-absolute w-100 bg-white shadow-sm rounded scroller"
@@ -143,7 +167,7 @@ const SelectableInput = props => {
                 onClick={e => handleClick(e, i)}
                 ref={selectedOption === i ? optionRef : null}
                 style={{ cursor: "pointer" }}
-                className={`list-group-item list-group-item-action py-1 px-2 ${
+                className={`list-group-item list-group-item-action py-1.5 px-2 ${
                   selectedOption === i ? "active" : null
                 }`}>
                 {o.value}

@@ -14,9 +14,10 @@ const persistedState = loadState();
 
 const store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
 
+const { session, ...state } = store.getState();
 store.subscribe(
   throttle(() => {
-    saveState(store.getState());
+    saveState(state);
   }, 1000)
 );
 

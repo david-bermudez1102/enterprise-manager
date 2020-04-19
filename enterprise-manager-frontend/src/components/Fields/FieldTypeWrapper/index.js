@@ -13,7 +13,7 @@ const FieldTypeWrapper = ({ id, value, fieldType, onChange, children }) => {
           onChange={onChange}
           checked={fieldType === value ? true : false}
         />
-        <label htmlFor="text_field" className="form-check-label">
+        <label htmlFor={id} className="form-check-label">
           {children}
         </label>
       </div>

@@ -3,6 +3,7 @@ import cuid from "cuid";
 import Options from "../Options/Options";
 import SelectableInput from "./SelectableInput";
 
+const { formControl } = { formControl: "form-control rounded-pill" };
 class Field extends Component {
   constructor() {
     super();
@@ -55,17 +56,24 @@ class Field extends Component {
   render() {
     const { match, field, recordField, fieldRef } = this.props;
     let inputField;
+    const inputAttributes = {
+      className: formControl,
+      name: recordField.id,
+      id: field.fieldAlias,
+      type: field.fieldType,
+      placeholder: `Enter ${this.fieldName()}`,
+      onChange: this.handleChange,
+      ref: fieldRef,
+      required: true
+    };
     switch (field.fieldType) {
       case "selectable":
         inputField = (
           <SelectableInput
-            name={recordField.id}
-            id={field.fieldAlias}
-            className="form-control rounded-pill"
-            placeholder={`Enter ${field.name}`}
-            onChange={this.handleSelectableChange}
+            {...inputAttributes}
+            ref={undefined}
             fieldRef={fieldRef}
-            required
+            onChange={this.handleSelectableChange}
             options={
               field.selectableResource
                 ? field.selectableResource.options
@@ -80,32 +88,11 @@ class Field extends Component {
         );
         break;
       case "textarea":
-        inputField = (
-          <textarea
-            className="form-control rounded-pill"
-            type={field.fieldType}
-            name={recordField.id}
-            id={field.fieldAlias}
-            placeholder={`Enter ${this.fieldName()}`}
-            onChange={this.handleChange}
-            value={this.state.value}
-            ref={fieldRef}
-            required
-          />
-        );
+        inputField = <textarea {...inputAttributes} />;
         break;
       case "date_field":
         inputField = (
-          <input
-            className="form-control rounded-pill"
-            type={"date"}
-            name={recordField.id}
-            id={field.fieldAlias}
-            placeholder={`Enter ${this.fieldName()}`}
-            onChange={this.handleChange}
-            value={this.state.value}
-            ref={fieldRef}
-          />
+          <input {...inputAttributes} type={"date"} required={false} />
         );
         break;
       case "key_field":
@@ -116,14 +103,14 @@ class Field extends Component {
             {field.options.map(option => (
               <div className="form-check form-check-inline" key={cuid()}>
                 <input
+                  {...inputAttributes}
                   className="form-check-input"
-                  type={field.fieldType}
-                  name={recordField.id}
                   id={`radio_field_${option.id}`}
-                  onChange={this.handleChange}
                   value={option.value}
                   checked={this.state.value === option.value}
                   data-option-value-id={option.id}
+                  ref={undefined}
+                  required={false}
                 />
                 <label
                   htmlFor={`radio_field_${option.id}`}
@@ -141,14 +128,14 @@ class Field extends Component {
             {field.options.map(option => (
               <div className="form-check form-check-inline" key={cuid()}>
                 <input
+                  {...inputAttributes}
                   className="form-check-input"
-                  type={field.fieldType}
-                  name={recordField.id}
                   id={`checkbox_field_${option.id}`}
-                  onChange={this.handleChange}
                   value={option.value}
                   checked={this.state.checked[`checkbox_field_${option.id}`]}
                   data-option-value-id={option.id}
+                  ref={undefined}
+                  required={false}
                 />
                 <label
                   htmlFor={`radio_field_${option.id}`}
@@ -161,19 +148,7 @@ class Field extends Component {
         );
         break;
       default:
-        inputField = (
-          <input
-            className="form-control rounded-pill"
-            type={field.fieldType}
-            name={recordField.id}
-            id={field.fieldAlias}
-            placeholder={`Enter ${this.fieldName()}`}
-            onChange={this.handleChange}
-            value={this.state.value}
-            ref={fieldRef}
-            required
-          />
-        );
+        inputField = <input {...inputAttributes} value={this.state.value} />;
         break;
     }
     const isLabelable =

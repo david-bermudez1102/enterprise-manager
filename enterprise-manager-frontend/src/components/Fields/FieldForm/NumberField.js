@@ -10,9 +10,9 @@ const NumberField = ({
   selectableResourceAttributes
 }) => (
   <FieldTypeWrapper
-    id="number_field"
+    id="numberic_field"
     fieldType={fieldType}
-    value={"numberField"}
+    value={"numbericField"}
     onChange={event => {
       handleChange(event);
       handleSelectableChange(

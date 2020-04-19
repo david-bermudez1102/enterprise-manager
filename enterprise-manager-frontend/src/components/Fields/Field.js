@@ -17,12 +17,8 @@ class Field extends Component {
 
     const optionDataSet = option ? option.dataset : null;
     this.setState({
-      recordValueId: optionDataSet
-        ? optionDataSet.recordValueId
-        : event.target.dataset.recordValueId,
-      optionValueId: optionDataSet
-        ? optionDataSet.optionValueId
-        : event.target.dataset.optionValueId,
+      recordValueId: optionDataSet ? optionDataSet.recordValueId : undefined,
+      optionValueId: optionDataSet ? optionDataSet.optionValueId : undefined,
       checked: {
         ...this.state.checked,
         [event.target.id]: event.target.checked
@@ -90,6 +86,9 @@ class Field extends Component {
       case "textarea":
         inputField = <textarea {...inputAttributes} />;
         break;
+      case "numeric_field":
+        inputField = <input {...inputAttributes} type="number" />;
+        break;
       case "date_field":
         inputField = (
           <input {...inputAttributes} type={"date"} required={false} />
@@ -155,7 +154,8 @@ class Field extends Component {
       field.fieldType !== "text" &&
       field.fieldType !== "selectable" &&
       field.fieldType !== "textarea" &&
-      field.fieldType !== "date_field"; // Used to check if label should be inside field.
+      field.fieldType !== "date_field" &&
+      field.fieldType !== "numeric_field"; // Used to check if label should be inside field.
     return (
       <>
         {/*field.fieldType !== "key_field" ? (

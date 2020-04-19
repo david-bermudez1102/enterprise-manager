@@ -16,7 +16,7 @@ const DateField = ({
           type="radio"
           name="fieldType"
           id="date_field"
-          value="dateField"
+          value="date_field"
           onChange={event => {
             handleChange(event);
             handleSelectableChange(

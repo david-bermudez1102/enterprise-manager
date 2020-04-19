@@ -57,7 +57,7 @@ class RecordKeyField extends Component {
               type="radio"
               name="fieldType"
               id="record_key_field"
-              value="keyField"
+              value="key_field"
               onChange={this.handleChange}
               checked={fieldType === "keyField" ? true : false}
             />

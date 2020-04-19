@@ -61,8 +61,8 @@ const ResourcesList = ({ loaded, match, resources, location, history }) => {
                 onClick={e => e.stopPropagation()}>
                 <button className="btn btn-lg p-0 m-0">
                   <span
-                    className="badge badge-secondary shadow-sm"
-                    style={{ minWidth: "60px" }}
+                    className="badge badge-secondary shadow-sm text-truncate"
+                    style={{ minWidth: "60px", maxWidth: "60px" }}
                     title={`${resource.recordsCount || 0} ${pluralize(
                       resource.name
                     )}`}>

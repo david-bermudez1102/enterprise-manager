@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import cuid from "cuid";
 import Options from "../Options/Options";
+import SelectableInput from "./SelectableInput";
 
 class Field extends Component {
   constructor() {
@@ -11,20 +12,36 @@ class Field extends Component {
   handleChange = event => {
     event.persist();
     let option;
-    if (event.target.options)
-      option = event.target.options[event.target.selectedIndex];
-    else if (event.target.checked) option = event.target;
+    if (event.target.checked) option = event.target;
 
     const optionDataSet = option ? option.dataset : null;
     this.setState({
-      recordValueId: optionDataSet ? optionDataSet.recordValueId : null,
-      optionValueId: optionDataSet ? optionDataSet.optionValueId : null,
+      recordValueId: optionDataSet
+        ? optionDataSet.recordValueId
+        : event.target.dataset.recordValueId,
+      optionValueId: optionDataSet
+        ? optionDataSet.optionValueId
+        : event.target.dataset.optionValueId,
       checked: {
         ...this.state.checked,
         [event.target.id]: event.target.checked
       },
       value: event.target.value
     });
+  };
+
+  handleSelectableChange = option => {
+    const { field } = this.props;
+    if (field.selectableResource)
+      this.setState({
+        recordValueId: option.id,
+        value: option.value
+      });
+    else
+      this.setState({
+        recordOptionId: option.id,
+        value: option.value
+      });
   };
 
   fieldName = () => {
@@ -41,37 +58,25 @@ class Field extends Component {
     switch (field.fieldType) {
       case "selectable":
         inputField = (
-          <select
-            className="form-control rounded-pill"
+          <SelectableInput
             name={recordField.id}
             id={field.fieldAlias}
+            className="form-control rounded-pill"
             placeholder={`Enter ${field.name}`}
-            onChange={this.handleChange}
-            value={this.state.value}
-            data-record-value-id={this.state.recordValueId}
-            data-option-value-id={this.state.optionValueId}
-            ref={fieldRef}>
-            <option key={cuid()} value="" data-record-value-id="">
-              Select
-            </option>
-            {field.selectableResource
-              ? field.selectableResource.options.map(option => (
-                  <option
-                    key={cuid()}
-                    value={option.value}
-                    data-record-value-id={option.id}>
-                    {option.value}
-                  </option>
-                ))
-              : field.options.map(option => (
-                  <option
-                    key={cuid()}
-                    value={option.value}
-                    data-option-value-id={option.id}>
-                    {option.value}
-                  </option>
-                ))}
-          </select>
+            onChange={this.handleSelectableChange}
+            fieldRef={fieldRef}
+            required
+            options={
+              field.selectableResource
+                ? field.selectableResource.options
+                : field.options
+            }>
+            <label
+              htmlFor={field.fieldAlias}
+              className={"form-control-placeholder"}>
+              {this.fieldName()}
+            </label>
+          </SelectableInput>
         );
         break;
       case "textarea":
@@ -122,7 +127,7 @@ class Field extends Component {
                 />
                 <label
                   htmlFor={`radio_field_${option.id}`}
-                  className="form-check-label">
+                  className="form-check-label order-first">
                   {option.value}
                 </label>
               </div>
@@ -176,27 +181,34 @@ class Field extends Component {
       field.fieldType !== "selectable" &&
       field.fieldType !== "textarea" &&
       field.fieldType !== "date_field"; // Used to check if label should be inside field.
+    console.log(this.state);
     return (
       <>
-        {field.fieldType !== "key_field" ? (
+        {/*field.fieldType !== "key_field" ? (
           <Options
             url={`${match.url}/fields`}
             content={field}
             deletionMessage="The field will be deleted from the resource."
           />
-        ) : null}
+        ) : null*/}
         <div className={isLabelable ? "form-group mb-0" : "form-group"}>
           {inputField}
-          <label
-            htmlFor={field.fieldAlias}
-            className={isLabelable ? "ml-1" : "form-control-placeholder"}
-            style={
-              isLabelable
-                ? { fontSize: "16px", marginTop: "-55px", position: "absolute" }
-                : undefined
-            }>
-            {this.fieldName()}
-          </label>
+          {field.fieldType !== "selectable" ? (
+            <label
+              htmlFor={field.fieldAlias}
+              className={isLabelable ? "ml-1" : "form-control-placeholder"}
+              style={
+                isLabelable
+                  ? {
+                      fontSize: "16px",
+                      marginTop: "-55px",
+                      position: "absolute"
+                    }
+                  : undefined
+              }>
+              {this.fieldName()}
+            </label>
+          ) : null}
         </div>
       </>
     );

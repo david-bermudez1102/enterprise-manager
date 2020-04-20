@@ -59,6 +59,7 @@ class Field extends Component {
       type: field.fieldType,
       placeholder: `Enter ${this.fieldName()}`,
       onChange: this.handleChange,
+      value: this.state.value,
       ref: fieldRef,
       required: true
     };
@@ -74,7 +75,8 @@ class Field extends Component {
               field.selectableResource
                 ? field.selectableResource.options
                 : field.options
-            }>
+            }
+            value={undefined}>
             <label
               htmlFor={field.fieldAlias}
               className={"form-control-placeholder"}>
@@ -87,7 +89,15 @@ class Field extends Component {
         inputField = <textarea {...inputAttributes} />;
         break;
       case "numeric_field":
-        inputField = <input {...inputAttributes} type="number" />;
+        inputField = (
+          <input
+            {...inputAttributes}
+            type="number"
+            step={field.acceptsDecimals ? "any" : undefined}
+            onInvalid={e => (e.target.value = "")}
+            onBlur={e => e.target.checkValidity()}
+          />
+        );
         break;
       case "date_field":
         inputField = (

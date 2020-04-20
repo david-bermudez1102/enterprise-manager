@@ -2,6 +2,8 @@ class FieldSerializer
   include FastJsonapi::ObjectSerializer
   attributes :id, :name, :field_type, :form_id, :record_key, :field_alias, :is_required, :default_value
 
+  attribute :accepts_decimals, if: Proc.new { |field| field.field_type == "numeric_field" }
+
   attribute :key_values do  |field|
     if field.record_key 
       key_values = KeyValueSerializer.new(field.record_key.key_values).serializable_hash[:data]

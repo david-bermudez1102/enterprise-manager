@@ -59,7 +59,7 @@ class RecordKeyField extends Component {
               id="record_key_field"
               value="key_field"
               onChange={this.handleChange}
-              checked={fieldType === "keyField" ? true : false}
+              checked={fieldType === "key_field" ? true : false}
             />
             <label htmlFor="record_key_field" className="form-check-label">
               Key Field{" "}
@@ -67,7 +67,7 @@ class RecordKeyField extends Component {
             </label>
           </div>
         </div>
-        {fieldType === "keyField" ? (
+        {fieldType === "key_field" ? (
           <div className="col-12 order-last">
             <hr />
             <div className="form-group">

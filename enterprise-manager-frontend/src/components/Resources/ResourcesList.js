@@ -58,10 +58,11 @@ const ResourcesList = ({ loaded, match, resources, location, history }) => {
               <Link
                 to={`${match.url}/${resource.formAlias}/records`}
                 style={{ color: "inherit" }}
+                className="d-flex p-0 m-0 text-decoration-none"
                 onClick={e => e.stopPropagation()}>
                 <button className="btn btn-lg p-0 m-0">
                   <span
-                    className="badge badge-secondary shadow-sm text-truncate"
+                    className="badge badge-secondary shadow-sm text-truncate d-block my-auto"
                     style={{ minWidth: "60px", maxWidth: "60px" }}
                     title={`${resource.recordsCount || 0} ${pluralize(
                       resource.name

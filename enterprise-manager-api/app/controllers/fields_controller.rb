@@ -43,6 +43,7 @@ class FieldsController < ApplicationController
       :form_id,
       :is_required,
       :default_value,
+      :accepts_decimals,
       selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
       options_attributes: [:value],
       record_key_attributes: [:resource_field_id]

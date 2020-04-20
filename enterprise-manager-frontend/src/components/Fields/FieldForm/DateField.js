@@ -27,7 +27,7 @@ const DateField = ({
               []
             );
           }}
-          checked={fieldType === "dateField" ? true : false}
+          checked={fieldType === "date_field" ? true : false}
         />
         <label htmlFor="date_field" className="form-check-label">
           Date Field

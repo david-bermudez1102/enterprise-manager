@@ -28,7 +28,7 @@ const NumericField = ({
       Numeric Field
       <Icon path={mdiNumeric} title="Numeric Field" size={1} color="#07689F" />
     </FieldTypeWrapper>
-    <NumericFieldOptions fieldType={fieldType} />
+    <NumericFieldOptions fieldType={fieldType} handleChange={handleChange} />
   </>
 );
 export default NumericField;

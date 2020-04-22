@@ -3,12 +3,16 @@ import cuid from "cuid";
 import Options from "../Options/Options";
 import SelectableInput from "./SelectableInput";
 
-const { formControl } = { formControl: "form-control rounded-pill" };
+const { formControl } = {
+  formControl: "form-control rounded-pill"
+};
 class Field extends Component {
   constructor() {
     super();
-    this.state = { id: "", value: "", checked: {} };
+    this.state = { id: "", value: "", checked: {}, showOptions: true };
   }
+
+  componentDidUpdate() {}
 
   handleChange = event => {
     event.persist();
@@ -168,13 +172,14 @@ class Field extends Component {
       field.fieldType !== "numeric_field"; // Used to check if label should be inside field.
     return (
       <>
-        {/*field.fieldType !== "key_field" ? (
+        {field.fieldType !== "key_field" ? (
           <Options
             url={`${match.url}/fields`}
             content={field}
             deletionMessage="The field will be deleted from the resource."
+            style={{ marginTop: "-15px" }}
           />
-        ) : null*/}
+        ) : null}
         <div className={isLabelable ? "form-group mb-0" : "form-group"}>
           {inputField}
           {field.fieldType !== "selectable" ? (

@@ -85,7 +85,7 @@ const SelectableInput = props => {
 
   const handleEnter = e => {
     e.preventDefault();
-    setSelectedValue(ops[selectedOption]);
+    if (ops[selectedOption]) setSelectedValue(ops[selectedOption]);
     setIsListVisible(false);
   };
 

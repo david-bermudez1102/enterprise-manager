@@ -38,7 +38,6 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
       {items.length > 0 ? (
         <div>
           <hr />
-
           {items.map(item => (
             <OptionBadge
               key={cuid()}
@@ -51,7 +50,7 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
       {availableFields.length > 0 ? (
         <>
           <hr />
-          <div className="form-group">
+          <div className="form-group mb-0">
             <SelectableInput
               name="combineWith"
               id="combine_with"

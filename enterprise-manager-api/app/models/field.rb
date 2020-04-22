@@ -7,6 +7,8 @@ class Field < ApplicationRecord
   has_many :options, dependent: :nullify
   has_many :values, through: :record_field
   has_many :key_values, through: :record_key
+  serialize :combined_fields, Array
+  
   before_create :generate_field_alias
   after_save :nullify_form_alias, if: :saved_change_to_name?
   

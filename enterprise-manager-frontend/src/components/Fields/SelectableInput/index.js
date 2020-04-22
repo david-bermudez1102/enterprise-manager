@@ -12,8 +12,6 @@ const SelectableInput = props => {
   const listRef = useRef();
   const optionRef = useRef();
 
-  const inputRef = useRef(fieldRef);
-
   useEffect(() => {
     document.addEventListener("mousedown", handleBlur);
     return () => {

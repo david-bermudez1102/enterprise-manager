@@ -51,4 +51,8 @@ class Field < ApplicationRecord
       end
     end
   end
+
+  def cache_key
+    "/fields/#{id}-#{updated_at}"
+  end
 end

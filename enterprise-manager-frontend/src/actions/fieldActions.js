@@ -19,7 +19,7 @@ export const addField = (field, organizationId) => {
         if (!f.errors) {
           dispatch({
             type: "ADD_FIELD",
-            field: camelcaseKeys(f.data.attributes)
+            field: f
           });
           dispatch({
             type: "ADD_MESSAGES",
@@ -38,8 +38,13 @@ export const fetchFields = (organizationId, formId) => {
   return dispatch => {
     fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/fields`)
       .then(response => response.json())
-      .then(fields => fields.data.map(field => camelcaseKeys(field.attributes)))
-      .then(fields => dispatch({ type: "FETCH_FIELDS", fields, formId }));
+      .then(fields =>
+        dispatch({
+          type: "FETCH_FIELDS",
+          fields,
+          formId
+        })
+      );
   };
 };
 
@@ -62,11 +67,11 @@ export const updateField = (field, organizationId, fieldId) => {
           dispatch({
             type: "UPDATE_FIELD",
             fieldId,
-            field: camelcaseKeys(field.data.attributes)
+            field: field
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: field.data.messages || ["Field updated successfully."]
+            messages: field.messages || ["Field updated successfully."]
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: field.errors });
@@ -85,7 +90,7 @@ export const removeField = (organizationId, formId, fieldId) => {
       }
     )
       .then(response => response.json())
-      .then(field => camelcaseKeys(field))
+      .then(field => field)
       .then(field =>
         field.message
           ? dispatch({ type: "REMOVE_FIELD", fieldId, status: "deleted" })

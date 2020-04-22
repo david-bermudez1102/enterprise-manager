@@ -16,15 +16,25 @@ class OrganizationContainer extends Component {
   componentDidMount() {
     const { organizations, fetchResources } = this.props;
     return organizations.length > 0
-      ? fetchResources(organizations[0].id).then(() => this.setState({ loaded: true }))
+      ? fetchResources(organizations[0].id).then(() =>
+          this.setState({ loaded: true })
+        )
       : null;
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.admins !== this.props.admins || prevProps.organizations !== this.props.organizations) {
+    if (
+      prevProps.admins !== this.props.admins ||
+      prevProps.organizations !== this.props.organizations
+    ) {
       const { organizations, admins, history, fetchResources } = this.props;
-      if (organizations.length > 0) fetchResources(organizations[0].id).then(() => this.setState({ loaded: true }));
-      return organizations.length > 0 && admins.length === 0 ? history.push("/accounts/new") : null;
+      if (organizations.length > 0)
+        fetchResources(organizations[0].id).then(() =>
+          this.setState({ loaded: true })
+        );
+      return organizations.length > 0 && admins.length === 0
+        ? history.push("/accounts/new")
+        : null;
     }
   }
 
@@ -42,11 +52,15 @@ class OrganizationContainer extends Component {
                   header={
                     <span className="card-title mb-0 text-white w-100">
                       <h2>
-                        <i className="fas fa-plus-square mr-2"></i>Create new organization
+                        <i className="fas fa-plus-square mr-2"></i>Create new
+                        organization
                       </h2>
                     </span>
                   }>
-                  <OrganizationForm {...props} addOrganization={addOrganization} />
+                  <OrganizationForm
+                    {...props}
+                    addOrganization={addOrganization}
+                  />
                 </FormCard>
               </div>
             </div>
@@ -54,17 +68,34 @@ class OrganizationContainer extends Component {
         />
         <Route
           path={`${match.path}/:organizationId/settings`}
-          render={props => <Settings {...props} resources={resources} organization={organizations[0]} />}
+          render={props => (
+            <Settings
+              {...props}
+              resources={resources}
+              organization={organizations[0]}
+            />
+          )}
         />
         <Route
           path={`${match.path}/:organizationId/resources`}
-          render={props => <ResourcesContainer {...props} resources={resources} loaded={loaded} />}
+          render={props => (
+            <ResourcesContainer
+              {...props}
+              resources={resources}
+              loaded={loaded}
+            />
+          )}
         />
         <Route
           path={`${match.path}/:organizationId/records`}
-          render={props => <AllRecordsContainer {...props} resources={resources} />}
+          render={props => (
+            <AllRecordsContainer {...props} resources={resources} />
+          )}
         />
-        <Route path={`${match.path}/:organizationId`} render={props => <Organization {...props} />} />
+        <Route
+          path={`${match.path}/:organizationId`}
+          render={props => <Organization {...props} />}
+        />
       </Switch>
     );
   }
@@ -77,4 +108,6 @@ const mapStateToProps = ({ resources, organizations }) => {
   };
 };
 
-export default connect(mapStateToProps, { addOrganization, fetchResources })(OrganizationContainer);
+export default connect(mapStateToProps, { addOrganization, fetchResources })(
+  OrganizationContainer
+);

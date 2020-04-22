@@ -11,9 +11,9 @@ const CombinedFields = ({
   return (
     <>
       <FieldTypeWrapper
-        id="combined_field"
+        id="combined_fields"
         fieldType={fieldType}
-        value={"combined_field"}
+        value={"combined_fields"}
         onChange={event => {
           handleChange(event);
           handleSelectableChange(
@@ -27,7 +27,7 @@ const CombinedFields = ({
         Combined Fields
         <Icon
           path={mdiNumeric}
-          title="Numeric Field"
+          title="Combined Fields"
           size={1}
           color="#07689F"
         />

@@ -1,6 +1,7 @@
 import { handleErrors } from "./handleErrors";
+import worker from "workerize-loader!../workers/worker"; // eslint-disable-line import/no-webpack-loader-syntax
 
-const camelcaseKeys = require("camelcase-keys");
+const workerInstance = worker();
 
 export const addRecord = (record, organizationId, formId) => {
   return dispatch => {
@@ -19,7 +20,8 @@ export const addRecord = (record, organizationId, formId) => {
         if (!record.errors) {
           dispatch({
             type: "ADD_RECORD",
-            record: camelcaseKeys(record.data.attributes)
+            record: record.attributes,
+            formId
           });
           dispatch({
             type: "UPDATE_RECORDS_COUNT",
@@ -29,7 +31,7 @@ export const addRecord = (record, organizationId, formId) => {
             type: "ADD_MESSAGES",
             messages: ["Record was successfully created."]
           });
-          return camelcaseKeys(record.data.links.values);
+          return record.links.values;
         } else {
           dispatch({
             type: "ADD_ERRORS",
@@ -45,26 +47,13 @@ export const addRecord = (record, organizationId, formId) => {
 
 export const fetchRecords = (organizationId, formId, offset) => {
   //const query = offset ? `?offset=${offset}` : "";
-  return dispatch => {
-    return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${formId}/records`,
-      { cache: "default" }
-    )
-      .then(response => response.json())
-      .then(records => records.data.map(record => record))
-      .then(records => {
-        dispatch({
-          type: "FETCH_RECORDS",
-          records: records.map((record, i) => ({
-            ...camelcaseKeys(record.attributes),
-            listingId: i + 1
-          })),
-          formId
-        });
-        return records.map(record => camelcaseKeys(record.links.values));
-      })
-      .then(values => {
-        dispatch({ type: "FETCH_VALUES", values: values.flat(), formId });
+  return (dispatch, getState) => {
+    const { records, values } = getState();
+    workerInstance
+      .fetchRecordsWithWorker({ records, values }, formId, organizationId)
+      .then(({ records, values }) => {
+        dispatch({ type: "FETCH_RECORDS", records });
+        dispatch({ type: "FETCH_VALUES", values });
       });
   };
 };

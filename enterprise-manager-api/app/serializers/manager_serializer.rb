@@ -1,5 +1,7 @@
 class ManagerSerializer
   include FastJsonapi::ObjectSerializer
+  set_key_transform :camel_lower
+  
   attribute :id do |object|
     object.account.id
   end

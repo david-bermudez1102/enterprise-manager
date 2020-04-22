@@ -14,7 +14,6 @@ export const addRecordField = (recordField, organizationId) => {
       }
     )
       .then(response => response.json())
-      .then(recordField => camelcaseKeys(recordField.data.attributes))
       .then(recordField => dispatch({ type: "ADD_RECORD_FIELD", recordField }));
   };
 };
@@ -25,11 +24,6 @@ export const fetchRecordFields = (organizationId, formId) => {
       `/api/v1/organizations/${organizationId}/forms/${formId}/record_fields`
     )
       .then(response => response.json())
-      .then(recordFields =>
-        recordFields.data.map(recordField =>
-          camelcaseKeys(recordField.attributes)
-        )
-      )
       .then(recordFields =>
         dispatch({ type: "FETCH_RECORD_FIELDS", recordFields })
       );
@@ -45,7 +39,6 @@ export const removeRecordField = (organizationId, formId, recordFieldId) => {
       }
     )
       .then(response => response.json())
-      .then(field => camelcaseKeys(field))
       .then(field =>
         field.message
           ? dispatch({

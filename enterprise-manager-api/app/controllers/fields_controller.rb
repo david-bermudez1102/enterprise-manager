@@ -12,7 +12,10 @@ class FieldsController < ApplicationController
 
   def index
     fields = @form.fields.includes({:record_key => :key_values}, :options)
-    render json: FieldSerializer.new(fields)
+    if stale?(fields, public: true)
+      serialized_data = FieldSerializer.new(fields).serializable_hash
+      render json: serialized_data[:data].map { |data| data[:attributes] }
+    end
   end
 
   def show

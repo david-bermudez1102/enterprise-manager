@@ -1,5 +1,7 @@
 class RecordSerializer
   include FastJsonapi::ObjectSerializer
+  set_key_transform :camel_lower
+  
   cache_options enabled: true, cache_length: 12.hours
   attributes :id, :form_id
   attribute :zoho_record_id do |obj|

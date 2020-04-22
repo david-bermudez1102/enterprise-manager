@@ -7,7 +7,8 @@ class RecordsController < ApplicationController
   def create
     record = @form.records.build(record_params)
     if record.save
-      render json: RecordSerializer.new(record)
+      serialized_data = RecordSerializer.new(record).serializable_hash[:data]
+      render json: serialized_data
     else
       render json: {errors: record.errors.full_messages}
     end
@@ -16,7 +17,11 @@ class RecordsController < ApplicationController
   def index
     records = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
     if stale?(records, public:true)
-      render json: RecordSerializer.new(records)
+      serialized_data = RecordSerializer.new(records).serializable_hash[:data]
+      serialized_data.each.with_index(1) do |data, i| 
+        data[:attributes]["listingId"] = i
+      end
+      render json: serialized_data
     end
   end
 

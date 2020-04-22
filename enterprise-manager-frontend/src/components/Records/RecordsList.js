@@ -31,6 +31,9 @@ const RecordsList = ({
       : parseInt(queryParams.get("page"));
 
   const allRecordsRef = useRef();
+  useEffect(() => {
+    allRecordsRef.current.scrollIntoView();
+  }, [page]);
 
   useEffect(() => {
     if (sortedRecords.length < records.length)
@@ -68,20 +71,9 @@ const RecordsList = ({
     sortedRecords
   ]);
 
-  useEffect(() => {
-    allRecordsRef.current.scrollIntoView();
-  }, [page]);
-
-  const handleSortBy = async (recordFieldId, orders) => {
-    await handleSortByF(
-      recordFieldId,
-      orders,
-      resource,
-      records,
-      values,
-      dispatch
-    );
-  };
+  const handleSortBy = useCallback((recordFieldId, orders) => {
+    handleSortByF(recordFieldId, orders, resource, records, values, dispatch);
+  }, []);
 
   return (
     <div ref={allRecordsRef} className="table-responsive">

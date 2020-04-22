@@ -8,8 +8,6 @@ import {
   removeResource
 } from "../../actions/resourceActions";
 import ResourcesList from "../../components/Resources/ResourcesList";
-import { fetchFields } from "../../actions/fieldActions";
-import { fetchRecordFields } from "../../actions/recordFieldActions";
 import Resource from "../../components/Resources/Resource";
 import { FormCard } from "../../components/Cards/Cards";
 import ResourceDelete from "../../components/Resources/ResourceDelete";
@@ -17,23 +15,6 @@ import ConnectionsContainer from "../Connections/ConnectionsContainer";
 import Alert from "../../components/Alerts/Alert";
 
 class ResourcesContainer extends Component {
-  componentDidMount() {
-    const { resources, fetchFields, fetchRecordFields } = this.props;
-    resources.map(resource => {
-      fetchFields(resource.organizationId, resource.id);
-      return fetchRecordFields(resource.organizationId, resource.id);
-    });
-  }
-
-  componentDidUpdate(prevProps) {
-    const { resources, fetchFields, fetchRecordFields } = this.props;
-    if (prevProps.resources !== this.props.resources)
-      resources.map(resource => {
-        fetchFields(resource.organizationId, resource.id);
-        return fetchRecordFields(resource.organizationId, resource.id);
-      });
-  }
-
   render() {
     const {
       loaded,
@@ -136,11 +117,12 @@ class ResourcesContainer extends Component {
                 />
               )}
             />
-            <Route
-              path={`${match.path}/:formAlias`}
-              render={props => <Resource {...props} location={location} />}
-            />
-            />
+            {resources.length > 0 ? (
+              <Route
+                path={`${match.path}/:formAlias`}
+                render={props => <Resource {...props} location={location} />}
+              />
+            ) : null}
           </Switch>
         </div>
       </>
@@ -151,7 +133,5 @@ class ResourcesContainer extends Component {
 export default connect(null, {
   addResource,
   updateResource,
-  removeResource,
-  fetchFields,
-  fetchRecordFields
+  removeResource
 })(ResourcesContainer);

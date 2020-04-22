@@ -1,5 +1,7 @@
 class OrganizationSerializer
   include FastJsonapi::ObjectSerializer
+  set_key_transform :camel_lower
+  
   attributes :id, :name
   attribute :zoho_integration do |obj|
     if obj.zoho_integration

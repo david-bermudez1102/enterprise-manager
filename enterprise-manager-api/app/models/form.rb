@@ -52,4 +52,8 @@ class Form < ApplicationRecord
       end
     end
   end
+
+  def cache_key
+    "/forms/#{id}-#{updated_at}"
+  end
 end

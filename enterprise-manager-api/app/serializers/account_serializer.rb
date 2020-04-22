@@ -1,5 +1,6 @@
 class AccountSerializer
   include FastJsonapi::ObjectSerializer
+  set_key_transform :camel_lower
   attribute :id, :name, :email, :organization_id, :activated, :disabled, :locked
   attribute :type do |object|
     object.accountable_type

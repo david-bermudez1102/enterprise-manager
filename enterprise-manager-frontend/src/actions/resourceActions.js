@@ -1,3 +1,5 @@
+import { handleErrors } from "./handleErrors";
+
 const camelcaseKeys = require("camelcase-keys");
 
 export const addResource = resource => {
@@ -10,20 +12,21 @@ export const addResource = resource => {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-      body: JSON.stringify({ form: { ...resource } })
+      body: JSON.stringify({ form: resource })
     })
+      .catch(handleErrors)
       .then(response => response.json())
       .then(resource => {
         if (!resource.errors) {
           dispatch({
             type: "ADD_RESOURCE",
-            resource: camelcaseKeys(resource.data.attributes)
+            resource
           });
           dispatch({
             type: "ADD_MESSAGES",
             messages: resource.messages || ["Resource added successfully."]
           });
-          return camelcaseKeys(resource.data.attributes);
+          return resource;
         } else {
           dispatch({ type: "ADD_ERRORS", errors: resource.errors });
         }
@@ -36,9 +39,6 @@ export const fetchResources = organizationId => {
   return dispatch => {
     return fetch(`/api/v1/organizations/${organizationId}/forms`)
       .then(response => response.json())
-      .then(resources =>
-        resources.data.map(resource => camelcaseKeys(resource.attributes))
-      )
       .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }))
       .catch(console.log);
   };
@@ -55,7 +55,7 @@ export const updateResource = (resource, organizationId, resourceId) => {
           "Content-Type": "application/json",
           Accept: "application/json"
         },
-        body: JSON.stringify({ form: { ...resource } })
+        body: JSON.stringify({ form: resource })
       }
     )
       .then(response => response.json())
@@ -64,13 +64,13 @@ export const updateResource = (resource, organizationId, resourceId) => {
           dispatch({
             type: "UPDATE_RESOURCE",
             resourceId,
-            resource: camelcaseKeys(resource.data.attributes)
+            resource
           });
           dispatch({
             type: "ADD_MESSAGES",
             messages: resource.messages || ["Resource updated successfully."]
           });
-          return camelcaseKeys(resource.data.attributes);
+          return resource;
         } else {
           dispatch({ type: "ADD_ERRORS", errors: resource.errors });
         }
@@ -88,7 +88,7 @@ export const removeResource = (organizationId, resourceId) => {
       }
     )
       .then(response => response.json())
-      .then(resource => camelcaseKeys(resource))
+      .then(resource => resource)
       .then(resource =>
         resource.message
           ? dispatch({

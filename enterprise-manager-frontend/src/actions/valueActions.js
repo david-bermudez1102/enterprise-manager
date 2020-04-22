@@ -1,5 +1,4 @@
 import snakecaseKeys from "snakecase-keys";
-const camelcaseKeys = require("camelcase-keys");
 
 export const fetchValues = (organizationId, formId) => {
   return dispatch => {
@@ -7,7 +6,6 @@ export const fetchValues = (organizationId, formId) => {
       credentials: "include"
     })
       .then(response => response.json())
-      .then(values => values.data.map(value => camelcaseKeys(value.attributes)))
       .then(values => dispatch({ type: "FETCH_VALUES", values }));
   };
 };
@@ -35,7 +33,7 @@ export const addValue = value => {
         if (!value.errors) {
           dispatch({
             type: "ADD_VALUE",
-            value: camelcaseKeys(value.data.attributes)
+            value
           });
           dispatch({
             type: "ADD_MESSAGES",
@@ -68,7 +66,7 @@ export const updateValue = value => {
         if (!value.errors) {
           dispatch({
             type: "UPDATE_VALUE",
-            value: camelcaseKeys(value.data.attributes)
+            value
           });
           dispatch({
             type: "ADD_MESSAGES",

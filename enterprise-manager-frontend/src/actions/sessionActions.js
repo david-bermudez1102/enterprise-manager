@@ -1,5 +1,4 @@
 import { handleErrors } from "./handleErrors";
-const camelcaseKeys = require("camelcase-keys");
 
 export const addSession = data => {
   return dispatch => {
@@ -22,7 +21,7 @@ export const addSession = data => {
           dispatch({
             type: "ADD_SESSION",
             isLoggedIn: true,
-            currentUser: camelcaseKeys(account.data.attributes)
+            currentUser: account.data.attributes
           });
           return account;
         } else {
@@ -48,7 +47,7 @@ export const fetchSession = () => {
           ? dispatch({
               type: "ADD_SESSION",
               isLoggedIn: true,
-              currentUser: camelcaseKeys(account.data.attributes)
+              currentUser: account.data.attributes
             })
           : null
       )

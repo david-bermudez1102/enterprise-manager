@@ -1,5 +1,7 @@
 class ValueSerializer
   include FastJsonapi::ObjectSerializer
+  set_key_transform :camel_lower
+  
   attributes :id, :content, :record_field_id, :record_id, :form_id
   attribute :key_value do |value|
     if value.record_value

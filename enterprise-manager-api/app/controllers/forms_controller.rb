@@ -4,7 +4,8 @@ class FormsController < ApplicationController
   def create
     form = @organization.forms.build(form_params)
     if form.save
-      render json: FormSerializer.new(form, messages:["Resource was created successfully."])
+      serialized_data = FormSerializer.new(form).serializable_hash
+      render json: serialized_data[:data][:attributes]
     else
       render json: { errors: form.errors.full_messages}
     end
@@ -12,7 +13,10 @@ class FormsController < ApplicationController
 
   def index
     forms = @organization.forms.includes({zoho_connection: :integration}, {quickbooks_connection: :integration})
-    render json: FormSerializer.new(forms)
+    if stale?(forms, public:true)
+      serialized_data = FormSerializer.new(forms).serializable_hash
+      render json: serialized_data[:data].map { |form| form[:attributes] }
+    end
   end
 
   def show

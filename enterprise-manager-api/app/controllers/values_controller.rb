@@ -25,7 +25,9 @@ class ValuesController < ApplicationController
 
   def update
     if @value.update(value_params)
-      render json: ValueSerializer.new(@value, messages: ["Record saved successfully."])
+      serialized_data = ValueSerializer.new(@value).serializable_hash[:data]
+      serialized_data[:attributes][:messages] = ["Record saved successfully."]
+      render json: serialized_data[:attributes]
     else
       render json: { errors: @value.errors.full_messages }
     end

@@ -1,8 +1,12 @@
 import React from "react";
 import FieldTypeWrapper from "../../FieldTypeWrapper";
 import Icon from "@mdi/react";
+import { mdiCheckboxMultipleBlank } from "@mdi/js";
+import CombinedFieldOptions from "./CombinedFieldOptions";
 
-const CombinedFields = ({
+const CombinedField = ({
+  field,
+  resourceId,
   fieldType,
   handleChange,
   handleSelectableChange,
@@ -26,14 +30,19 @@ const CombinedFields = ({
         }}>
         Combined Fields
         <Icon
-          path={mdiNumeric}
+          path={mdiCheckboxMultipleBlank}
           title="Combined Fields"
           size={1}
           color="#07689F"
         />
       </FieldTypeWrapper>
+      <CombinedFieldOptions
+        resourceId={resourceId}
+        fieldType={fieldType}
+        handleChange={handleChange}
+      />
     </>
   );
 };
 
-export default CombinedFields;
+export default CombinedField;

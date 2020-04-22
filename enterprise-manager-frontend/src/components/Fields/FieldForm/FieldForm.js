@@ -8,6 +8,7 @@ import CheckBoxField from "./CheckBoxField";
 import TextAreaField from "./TextAreaField";
 import DateField from "./DateField";
 import NumericField from "./NumericField/index.js";
+import CombinedFields from "./CombinedField";
 
 export default class FieldForm extends Component {
   constructor(props) {
@@ -181,6 +182,16 @@ export default class FieldForm extends Component {
           />
           <DateField
             field={field}
+            fieldType={this.state.fieldType}
+            handleChange={this.handleChange}
+            handleSelectableChange={this.handleSelectableChange}
+            selectableResourceAttributes={
+              this.state.selectableResourceAttributes
+            }
+          />
+          <CombinedFields
+            field={field}
+            resourceId={resourceId}
             fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}

@@ -58,7 +58,7 @@ const SelectableInput = props => {
   }, [isListVisible, selectedOption]);
 
   useEffect(() => {
-    onChange(selectedValue);
+    if (selectedValue !== "") onChange(selectedValue);
   }, [onChange, selectedValue]);
 
   useEffect(() => {

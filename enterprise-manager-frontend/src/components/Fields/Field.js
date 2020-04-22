@@ -12,8 +12,6 @@ class Field extends Component {
     this.state = { id: "", value: "", checked: {}, showOptions: true };
   }
 
-  componentDidUpdate() {}
-
   handleChange = event => {
     event.persist();
     let option;

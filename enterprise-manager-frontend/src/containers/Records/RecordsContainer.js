@@ -11,7 +11,6 @@ import { fetchRecords } from "../../actions/recordActions";
 
 const RecordsContainer = props => {
   const { resource, match } = props;
-  const [loaded, setLoaded] = useState(false);
   const recordFields = useSelector(state =>
     state.recordFields.filter(f => f.formId === resource.id)
   );
@@ -33,15 +32,13 @@ const RecordsContainer = props => {
   const [listHeight, setListHeight] = useState();
   const [optionsHeight, setOptionsHeight] = useState();
 
-  /* */
-
   useEffect(() => {
-    const lastRecord = Math.max(
+    /* const lastRecord = Math.max(
       ...records.filter(record => record.formId === resource.id).map(r => r.id),
       0
-    ); // return the most recent record
+    ); // return the most recent record */
     dispatch(fetchRecords(resource.organizationId, resource.id));
-  }, [resource.organizationId, resource.id]);
+  }, [dispatch, resource.organizationId, resource.id]);
 
   return (
     <Switch>

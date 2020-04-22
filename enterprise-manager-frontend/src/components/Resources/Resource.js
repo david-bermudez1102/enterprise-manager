@@ -19,7 +19,7 @@ const Resource = ({ match, location }) => {
       dispatch(fetchFields(resource.organizationId, resource.id));
       dispatch(fetchRecordFields(resource.organizationId, resource.id));
     }
-  }, [resource.organizationId, resource.id]);
+  }, [resource, dispatch]);
 
   return resource ? (
     <>

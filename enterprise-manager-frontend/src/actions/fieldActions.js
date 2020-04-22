@@ -1,5 +1,4 @@
 import snakecaseKeys from "snakecase-keys";
-import camelcaseKeys from "camelcase-keys";
 
 export const addField = (field, organizationId) => {
   return dispatch => {

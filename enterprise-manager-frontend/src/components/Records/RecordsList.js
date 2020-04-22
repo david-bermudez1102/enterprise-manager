@@ -31,14 +31,11 @@ const RecordsList = ({
       : parseInt(queryParams.get("page"));
 
   const allRecordsRef = useRef();
-  useEffect(() => {
-    allRecordsRef.current.scrollIntoView();
-  }, [page]);
 
   useEffect(() => {
     if (sortedRecords.length < records.length)
       sortBy(0, records, values, false, resource, dispatch);
-  }, [sortedRecords, records.length]);
+  }, [dispatch, records, values, resource, sortedRecords]);
 
   const [paginationLimit, setPaginationLimit] = useState(pagination.limit);
 
@@ -73,7 +70,12 @@ const RecordsList = ({
 
   const handleSortBy = useCallback((recordFieldId, orders) => {
     handleSortByF(recordFieldId, orders, resource, records, values, dispatch);
+    // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    allRecordsRef.current.scrollIntoView();
+  }, [page]);
 
   return (
     <div ref={allRecordsRef} className="table-responsive">

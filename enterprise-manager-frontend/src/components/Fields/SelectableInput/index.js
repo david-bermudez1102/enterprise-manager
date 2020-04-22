@@ -54,11 +54,12 @@ const SelectableInput = props => {
   useEffect(() => {
     if (!isListVisible && selectedValue)
       setSelectableValue(selectedValue.value);
+    // eslint-disable-next-line
   }, [isListVisible, selectedOption]);
 
   useEffect(() => {
     onChange(selectedValue);
-  }, [selectedValue]);
+  }, [onChange, selectedValue]);
 
   useEffect(() => {
     if (optionRef.current)

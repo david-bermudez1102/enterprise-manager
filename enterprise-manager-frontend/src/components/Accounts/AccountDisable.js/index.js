@@ -9,6 +9,7 @@ const AccountDisable = ({ account, updateAccount, url }) => {
     updateAccount({ id: account.id, disabled: !account.disabled }).then(() =>
       setUpdated(true)
     );
+    // eslint-disable-next-line
   }, []);
 
   return updated ? <Redirect to={url} /> : null;

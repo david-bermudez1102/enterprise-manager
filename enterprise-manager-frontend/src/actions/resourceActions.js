@@ -1,7 +1,5 @@
 import { handleErrors } from "./handleErrors";
 
-const camelcaseKeys = require("camelcase-keys");
-
 export const addResource = resource => {
   const organizationsPath = `/api/v1/organizations/${resource.organization_id}`;
   return dispatch => {

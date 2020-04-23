@@ -5,6 +5,7 @@ import cuid from "cuid";
 import OptionBadge from "../OptionBadge";
 import { useSelector } from "react-redux";
 import Portal from "../../../Portal/Portal";
+import FieldFormat from "./FieldFormat";
 
 const CombineWith = ({ resourceId, handleChange, fieldType }) => {
   const fieldRef = useRef();
@@ -35,9 +36,11 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
     if (fieldType === "combined_field")
       handleChange({ combinedFields: items.map(i => i.id) });
     else handleChange({ combinedFields: undefined });
-  }, [items]);
+  }, [items, fieldType, handleChange]);
 
-  return (
+  console.log(items);
+
+  return fieldType === "combined_field" ? (
     <div className="col-12 order-last">
       {items.length > 0 ? (
         <div>
@@ -64,13 +67,14 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
             <SelectableInput
               name="combineWith"
               id="combine_with"
-              form="combineWith"
+              form={items.length > 1 ? "combineWith" : undefined}
               key={key}
               fieldRef={fieldRef}
               className="form-control"
               options={availableFields}
               onChange={handleFieldChange}
               placeholder="Select fields to combine"
+              autoFocus
               required>
               <label
                 className="form-control-placeholder"
@@ -81,7 +85,8 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
           </div>
         </>
       ) : null}
+      <FieldFormat items={items} />
     </div>
-  );
+  ) : null;
 };
 export default CombineWith;

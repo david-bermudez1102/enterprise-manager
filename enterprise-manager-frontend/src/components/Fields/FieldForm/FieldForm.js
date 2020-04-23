@@ -42,6 +42,13 @@ export default class FieldForm extends Component {
     });
   };
 
+  handleCombinedFields = state => {
+    this.setState({
+      ...this.state,
+      ...state
+    });
+  };
+
   handleSelectableChange = (
     selectableResourceAttributes,
     optionsAttributes
@@ -195,6 +202,7 @@ export default class FieldForm extends Component {
             fieldType={this.state.fieldType}
             handleChange={this.handleChange}
             handleSelectableChange={this.handleSelectableChange}
+            handleCombinedFields={this.handleCombinedFields}
             selectableResourceAttributes={
               this.state.selectableResourceAttributes
             }

@@ -4,6 +4,7 @@ import SelectableInput from "../../SelectableInput";
 import cuid from "cuid";
 import OptionBadge from "../OptionBadge";
 import { useSelector } from "react-redux";
+import Portal from "../../../Portal/Portal";
 
 const CombineWith = ({ resourceId, handleChange, fieldType }) => {
   const fieldRef = useRef();
@@ -31,6 +32,9 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
 
   useEffect(() => {
     setKey(cuid());
+    if (fieldType === "combined_field")
+      handleChange({ combinedFields: items.map(i => i.id) });
+    else handleChange({ combinedFields: undefined });
   }, [items]);
 
   return (
@@ -50,10 +54,17 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
       {availableFields.length > 0 ? (
         <>
           <hr />
+          <Portal>
+            <form
+              id="combineWith"
+              noValidate
+              onSubmit={e => e.preventDefault()}></form>
+          </Portal>
           <div className="form-group mb-0">
             <SelectableInput
               name="combineWith"
               id="combine_with"
+              form="combineWith"
               key={key}
               fieldRef={fieldRef}
               className="form-control"

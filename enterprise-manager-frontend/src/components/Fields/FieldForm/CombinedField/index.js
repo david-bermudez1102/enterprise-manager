@@ -10,14 +10,15 @@ const CombinedField = ({
   fieldType,
   handleChange,
   handleSelectableChange,
+  handleCombinedFields,
   selectableResourceAttributes
 }) => {
   return (
     <>
       <FieldTypeWrapper
-        id="combined_fields"
+        id="combined_field"
         fieldType={fieldType}
-        value={"combined_fields"}
+        value={"combined_field"}
         onChange={event => {
           handleChange(event);
           handleSelectableChange(
@@ -39,7 +40,7 @@ const CombinedField = ({
       <CombinedFieldOptions
         resourceId={resourceId}
         fieldType={fieldType}
-        handleChange={handleChange}
+        handleChange={handleCombinedFields}
       />
     </>
   );

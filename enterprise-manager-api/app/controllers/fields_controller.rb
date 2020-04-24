@@ -4,7 +4,9 @@ class FieldsController < ApplicationController
   def create
     field = @form.fields.build(field_params)
     if field.save
-      render(json: FieldSerializer.new(field, messages: ["Field added with success."]))
+      serialized_data = FieldSerializer.new(field).serializable_hash[:data][:attributes]
+      serialized_data[:messages] = ["Field added with success."]
+      render json: serialized_data
     else
       render json: { errors: field.errors.full_messages }
     end
@@ -20,13 +22,15 @@ class FieldsController < ApplicationController
 
   def show
     field = @form.fields.includes({:record_key => :key_values}, :options).find_by(id: params[:id])
-    render json: FieldSerializer.new(field)
+    render json: FieldSerializer.new(field)[:data][:attributes]
   end
 
   def update
     field = @form.fields.find_by(id: params[:id])
     if field.update(field_params)
-      render json: FieldSerializer.new(field, messages: ["Field updated with success."])
+      serialized_data = FieldSerializer.new(field).serializable_hash[:data][:attributes]
+      serialized_data[:messages] = ["Field updated with success."]
+      render json: serialized_data
     else
       render json: { errors: field.errors.full_messages }
     end
@@ -47,6 +51,7 @@ class FieldsController < ApplicationController
       :is_required,
       :default_value,
       :accepts_decimals,
+      :field_format,
       {:combined_fields => []},
       selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
       options_attributes: [:value],

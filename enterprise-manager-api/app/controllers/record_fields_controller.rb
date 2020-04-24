@@ -3,7 +3,8 @@ class RecordFieldsController < ApplicationController
   def create
     record_field = @form.record_fields.build(record_field_params)
     if record_field.save
-      render json: RecordFieldSerializer.new(record_field)
+      serialized_data = RecordFieldSerializer.new(record_field).serializable_hash
+      render json: serialized_data[:data][:attributes]
     else
       render json: { errors: record_field.errors.full_messages }
     end
@@ -19,7 +20,12 @@ class RecordFieldsController < ApplicationController
 
   def update
     record_field = @form.record_fields.includes({:field => :record_key}, :options).find_by(id: params[:id])
-    render json: RecordFieldSerializer.new(record_field) if record_field.update(record_field_params)
+    if record_field.update(record_field_params)
+      serialized_data = RecordFieldSerializer.new(record_field).serializable_hash
+      render json: serialized_data[:data][:attributes]
+    else
+      render json: { errors: record_field.errors.full_messages }
+    end
   end
 
   def destroy
@@ -38,6 +44,7 @@ class RecordFieldsController < ApplicationController
       :is_required,
       :default_value,
       :accepts_decimals,
+      :field_format,
       {:combined_fields => []},
       selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
       options_attributes: [:value]

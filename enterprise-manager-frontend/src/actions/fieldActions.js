@@ -24,7 +24,7 @@ export const addField = (field, organizationId) => {
             type: "ADD_MESSAGES",
             messages: f.messages || ["Field added successfully."]
           });
-          return { ...field, fieldId: f.data.id };
+          return { ...field, fieldId: f.id };
         } else {
           dispatch({ type: "ADD_ERRORS", errors: f.errors });
         }

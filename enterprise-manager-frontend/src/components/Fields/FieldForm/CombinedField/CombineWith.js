@@ -6,6 +6,7 @@ import OptionBadge from "../OptionBadge";
 import { useSelector } from "react-redux";
 import Portal from "../../../Portal/Portal";
 import FieldFormat from "./FieldFormat";
+import DraggableOption from "../OptionBadge/DraggableOption";
 
 const CombineWith = ({ resourceId, handleChange, fieldType }) => {
   const fieldRef = useRef();
@@ -35,23 +36,32 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
     setKey(cuid());
     if (fieldType === "combined_field")
       handleChange({ combinedFields: items.map(i => i.id) });
-    else handleChange({ combinedFields: undefined });
+    else handleChange({ combinedFields: undefined, fieldFormat: undefined });
   }, [items, fieldType, handleChange]);
 
-  console.log(items);
+  const handleSwapOptions = options => {
+    setItems(options.map(option => items[option]));
+  };
 
   return fieldType === "combined_field" ? (
     <div className="col-12 order-last">
       {items.length > 0 ? (
         <div>
           <hr />
-          {items.map(item => (
-            <OptionBadge
-              key={cuid()}
-              value={item.value}
-              onClick={() => removeItem(item.id)}
-            />
-          ))}
+          <small className="form-text pb-2">Fields to combine:</small>
+          <DraggableOption items={items} onDragEnd={handleSwapOptions}>
+            {items.map(item => (
+              <OptionBadge
+                key={cuid()}
+                value={item.value}
+                handleClose={() => removeItem(item.id)}
+              />
+            ))}
+          </DraggableOption>
+          <small className="form-text text-muted">
+            You can rearrange the order in which the fields will be combined by
+            dragging them to the desired position.
+          </small>
         </div>
       ) : null}
       {availableFields.length > 0 ? (
@@ -83,9 +93,18 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
               </label>
             </SelectableInput>
           </div>
+          <small className="form-text text-muted">
+            Combined fields require at least 2 fields
+          </small>
         </>
       ) : null}
-      <FieldFormat items={items} />
+      {items.length > 1 ? (
+        <FieldFormat
+          items={items}
+          handleChange={handleChange}
+          fieldType={fieldType}
+        />
+      ) : null}
     </div>
   ) : null;
 };

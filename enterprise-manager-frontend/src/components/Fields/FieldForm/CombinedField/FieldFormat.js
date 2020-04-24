@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import cuid from "cuid";
 
-const FieldFormat = ({ items }) => {
+const FieldFormat = ({ items, handleChange }) => {
   const itemsValues = items.map(item => item.value);
   const allSpaced = itemsValues.join(" ");
   const withUnderscore = itemsValues.join("_").replace(/[ ]+/g, "_");
@@ -8,78 +9,86 @@ const FieldFormat = ({ items }) => {
 
   const formatOptions = [
     {
-      value: "allUnderscore",
+      value: "all_underscored",
       label: withUnderscore,
       helper: "All values separated with underscore"
     },
     {
-      value: "allDashes",
+      value: "all_dashed",
       label: withDashes,
       helper: "All values separated with dashes"
     },
     {
-      value: "dashesUpperCase",
+      value: "dashed_upper",
       label: withDashes.toUpperCase(),
       helper: "All values separated with dashes and upper case"
     },
     {
-      value: "underscoreUpperCase",
+      value: "underscored_upper",
       label: withUnderscore.toUpperCase(),
       helper: "All values separated with underscore and upper case"
     },
     {
-      value: "dashesLowerCase",
+      value: "dashed_lower",
       label: withDashes.toLowerCase(),
       helper: "All values separated with dashes and lower case"
     },
     {
-      value: "underscoreLowerCase",
+      value: "underscored_lower",
       label: withUnderscore.toLowerCase(),
       helper: "All values separated with underscore and lower case"
     },
     {
-      value: "allSpacedUpperCase",
+      value: "all_spaced_upper",
       label: allSpaced.toUpperCase(),
       helper: "All values separated with a spaces and upper case"
     },
     {
-      value: "allSpacedLower",
+      value: "all_spaced_lower",
       label: allSpaced.toLowerCase(),
       helper: "All values separated with spaces and lower case"
     },
     {
-      value: "noFormat",
+      value: "no_format",
       label: allSpaced,
       helper: "No formatting. All values are saved separated by space only"
     }
   ];
+  const [formatSelected, setFormatSelected] = useState("no_format");
+
+  const handleClick = state => {
+    setFormatSelected(state.fieldFormat);
+    handleChange(state);
+  };
 
   return (
     <>
       <hr />
-      <div className="form-group mb-0 w-100">
-        <legend>Choose Format:</legend>
-        {formatOptions.map(o => (
-          <div className="form-check w-100">
-            <input
-              className="form-check-input"
-              type="radio"
-              value={o.value}
-              id={o.value}
-            />
-            <label
-              className="form-check-label d-inline-block text-nowrap"
-              htmlFor={o.value}
-              style={{ maxWidth: "100%" }}>
-              <div className="d-inline-block w-auto text-nowrap float-left">
-                {o.helper}
+      <div className="form-group mb-0 w-1000" tabIndex={0}>
+        <legend className="col-form-label">Choose Format:</legend>
+        <div
+          className="list-group list-group-flush w-100 scroller"
+          style={{ maxHeight: "100px" }}>
+          {formatOptions.map(o => (
+            <div
+              key={cuid()}
+              style={{ cursor: "pointer" }}
+              className={`w-100 list-group-item list-group-item-action py-1.5 px-2 ${
+                formatSelected === o.value ? "active" : ""
+              }`}
+              onClick={() => handleClick({ fieldFormat: o.value })}>
+              <div
+                className="d-block w-auto small float-left text-truncate"
+                style={{ maxWidth: "50%" }}
+                title={o.label}>
+                {o.label}
               </div>
-              <div className="d-block text-muted pl-1 small text-truncate">
-                ({o.label})
+              <div className="pl-1 d-block text-truncate" title={o.helper}>
+                ({o.helper})
               </div>
-            </label>
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     </>
   );

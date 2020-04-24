@@ -8,12 +8,12 @@ const DraggableOption = ({ children, onDragEnd }) => {
     setArr(Array.from({ length: children.length }, (k, i) => i));
   }, [children]);
 
-  const handleDragStart = id => {
+  const handleDragStart = (e, id) => {
     setBeingDraggedBy(id);
     setDragging(true);
   };
 
-  const handleMouseUp = () => {
+  const handleMouseOut = () => {
     setDragging(false);
     setBeingDraggedBy(null);
   };
@@ -40,16 +40,15 @@ const DraggableOption = ({ children, onDragEnd }) => {
       tmp.splice(beingDraggedBy, 1);
       tmp.splice(id, 0, beingDraggedBy);
       setBeingDraggedBy(id);
-      setArr(tmp);
+      onDragEnd(tmp);
     }
   };
 
-  console.log(dragging);
   return children.map((child, i) =>
     React.cloneElement(child, {
       onDrop: handleDrop,
-      onDragStart: () => handleDragStart(i),
-      onMouseUp: handleMouseUp,
+      onDragStart: e => handleDragStart(e, i),
+      onMouseOut: dragging ? handleMouseOut : undefined,
       onDragEnd: handleDragEnd,
       onDragEnter: dragging ? () => handleDragEnter(i) : undefined,
       draggable: true,

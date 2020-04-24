@@ -1,7 +1,7 @@
 import React from "react";
 
 const OptionBadge = props => {
-  const { value, handleClose, style, ...newProps } = props;
+  const { value, handleClose, onDragEnter, style, ...newProps } = props;
   return (
     <span
       className="badge badge-primary badge-pill mr-2"
@@ -12,7 +12,9 @@ const OptionBadge = props => {
         ...style
       }}
       {...newProps}>
-      <span className="float-left h-100">{value}</span>
+      <span className="float-left h-100" onDragEnter={onDragEnter}>
+        {value}
+      </span>
 
       <i
         className="fas fa-minus-square pl-2 float-right"

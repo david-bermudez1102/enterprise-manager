@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_22_230601) do
+ActiveRecord::Schema.define(version: 2020_04_24_211527) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 2020_04_22_230601) do
     t.string "default_value"
     t.boolean "accepts_decimals", default: false, null: false
     t.text "combined_fields", default: "--- []\n"
+    t.integer "field_format"
     t.index ["form_id"], name: "index_fields_on_form_id"
   end
 
@@ -204,6 +205,7 @@ ActiveRecord::Schema.define(version: 2020_04_22_230601) do
     t.string "default_value"
     t.boolean "accepts_decimals", default: false, null: false
     t.text "combined_fields", default: "--- []\n"
+    t.integer "field_format"
     t.index ["field_id"], name: "index_record_fields_on_field_id"
     t.index ["form_id"], name: "index_record_fields_on_form_id"
   end

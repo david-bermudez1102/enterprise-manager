@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import TextField from "./TextField";
-import PasswordField from "./PasswordField";
-import SelectableField from "./SelectableField";
-import RecordKeyField from "./RecordKeyField";
-import RadioField from "./RadioField";
-import CheckBoxField from "./CheckBoxField";
-import TextAreaField from "./TextAreaField";
-import DateField from "./DateField";
-import NumericField from "./NumericField/index.js";
-import CombinedFields from "./CombinedField";
 import { addField } from "../../../actions/fieldActions";
 import { addRecordField } from "../../../actions/recordFieldActions";
 import { connect } from "react-redux";
+import RecordKeyField from "./RecordKeyField";
+import TextField from "./TextField";
+import NumericField from "./NumericField";
+import TextareaField from "./TextareaField";
+import PasswordField from "./PasswordField";
+import SelectableField from "./SelectableField";
+import RadioField from "./RadioField";
+import CheckBoxField from "./CheckBoxField";
+import DateField from "./DateField";
+import CombinedField from "./CombinedField";
 
 class FieldForm extends Component {
   constructor(props) {
@@ -143,7 +143,7 @@ class FieldForm extends Component {
               this.state.selectableResourceAttributes
             }
           />
-          <TextAreaField
+          <TextareaField
             field={field}
             fieldType={this.state.fieldType}
             handleChange={this.handleChange}
@@ -199,7 +199,7 @@ class FieldForm extends Component {
               this.state.selectableResourceAttributes
             }
           />
-          <CombinedFields
+          <CombinedField
             field={field}
             resourceId={resourceId}
             fieldType={this.state.fieldType}

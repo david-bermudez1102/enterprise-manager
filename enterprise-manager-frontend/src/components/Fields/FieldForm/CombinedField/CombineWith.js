@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectableInput from "../../SelectableInput";
 import cuid from "cuid";
 import OptionBadge from "../OptionBadge";
@@ -8,7 +8,6 @@ import FieldFormat from "./FieldFormat";
 import DraggableOption from "../OptionBadge/DraggableOption";
 
 const CombineWith = ({ resourceId, handleChange, fieldType }) => {
-  const fieldRef = useRef();
   const [items, setItems] = useState([]);
   const [key, setKey] = useState(cuid());
 
@@ -78,7 +77,6 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
               id="combine_with"
               form={items.length > 1 ? "combineWith" : undefined}
               key={key}
-              fieldRef={fieldRef}
               className="form-control"
               options={availableFields}
               onChange={handleFieldChange}

@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "@mdi/react";
 import { mdiTextarea } from "@mdi/js";
 
-const TextAreaField = ({
+const TextareaField = ({
   fieldType,
   handleChange,
   handleSelectableChange,
@@ -33,7 +33,7 @@ const TextAreaField = ({
           Text Area
           <Icon
             path={mdiTextarea}
-            title="Text Area Field"
+            title="Textarea Field"
             size={1}
             color="#07689F"
           />
@@ -42,4 +42,4 @@ const TextAreaField = ({
     </div>
   );
 };
-export default TextAreaField;
+export default TextareaField;

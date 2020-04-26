@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import SelectableOptions from "./SelectableOptions";
 import Icon from "@mdi/react";
 import { mdiCheckboxMultipleMarkedCircleOutline } from "@mdi/js";
+import SelectableOptions from "../SelectableField/SelectableOptions";
 
 class RadioField extends Component {
   handleChange = event => {

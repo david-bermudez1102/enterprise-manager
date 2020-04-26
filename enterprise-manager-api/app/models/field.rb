@@ -1,5 +1,5 @@
 class Field < ApplicationRecord
-  belongs_to :form
+  belongs_to :form, touch: true
   enum field_type: %w[text password selectable checkbox radio textarea date_field numeric_field combined_field key_field]
   enum field_format: %w[all_underscored all_dashed dashed_upper underscored_upper dashed_lower underscored_lower all_spaced_upper all_spaced_lower no_format] # Only required when field is combined
   

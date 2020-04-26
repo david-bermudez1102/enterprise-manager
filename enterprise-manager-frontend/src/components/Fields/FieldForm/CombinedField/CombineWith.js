@@ -1,5 +1,4 @@
-import React, { useRef, useEffect } from "react";
-import { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import SelectableInput from "../../SelectableInput";
 import cuid from "cuid";
 import OptionBadge from "../OptionBadge";
@@ -14,7 +13,7 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
   const [key, setKey] = useState(cuid());
 
   const availableFields = useSelector(state =>
-    state.fields
+    state.recordFields
       .filter(
         field =>
           field.formId === resourceId &&

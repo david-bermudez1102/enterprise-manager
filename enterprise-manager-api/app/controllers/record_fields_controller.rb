@@ -21,8 +21,8 @@ class RecordFieldsController < ApplicationController
   def update
     record_field = @form.record_fields.includes({:field => :record_key}, :options).find_by(id: params[:id])
     if record_field.update(record_field_params)
-      serialized_data = RecordFieldSerializer.new(record_field).serializable_hash
-      render json: serialized_data[:data][:attributes]
+      serialized_data = RecordFieldSerializer.new(record_field).serializable_hash[:data][:attributes]
+      render json: serialized_data
     else
       render json: { errors: record_field.errors.full_messages }
     end

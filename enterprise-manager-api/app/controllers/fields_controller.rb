@@ -22,7 +22,8 @@ class FieldsController < ApplicationController
 
   def show
     field = @form.fields.includes({:record_key => :key_values}, :options).find_by(id: params[:id])
-    render json: FieldSerializer.new(field)[:data][:attributes]
+    serialized_data = FieldSerializer.new(field).serializable_hash[:data][:attributes]
+    render json: serialized_data
   end
 
   def update

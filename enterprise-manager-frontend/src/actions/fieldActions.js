@@ -1,4 +1,5 @@
 import snakecaseKeys from "snakecase-keys";
+import cuid from "cuid";
 
 export const addField = (field, organizationId) => {
   return dispatch => {
@@ -40,7 +41,7 @@ export const fetchFields = (organizationId, formId) => {
       .then(fields =>
         dispatch({
           type: "FETCH_FIELDS",
-          fields,
+          fields: fields.map(field => ({ key: cuid(), ...field })),
           formId
         })
       );
@@ -76,7 +77,7 @@ export const updateField = (field, organizationId, fieldId) => {
           dispatch({ type: "ADD_ERRORS", errors: field.errors });
         }
       })
-      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp.errors }));
+      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }));
   };
 };
 
@@ -89,7 +90,6 @@ export const removeField = (organizationId, formId, fieldId) => {
       }
     )
       .then(response => response.json())
-      .then(field => field)
       .then(field =>
         field.message
           ? dispatch({ type: "REMOVE_FIELD", fieldId, status: "deleted" })

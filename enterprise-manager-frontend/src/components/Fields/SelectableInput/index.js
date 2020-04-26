@@ -2,13 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import cuid from "cuid";
 
 const SelectableInput = props => {
+  const { options, children, onChange, ...newProps } = props;
   const [ops, setOps] = useState([]);
   const [selectableValue, setSelectableValue] = useState("");
   const [isListVisible, setIsListVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
 
-  const { options, fieldRef, children, onChange, ...newProps } = props;
   const listRef = useRef();
   const optionRef = useRef();
 
@@ -124,7 +124,6 @@ const SelectableInput = props => {
           setIsListVisible(true);
         }}
         autoComplete="off"
-        ref={fieldRef}
       />
       {children}
       <div

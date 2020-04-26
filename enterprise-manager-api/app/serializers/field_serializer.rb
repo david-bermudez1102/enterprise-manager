@@ -5,6 +5,8 @@ class FieldSerializer
   cache_options enabled: true, cache_length: 12.hours
   attributes :id, :name, :field_type, :form_id, :record_key, :field_alias, :is_required, :default_value
   attribute :accepts_decimals, if: Proc.new { |field| field.field_type == "numeric_field" }
+  attribute :combined_fields, if: Proc.new { |field| field.field_type == "combined_field" }
+  attribute :field_format, if: Proc.new { |field| field.field_type == "combined_field" }
   
   attribute :key_values do  |field|
     if field.record_key 

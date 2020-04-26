@@ -1,9 +1,11 @@
 import { handleErrors } from "./handleErrors";
 import worker from "workerize-loader!../workers/worker"; // eslint-disable-line import/no-webpack-loader-syntax
+import snakecaseKeys from "snakecase-keys";
 
 const workerInstance = worker();
 
 export const addRecord = (record, organizationId, formId) => {
+  console.log(record);
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
     fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/records`, {
@@ -12,7 +14,7 @@ export const addRecord = (record, organizationId, formId) => {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-      body: JSON.stringify({ record })
+      body: JSON.stringify(snakecaseKeys({ record }))
     })
       .then(handleErrors)
       .then(response => response.json())

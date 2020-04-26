@@ -10,7 +10,9 @@ const Resource = ({ match, location }) => {
     s.resources.find(resource => resource.formAlias === match.params.formAlias)
   );
 
-  const fields = useSelector(s => s.fields);
+  const fields = useSelector(s =>
+    s.fields.filter(f => f.formId === resource.id)
+  );
 
   const dispatch = useDispatch();
 

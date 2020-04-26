@@ -19,7 +19,7 @@ export const addField = (field, organizationId) => {
         if (!f.errors) {
           dispatch({
             type: "ADD_FIELD",
-            field: f
+            field: { key: cuid(), ...f }
           });
           dispatch({
             type: "ADD_MESSAGES",

@@ -18,7 +18,7 @@ const RadioField = props => {
   };
 
   return (
-    <fieldset>
+    <fieldset className="form-control border-0 mt-4">
       {field.options.map(option => (
         <div className="form-check form-check-inline" key={cuid()}>
           <input
@@ -33,7 +33,7 @@ const RadioField = props => {
           />
           <label
             htmlFor={`radio_field_${option.id}`}
-            className="form-check-label order-first">
+            className="form-check-label">
             {option.value}
           </label>
         </div>

@@ -2,8 +2,7 @@ import React from "react";
 import FieldForm from "../../components/Fields/FieldForm/FieldForm";
 import { Route, Switch } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addField, updateField, removeField } from "../../actions/fieldActions";
-import { addRecordField } from "../../actions/recordFieldActions";
+import { updateField, removeField } from "../../actions/fieldActions";
 import FieldDelete from "../../components/Fields/FieldDelete";
 import { FormCard } from "../../components/Cards/Cards";
 import { plural } from "pluralize";
@@ -42,8 +41,6 @@ const FieldsContainer = props => {
                   </h2>
                 }>
                 <FieldForm
-                  addField={() => dispatch(addField)}
-                  addRecordField={addRecordField}
                   organizationId={organizationId}
                   resourceId={resource.id}
                 />

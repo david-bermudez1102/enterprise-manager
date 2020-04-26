@@ -9,8 +9,11 @@ import TextAreaField from "./TextAreaField";
 import DateField from "./DateField";
 import NumericField from "./NumericField/index.js";
 import CombinedFields from "./CombinedField";
+import { addField } from "../../../actions/fieldActions";
+import { addRecordField } from "../../../actions/recordFieldActions";
+import { connect } from "react-redux";
 
-export default class FieldForm extends Component {
+class FieldForm extends Component {
   constructor(props) {
     super(props);
     const { field, resourceId } = props;
@@ -232,3 +235,4 @@ export default class FieldForm extends Component {
     );
   }
 }
+export default connect(null, { addField, addRecordField })(FieldForm);

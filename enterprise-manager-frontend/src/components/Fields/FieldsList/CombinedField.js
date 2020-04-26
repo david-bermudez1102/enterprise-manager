@@ -2,15 +2,24 @@ import React from "react";
 import FieldValueGenerator from "../FieldValueGenerator";
 
 const CombinedField = props => {
-  const { field, ...newProps } = props;
-  return (
+  const { field, onChange, ...newProps } = props;
+
+  const handleChange = e => {
+    onChange({
+      recordFieldId: props.name,
+      content: e.target.value
+    });
+  };
+
+  return field.combinedFields.length > 1 ? (
     <FieldValueGenerator
       {...newProps}
+      onChange={handleChange}
       combinedFields={field.combinedFields}
       fieldFormat={field.fieldFormat}
-      readOnly
+      required
     />
-  );
+  ) : null;
 };
 
 export default CombinedField;

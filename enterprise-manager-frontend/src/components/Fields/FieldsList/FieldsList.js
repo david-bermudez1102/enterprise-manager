@@ -87,6 +87,9 @@ const FieldsList = props => {
                     key={field.key}
                     field={field}
                     recordField={recordField}
+                    state={
+                      field.fieldType === "combined_field" ? state : undefined
+                    }
                     match={match}
                     handleChange={handleChange}
                   />

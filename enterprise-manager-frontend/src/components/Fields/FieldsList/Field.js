@@ -16,12 +16,10 @@ const { formControl } = {
 const Field = props => {
   const { match, field, recordField } = props;
 
-  const fieldName = () => {
-    return field.name
-      .split("_")
-      .map(word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
-      .join(" ");
-  };
+  const fieldName = field.name
+    .split("_")
+    .map(word => word.charAt(0).toUpperCase() + word.substr(1).toLowerCase())
+    .join(" ");
 
   let inputField;
   const inputAttributes = {
@@ -29,7 +27,7 @@ const Field = props => {
     name: recordField.id,
     id: field.fieldAlias,
     type: field.fieldType,
-    placeholder: `Enter ${fieldName()}`,
+    placeholder: `Enter ${fieldName}`,
     onChange: props.handleChange,
     required: true,
     field
@@ -37,7 +35,7 @@ const Field = props => {
   switch (field.fieldType) {
     case "selectable":
       inputField = (
-        <SelectableField {...inputAttributes} fieldName={fieldName()} />
+        <SelectableField {...inputAttributes} fieldName={fieldName} />
       );
       break;
     case "textarea":
@@ -58,19 +56,15 @@ const Field = props => {
       inputField = <CheckboxField {...inputAttributes} />;
       break;
     case "combined_field":
-      inputField = <CombinedField {...inputAttributes} />;
+      inputField = <CombinedField {...inputAttributes} state={props.state} />;
       break;
     default:
       inputField = <TextField {...inputAttributes} />;
       break;
   }
   const isLabelable =
-    field.fieldType !== "text" &&
-    field.fieldType !== "selectable" &&
-    field.fieldType !== "textarea" &&
-    field.fieldType !== "date_field" &&
-    field.fieldType !== "numeric_field" &&
-    field.fieldType !== "combined_field"; // Used to check if label should be inside field.
+    field.fieldType === "checkbox" && field.fieldType === "radio";
+  // Used to check if label should be inside field.
   return (
     <>
       {field.fieldType !== "key_field" ? (
@@ -96,7 +90,7 @@ const Field = props => {
                   }
                 : undefined
             }>
-            {fieldName()}
+            {fieldName}
           </label>
         ) : null}
       </div>

@@ -41,6 +41,7 @@ const FieldsContainer = props => {
                   </h2>
                 }>
                 <FieldForm
+                  field={{}}
                   organizationId={organizationId}
                   resourceId={resource.id}
                 />

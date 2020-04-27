@@ -13,8 +13,8 @@ class RecordFieldSerializer
   attribute :record_key do |record_field|
     record_field.field ? record_field.field.record_key : nil
   end
-  
-  attribute :selectable_resource, if: proc { |field|
+
+  attribute :selectable_resource_attributes, if: proc { |field|
                           field.field_type == "selectable"
                         } do |object|
     if object.selectable_resource

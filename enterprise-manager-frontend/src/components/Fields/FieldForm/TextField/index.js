@@ -2,12 +2,13 @@ import React from "react";
 import Icon from "@mdi/react";
 import { mdiTextbox } from "@mdi/js";
 
-const TextField = ({
-  fieldType,
-  handleChange,
-  handleSelectableChange,
-  selectableResourceAttributes
-}) => {
+const TextField = ({ fieldType, onChange }) => {
+  const handleChange = e => {
+    onChange({
+      fieldType: e.target.value
+    });
+  };
+
   return (
     <div className="col-auto order-first my-auto">
       <div className="form-check form-check-inline">
@@ -17,20 +18,11 @@ const TextField = ({
           name="fieldType"
           id="text_field"
           value="text"
-          onChange={event => {
-            handleChange(event);
-            handleSelectableChange(
-              {
-                ...selectableResourceAttributes,
-                _destroy: 1
-              },
-              []
-            );
-          }}
+          onChange={handleChange}
           checked={fieldType === "text" ? true : false}
         />
         <label htmlFor="text_field" className="form-check-label">
-          Text Field{" "}
+          Text Field
           <Icon path={mdiTextbox} title="Text Field" size={1} color="#07689F" />
         </label>
       </div>

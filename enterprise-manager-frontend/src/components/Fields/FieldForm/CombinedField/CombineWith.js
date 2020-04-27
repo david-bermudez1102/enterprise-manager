@@ -34,7 +34,6 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
     setKey(cuid());
     if (fieldType === "combined_field")
       handleChange({ combinedFields: items.map(i => i.id) });
-    else handleChange({ combinedFields: undefined, fieldFormat: undefined });
   }, [items, fieldType, handleChange]);
 
   const handleSwapOptions = options => {

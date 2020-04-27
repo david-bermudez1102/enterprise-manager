@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SelectableChoice from "./SelectableChoice";
 import Icon from "@mdi/react";
 import { mdiSelectPlace } from "@mdi/js";
 
-const SelectableField = ({
-  field,
-  fieldType,
-  handleChange,
-  handleSelectableChange,
-  selectableResourceAttributes
-}) => {
+const SelectableField = props => {
+  const { field, fieldType } = props;
+  const [state, setState] = useState(null);
+
+  const handleChange = e => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
+
+  const handleSelectable = newState => {
+    setState({ ...state, ...newState });
+  };
+
+  useEffect(() => {
+    if (state) props.onChange(state);
+  }, [state]);
+
   return (
     <>
       <div className="col-auto order-first my-auto">
@@ -39,9 +48,8 @@ const SelectableField = ({
           <SelectableChoice
             field={field}
             fieldType={fieldType}
-            handleSelectableChange={handleSelectableChange}
             handleChange={handleChange}
-            selectableResourceAttributes={selectableResourceAttributes}
+            handleSelectable={handleSelectable}
           />
         </div>
       ) : null}

@@ -1,46 +1,51 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import cuid from "cuid";
 
-class SelectableResourcesOptions extends Component {
-  constructor(props) {
-    super(props);
-    const { resourceFieldId } = props;
-    this.state = { value: resourceFieldId };
-  }
+const SelectableResourcesOptions = props => {
+  const { fields, selected, resourceFieldId } = props;
 
-  handleChange = event => {
-    event.persist();
-    this.setState({ value: [event.target.value] });
-    this.props.handleChange(event);
+  const mounted = useRef();
+
+  const [state, setState] = useState({ value: resourceFieldId });
+
+  const handleChange = e => {
+    e.persist();
+    setState({ value: [e.target.value] });
+    props.handleChange(e);
   };
 
-  render() {
-    const { fields, selected } = this.props;
-    return fields.some(field => field.formId === parseInt(selected)) ? (
-      <div className="form-group">
-        <hr />
-        <label htmlFor="selectable_resource_options">Column:</label>
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      setState({ value: "" });
+    }
+  }, [selected]);
 
-        <select
-          name="resourceFieldId"
-          onChange={this.handleChange}
-          value={this.state.value}
-          className="form-control"
-          id="selectable_resource_options">
-          <option value="" key={cuid()}>
-            Select
-          </option>
-          {fields.map(field =>
-            field.formId === parseInt(selected) ? (
-              <option value={field.id} key={cuid()}>
-                {field.name}
-              </option>
-            ) : null
-          )}
-        </select>
-      </div>
-    ) : null;
-  }
-}
+  return fields.some(field => field.formId === parseInt(selected)) ? (
+    <div className="form-group">
+      <hr />
+      <label htmlFor="selectable_resource_options">Column:</label>
+
+      <select
+        name="resourceFieldId"
+        onChange={handleChange}
+        value={state.value}
+        className="form-control"
+        id="selectable_resource_options">
+        <option value="" key={cuid()}>
+          Select
+        </option>
+        {fields.map(field =>
+          field.formId === parseInt(selected) ? (
+            <option value={field.id} key={cuid()}>
+              {field.name}
+            </option>
+          ) : null
+        )}
+      </select>
+    </div>
+  ) : null;
+};
 
 export default SelectableResourcesOptions;

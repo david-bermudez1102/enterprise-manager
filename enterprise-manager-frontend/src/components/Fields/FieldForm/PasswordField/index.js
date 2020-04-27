@@ -2,12 +2,12 @@ import React from "react";
 import Icon from "@mdi/react";
 import { mdiTextboxPassword } from "@mdi/js";
 
-const PasswordField = ({
-  fieldType,
-  handleChange,
-  handleSelectableChange,
-  selectableResourceAttributes
-}) => {
+const PasswordField = ({ fieldType, onChange }) => {
+  const handleChange = e => {
+    onChange({
+      fieldType: e.target.value
+    });
+  };
   return (
     <div className="col-auto order-first my-auto">
       <div className="form-check form-check-inline">
@@ -17,16 +17,7 @@ const PasswordField = ({
           name="fieldType"
           id="password_field"
           value="password"
-          onChange={event => {
-            handleChange(event);
-            handleSelectableChange(
-              {
-                ...selectableResourceAttributes,
-                _destroy: 1
-              },
-              []
-            );
-          }}
+          onChange={handleChange}
           checked={fieldType === "password" ? true : false}
         />
         <label htmlFor="password_field" className="form-check-label">

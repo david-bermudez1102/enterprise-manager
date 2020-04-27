@@ -2,12 +2,12 @@ import React from "react";
 import Icon from "@mdi/react";
 import { mdiCalendarRange } from "@mdi/js";
 
-const DateField = ({
-  fieldType,
-  handleChange,
-  handleSelectableChange,
-  selectableResourceAttributes
-}) => {
+const DateField = ({ fieldType, onChange }) => {
+  const handleChange = e => {
+    onChange({
+      fieldType: e.target.value
+    });
+  };
   return (
     <div className="col-auto order-first my-auto">
       <div className="form-check form-check-inline">
@@ -17,16 +17,7 @@ const DateField = ({
           name="fieldType"
           id="date_field"
           value="date_field"
-          onChange={event => {
-            handleChange(event);
-            handleSelectableChange(
-              {
-                ...selectableResourceAttributes,
-                _destroy: 1
-              },
-              []
-            );
-          }}
+          onChange={handleChange}
           checked={fieldType === "date_field" ? true : false}
         />
         <label htmlFor="date_field" className="form-check-label">

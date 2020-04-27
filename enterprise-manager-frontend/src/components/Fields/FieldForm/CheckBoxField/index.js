@@ -1,25 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import Icon from "@mdi/react";
 import { mdiCheckboxMultipleMarkedOutline } from "@mdi/js";
 import SelectableOptions from "../SelectableField/SelectableOptions";
+import { useHandleChange } from "../../Hooks/useHandleChange";
 
 const CheckBoxField = props => {
-  const { field, fieldType } = props;
+  const { field, fieldType, onChange } = props;
 
-  const [state, setState] = useState(null);
-
-  const handleChange = e => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
-
-  const handleSelectable = newState => {
-    setState({ ...state, ...newState });
-  };
-
-  useEffect(() => {
-    if (state) props.onChange(state);
-  }, [state]);
+  const [handleChange, handleSelectable] = useHandleChange({ field, onChange });
 
   return (
     <>

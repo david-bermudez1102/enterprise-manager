@@ -1,23 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import SelectableChoice from "./SelectableChoice";
 import Icon from "@mdi/react";
 import { mdiSelectPlace } from "@mdi/js";
+import { useHandleChange } from "../../Hooks/useHandleChange";
 
 const SelectableField = props => {
-  const { field, fieldType } = props;
-  const [state, setState] = useState(null);
-
-  const handleChange = e => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
-
-  const handleSelectable = newState => {
-    setState({ ...state, ...newState });
-  };
-
-  useEffect(() => {
-    if (state) props.onChange(state);
-  }, [state]);
+  const { field, fieldType, onChange } = props;
+  const [handleChange, handleSelectable] = useHandleChange({ field, onChange });
 
   return (
     <>

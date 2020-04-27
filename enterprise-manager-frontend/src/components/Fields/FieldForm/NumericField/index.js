@@ -3,13 +3,10 @@ import Icon from "@mdi/react";
 import { mdiNumeric } from "@mdi/js";
 import FieldTypeWrapper from "../../FieldTypeWrapper";
 import NumericFieldOptions from "./NumericFieldOptions";
+import { useHandleChange } from "../../Hooks/useHandleChange";
 
-const NumericField = ({ fieldType, onChange }) => {
-  const handleChange = e => {
-    onChange({
-      fieldType: e.target.value
-    });
-  };
+const NumericField = ({ field, fieldType, onChange }) => {
+  const [handleChange] = useHandleChange({ field, onChange });
   return (
     <>
       <FieldTypeWrapper

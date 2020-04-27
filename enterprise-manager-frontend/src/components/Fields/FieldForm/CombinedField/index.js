@@ -1,22 +1,25 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import FieldTypeWrapper from "../../FieldTypeWrapper";
 import Icon from "@mdi/react";
 import { mdiCheckboxMultipleBlank } from "@mdi/js";
 import CombinedFieldOptions from "./CombinedFieldOptions";
+import { useHandleChange } from "../../Hooks/useHandleChange";
 
-const CombinedField = ({ resourceId, fieldType, onChange }) => {
+const CombinedField = ({ field, resourceId, fieldType, onChange }) => {
   const [state, setState] = useState(null);
+  const [handleChange, handleCombinedField] = useHandleChange({
+    field,
+    onChange
+  });
 
-  const handleChange = e => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
-
-  const handleCombinedField = useCallback(newState => {
-    setState({ ...state, ...newState });
-  }, []);
+  const handleCombinedFieldChange = useCallback(
+    newState => setState({ ...state, ...newState }),
+    []
+  );
 
   useEffect(() => {
-    if (state) onChange(state);
+    if (state) handleCombinedField(state);
+    // eslint-disable-next-line
   }, [state]);
 
   return (
@@ -37,7 +40,7 @@ const CombinedField = ({ resourceId, fieldType, onChange }) => {
       <CombinedFieldOptions
         resourceId={resourceId}
         fieldType={fieldType}
-        handleChange={handleCombinedField}
+        handleChange={handleCombinedFieldChange}
       />
     </>
   );

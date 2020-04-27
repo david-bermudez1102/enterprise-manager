@@ -4,8 +4,9 @@ import SelectableOptions from "./SelectableOptions";
 
 const SelectableChoice = props => {
   const { field, fieldType, handleChange, handleSelectable } = props;
-  const choice = field
-    ? field.selectableResourceAttributes.options.length > 0
+  const { selectableResourceAttributes } = field;
+  const choice = selectableResourceAttributes
+    ? selectableResourceAttributes.options.length > 0
       ? "connect"
       : "items"
     : null;

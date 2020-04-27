@@ -1,13 +1,10 @@
 import React from "react";
 import Icon from "@mdi/react";
 import { mdiTextarea } from "@mdi/js";
+import { useHandleChange } from "../../Hooks/useHandleChange";
 
-const TextareaField = ({ fieldType, onChange }) => {
-  const handleChange = e => {
-    onChange({
-      fieldType: e.target.value
-    });
-  };
+const TextareaField = ({ field, fieldType, onChange }) => {
+  const [handleChange] = useHandleChange({ field, onChange });
   return (
     <div className="col-auto order-first my-auto">
       <div className="form-check form-check-inline">

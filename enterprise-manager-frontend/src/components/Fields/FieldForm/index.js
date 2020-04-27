@@ -27,7 +27,6 @@ const FieldForm = props => {
   const onChange = state => {
     setFieldState(state);
   };
-
   const handleSubmit = e => {
     e.preventDefault();
     const { addField, updateField, addRecordField } = props;
@@ -83,7 +82,7 @@ const FieldForm = props => {
         <RadioField {...fieldProps} />
         <CheckBoxField {...fieldProps} />
         <DateField {...fieldProps} />
-        <CombinedField {...fieldProps} />
+        <CombinedField {...fieldProps} resourceId={resourceId} />
       </div>
       <hr />
       <div className="form-check form-check-inline">

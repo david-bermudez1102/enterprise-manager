@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import SelectableInput from "../../SelectableInput";
 import cuid from "cuid";
 import OptionBadge from "../OptionBadge";
@@ -8,6 +8,8 @@ import FieldFormat from "./FieldFormat";
 import DraggableOption from "../OptionBadge/DraggableOption";
 
 const CombineWith = ({ resourceId, handleChange, fieldType }) => {
+  const mounted = useRef();
+
   const [items, setItems] = useState([]);
   const [key, setKey] = useState(cuid());
 
@@ -31,9 +33,13 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
   };
 
   useEffect(() => {
-    setKey(cuid());
-    if (fieldType === "combined_field")
-      handleChange({ combinedFields: items.map(i => i.id) });
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      setKey(cuid());
+      if (fieldType === "combined_field")
+        handleChange({ combinedFields: items.map(i => i.id) });
+    }
   }, [items, fieldType, handleChange]);
 
   const handleSwapOptions = options => {

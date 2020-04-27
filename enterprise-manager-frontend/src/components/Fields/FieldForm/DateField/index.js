@@ -1,13 +1,10 @@
 import React from "react";
 import Icon from "@mdi/react";
 import { mdiCalendarRange } from "@mdi/js";
+import { useHandleChange } from "../../Hooks/useHandleChange";
 
-const DateField = ({ fieldType, onChange }) => {
-  const handleChange = e => {
-    onChange({
-      fieldType: e.target.value
-    });
-  };
+const DateField = ({ field, fieldType, onChange }) => {
+  const [handleChange] = useHandleChange({ field, onChange });
   return (
     <div className="col-auto order-first my-auto">
       <div className="form-check form-check-inline">

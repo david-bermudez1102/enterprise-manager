@@ -5,21 +5,14 @@ import SelectableResourcesOptions from "./SelectableResourcesOptions";
 
 const SelectableResources = props => {
   const { field, resources, fields, handleSelectable } = props;
-  const { formId } = field.selectableResourceAttributes;
+  const { selectableResourceAttributes } = field;
+  const formId = selectableResourceAttributes
+    ? selectableResourceAttributes.formId
+    : null;
   const mounted = useRef();
-  console.log(field);
-  //const selectableResource = field ? field.selectableResource : null;
+
   const [selected, setSelected] = useState(formId || "");
-  const [state, setState] = useState(field.selectableResourceAttributes || {});
-  /* state = {
-      selected: selectableResource ? selectableResource.resource_id : "0",
-      selectable_resource_attributes: {
-        form_id: selectableResource ? selectableResource.resource_id || "" : "",
-        resource_field_id: selectableResource
-          ? selectableResource.resource_field_id || ""
-          : ""
-      }
-    }; */
+  const [state, setState] = useState(selectableResourceAttributes || {});
 
   const handleChange = e => {
     setState({
@@ -64,7 +57,9 @@ const SelectableResources = props => {
       </div>
       <SelectableResourcesOptions
         resourceFieldId={
-          field ? field.selectableResourceAttributes.resourceFieldId || "" : ""
+          selectableResourceAttributes
+            ? selectableResourceAttributes.resourceFieldId || ""
+            : ""
         }
         fields={fields}
         selected={selected}

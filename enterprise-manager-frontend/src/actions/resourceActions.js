@@ -86,15 +86,24 @@ export const removeResource = (organizationId, resourceId) => {
       }
     )
       .then(response => response.json())
-      .then(resource => resource)
-      .then(resource =>
-        resource.message
-          ? dispatch({
-              type: "REMOVE_RESOURCE",
-              resourceId,
-              status: "deleted"
-            })
-          : null
-      );
+      .then(resource => {
+        if (resource.message) {
+          dispatch({
+            type: "REMOVE_RESOURCE",
+            resourceId,
+            status: "deleted"
+          });
+          dispatch({
+            type: "REMOVE_RECORDS",
+            resourceId
+          });
+          dispatch({
+            type: "ADD_MESSAGES",
+            messages: resource.messages || ["Resource deleted successfully."]
+          });
+        } else {
+          dispatch({ type: "ADD_ERRORS", errors: resource.errors });
+        }
+      });
   };
 };

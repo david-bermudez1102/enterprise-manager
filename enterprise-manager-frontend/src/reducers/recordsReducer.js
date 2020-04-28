@@ -19,6 +19,12 @@ export const recordsReducer = (state = [], action) => {
           rec.id === record.id ? { ...rec, ...action.record } : rec
         )
       ];
+    case "REMOVE_RECORDS":
+      return [
+        ...state.filter(
+          record => record.resourceId !== parseInt(action.resourceId)
+        )
+      ];
     case "CLEAR_RECORDS":
       return [];
     default:

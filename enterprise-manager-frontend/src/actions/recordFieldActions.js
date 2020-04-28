@@ -19,7 +19,7 @@ export const addRecordField = (recordField, organizationId) => {
         dispatch({ type: "ADD_RECORD_FIELD", recordField });
         dispatch({
           type: "ADD_MESSAGES",
-          messages: recordField.messages || ["Field updated successfully."]
+          messages: recordField.messages || ["Field Added successfully."]
         });
       })
       .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }));
@@ -67,7 +67,8 @@ export const updateRecordField = (
 export const fetchRecordFields = (organizationId, formId) => {
   return dispatch => {
     fetch(
-      `/api/v1/organizations/${organizationId}/forms/${formId}/record_fields`
+      `/api/v1/organizations/${organizationId}/forms/${formId}/record_fields`,
+      { cache: "no-cache" }
     )
       .then(response => response.json())
       .then(recordFields =>

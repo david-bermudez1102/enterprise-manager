@@ -1,4 +1,5 @@
 import snakecaseKeys from "snakecase-keys";
+import { handleErrors, displayErrors } from "./handleErrors";
 
 export const fetchValues = (organizationId, formId) => {
   return dispatch => {
@@ -28,6 +29,7 @@ export const addValue = value => {
         body: JSON.stringify(snakecaseKeys({ value }))
       }
     )
+      .then(handleErrors)
       .then(response => response.json())
       .then(value => {
         if (!value.errors) {
@@ -43,7 +45,7 @@ export const addValue = value => {
           dispatch({ type: "ADD_ERRORS", errors: value.errors });
         }
       })
-      .catch(console.log);
+      .catch(resp => displayErrors(resp, dispatch));
   };
 };
 
@@ -61,6 +63,7 @@ export const updateValue = value => {
         body: JSON.stringify(snakecaseKeys({ value }))
       }
     )
+      .then(handleErrors)
       .then(response => response.json())
       .then(value => {
         if (!value.errors) {
@@ -76,6 +79,6 @@ export const updateValue = value => {
           dispatch({ type: "ADD_ERRORS", errors: value.errors });
         }
       })
-      .catch(console.log);
+      .catch(resp => displayErrors(resp, dispatch));
   };
 };

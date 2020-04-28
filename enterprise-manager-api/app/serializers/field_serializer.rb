@@ -3,12 +3,18 @@ class FieldSerializer
   set_key_transform :camel_lower
   
   cache_options enabled: true, cache_length: 12.hours
-  attributes :id, :name, :field_type, :form_id, :record_key, :field_alias, :is_required, :default_value
+  attributes :id, :name, :field_type, :form_id, :field_alias, :is_required, :default_value
   attribute :accepts_decimals, if: Proc.new { |field| field.field_type == "numeric_field" }
   attribute :combined_fields, if: Proc.new { |field| field.field_type == "combined_field" }
   attribute :field_format, if: Proc.new { |field| field.field_type == "combined_field" }
   attribute :record_field_id
-  
+
+  attribute :record_key_attributes do |object|
+    if object.record_key
+      { id:object.record_key.id, fieldId: object.record_key.field_id, resourceFieldId:object.record_key.resource_field_id }
+    end
+  end
+
   attribute :key_values do  |field|
     if field.record_key 
       key_values = KeyValueSerializer.new(field.record_key.key_values).serializable_hash[:data]

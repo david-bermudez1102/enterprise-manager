@@ -3,7 +3,7 @@ class Form < ApplicationRecord
   has_one :zoho_connection, class_name:"Connection", foreign_key: "zoho_connection_id", dependent: :destroy
   has_one :quickbooks_connection, class_name:"Connection", foreign_key: "quickbooks_connection_id", dependent: :destroy
   has_many :fields, dependent: :destroy
-  has_many :records, dependent: :delete_all
+  has_many :records, dependent: :destroy
   has_many :record_fields, dependent: :destroy
   has_many :values, through: :records
   validates :name, length: { in: 2..12 }

@@ -27,7 +27,7 @@ export const addRecord = (record, organizationId, formId) => {
           });
           dispatch({
             type: "UPDATE_RECORDS_COUNT",
-            resourceId: formId
+            formId
           });
           dispatch({
             type: "ADD_MESSAGES",

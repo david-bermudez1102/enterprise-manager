@@ -28,7 +28,7 @@ export const resourcesReducer = (state = [], action) => {
     case "UPDATE_RECORDS_COUNT":
       return [
         ...state.map(r =>
-          r.id === parseInt(action.resourceId)
+          r.id === parseInt(action.formId)
             ? { ...r, recordsCount: r.recordsCount + 1 }
             : r
         )

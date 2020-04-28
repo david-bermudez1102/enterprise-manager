@@ -6,7 +6,7 @@ const SelectableField = props => {
   const [state, setState] = useState(null);
 
   const handleChange = useCallback(option => {
-    if (field.selectableResource)
+    if (field.selectableResourceAttributes)
       setState({
         recordFieldId: props.name,
         recordValueId: option.id,

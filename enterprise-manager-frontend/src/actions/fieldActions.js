@@ -34,7 +34,9 @@ export const addField = (field, organizationId) => {
 
 export const fetchFields = (organizationId, formId) => {
   return dispatch => {
-    fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/fields`)
+    fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/fields`, {
+      cache: "no-cache"
+    })
       .then(handleErrors)
       .then(response => response.json())
       .then(fields =>

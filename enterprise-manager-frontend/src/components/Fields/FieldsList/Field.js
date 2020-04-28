@@ -8,6 +8,7 @@ import RadioField from "./RadioField";
 import CheckboxField from "./CheckboxField";
 import CombinedField from "./CombinedField";
 import TextField from "./TextField";
+import KeyField from "./KeyField";
 
 const { formControl } = {
   formControl: "form-control rounded-pill"
@@ -48,6 +49,13 @@ const Field = props => {
       inputField = <DateField {...inputAttributes} />;
       break;
     case "key_field":
+      inputField = (
+        <KeyField
+          {...inputAttributes}
+          state={props.state}
+          fields={props.fields}
+        />
+      );
       break;
     case "radio":
       inputField = <RadioField {...inputAttributes} />;
@@ -63,18 +71,16 @@ const Field = props => {
       break;
   }
   const isLabelable =
-    field.fieldType === "checkbox" && field.fieldType === "radio";
+    field.fieldType === "checkbox" || field.fieldType === "radio";
   // Used to check if label should be inside field.
   return (
     <>
-      {field.fieldType !== "key_field" ? (
-        <Options
-          url={`${match.url}/fields`}
-          content={field}
-          deletionMessage="The field will be deleted from the resource."
-          style={{ marginTop: "-15px" }}
-        />
-      ) : null}
+      <Options
+        url={`${match.url}/fields`}
+        content={field}
+        deletionMessage="The field will be deleted from the resource."
+        style={{ marginTop: "-15px" }}
+      />
       <div className={isLabelable ? "form-group mb-0" : "form-group"}>
         {inputField}
         {field.fieldType !== "selectable" ? (

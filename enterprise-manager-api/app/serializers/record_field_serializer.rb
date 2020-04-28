@@ -10,8 +10,8 @@ class RecordFieldSerializer
   attribute :combined_fields, if: Proc.new { |field| field.field_type == "combined_field" }
   attribute :field_format, if: Proc.new { |field| field.field_type == "combined_field" }
 
-  attribute :record_key do |record_field|
-    record_field.field ? record_field.field.record_key : nil
+  attribute :record_key_attributes do |record_field|
+    record_field.field && record_field.field.record_key ? { id:record_field.field.record_key.id, fieldId: record_field.field.record_key.field_id, resourceFieldId:record_field.field.record_key.resource_field_id } : nil
   end
 
   attribute :selectable_resource_attributes, if: proc { |field|

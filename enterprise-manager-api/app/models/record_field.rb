@@ -2,12 +2,12 @@ class RecordField < ApplicationRecord
   include ::FieldConcern
   belongs_to :form, touch: true
   belongs_to :field, touch: true, optional: true, dependent: :destroy
-  has_many :values, dependent: :delete_all
+  has_many :values, dependent: :destroy
   enum field_type: %w[text password selectable checkbox radio textarea date_field numeric_field combined_field key_field]
   enum field_format: %w[all_underscored all_dashed dashed_upper underscored_upper dashed_lower underscored_lower all_spaced_upper all_spaced_lower no_format] # Only required when field is combined
 
   has_one :selectable_resource, dependent: :destroy
-  has_many :options, dependent: :delete_all
+  has_many :options, dependent: :destroy
   serialize :combined_fields, Array
   before_create :generate_field_alias
 

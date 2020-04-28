@@ -8,7 +8,10 @@ import { useHandleChange } from "../../Hooks/useHandleChange";
 const CheckBoxField = props => {
   const { field, fieldType, onChange } = props;
 
-  const [handleChange, handleSelectable] = useHandleChange({ field, onChange });
+  const { handleChange, handleSelectable } = useHandleChange({
+    field,
+    onChange
+  });
 
   return (
     <>

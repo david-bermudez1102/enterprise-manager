@@ -6,7 +6,7 @@ const SelectableChoice = props => {
   const { field, fieldType, handleChange, handleSelectable } = props;
   const { selectableResourceAttributes } = field;
   const choice = selectableResourceAttributes
-    ? selectableResourceAttributes.options.length > 0
+    ? selectableResourceAttributes.optionsAttributes.length > 0
       ? "connect"
       : "items"
     : null;

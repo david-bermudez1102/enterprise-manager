@@ -11,6 +11,9 @@ export const useHandleChange = props => {
       [e.target.name]: e.target.value
     });
   };
+  const handleNumericField = newState => {
+    setState({ ...state, ...newState });
+  };
 
   const handleSelectable = newState => {
     setState({ ...state, ...newState });
@@ -41,11 +44,12 @@ export const useHandleChange = props => {
     // eslint-disable-next-line
   }, [onChange, state]);
 
-  return [
+  return {
     handleChange,
+    handleNumericField,
     handleSelectable,
     handleCombinedField,
     handleKeyFieldChange,
     state
-  ];
+  };
 };

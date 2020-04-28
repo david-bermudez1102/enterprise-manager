@@ -13,7 +13,7 @@ const CombinedField = ({ field, resourceId, fieldType, onChange }) => {
   const [state, setState] = useState(
     combinedFields ? { combinedFields } : null
   );
-  const [handleChange, handleCombinedField] = useHandleChange({
+  const { handleChange, handleCombinedField } = useHandleChange({
     field,
     onChange
   });

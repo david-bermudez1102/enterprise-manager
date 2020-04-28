@@ -5,7 +5,7 @@ import { useHandleChange } from "../../Hooks/useHandleChange";
 
 const RecordKeyField = props => {
   const { field, fieldType, resourceId, onChange } = props;
-  const [handleChange, handleKeyFieldChange, state] = useHandleChange({
+  const { handleChange, handleKeyFieldChange, state } = useHandleChange({
     field,
     onChange
   });

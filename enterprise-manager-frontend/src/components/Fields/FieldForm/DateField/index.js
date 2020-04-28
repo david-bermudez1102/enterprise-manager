@@ -4,7 +4,7 @@ import { mdiCalendarRange } from "@mdi/js";
 import { useHandleChange } from "../../Hooks/useHandleChange";
 
 const DateField = ({ field, fieldType, onChange }) => {
-  const [handleChange] = useHandleChange({ field, onChange });
+  const { handleChange } = useHandleChange({ field, onChange });
   return (
     <div className="col-auto order-first my-auto">
       <div className="form-check form-check-inline">

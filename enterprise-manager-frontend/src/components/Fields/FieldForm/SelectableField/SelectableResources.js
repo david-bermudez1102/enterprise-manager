@@ -25,9 +25,24 @@ const SelectableResources = props => {
     if (!mounted.current) {
       mounted.current = true;
     } else {
+      handleSelectable({
+        selectableResourceAttributes: {
+          formId: selected,
+          resourceFieldId: ""
+        }
+      });
+    }
+    // eslint-disable-next-line
+  }, [selected]);
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
       handleSelectable({ selectableResourceAttributes: state });
       setSelected(state.formId || selected);
     }
+    // eslint-disable-next-line
   }, [state]);
 
   return (

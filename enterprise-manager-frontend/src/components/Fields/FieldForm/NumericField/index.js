@@ -6,7 +6,10 @@ import NumericFieldOptions from "./NumericFieldOptions";
 import { useHandleChange } from "../../Hooks/useHandleChange";
 
 const NumericField = ({ field, fieldType, onChange }) => {
-  const [handleChange] = useHandleChange({ field, onChange });
+  const { handleChange, handleNumericField } = useHandleChange({
+    field,
+    onChange
+  });
   return (
     <>
       <FieldTypeWrapper
@@ -22,7 +25,10 @@ const NumericField = ({ field, fieldType, onChange }) => {
           color="#07689F"
         />
       </FieldTypeWrapper>
-      <NumericFieldOptions fieldType={fieldType} handleChange={handleChange} />
+      <NumericFieldOptions
+        fieldType={fieldType}
+        handleChange={handleNumericField}
+      />
     </>
   );
 };

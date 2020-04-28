@@ -3,32 +3,13 @@ import { useState } from "react";
 
 const AcceptsDecimals = ({ handleChange, fieldType }) => {
   const [acceptsDecimals, setAcceptsDecimals] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [evt, setEvt] = useState(null);
 
   const handleCheckBoxChange = e => {
-    e.persist();
     setAcceptsDecimals(e.target.checked);
-    setEvt(e);
+    handleChange({ acceptsDecimals: e.target.checked });
   };
 
-  useEffect(() => {
-    if (fieldType === "numeric_field") setAcceptsDecimals(false);
-    else {
-      setAcceptsDecimals();
-    }
-  }, [fieldType]);
-
-  useEffect(() => {
-    if (evt) handleChange(evt);
-  }, [acceptsDecimals, handleChange, evt]);
-
-  useEffect(() => {
-    if (acceptsDecimals === undefined) setHidden(true);
-    else setHidden(false);
-  }, [acceptsDecimals]);
-
-  return !hidden ? (
+  return fieldType === "numeric_field" ? (
     <div className="col-12 order-last">
       <hr />
       <div className="form-check form-check-inline">

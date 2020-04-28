@@ -20,6 +20,7 @@ const CombinedField = ({ field, resourceId, fieldType, onChange }) => {
 
   const handleCombinedFieldChange = useCallback(
     newState => setState({ ...state, ...newState }),
+    // eslint-disable-next-line
     []
   );
 

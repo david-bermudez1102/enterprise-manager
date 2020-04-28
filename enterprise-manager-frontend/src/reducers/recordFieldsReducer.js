@@ -2,6 +2,12 @@ export const recordFieldsReducer = (state = [], action) => {
   switch (action.type) {
     case "ADD_RECORD_FIELD":
       return [...state, action.recordField];
+    case "UPDATE_RECORD_FIELD":
+      return [
+        ...state.map(f =>
+          f.id === parseInt(action.recordFieldId) ? action.recordField : f
+        )
+      ];
     case "FETCH_RECORD_FIELDS":
       return [
         ...state,

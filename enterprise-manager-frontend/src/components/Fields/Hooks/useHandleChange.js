@@ -30,7 +30,10 @@ export const useHandleChange = props => {
     });
   };
 
-  const onChange = useCallback(newState => props.onChange(newState), []);
+  const onChange = useCallback(
+    newState => props.onChange(newState), // eslint-disable-next-line
+    []
+  );
 
   useEffect(() => {
     if (!mounted.current) {

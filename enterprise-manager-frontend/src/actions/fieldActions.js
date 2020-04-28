@@ -1,5 +1,6 @@
 import snakecaseKeys from "snakecase-keys";
 import cuid from "cuid";
+import { handleErrors } from "./handleErrors";
 
 export const addField = (field, organizationId) => {
   return dispatch => {
@@ -14,16 +15,13 @@ export const addField = (field, organizationId) => {
         body: JSON.stringify(snakecaseKeys({ field }))
       }
     )
+      .then(handleErrors)
       .then(response => response.json())
       .then(f => {
         if (!f.errors) {
           dispatch({
             type: "ADD_FIELD",
             field: { key: cuid(), ...f }
-          });
-          dispatch({
-            type: "ADD_MESSAGES",
-            messages: f.messages || ["Field added successfully."]
           });
           return { ...field, fieldId: f.id };
         } else {
@@ -37,6 +35,7 @@ export const addField = (field, organizationId) => {
 export const fetchFields = (organizationId, formId) => {
   return dispatch => {
     fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/fields`)
+      .then(handleErrors)
       .then(response => response.json())
       .then(fields =>
         dispatch({
@@ -51,28 +50,26 @@ export const fetchFields = (organizationId, formId) => {
 export const updateField = (field, organizationId, fieldId) => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
-    fetch(
-      `/api/v1/organizations/${organizationId}/forms/${field.form_id}/fields/${fieldId}`,
+    return fetch(
+      `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields/${fieldId}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ field })
+        body: JSON.stringify(snakecaseKeys({ field }))
       }
     )
+      .then(handleErrors)
       .then(response => response.json())
       .then(field => {
         if (!field.errors) {
           dispatch({
             type: "UPDATE_FIELD",
             fieldId,
-            field: field
+            field: { key: cuid(), ...field }
           });
-          dispatch({
-            type: "ADD_MESSAGES",
-            messages: field.messages || ["Field updated successfully."]
-          });
+          return { ...field, fieldId };
         } else {
           dispatch({ type: "ADD_ERRORS", errors: field.errors });
         }
@@ -89,6 +86,7 @@ export const removeField = (organizationId, formId, fieldId) => {
         method: "DELETE"
       }
     )
+      .then(handleErrors)
       .then(response => response.json())
       .then(field =>
         field.message

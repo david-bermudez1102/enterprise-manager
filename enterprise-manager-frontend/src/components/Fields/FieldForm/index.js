@@ -34,6 +34,7 @@ const FieldForm = props => {
       setFieldState(field || {});
       setState(initalState);
     }
+    // eslint-disable-next-line
   }, [props.match]);
 
   const onChange = state => {
@@ -42,7 +43,7 @@ const FieldForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const { addField, updateField, addRecordField } = props;
+    const { addField, updateField, addRecordField, updateRecordField } = props;
     if (addField) {
       dispatch(addField({ ...state, ...fieldState }, organizationId)).then(
         field => {
@@ -55,15 +56,21 @@ const FieldForm = props => {
     if (updateField)
       dispatch(
         updateField({ ...state, ...fieldState }, organizationId, field.id)
+      ).then(field =>
+        field
+          ? dispatch(
+              updateRecordField(field, organizationId, field.recordFieldId)
+            )
+          : null
       );
   };
+
   const fieldProps = {
     field,
     fieldType: fieldState.fieldType || "",
     onChange
   };
 
-  console.log(fieldState, state);
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">

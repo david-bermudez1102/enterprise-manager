@@ -7,6 +7,7 @@ class FieldSerializer
   attribute :accepts_decimals, if: Proc.new { |field| field.field_type == "numeric_field" }
   attribute :combined_fields, if: Proc.new { |field| field.field_type == "combined_field" }
   attribute :field_format, if: Proc.new { |field| field.field_type == "combined_field" }
+  attribute :record_field_id
   
   attribute :key_values do  |field|
     if field.record_key 

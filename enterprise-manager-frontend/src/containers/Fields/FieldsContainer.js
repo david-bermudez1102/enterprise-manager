@@ -6,7 +6,10 @@ import FieldDelete from "../../components/Fields/FieldDelete";
 import { FormCard } from "../../components/Cards/Cards";
 import { plural } from "pluralize";
 import FieldsList from "../../components/Fields/FieldsList/FieldsList";
-import { addRecordField } from "../../actions/recordFieldActions";
+import {
+  addRecordField,
+  updateRecordField
+} from "../../actions/recordFieldActions";
 
 const FieldsContainer = props => {
   const { match, location, organizationId, resource, fields } = props;
@@ -86,6 +89,7 @@ const FieldsContainer = props => {
                     <FieldForm
                       {...props}
                       updateField={updateField}
+                      updateRecordField={updateRecordField}
                       organizationId={organizationId}
                       resourceId={resource.id}
                       field={field}

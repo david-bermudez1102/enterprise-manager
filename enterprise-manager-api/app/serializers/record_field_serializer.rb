@@ -18,12 +18,14 @@ class RecordFieldSerializer
                           field.field_type == "selectable"
                         } do |object|
     if object.selectable_resource
-    { options: object.selectable_resource.form.fields.find_by(id: object.selectable_resource.resource_field_id).values.map do |value|
+    { optionsAttributes: object.selectable_resource.form.fields.find_by(id: object.selectable_resource.resource_field_id).values.map do |value|
       { id: value.id, value: value.content }
     end || [] } 
   end
   end
-  attribute :options, if: proc { |field|
+  attribute :options_attributes, if: proc { |field|
               field.field_type == "selectable" || field.field_type == "radio" || field.field_type == "checkbox"
-            }
+            } do |object|
+              object.options
+            end
 end

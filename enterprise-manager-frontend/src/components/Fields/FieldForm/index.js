@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { addField } from "../../../actions/fieldActions";
-import { addRecordField } from "../../../actions/recordFieldActions";
-import { connect } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
+
+import { useDispatch } from "react-redux";
 import RecordKeyField from "./RecordKeyField";
 import TextField from "./TextField";
 import NumericField from "./NumericField";
@@ -17,35 +16,54 @@ const FieldForm = props => {
   const { organizationId, action, resourceId } = props;
   const { key, fieldAlias, name, formId, isRequired, ...field } = props.field;
   const [fieldState, setFieldState] = useState(field || {});
-  const [state, setState] = useState({ name, formId, isRequired } || {});
+  const mounted = useRef();
+
+  const dispatch = useDispatch();
+  const initalState = {
+    name: name || "",
+    formId: formId || resourceId,
+    isRequired: isRequired || false
+  };
+
+  const [state, setState] = useState(initalState);
 
   useEffect(() => {
-    setFieldState(field || {});
-    setState({ name, formId, isRequired } || {});
-  }, [resourceId]);
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      setFieldState(field || {});
+      setState(initalState);
+    }
+  }, [props.match]);
 
   const onChange = state => {
     setFieldState(state);
   };
+
   const handleSubmit = e => {
     e.preventDefault();
     const { addField, updateField, addRecordField } = props;
     if (addField) {
-      addField(state, organizationId).then(field =>
-        field ? addRecordField(field, organizationId) : null
+      dispatch(addField({ ...state, ...fieldState }, organizationId)).then(
+        field => {
+          setState(initalState);
+          setFieldState({});
+          return field ? dispatch(addRecordField(field, organizationId)) : null;
+        }
       );
-      setState({
-        fieldType: "",
-        name: ""
-      });
     }
-    if (updateField) updateField(state, organizationId, field.id);
+    if (updateField)
+      dispatch(
+        updateField({ ...state, ...fieldState }, organizationId, field.id)
+      );
   };
   const fieldProps = {
     field,
     fieldType: fieldState.fieldType || "",
     onChange
   };
+
+  console.log(fieldState, state);
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -93,6 +111,7 @@ const FieldForm = props => {
           onChange={e =>
             setState({ ...state, isRequired: e.target.checked ? true : false })
           }
+          checked={state.isRequired}
         />
         <label className="form-check-label" htmlFor="isRequired">
           Required
@@ -103,4 +122,4 @@ const FieldForm = props => {
     </form>
   );
 };
-export default connect(null, { addField, addRecordField })(FieldForm);
+export default FieldForm;

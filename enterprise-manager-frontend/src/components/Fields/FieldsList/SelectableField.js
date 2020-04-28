@@ -31,9 +31,9 @@ const SelectableField = props => {
       {...newProps}
       onChange={handleChange}
       options={
-        field.selectableResource
-          ? field.selectableResource.options
-          : field.options
+        field.selectableResourceAttributes
+          ? field.selectableResourceAttributes.optionsAttributes
+          : field.optionsAttributes
       }>
       <label htmlFor={field.fieldAlias} className={"form-control-placeholder"}>
         {fieldName}

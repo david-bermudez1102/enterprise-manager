@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import cuid from "cuid";
 
-const FieldFormat = ({ items, handleChange }) => {
+const FieldFormat = ({ items, handleChange, fieldFormat }) => {
   const itemsValues = items.map(item => item.value);
   const allSpaced = itemsValues.join(" ");
   const withUnderscore = itemsValues.join("_").replace(/[ ]+/g, "_");
@@ -54,7 +54,9 @@ const FieldFormat = ({ items, handleChange }) => {
       helper: "No formatting. All values are saved separated by space only"
     }
   ];
-  const [formatSelected, setFormatSelected] = useState("no_format");
+  const [formatSelected, setFormatSelected] = useState(
+    fieldFormat || "no_format"
+  );
 
   const handleClick = state => {
     setFormatSelected(state.fieldFormat);

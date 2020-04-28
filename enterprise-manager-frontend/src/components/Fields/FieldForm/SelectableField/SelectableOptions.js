@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import cuid from "cuid";
 
 class SelectableOptions extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    const { optionsAttributes } = props.field;
     this.itemValue = React.createRef();
     this.state = {
       itemValue: "",
-      optionsAttributes: []
+      optionsAttributes: optionsAttributes || []
     };
   }
 
@@ -61,6 +62,7 @@ class SelectableOptions extends Component {
   render() {
     const { fieldType } = this.props;
     const { optionsAttributes, itemValue } = this.state;
+
     return (
       <div className="">
         <hr />

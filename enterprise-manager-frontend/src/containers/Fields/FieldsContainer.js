@@ -1,16 +1,15 @@
 import React from "react";
 import FieldForm from "../../components/Fields/FieldForm";
 import { Route, Switch } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { updateField, removeField } from "../../actions/fieldActions";
+import { updateField, removeField, addField } from "../../actions/fieldActions";
 import FieldDelete from "../../components/Fields/FieldDelete";
 import { FormCard } from "../../components/Cards/Cards";
 import { plural } from "pluralize";
 import FieldsList from "../../components/Fields/FieldsList/FieldsList";
+import { addRecordField } from "../../actions/recordFieldActions";
 
 const FieldsContainer = props => {
   const { match, location, organizationId, resource, fields } = props;
-  const dispatch = useDispatch();
   const isFieldsPath = location.pathname.includes("fields");
 
   return (
@@ -23,7 +22,7 @@ const FieldsContainer = props => {
             fields={fields}
             match={match}
             resource={resource}
-            updateField={() => dispatch(updateField)}
+            updateField={updateField}
           />
         </div>
       </div>
@@ -41,7 +40,11 @@ const FieldsContainer = props => {
                   </h2>
                 }>
                 <FieldForm
+                  {...props}
+                  addField={addField}
+                  addRecordField={addRecordField}
                   field={{}}
+                  action={"Add Field"}
                   organizationId={organizationId}
                   resourceId={resource.id}
                 />
@@ -58,7 +61,7 @@ const FieldsContainer = props => {
               redirectTo={match.url}
               organizationId={organizationId}
               resourceId={resource.id}
-              removeField={() => dispatch(removeField)}
+              removeField={removeField}
             />
           )}
         />
@@ -81,7 +84,8 @@ const FieldsContainer = props => {
                       </span>
                     }>
                     <FieldForm
-                      updateField={() => dispatch(updateField)}
+                      {...props}
+                      updateField={updateField}
                       organizationId={organizationId}
                       resourceId={resource.id}
                       field={field}

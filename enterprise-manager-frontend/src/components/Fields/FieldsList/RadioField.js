@@ -19,7 +19,7 @@ const RadioField = props => {
 
   return (
     <fieldset className="form-control border-0 mt-4">
-      {field.options.map(option => (
+      {field.optionsAttributes.map(option => (
         <div className="form-check form-check-inline" key={cuid()}>
           <input
             {...newProps}

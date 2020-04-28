@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 export const useHandleChange = props => {
-  const { field, onChange, initialState } = props;
+  const { field, initialState } = props;
   const mounted = useRef();
   const [state, setState] = useState(field || initialState || {});
 
@@ -20,14 +20,32 @@ export const useHandleChange = props => {
     setState({ ...state, ...newState });
   };
 
+  const handleKeyFieldChange = e => {
+    setState({
+      ...state,
+      recordKeyAttributes: { [e.target.name]: e.target.value }
+    });
+  };
+
+  const onChange = useCallback(newState => props.onChange(newState), []);
+
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
     } else {
       onChange(state);
     }
+    return () => {
+      onChange({});
+    };
     // eslint-disable-next-line
-  }, [state]);
+  }, [onChange, state]);
 
-  return [handleChange, handleSelectable, handleCombinedField];
+  return [
+    handleChange,
+    handleSelectable,
+    handleCombinedField,
+    handleKeyFieldChange,
+    state
+  ];
 };

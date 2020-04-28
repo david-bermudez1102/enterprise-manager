@@ -1,40 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import cuid from "cuid";
+import { useHandleChange } from "../../Hooks/useHandleChange";
 
 const RecordKeyField = props => {
-  const { fieldType, resourceId, onChange } = props;
-  const [state, setState] = useState({ resourceFieldId: "" });
-  /* state = {
-      fieldId:
-        field && field.recordKey ? field.recordKey.resource_field_id : "",
-      record_key_attributes: {
-        resource_field_id:
-          field && field.recordKey ? field.recordKey.resource_field_id : ""
-      }
-    }; */
-
-  const handleChange = e => {
-    setState({
-      ...state,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleKeyFieldChange = e => {
-    setState({
-      ...state,
-      recordKeyAttributes: { [e.target.name]: e.target.value }
-    });
-  };
-
-  useEffect(() => {
-    onChange(state);
-  }, [state]);
+  const { field, fieldType, resourceId, onChange } = props;
+  const [handleChange, handleKeyFieldChange, state] = useHandleChange({
+    field,
+    onChange
+  });
+  const { recordKeyAttributes } = state;
 
   const fields = props.fields.filter(
     f => f.formId === resourceId && f.fieldType === "selectable"
   );
+
   return (
     <>
       <div className="col-auto order-first my-auto">
@@ -59,8 +39,11 @@ const RecordKeyField = props => {
           <hr />
           <div className="form-group">
             <select
+              name="resourceFieldId"
               onChange={handleKeyFieldChange}
-              value={state.resourceFieldId}
+              value={
+                recordKeyAttributes ? recordKeyAttributes.resourceFieldId : ""
+              }
               className="form-control">
               <option value="">Select a field</option>
               {fields.map(field => (

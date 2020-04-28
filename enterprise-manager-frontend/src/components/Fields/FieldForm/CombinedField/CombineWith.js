@@ -7,10 +7,16 @@ import Portal from "../../../Portal/Portal";
 import FieldFormat from "./FieldFormat";
 import DraggableOption from "../OptionBadge/DraggableOption";
 
-const CombineWith = ({ resourceId, handleChange, fieldType }) => {
+const CombineWith = ({
+  resourceId,
+  handleChange,
+  fieldType,
+  initialState,
+  fieldFormat
+}) => {
   const mounted = useRef();
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(initialState || []);
   const [key, setKey] = useState(cuid());
 
   const availableFields = useSelector(state =>
@@ -37,7 +43,7 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
       mounted.current = true;
     } else {
       setKey(cuid());
-      if (fieldType === "combined_field")
+      if (fieldType === "combined_field" && items.length > 0)
         handleChange({ combinedFields: items.map(i => i.id) });
     }
   }, [items, fieldType, handleChange]);
@@ -102,6 +108,7 @@ const CombineWith = ({ resourceId, handleChange, fieldType }) => {
       ) : null}
       {items.length > 1 ? (
         <FieldFormat
+          fieldFormat={fieldFormat}
           items={items}
           handleChange={handleChange}
           fieldType={fieldType}

@@ -56,6 +56,7 @@ export const updateResource = (resource, organizationId, resourceId) => {
         body: JSON.stringify({ form: resource })
       }
     )
+      .then(handleErrors)
       .then(response => response.json())
       .then(resource => {
         if (!resource.errors) {
@@ -79,6 +80,7 @@ export const updateResource = (resource, organizationId, resourceId) => {
 
 export const removeResource = (organizationId, resourceId) => {
   return dispatch => {
+    dispatch({ type: "CLEAR_ALERTS" });
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
       {

@@ -3,8 +3,8 @@ class Field < ApplicationRecord
   enum field_type: %w[text password selectable checkbox radio textarea date_field numeric_field combined_field key_field]
   enum field_format: %w[all_underscored all_dashed dashed_upper underscored_upper dashed_lower underscored_lower all_spaced_upper all_spaced_lower no_format] # Only required when field is combined
   
-  has_one :selectable_resource, dependent: :nullify
-  has_one :record_key, dependent: :nullify
+  has_one :selectable_resource, dependent: :destroy
+  has_one :record_key, dependent: :destroy
   has_one :record_field, dependent: :nullify
   has_many :options, dependent: :nullify
   has_many :values, through: :record_field

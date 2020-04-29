@@ -4,7 +4,7 @@ export const fetchRecordsWithWorker = (state, formId, organizationId) => {
       ...state
         .filter(
           prevPayload =>
-            prevPayload.formId !== formId ||
+            prevPayload.formId !== parseInt(formId) ||
             payload.some(p => p.id === prevPayload.id)
         )
         .map(prevPayload => {

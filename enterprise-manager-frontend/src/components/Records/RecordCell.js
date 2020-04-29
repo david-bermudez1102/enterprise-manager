@@ -30,7 +30,14 @@ class RecordCell extends Component {
     );
     const content = value.map(value => value.content)[0];
     return (
-      <td onClick={this.handleClick} className="text-nowrap">
+      <td
+        onClick={this.handleClick}
+        className="text-nowrap"
+        style={{
+          color: "#3c4858",
+          fontSize: "15px",
+          verticalAlign: "middle"
+        }}>
         {editing ? (
           <div className="position-relative w-100">
             {value[0] ? (

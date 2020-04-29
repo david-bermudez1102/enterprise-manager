@@ -8,6 +8,7 @@ import { chunk } from "lodash";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
 import { handleSortByF } from "./RecordsSort/handleSortBy";
 import { sortBy } from "./RecordsSort/sortBy";
+import { useSelectRecords } from "./hooks/useSelectRecords";
 
 const RecordsList = ({
   sortedRecords,
@@ -38,6 +39,12 @@ const RecordsList = ({
   }, [dispatch, records, values, resource, sortedRecords]);
 
   const [paginationLimit, setPaginationLimit] = useState(pagination.limit);
+  const {
+    selectRecord,
+    selectAllRecords,
+    checked,
+    allChecked
+  } = useSelectRecords({ sortedRecords });
 
   const [chunkOfRecords, setChunkOfRecords] = useState(
     chunk(sortedRecords, paginationLimit)
@@ -80,7 +87,7 @@ const RecordsList = ({
   return (
     <div ref={allRecordsRef} className="table-responsive">
       <Pagination resource={resource} page={page} />
-      <table className="table table-sm mb-0 table-hover border-0">
+      <table className="table mb-0 table-hover border-0">
         <RecordsHeader
           {...{
             sortedRecords,
@@ -90,7 +97,9 @@ const RecordsList = ({
             resource,
             match,
             recordsSortedBy,
-            handleSortBy
+            handleSortBy,
+            selectAllRecords,
+            allChecked
           }}
         />
         <tbody>
@@ -100,6 +109,8 @@ const RecordsList = ({
                   <Record
                     key={cuid()}
                     record={record}
+                    checked={checked.find(r => r === record.id)}
+                    selectRecord={selectRecord}
                     recordFields={recordFields}
                     resourceId={resource.id}
                     values={values}

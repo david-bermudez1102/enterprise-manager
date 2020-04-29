@@ -5,10 +5,10 @@ class RecordsController < ApplicationController
   # before_action :set_offset, only: %i[index]
   
   def create
-    record = @form.records.build(record_params)
-    if record.save
-      serialized_data = RecordSerializer.new(record).serializable_hash[:data]
-      render json: serialized_data
+    record = @form.records.create(record_params)
+    params[:id] = record.id
+    if record.persisted?
+      show
     else
       render json: {errors: record.errors.full_messages}
     end
@@ -26,9 +26,9 @@ class RecordsController < ApplicationController
   end
 
   def show
-    record = @form.records.find_by(id: params[:id]).includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
+    record = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record).find_by(id: params[:id])
     if stale?(record,public:true)
-      render json: RecordSerializer.new(record)
+      render json: RecordSerializer.new(record).serializable_hash[:data]
     end
   end
 

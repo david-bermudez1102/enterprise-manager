@@ -76,7 +76,14 @@ class RecordsHeader extends Component {
   };
 
   render() {
-    const { match, recordFields, resource } = this.props;
+    const {
+      match,
+      recordFields,
+      resource,
+      selectAllRecords,
+      sortedRecords,
+      allChecked
+    } = this.props;
     const { orders } = this.state;
     const defaultOrder = orders.find(order => order.recordFieldId === 0);
     return (
@@ -104,6 +111,28 @@ class RecordsHeader extends Component {
               </button>
               #
             </span>
+          </th>
+          <th className="text-nowrap" style={{ verticalAlign: "middle" }}>
+            <div className="d-flex flex-nowrap align-items-center">
+              <div className="check mr-2">
+                <input
+                  type="checkbox"
+                  name={"selectedRecord"}
+                  id={`select_all`}
+                  onChange={() => selectAllRecords(sortedRecords)}
+                  checked={allChecked}
+                />
+                <label
+                  htmlFor={`select_all`}
+                  className="d-flex flex-nowrap m-0 p-0 align-items-center">
+                  <div className="box">
+                    <i className="fas fa-check"></i>
+                  </div>
+                </label>
+              </div>
+
+              <span className="">Options</span>
+            </div>
           </th>
           {recordFields.map(field => {
             const order = orders.find(

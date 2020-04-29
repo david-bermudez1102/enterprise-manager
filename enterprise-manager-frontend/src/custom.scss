@@ -112,6 +112,7 @@ select:-webkit-autofill:focus {
 html,
 body {
   height: 100% !important;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
@@ -182,4 +183,159 @@ body {
   height: 100%;
   top: 0px;
   position: relative;
+}
+
+.check input {
+  display: none;
+}
+
+.check input:checked+label .box {
+  -webkit-animation: animOnTransform 1s 1 forwards;
+  animation: animOnTransform 1s 1 forwards;
+  background: #40e0d0;
+  color: #fff;
+}
+
+.check input:checked+label .box i {
+  -webkit-transform: translate(25%, -50%) scale(1);
+  transform: translate(25%, -50%) scale(1);
+  -webkit-transition-duration: 200ms;
+  transition-duration: 200ms;
+  -webkit-transition-delay: 400ms;
+  transition-delay: 400ms;
+  opacity: 1;
+}
+
+.check label .box {
+  cursor: pointer;
+  background: rgba(109, 109, 109, 0.2);
+  border-radius: 5px;
+  width: 16px;
+  height: 16px;
+  -webkit-transition: background 300ms ease;
+  transition: background 300ms ease;
+}
+
+.check label .box:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.check label .box i {
+  font-size: 10px;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  -webkit-transition-delay: 200ms;
+  transition-delay: 200ms;
+  -webkit-transform: translate(-50%, -50%) scale(4);
+  transform: translate(-50%, -50%) scale(4);
+}
+
+@-webkit-keyframes animOn {
+  40% {
+    height: 20px;
+    width: 100px;
+  }
+
+  50% {
+    height: 60px;
+    width: 30px;
+  }
+
+  60% {
+    height: 40px;
+    width: 70px;
+  }
+
+  70% {
+    height: 55px;
+    width: 45px;
+  }
+
+  100% {
+    height: 50px;
+    width: 50px;
+  }
+}
+
+@keyframes animOn {
+  40% {
+    height: 20px;
+    width: 100px;
+  }
+
+  50% {
+    height: 60px;
+    width: 30px;
+  }
+
+  60% {
+    height: 40px;
+    width: 70px;
+  }
+
+  70% {
+    height: 55px;
+    width: 45px;
+  }
+
+  100% {
+    height: 50px;
+    width: 50px;
+  }
+}
+
+@-webkit-keyframes animOnTransform {
+  40% {
+    -webkit-transform: scale(1.5, 0.5);
+    transform: scale(1.5, 0.5);
+  }
+
+  50% {
+    -webkit-transform: scale(0.5, 1.5);
+    transform: scale(0.5, 1.5);
+  }
+
+  60% {
+    -webkit-transform: scale(1.3, 0.6);
+    transform: scale(1.3, 0.6);
+  }
+
+  70% {
+    -webkit-transform: scale(0.8, 1.2);
+    transform: scale(0.8, 1.2);
+  }
+
+  100% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes animOnTransform {
+  40% {
+    -webkit-transform: scale(1.5, 0.5);
+    transform: scale(1.5, 0.5);
+  }
+
+  50% {
+    -webkit-transform: scale(0.5, 1.5);
+    transform: scale(0.5, 1.5);
+  }
+
+  60% {
+    -webkit-transform: scale(1.3, 0.6);
+    transform: scale(1.3, 0.6);
+  }
+
+  70% {
+    -webkit-transform: scale(0.8, 1.2);
+    transform: scale(0.8, 1.2);
+  }
+
+  100% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
 }

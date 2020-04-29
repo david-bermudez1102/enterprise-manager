@@ -46,12 +46,10 @@ const FieldsList = props => {
   return (
     <>
       <CardHeader>
-        <span
-          className="card-title display-4 mb-0 text-light"
-          style={{ fontSize: "32px" }}>
+        <h2 className="d-inline-flex flex-nowrap">
           <i className="fas fa-folder-plus mr-2"></i>
           Add {pluralize.singular(resource.name)}
-        </span>
+        </h2>
         <span className="card-title text-light">
           <Link to={`${match.url}/fields/new`} title="Add new field">
             <i className="fad fa-plus-circle" style={{ fontSize: "24px" }}></i>

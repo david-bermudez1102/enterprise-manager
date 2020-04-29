@@ -39,7 +39,7 @@ class RecordCell extends Component {
           verticalAlign: "middle"
         }}>
         {editing ? (
-          <div className="position-relative w-100">
+          <div className="position-relative w-100 d-flex flex-nowrap align-items-center">
             {value[0] ? (
               <CellForm
                 value={value[0]}

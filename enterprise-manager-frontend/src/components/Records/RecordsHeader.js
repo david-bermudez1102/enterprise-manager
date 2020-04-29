@@ -90,29 +90,8 @@ class RecordsHeader extends Component {
       <thead>
         <tr>
           <th
-            key={cuid()}
-            className="w-auto text-truncate"
-            style={{ maxWidth: "30px" }}>
-            <span className="d-flex w-100 align-items-center">
-              <button
-                className="btn btn-transparent px-0 pr-1 shadow-none text-primary"
-                onClick={() => this.handleSortBy(0)}>
-                {defaultOrder && defaultOrder.usedToSort ? (
-                  !defaultOrder.ascendant ? (
-                    <i
-                      className="fad fa-sort fa-swap-opacity"
-                      title="Sort Ascendant"></i>
-                  ) : (
-                    <i className="fad fa-sort" title="Sort Descendant"></i>
-                  )
-                ) : (
-                  <i className="fas fa-sort" title="Sort Ascendant"></i>
-                )}
-              </button>
-              #
-            </span>
-          </th>
-          <th className="text-nowrap" style={{ verticalAlign: "middle" }}>
+            className="text-nowrap"
+            style={{ verticalAlign: "middle", width: "1%", maxWidth: "100%" }}>
             <div className="d-flex flex-nowrap align-items-center">
               <div className="check mr-2">
                 <input
@@ -130,9 +109,31 @@ class RecordsHeader extends Component {
                   </div>
                 </label>
               </div>
-
-              <span className="">Options</span>
+              <span>Options</span>
             </div>
+          </th>
+          <th
+            key={cuid()}
+            className="text-truncate"
+            style={{ width: "1%", maxWidth: "100%" }}>
+            <span className="d-flex w-100 align-items-center">
+              <button
+                className="btn btn-transparent px-0 pr-1 shadow-none text-primary"
+                onClick={() => this.handleSortBy(0)}>
+                {defaultOrder && defaultOrder.usedToSort ? (
+                  !defaultOrder.ascendant ? (
+                    <i className="fad fa-sort-alt" title="Sort Ascendant"></i>
+                  ) : (
+                    <i
+                      className="fad fa-sort-alt fa-swap-opacity"
+                      title="Sort Descendant"></i>
+                  )
+                ) : (
+                  <i className="fas fa-sort-alt" title="Sort Ascendant"></i>
+                )}
+              </button>
+              #
+            </span>
           </th>
           {recordFields.map(field => {
             const order = orders.find(
@@ -147,13 +148,15 @@ class RecordsHeader extends Component {
                     {order && order.usedToSort ? (
                       !order.ascendant ? (
                         <i
-                          className="fad fa-sort fa-swap-opacity"
+                          className="fad fa-sort-alt"
                           title="Sort Ascendant"></i>
                       ) : (
-                        <i className="fad fa-sort" title="Sort Descendant"></i>
+                        <i
+                          className="fad fa-sort-alt fa-swap-opacity"
+                          title="Sort Descendant"></i>
                       )
                     ) : (
-                      <i className="fas fa-sort" title="Sort Ascendant"></i>
+                      <i className="fas fa-sort-alt" title="Sort Ascendant"></i>
                     )}
                   </button>
                   {capitalize(field.name)}

@@ -11,19 +11,22 @@ class AdminContainer extends Component {
 
     return (
       <>
-        {organizations.length === 0 ? <Redirect push to="/organizations/new" /> : null}
+        {organizations.length === 0 ? (
+          <Redirect push to="/organizations/new" />
+        ) : null}
         {admins.length === 0 ? (
           <div className="row d-flex h-100 align-items-center justify-content-center">
             <div className="col-xl-5 col-lg-6 col-md-6 px-0">
               <FormCard
                 header={
-                  <span className="card-title mb-0 text-white">
-                    <h2>
-                      <i className="fas fa-user-shield mr-2"></i>Create Root Admin
-                    </h2>
-                  </span>
+                  <h2>
+                    <i className="fas fa-user-shield mr-2"></i>Create Root Admin
+                  </h2>
                 }>
-                <AdminForm addAdmin={this.props.addAdmin} organizationId={organizations[0].id} />
+                <AdminForm
+                  addAdmin={this.props.addAdmin}
+                  organizationId={organizations[0].id}
+                />
               </FormCard>
             </div>
           </div>

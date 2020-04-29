@@ -37,7 +37,7 @@ const FieldsContainer = props => {
             <div className="col-lg-4">
               <FormCard
                 header={
-                  <h2 className="card-title mb-0 text-white">
+                  <h2>
                     <i className="fad fa-plus-circle mr-2"></i>Add Field to{" "}
                     {plural(resource.name)}
                   </h2>

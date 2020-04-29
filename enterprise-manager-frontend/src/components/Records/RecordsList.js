@@ -10,13 +10,8 @@ import { handleSortByF } from "./RecordsSort/handleSortBy";
 import { sortBy } from "./RecordsSort/sortBy";
 import { useSelectRecords } from "./hooks/useSelectRecords";
 
-const RecordsList = ({
-  sortedRecords,
-  records,
-  recordFields,
-  values,
-  resource
-}) => {
+const RecordsList = props => {
+  const { sortedRecords, records, recordFields, values, resource } = props;
   const location = useLocation();
   const history = useHistory();
   const match = useRouteMatch();
@@ -90,11 +85,7 @@ const RecordsList = ({
       <table className="table mb-0 table-hover border-0">
         <RecordsHeader
           {...{
-            sortedRecords,
-            records,
-            recordFields,
-            values,
-            resource,
+            ...props,
             match,
             recordsSortedBy,
             handleSortBy,

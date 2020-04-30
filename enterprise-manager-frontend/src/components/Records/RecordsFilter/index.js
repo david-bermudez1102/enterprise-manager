@@ -1,14 +1,17 @@
 import React from "react";
-import cuid from "cuid";
 import FilterCell from "./FilterCell";
 
-const RecordsFilter = ({ recordFields }) => {
+const RecordsFilter = ({ recordFields, filterRecords }) => {
   return (
     <tr>
       <th className="text-truncate"></th>
       <th className="w-auto text-truncate"></th>
       {recordFields.map(recordField => (
-        <FilterCell key={cuid()} recordField={recordField} />
+        <FilterCell
+          key={`recordField_${recordField.id}`}
+          recordField={recordField}
+          filterRecords={filterRecords}
+        />
       ))}
     </tr>
   );

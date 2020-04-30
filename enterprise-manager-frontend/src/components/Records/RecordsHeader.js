@@ -82,6 +82,7 @@ class RecordsHeader extends Component {
       resource,
       selectAllRecords,
       sortedRecords,
+      filteredRecords,
       allChecked
     } = this.props;
     const { orders } = this.state;
@@ -98,7 +99,9 @@ class RecordsHeader extends Component {
                   type="checkbox"
                   name={"selectedRecord"}
                   id={`select_all`}
-                  onChange={() => selectAllRecords(sortedRecords)}
+                  onChange={() =>
+                    selectAllRecords(filteredRecords || sortedRecords)
+                  }
                   checked={allChecked}
                 />
                 <label
@@ -113,7 +116,6 @@ class RecordsHeader extends Component {
             </div>
           </th>
           <th
-            key={cuid()}
             className="text-truncate"
             style={{ width: "1%", maxWidth: "100%" }}>
             <span className="d-flex w-100 align-items-center">
@@ -140,7 +142,9 @@ class RecordsHeader extends Component {
               order => order.recordFieldId === field.id
             );
             return field.formId === resource.id ? (
-              <th key={cuid()} className="text-nowrap position-relative">
+              <th
+                key={`record_field_head_${field.id}`}
+                className="text-nowrap position-relative">
                 <span className="d-flex w-100 align-items-center">
                   <button
                     className="btn btn-transparent px-0 pr-1 shadow-none text-primary"

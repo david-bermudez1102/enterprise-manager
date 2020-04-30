@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Record from "./Record";
-import cuid from "cuid";
 import RecordsHeader from "./RecordsHeader";
 import { useSelector, useDispatch } from "react-redux";
 import Pagination from "../Pagination";
@@ -10,6 +9,7 @@ import { handleSortByF } from "./RecordsSort/handleSortBy";
 import { sortBy } from "./RecordsSort/sortBy";
 import { useSelectRecords } from "./hooks/useSelectRecords";
 import RecordsFilter from "./RecordsFilter";
+import { useFilterRecords } from "./hooks/useFilterRecords";
 
 const RecordsList = props => {
   const { sortedRecords, records, recordFields, values, resource } = props;
@@ -35,25 +35,32 @@ const RecordsList = props => {
   }, [dispatch, records, values, resource, sortedRecords]);
 
   const [paginationLimit, setPaginationLimit] = useState(pagination.limit);
+  const { filteredRecords, filterRecords } = useFilterRecords({
+    sortedRecords,
+    values
+  });
   const {
     selectRecord,
     selectAllRecords,
     checked,
     allChecked
-  } = useSelectRecords({ sortedRecords });
+  } = useSelectRecords({ sortedRecords, filteredRecords });
 
   const [chunkOfRecords, setChunkOfRecords] = useState(
     chunk(sortedRecords, paginationLimit)
   );
 
   useEffect(() => {
-    setChunkOfRecords(chunk(sortedRecords, paginationLimit));
-  }, [sortedRecords, paginationLimit]);
+    setChunkOfRecords(chunk(filteredRecords || sortedRecords, paginationLimit));
+  }, [filteredRecords || sortedRecords, paginationLimit]);
 
   useEffect(() => {
     if (pagination.limit !== paginationLimit) {
       const currentValue = chunkOfRecords[page - 1][0];
-      const newChunk = chunk(sortedRecords, pagination.limit);
+      const newChunk = chunk(
+        filteredRecords || sortedRecords,
+        pagination.limit
+      );
       setPaginationLimit(pagination.limit);
       history.replace(
         `${location.pathname}?page=${newChunk.findIndex(e =>
@@ -64,6 +71,7 @@ const RecordsList = props => {
   }, [
     pagination.limit,
     paginationLimit,
+    filteredRecords,
     chunkOfRecords,
     history,
     page,
@@ -87,6 +95,7 @@ const RecordsList = props => {
         <RecordsHeader
           {...{
             ...props,
+            filteredRecords,
             match,
             recordsSortedBy,
             handleSortBy,
@@ -95,14 +104,14 @@ const RecordsList = props => {
           }}
         />
         <tbody>
-          <RecordsFilter {...props} />
+          <RecordsFilter {...props} filterRecords={filterRecords} />
           {chunkOfRecords[page - 1]
-            ? chunkOfRecords[page - 1].map(record =>
+            ? chunkOfRecords[page - 1].map((record, id) =>
                 record.formId === resource.id ? (
                   <Record
-                    key={cuid()}
+                    key={`record_key_${id}`}
                     record={record}
-                    checked={checked.find(r => r === record.id)}
+                    checked={checked.find(r => r === record.id) || false}
                     selectRecord={selectRecord}
                     recordFields={recordFields}
                     resourceId={resource.id}

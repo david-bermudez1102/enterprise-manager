@@ -1,9 +1,8 @@
 import React from "react";
 
 const InputGroup = ({ children }) => {
-  console.log(children[1].props.className);
   return (
-    <div className="form-group m-0 ml-n2 row no-gutters flex-nowrap p-0">
+    <div className="form-group m-0 ml-n2 row no-gutters flex-nowrap p-0 w-100">
       <div className="col-auto my-auto h-100" style={{ zIndex: 2 }}>
         <button
           disabled
@@ -15,7 +14,7 @@ const InputGroup = ({ children }) => {
           })}
         </button>
       </div>
-      <div className="col col-sm-11 w-100">
+      <div className="col col-sm-12">
         {React.cloneElement(children[1], {
           className: `${children[1].props.className} pl-3`
         })}

@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import InputGroup from "../../InputGroup";
 
-const FilterCell = ({ recordField }) => {
+const FilterCell = props => {
+  const [value, setValue] = useState("");
+  const handleChange = e => {
+    e.persist();
+    setValue(e.target.value);
+    props.filterRecords(e.target.value, props.recordField.id);
+  };
+  console.log(value);
+
   return (
     <td
       className="text-nowrap"
@@ -15,9 +23,11 @@ const FilterCell = ({ recordField }) => {
           <i className="fas fa-filter"></i>
           <input
             type="text"
-            id={`filter_field_${recordField.id}`}
+            id={`filter_field_${props.recordField.id}`}
             className="form-control form-control-sm border-top-0 border-left-0 border-right-0 shadow-none bg-transparent"
+            onChange={handleChange}
             style={{ zIndex: 1, borderRadius: 0 }}
+            value={value}
           />
         </InputGroup>
       </div>

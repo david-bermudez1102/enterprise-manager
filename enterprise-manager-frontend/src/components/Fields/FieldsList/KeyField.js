@@ -25,8 +25,6 @@ const KeyField = props => {
       ) || generateKeyValue();
   }
 
-  console.log(props.fields, props.state);
-
   return (
     <input {...props} type="text" value={keyValue ? keyValue.value : ""} />
   );

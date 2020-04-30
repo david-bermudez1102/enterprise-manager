@@ -36,4 +36,4 @@ const RecordOptions = ({ record, checked, selectRecord }) => {
     </div>
   );
 };
-export default RecordOptions;
+export default React.memo(RecordOptions);

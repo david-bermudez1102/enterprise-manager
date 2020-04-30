@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 import InputGroup from "../../InputGroup";
 
 const FilterCell = props => {
@@ -8,7 +8,6 @@ const FilterCell = props => {
     setValue(e.target.value);
     props.filterRecords(e.target.value, props.recordField.id);
   };
-  console.log(value);
 
   return (
     <td
@@ -35,4 +34,4 @@ const FilterCell = props => {
   );
 };
 
-export default FilterCell;
+export default React.memo(FilterCell);

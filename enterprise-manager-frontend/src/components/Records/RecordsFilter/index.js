@@ -16,4 +16,4 @@ const RecordsFilter = ({ recordFields, filterRecords }) => {
     </tr>
   );
 };
-export default RecordsFilter;
+export default React.memo(RecordsFilter);

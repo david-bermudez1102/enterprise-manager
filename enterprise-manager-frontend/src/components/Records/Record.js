@@ -1,5 +1,4 @@
 import React from "react";
-import cuid from "cuid";
 import RecordCell from "./RecordCell";
 import RecordOptions from "./RecordOptions";
 
@@ -27,7 +26,7 @@ const Record = ({
         .filter(recordField => recordField.formId === resourceId)
         .map(recordField => (
           <RecordCell
-            key={cuid()}
+            key={`record_cell_${recordField.id}`}
             recordField={recordField}
             values={values}
             record={record}
@@ -36,4 +35,4 @@ const Record = ({
     </tr>
   );
 };
-export default Record;
+export default React.memo(Record);

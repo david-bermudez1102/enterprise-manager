@@ -126,4 +126,4 @@ const RecordsList = props => {
   );
 };
 
-export default RecordsList;
+export default React.memo(RecordsList);

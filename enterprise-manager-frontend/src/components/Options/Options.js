@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { DeletionModal } from "../Modal/Modals";
 import ToggleContent from "../ToggleContent";
 
-export default class Options extends Component {
+export default class Options extends PureComponent {
   constructor(props) {
     super(props);
     this.state = { isOpen: false };

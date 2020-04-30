@@ -165,4 +165,4 @@ const Pagination = ({ resource, page }) => {
     </div>
   );
 };
-export default Pagination;
+export default React.memo(Pagination);

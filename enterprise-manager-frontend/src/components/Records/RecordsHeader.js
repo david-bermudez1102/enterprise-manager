@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import cuid from "cuid";
+import React, { PureComponent } from "react";
 import Options from "../Options/Options";
 import capitalize from "capitalize";
 
-class RecordsHeader extends Component {
+class RecordsHeader extends PureComponent {
   constructor(props) {
     super(props);
     this.state = { orders: [] };

@@ -1,8 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { addZohoResources, updateAllContacts } from "../../actions/zohoBooksActions";
+import {
+  addZohoResources,
+  updateAllContacts
+} from "../../actions/zohoBooksActions";
 
-class RecordsOptions extends Component {
+class RecordsOptions extends PureComponent {
   render() {
     const { addZohoResources, updateAllContacts, resource } = this.props;
     if (!resource.zohoConnection) return null;
@@ -10,7 +13,8 @@ class RecordsOptions extends Component {
     return (
       <div className="pb-2 d-flex sticky-top w-100 bg-white">
         <button className="btn btn-sm btn-info m-2 shadow">
-          <i className="fas fa-sync mr-2"></i>Synchronize {connectionType} with Zoho
+          <i className="fas fa-sync mr-2"></i>Synchronize {connectionType} with
+          Zoho
         </button>
         <button
           className="btn btn-sm btn-info m-2 shadow"
@@ -43,4 +47,6 @@ class RecordsOptions extends Component {
   }
 }
 
-export default connect(null, { addZohoResources, updateAllContacts })(RecordsOptions);
+export default connect(null, { addZohoResources, updateAllContacts })(
+  RecordsOptions
+);

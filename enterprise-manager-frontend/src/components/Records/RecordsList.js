@@ -9,6 +9,7 @@ import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
 import { handleSortByF } from "./RecordsSort/handleSortBy";
 import { sortBy } from "./RecordsSort/sortBy";
 import { useSelectRecords } from "./hooks/useSelectRecords";
+import RecordsFilter from "./RecordsFilter";
 
 const RecordsList = props => {
   const { sortedRecords, records, recordFields, values, resource } = props;
@@ -94,6 +95,7 @@ const RecordsList = props => {
           }}
         />
         <tbody>
+          <RecordsFilter {...props} />
           {chunkOfRecords[page - 1]
             ? chunkOfRecords[page - 1].map(record =>
                 record.formId === resource.id ? (

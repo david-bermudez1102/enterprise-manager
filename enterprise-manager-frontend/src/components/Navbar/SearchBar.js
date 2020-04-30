@@ -21,7 +21,10 @@ const SearchBar = ({ organization }) => {
             style={{ zIndex: 1 }}
             required
           />
-          <label className="form-control-placeholder" htmlFor="query" style={{ marginLeft: "-4.8em" }}>
+          <label
+            className="form-control-placeholder"
+            htmlFor="query"
+            style={{ marginLeft: "-4.8em" }}>
             Search
           </label>
         </div>

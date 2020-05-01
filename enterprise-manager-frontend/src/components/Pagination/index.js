@@ -13,6 +13,7 @@ const limitOptions = [
 
 const Pagination = ({ resource, page }) => {
   const pagination = useSelector(state => state.pagination);
+
   const pagesCount = Math.ceil(resource.recordsCount / pagination.limit);
   const pages =
     pagesCount > 5

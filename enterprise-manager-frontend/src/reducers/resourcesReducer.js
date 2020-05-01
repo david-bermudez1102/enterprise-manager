@@ -29,7 +29,7 @@ export const resourcesReducer = (state = [], action) => {
       return [
         ...state.map(r =>
           r.id === parseInt(action.formId)
-            ? { ...r, recordsCount: r.recordsCount + 1 }
+            ? { ...r, recordsCount: action.recordsCount }
             : r
         )
       ];

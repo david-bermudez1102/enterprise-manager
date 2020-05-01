@@ -1,92 +1,56 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import Record from "./Record";
 import RecordsHeader from "./RecordsHeader";
-import { useSelector, useDispatch } from "react-redux";
 import Pagination from "../Pagination";
-import { chunk } from "lodash";
-import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
-import { handleSortByF } from "./RecordsSort/handleSortBy";
-import { sortBy } from "./RecordsSort/sortBy";
 import { useSelectRecords } from "./hooks/useSelectRecords";
 import RecordsFilter from "./RecordsFilter";
 import { useFilterRecords } from "./hooks/useFilterRecords";
+import { useChangePage } from "./hooks/useChangePage";
+import workerInstance from "../../workers/workerActions";
+import {
+  setRecordsSortedBy,
+  setSortedRecords,
+} from "../../actions/recordActions";
+import { addInfoAlert } from "../../actions/alertsActions";
 
-const RecordsList = props => {
+const RecordsList = (props) => {
   const { sortedRecords, records, recordFields, values, resource } = props;
-  const location = useLocation();
-  const history = useHistory();
-  const match = useRouteMatch();
-  const dispatch = useDispatch();
-  const queryParams = new URLSearchParams(location.search);
-  const { pagination, recordsSortedBy } = useSelector(state => state);
-
-  const page =
-    parseInt(queryParams.get("page")) >
-      Math.ceil(resource.recordsCount / pagination.limit) ||
-    !queryParams.get("page")
-      ? 1
-      : parseInt(queryParams.get("page"));
+  const { filteredRecords, filterRecords } = useFilterRecords({
+    sortedRecords,
+    values,
+  });
+  const {
+    chunkOfRecords,
+    recordsSortedBy,
+    page,
+    match,
+    dispatch,
+  } = useChangePage({ ...props, filteredRecords });
 
   const allRecordsRef = useRef();
 
-  useEffect(() => {
-    if (sortedRecords.length < records.length)
-      sortBy(0, records, values, false, resource, dispatch);
-  }, [dispatch, records, values, resource, sortedRecords]);
-
-  const [paginationLimit, setPaginationLimit] = useState(pagination.limit);
-  const { filteredRecords, filterRecords } = useFilterRecords({
-    sortedRecords,
-    values
-  });
   const {
     selectRecord,
     selectAllRecords,
     checked,
-    allChecked
+    allChecked,
   } = useSelectRecords({ sortedRecords, filteredRecords });
 
-  const [chunkOfRecords, setChunkOfRecords] = useState(
-    chunk(sortedRecords, paginationLimit)
-  );
-
-  useEffect(() => {
-    setChunkOfRecords(chunk(filteredRecords || sortedRecords, paginationLimit));
-  }, [filteredRecords || sortedRecords, paginationLimit]);
-
-  useEffect(() => {
-    if (pagination.limit !== paginationLimit) {
-      const currentValue = chunkOfRecords[page - 1][0];
-      const newChunk = chunk(
-        filteredRecords || sortedRecords,
-        pagination.limit
-      );
-      setPaginationLimit(pagination.limit);
-      history.replace(
-        `${location.pathname}?page=${newChunk.findIndex(e =>
-          e.includes(currentValue)
-        ) + 1}`
-      );
-    }
-  }, [
-    pagination.limit,
-    paginationLimit,
-    filteredRecords,
-    chunkOfRecords,
-    history,
-    page,
-    location.pathname,
-    sortedRecords
-  ]);
-
-  const handleSortBy = useCallback((recordFieldId, orders) => {
-    handleSortByF(recordFieldId, orders, resource, records, values, dispatch);
+  const handleSortBy = (recordFieldId, orders) => {
+    workerInstance
+      .handleSortBy(recordFieldId, orders, resource, records, values)
+      .then(({ id, recordFieldId, sortedRecords, message }) => {
+        dispatch(setRecordsSortedBy({ id, recordFieldId, orders }));
+        if (sortedRecords)
+          dispatch(setSortedRecords(sortedRecords, resource.id));
+        if (message) dispatch(addInfoAlert([message]));
+      });
     // eslint-disable-next-line
-  }, []);
+  };
 
   useEffect(() => {
     allRecordsRef.current.scrollIntoView();
-  }, [page]);
+  }, [page, match]);
 
   return (
     <div ref={allRecordsRef} className="table-responsive">
@@ -100,7 +64,7 @@ const RecordsList = props => {
             recordsSortedBy,
             handleSortBy,
             selectAllRecords,
-            allChecked
+            allChecked,
           }}
         />
         <tbody>
@@ -111,7 +75,7 @@ const RecordsList = props => {
                   <Record
                     key={`record_key_${id}`}
                     record={record}
-                    checked={checked.find(r => r === record.id) || false}
+                    checked={checked.find((r) => r === record.id) || false}
                     selectRecord={selectRecord}
                     recordFields={recordFields}
                     resourceId={resource.id}

@@ -1,7 +1,7 @@
 import { sortBy } from "./sortBy";
 import { setRecordsSortedBy } from "../../../actions/recordActions";
 
-export const handleSortByF = (
+export const handleSortBy = (
   recordFieldId,
   orders,
   resource,
@@ -9,6 +9,15 @@ export const handleSortByF = (
   values,
   dispatch
 ) => {
+  if (
+    /* eslint-disable-next-line no-restricted-globals */
+    self.WorkerGlobalScope
+  ) {
+    console.log("huzzah! a worker!");
+  } else {
+    console.log("window");
+  }
+
   const order = orders.find(order => order.recordFieldId === recordFieldId);
   sortBy(
     recordFieldId,

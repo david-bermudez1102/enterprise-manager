@@ -7,6 +7,7 @@ class RecordsController < ApplicationController
   def create
     record = @form.records.create(record_params)
     params[:id] = record.id
+    params[:records_count] = @form.records_count
     if record.persisted?
       show
     else
@@ -28,7 +29,7 @@ class RecordsController < ApplicationController
   def show
     record = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record).find_by(id: params[:id])
     if stale?(record,public:true)
-      render json: RecordSerializer.new(record).serializable_hash[:data]
+      render json: RecordSerializer.new(record, params:{ records_count: params[:records_count]}).serializable_hash[:data]
     end
   end
 

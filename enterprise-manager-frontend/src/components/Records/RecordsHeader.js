@@ -11,7 +11,7 @@ class RecordsHeader extends PureComponent {
   componentDidMount() {
     const { recordFields, resource, recordsSortedBy } = this.props;
     const currentRecordsSortedBy = recordsSortedBy.find(
-      r => r.id === resource.id
+      (r) => r.id === resource.id
     );
     this.setState({
       orders: currentRecordsSortedBy
@@ -19,22 +19,22 @@ class RecordsHeader extends PureComponent {
         : [
             { recordFieldId: 0, ascendant: false, usedToSort: true },
             ...recordFields
-              .filter(field => field.formId === resource.id)
-              .map(field => {
+              .filter((field) => field.formId === resource.id)
+              .map((field) => {
                 return {
                   recordFieldId: field.id,
                   ascendant: true,
-                  usedToSort: false
+                  usedToSort: false,
                 };
-              })
-          ]
+              }),
+          ],
     });
   }
 
   componentDidUpdate(prevProps) {
     const { recordFields, resource, recordsSortedBy } = this.props;
     const currentRecordsSortedBy = recordsSortedBy.find(
-      r => r.id === resource.id
+      (r) => r.id === resource.id
     );
     if (prevProps.recordFields !== recordFields)
       this.setState({
@@ -43,32 +43,32 @@ class RecordsHeader extends PureComponent {
           : [
               { recordFieldId: 0, ascendant: false, usedToSort: true },
               ...recordFields
-                .filter(field => field.formId === resource.id)
-                .map(field => {
+                .filter((field) => field.formId === resource.id)
+                .map((field) => {
                   return {
                     recordFieldId: field.id,
                     ascendant: true,
-                    usedToSort: false
+                    usedToSort: false,
                   };
-                })
-            ]
+                }),
+            ],
       });
   }
 
-  handleSortBy = fieldId => {
+  handleSortBy = (fieldId) => {
     this.setState(
       {
         orders: [
-          ...this.state.orders.map(order =>
+          ...this.state.orders.map((order) =>
             order.recordFieldId === fieldId
               ? {
                   ...order,
                   ascendant: order.ascendant ? false : true,
-                  usedToSort: true
+                  usedToSort: true,
                 }
               : { ...order, ascendant: true, usedToSort: false }
-          )
-        ]
+          ),
+        ],
       },
       () => this.props.handleSortBy(fieldId, this.state.orders)
     );
@@ -82,10 +82,10 @@ class RecordsHeader extends PureComponent {
       selectAllRecords,
       sortedRecords,
       filteredRecords,
-      allChecked
+      allChecked,
     } = this.props;
     const { orders } = this.state;
-    const defaultOrder = orders.find(order => order.recordFieldId === 0);
+    const defaultOrder = orders.find((order) => order.recordFieldId === 0);
     return (
       <thead>
         <tr>
@@ -136,9 +136,9 @@ class RecordsHeader extends PureComponent {
               #
             </span>
           </th>
-          {recordFields.map(field => {
+          {recordFields.map((field) => {
             const order = orders.find(
-              order => order.recordFieldId === field.id
+              (order) => order.recordFieldId === field.id
             );
             return field.formId === resource.id ? (
               <th

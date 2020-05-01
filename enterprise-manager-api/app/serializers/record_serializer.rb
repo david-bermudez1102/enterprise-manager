@@ -10,6 +10,12 @@ class RecordSerializer
     end
   end
 
+  attribute :records_count, if: Proc.new { |record, params|
+    params && !params[:records_count].nil?
+  } do |record|
+    record.form.records_count
+  end
+
   attribute :quickbooks_record_id do |obj|
     if obj.quickbooks_integration_record
       obj.quickbooks_integration_record.external_id

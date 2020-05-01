@@ -11,22 +11,9 @@ import { fetchRecords } from "../../actions/recordActions";
 
 const RecordsContainer = props => {
   const { resource, match } = props;
-  const recordFields = useSelector(state =>
-    state.recordFields.filter(f => f.formId === resource.id)
+  const { recordFields, records, sortedRecords, values } = useSelector(
+    state => state
   );
-
-  const records = useSelector(s =>
-    s.records.filter(record => record.formId === resource.id)
-  );
-
-  const sortedRecords = useSelector(s =>
-    s.sortedRecords.filter(r => r.formId === resource.id)
-  );
-
-  const values = useSelector(s =>
-    s.values.filter(value => value.formId === resource.id)
-  );
-
   const dispatch = useDispatch();
 
   const [listHeight, setListHeight] = useState();
@@ -70,11 +57,15 @@ const RecordsContainer = props => {
                 {records.length > 0 ? (
                   <ReactHeight onHeightReady={height => setListHeight(height)}>
                     <RecordsList
-                      recordFields={recordFields}
+                      recordFields={recordFields.filter(
+                        f => f.formId === resource.id
+                      )}
                       resource={resource}
-                      records={records}
-                      sortedRecords={sortedRecords}
-                      values={values}
+                      records={records.filter(f => f.formId === resource.id)}
+                      sortedRecords={sortedRecords.filter(
+                        f => f.formId === resource.id
+                      )}
+                      values={values.filter(f => f.formId === resource.id)}
                     />
                   </ReactHeight>
                 ) : (

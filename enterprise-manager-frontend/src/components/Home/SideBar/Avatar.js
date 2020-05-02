@@ -7,14 +7,14 @@ const Avatar = ({ currentUser, size }) => {
       className="circular--landscape shadow"
       style={{
         width: size + "px",
-        height: size + "px"
+        height: size + "px",
       }}>
       {currentUser.avatar ? (
         <div
           className="w-100 h-100"
           style={{
             marginLeft: (currentUser.avatar.margin_left * size) / 150 + "px",
-            marginTop: (currentUser.avatar.margin_top * size) / 150 + "px"
+            marginTop: (currentUser.avatar.margin_top * size) / 150 + "px",
           }}>
           <img
             src={`http://localhost:3001/${currentUser.avatar.url}`}
@@ -24,7 +24,11 @@ const Avatar = ({ currentUser, size }) => {
           />
         </div>
       ) : (
-        <img src={defaultAvatar} alt={currentUser.name} title={currentUser.name} />
+        <img
+          src={defaultAvatar}
+          alt={currentUser.name}
+          title={currentUser.name}
+        />
       )}
     </div>
   );

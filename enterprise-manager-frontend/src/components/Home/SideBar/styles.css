@@ -25,21 +25,42 @@
   transition: all 40ms ease-out;
 }
 
-.fade-appear {
+.sidebar-fade-enter {
+  width: 100%;
+}
+
+.sidebar-fade-enter-done {
+  width: auto;
+  transition: all 40ms ease-out;
+}
+
+.sidebar-fade-exit {
+  width: auto;
+  overflow: hidden;
+}
+
+.sidebar-fade-exit-done {
+  width: 100%;
+  overflow: hidden;
+  transition: all 40ms ease-in-out;
+}
+
+.hide-text-enter {
   opacity: 0;
 }
 
-.fade-appear-done {
+.hide-text-enter-done {
   opacity: 1;
-  transition: opacity 40ms ease;
+
+  transition: all 40ms ease-in;
 }
 
-.fade-exit {
+.hide-text-exit {
   opacity: 1;
+
 }
 
-.fade-exit-done {
+.hide-text-exit-done {
   opacity: 0;
-  display: none;
-  transition: all 50ms ease-in-out;
+  transition: all 40ms ease-out;
 }

@@ -21,22 +21,22 @@ class RecordCell extends Component {
       record,
       addValue,
       updateValue,
-      session
+      session,
     } = this.props;
     const { editing } = this.state;
     const value = values.filter(
-      value =>
+      (value) =>
         value.recordFieldId === recordField.id && value.recordId === record.id
     );
-    const content = value.map(value => value.content)[0];
+    const content = value.map((value) => value.content)[0];
     return (
       <td
         onClick={this.handleClick}
-        className="text-nowrap"
+        className="text-nowrap border-0"
         style={{
           color: "#3c4858",
           fontSize: "15px",
-          verticalAlign: "middle"
+          verticalAlign: "middle",
         }}>
         {editing ? (
           <div className="position-relative w-100 d-flex flex-nowrap align-items-center">

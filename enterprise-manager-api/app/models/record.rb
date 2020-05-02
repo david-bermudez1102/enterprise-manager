@@ -24,6 +24,6 @@ class Record < ApplicationRecord
   end
 
   def cache_key
-    "/records/#{id}-#{form.size}-#{values.size}-#{updated_at.to_i}"
+    "/records/#{id}-#{form.records_count}-#{values.size}-#{updated_at.to_i}"
   end
 end

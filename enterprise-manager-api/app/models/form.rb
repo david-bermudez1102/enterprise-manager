@@ -53,6 +53,10 @@ class Form < ApplicationRecord
     end
   end
 
+  def records_count
+    records.select(:id).where(:is_deleted => false).size
+  end
+
   def cache_key
     "/forms/#{id}-#{records_count}-#{updated_at}"
   end

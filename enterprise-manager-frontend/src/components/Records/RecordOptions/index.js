@@ -1,7 +1,11 @@
 import React from "react";
 import ZohoBooks from "../../../containers/ZohoBooks/favicon.ico";
+import { useDispatch, useSelector } from "react-redux";
+import { removeRecord } from "../../../actions/recordActions";
 
 const RecordOptions = ({ record, checked, selectRecord }) => {
+  const dispatch = useDispatch();
+  const { session } = useSelector((s) => s);
   return (
     <div className="d-flex flex-nowrap align-items-center">
       <div className="check mr-2">
@@ -22,7 +26,17 @@ const RecordOptions = ({ record, checked, selectRecord }) => {
       </div>
 
       <button className="btn btn-transparent p-0 d-block-inline">
-        <i className="fad fa-trash-alt text-danger mr-2"></i>
+        <i
+          className="fad fa-trash-alt text-danger mr-2"
+          onClick={() =>
+            dispatch(
+              removeRecord(
+                session.currentUser.organizationId,
+                record.formId,
+                record.id
+              )
+            )
+          }></i>
       </button>
       <button className="btn btn-transparent p-0 d-block-inline">
         <i className="fad fa-archive text-info mr-2"></i>

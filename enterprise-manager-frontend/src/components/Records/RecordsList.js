@@ -42,7 +42,7 @@ const RecordsList = (props) => {
   return (
     <div ref={allRecordsRef} className="table-responsive">
       <Pagination resource={resource} page={page} />
-      <table className="table mb-0 table-hover border-0">
+      <table className="table table-striped mb-0 table-hover border-0">
         <RecordsHeader
           {...{
             ...props,

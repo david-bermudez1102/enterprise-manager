@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_24_211527) do
+ActiveRecord::Schema.define(version: 2020_05_02_024148) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -223,6 +223,7 @@ ActiveRecord::Schema.define(version: 2020_04_24_211527) do
     t.integer "form_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_deleted", default: false, null: false
     t.index ["form_id"], name: "index_records_on_form_id"
   end
 

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import InputGroup from "../../InputGroup";
 
-const FilterCell = props => {
+const FilterCell = (props) => {
   const [value, setValue] = useState("");
-  const handleChange = e => {
+  const handleChange = (e) => {
     e.persist();
     setValue(e.target.value);
     props.filterRecords(e.target.value, props.recordField.id);
@@ -11,11 +11,11 @@ const FilterCell = props => {
 
   return (
     <td
-      className="text-nowrap"
+      className="text-nowrap bg-white"
       style={{
         color: "#3c4858",
         fontSize: "15px",
-        verticalAlign: "middle"
+        verticalAlign: "middle",
       }}>
       <div className="position-relative w-100 d-flex flex-nowrap align-items-center">
         <InputGroup>

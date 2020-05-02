@@ -1,9 +1,10 @@
 import { handleErrors } from "./handleErrors";
 import snakecaseKeys from "snakecase-keys";
 import workerInstance from "../workers/workerActions";
+import { remove } from "./fetchActions";
 
 export const addRecord = (record, organizationId, formId) => {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
     fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/records`, {
       method: "POST",
@@ -14,8 +15,8 @@ export const addRecord = (record, organizationId, formId) => {
       body: JSON.stringify(snakecaseKeys({ record })),
     })
       .then(handleErrors)
-      .then((response) => response.json())
-      .then((record) => {
+      .then(response => response.json())
+      .then(record => {
         if (!record.errors) {
           dispatch({
             type: "ADD_RECORD",
@@ -40,7 +41,7 @@ export const addRecord = (record, organizationId, formId) => {
           return;
         }
       })
-      .then((values) => dispatch({ type: "ADD_VALUES", values }))
+      .then(values => dispatch({ type: "ADD_VALUES", values }))
       .catch(console.log);
   };
 };
@@ -59,10 +60,26 @@ export const fetchRecords = (organizationId, formId, offset) => {
 };
 
 export const setSortedRecords = (records, formId) => {
-  return (dispatch) =>
-    dispatch({ type: "SET_SORTED_RECORDS", records, formId });
+  return dispatch => dispatch({ type: "SET_SORTED_RECORDS", records, formId });
 };
 
-export const setRecordsSortedBy = (resource) => {
-  return (dispatch) => dispatch({ type: "SET_SORTED_BY", resource });
+export const setRecordsSortedBy = resource => {
+  return dispatch => dispatch({ type: "SET_SORTED_BY", resource });
+};
+
+export const removeRecord = (organizationId, formId, id) => {
+  return dispatch =>
+    remove(
+      dispatch,
+      `/api/v1/organizations/${organizationId}/forms/${formId}/records/${id}`,
+      id,
+      "REMOVE_RECORD",
+      { type: "REMOVE_VALUES", recordId: id }
+    ).then(resp =>
+      dispatch({
+        type: "UPDATE_RECORDS_COUNT",
+        formId,
+        recordsCount: resp.records_count,
+      })
+    );
 };

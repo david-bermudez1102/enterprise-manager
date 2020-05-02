@@ -232,6 +232,14 @@ body {
   transform: translate(-50%, -50%) scale(4);
 }
 
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: $light !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #fff !important;
+}
+
 @-webkit-keyframes animOn {
   40% {
     height: 20px;

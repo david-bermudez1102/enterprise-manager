@@ -5,4 +5,5 @@
   "editor.tabSize": 2,
   "editor.fontSize": 17,
   "editor.fontLigatures": true,
+  "prettier.arrowParens": "avoid",
 }

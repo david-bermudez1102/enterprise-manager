@@ -4,9 +4,9 @@ import FilterCell from "./FilterCell";
 const RecordsFilter = ({ recordFields, filterRecords }) => {
   return (
     <tr>
-      <th className="text-truncate"></th>
-      <th className="w-auto text-truncate"></th>
-      {recordFields.map(recordField => (
+      <th className="text-truncate bg-white"></th>
+      <th className="w-auto text-truncate bg-white"></th>
+      {recordFields.map((recordField) => (
         <FilterCell
           key={`recordField_${recordField.id}`}
           recordField={recordField}

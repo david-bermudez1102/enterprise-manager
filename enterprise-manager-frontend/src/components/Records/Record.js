@@ -8,23 +8,25 @@ const Record = ({
   values,
   resourceId,
   checked,
-  selectRecord
+  selectRecord,
 }) => {
   return (
     <tr>
-      <th className="text-truncate">
+      <th className="text-truncate border-0">
         <RecordOptions
           record={record}
           checked={checked}
           selectRecord={selectRecord}
         />
       </th>
-      <th className="w-auto text-truncate" style={{ maxWidth: "30px" }}>
+      <th
+        className="w-auto text-truncate border-0"
+        style={{ maxWidth: "30px" }}>
         {record.listingId}
       </th>
       {recordFields
-        .filter(recordField => recordField.formId === resourceId)
-        .map(recordField => (
+        .filter((recordField) => recordField.formId === resourceId)
+        .map((recordField) => (
           <RecordCell
             key={`record_cell_${recordField.id}`}
             recordField={recordField}

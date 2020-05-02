@@ -1,6 +1,7 @@
 class RecordsController < ApplicationController
   before_action :set_organization
   before_action :set_form
+  before_action :set_is_deleted, only: %i[show index]
   # before_action :set_limit, only: %i[index]
   # before_action :set_offset, only: %i[index]
   
@@ -16,7 +17,7 @@ class RecordsController < ApplicationController
   end
 
   def index
-    records = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
+    records = @form.records.where(is_deleted: @is_deleted).includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
     if stale?(records, public:true)
       serialized_data = RecordSerializer.new(records).serializable_hash[:data]
       serialized_data.each.with_index(1) do |data, i| 
@@ -30,6 +31,17 @@ class RecordsController < ApplicationController
     record = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record).find_by(id: params[:id])
     if stale?(record,public:true)
       render json: RecordSerializer.new(record, params:{ records_count: params[:records_count]}).serializable_hash[:data]
+    end
+  end
+
+  def destroy
+    record = @form.records.find_by(id: params[:id])
+    if record.is_deleted && record.destroy
+      render json: { id: params[:id], messages: ['Record was removed from'], destroyed: true, records_count:record.form.records_count }
+    elsif record.update(is_deleted: true)
+      render json: { id: params[:id], messages: ['Success'], archived: true, records_count:record.form.records_count }
+    else
+      render json: { errors: record.errors.full_messages }
     end
   end
 
@@ -47,6 +59,14 @@ class RecordsController < ApplicationController
 
   def set_form
     @form = @organization.forms.find_by(id: params[:form_id])
+  end
+
+  def set_is_deleted
+    if params[:deleted] && params[:deleted] == true
+      @is_deleted = true
+    else
+      @is_deleted = false
+    end
   end
 
   def set_limit

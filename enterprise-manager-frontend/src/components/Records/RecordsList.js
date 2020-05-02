@@ -6,12 +6,7 @@ import { useSelectRecords } from "./hooks/useSelectRecords";
 import RecordsFilter from "./RecordsFilter";
 import { useFilterRecords } from "./hooks/useFilterRecords";
 import { useChangePage } from "./hooks/useChangePage";
-import workerInstance from "../../workers/workerActions";
-import {
-  setRecordsSortedBy,
-  setSortedRecords,
-} from "../../actions/recordActions";
-import { addInfoAlert } from "../../actions/alertsActions";
+import recordsSort from "./RecordsSort";
 
 const RecordsList = (props) => {
   const { sortedRecords, records, recordFields, values, resource } = props;
@@ -37,15 +32,7 @@ const RecordsList = (props) => {
   } = useSelectRecords({ sortedRecords, filteredRecords });
 
   const handleSortBy = (recordFieldId, orders) => {
-    workerInstance
-      .handleSortBy(recordFieldId, orders, resource, records, values)
-      .then(({ id, recordFieldId, sortedRecords, message }) => {
-        dispatch(setRecordsSortedBy({ id, recordFieldId, orders }));
-        if (sortedRecords)
-          dispatch(setSortedRecords(sortedRecords, resource.id));
-        if (message) dispatch(addInfoAlert([message]));
-      });
-    // eslint-disable-next-line
+    recordsSort(recordFieldId, orders, resource, records, values, dispatch);
   };
 
   useEffect(() => {

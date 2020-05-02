@@ -120,7 +120,7 @@ class RecordsHeader extends PureComponent {
             <span className="d-flex w-100 align-items-center">
               <button
                 className="btn btn-transparent px-0 pr-1 shadow-none text-primary"
-                onClick={() => this.handleSortBy(0)}>
+                onClick={() => this.handleSortBy(0, orders)}>
                 {defaultOrder && defaultOrder.usedToSort ? (
                   !defaultOrder.ascendant ? (
                     <i className="fad fa-sort-alt" title="Sort Ascendant"></i>
@@ -147,7 +147,7 @@ class RecordsHeader extends PureComponent {
                 <span className="d-flex w-100 align-items-center">
                   <button
                     className="btn btn-transparent px-0 pr-1 shadow-none text-primary"
-                    onClick={() => this.handleSortBy(field.id)}>
+                    onClick={() => this.handleSortBy(field.id, orders)}>
                     {order && order.usedToSort ? (
                       !order.ascendant ? (
                         <i

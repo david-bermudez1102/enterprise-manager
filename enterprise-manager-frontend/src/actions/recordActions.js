@@ -50,7 +50,7 @@ export const fetchRecords = (organizationId, formId, offset) => {
   return (dispatch, getState) => {
     const { records, values } = getState();
     workerInstance
-      .fetchRecordsWithWorker({ records, values }, formId, organizationId)
+      .fetchRecords({ records, values }, formId, organizationId)
       .then(({ records, values }) => {
         dispatch({ type: "FETCH_RECORDS", records });
         dispatch({ type: "FETCH_VALUES", values });

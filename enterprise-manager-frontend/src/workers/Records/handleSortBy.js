@@ -1,13 +1,11 @@
-import { sortBy } from "./sortBy";
-import { setRecordsSortedBy } from "../../../actions/recordActions";
+import * as sortByWorker from "./sortBy.js";
 
 export const handleSortBy = (
   recordFieldId,
   orders,
   resource,
   records,
-  values,
-  dispatch
+  values
 ) => {
   if (
     /* eslint-disable-next-line no-restricted-globals */
@@ -18,20 +16,13 @@ export const handleSortBy = (
     console.log("window");
   }
 
-  const order = orders.find(order => order.recordFieldId === recordFieldId);
-  sortBy(
+  const order = orders.find((order) => order.recordFieldId === recordFieldId);
+  const { sortedRecords, message } = sortByWorker.sortBy(
     recordFieldId,
     records,
     values,
     order ? order.ascendant : false,
-    resource,
-    dispatch
+    resource
   );
-  dispatch(
-    setRecordsSortedBy({
-      id: resource.id,
-      recordFieldId,
-      orders
-    })
-  );
+  return { id: resource.id, recordFieldId, sortedRecords, orders, message };
 };

@@ -6,7 +6,7 @@ import {
   addManager,
   addEmployee,
   updateAccount,
-  removeAccount
+  removeAccount,
 } from "../../actions/accountActions";
 import AdminsList from "../../components/Accounts/AdminsList";
 import ManagersList from "../../components/Accounts/ManagersList";
@@ -50,10 +50,11 @@ class AccountsContainer extends Component {
       addAdmin,
       updateAccount,
       removeAccount,
-      session
+      session,
     } = this.props;
     const managers = accounts.filter(account => account.type === "Manager");
     const employees = accounts.filter(account => account.type === "Employee");
+    if (!session.isLoggedIn) return null;
     return (
       <div className="row">
         <div className="col-lg-5 pr-0">
@@ -69,13 +70,21 @@ class AccountsContainer extends Component {
             {accounts.length > 0 ? (
               <Route
                 path={`${match.path}/:accountId/delete`}
-                render={props => <AccountDelete {...props} removeAccount={removeAccount} accounts={accounts} />}
+                render={props => (
+                  <AccountDelete
+                    {...props}
+                    removeAccount={removeAccount}
+                    accounts={accounts}
+                  />
+                )}
               />
             ) : null}
             <Route
               path={`${match.path}/:accountId/edit`}
               render={props => {
-                const account = accounts.find(acc => acc.id === parseInt(props.match.params.accountId));
+                const account = accounts.find(
+                  acc => acc.id === parseInt(props.match.params.accountId)
+                );
                 return account ? (
                   <FormCard
                     header={
@@ -96,15 +105,23 @@ class AccountsContainer extends Component {
             <Route
               path={`${match.path}/:accountId/disable`}
               render={props => {
-                const account = accounts.find(acc => acc.id === parseInt(props.match.params.accountId));
-                return account ? <AccountDisable url={match.path} account={account} /> : null;
+                const account = accounts.find(
+                  acc => acc.id === parseInt(props.match.params.accountId)
+                );
+                return account ? (
+                  <AccountDisable url={match.path} account={account} />
+                ) : null;
               }}
             />
             <Route
               path={`${match.path}/:accountId/unlock`}
               render={props => {
-                const account = accounts.find(acc => acc.id === parseInt(props.match.params.accountId));
-                return account ? <AccountUnlock url={match.path} account={account} /> : null;
+                const account = accounts.find(
+                  acc => acc.id === parseInt(props.match.params.accountId)
+                );
+                return account ? (
+                  <AccountUnlock url={match.path} account={account} />
+                ) : null;
               }}
             />
             <Route
@@ -154,5 +171,5 @@ export default connect(mapStateToProps, {
   addEmployee,
   addAdmin,
   updateAccount,
-  removeAccount
+  removeAccount,
 })(AccountsContainer);

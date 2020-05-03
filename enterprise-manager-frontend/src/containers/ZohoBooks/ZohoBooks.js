@@ -10,7 +10,7 @@ class ZohoBooks extends Component {
     const query = new URLSearchParams(location.search);
     this.state = {
       code: query.get("code"),
-      status: "loading"
+      status: "loading",
     };
   }
 
@@ -20,9 +20,9 @@ class ZohoBooks extends Component {
     fetch(`/api/v1/organizations/${organization.id}/zoho_books/zoho_token`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ zoho_books: { code } })
+      body: JSON.stringify({ zoho_books: { code } }),
     })
       .then(resp => resp.json())
       .then(resp => {
@@ -34,8 +34,8 @@ class ZohoBooks extends Component {
           {
             zoho_integration_attributes: {
               auth_token: resp.access_token,
-              refresh_token: resp.refresh_token
-            }
+              refresh_token: resp.refresh_token,
+            },
           },
           organization.id
         )
@@ -46,6 +46,7 @@ class ZohoBooks extends Component {
 
   render() {
     const { redirectTo } = this.props;
+
     return this.state.status === "done" ? <Redirect to={redirectTo} /> : null;
   }
 }

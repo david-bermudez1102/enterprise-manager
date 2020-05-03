@@ -8,9 +8,9 @@ export const addSession = data => {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
+        Accept: "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     };
     return fetch("/api/v1/sessions", configObj)
       .then(handleErrors)
@@ -21,13 +21,13 @@ export const addSession = data => {
           dispatch({
             type: "ADD_SESSION",
             isLoggedIn: true,
-            currentUser: account.data.attributes
+            currentUser: account.data.attributes,
           });
           return account;
         } else {
           dispatch({
             type: "ADD_ERRORS",
-            errors: account.errors
+            errors: account.errors,
           });
           return account;
         }
@@ -38,16 +38,18 @@ export const addSession = data => {
 
 export const fetchSession = () => {
   return dispatch => {
+    dispatch({ type: "CLEAR_ALERTS" });
     fetch("/api/v1/current_user", {
-      credentials: "include"
+      credentials: "include",
     })
+      .then(handleErrors)
       .then(response => response.json())
       .then(account =>
         !account.errors
           ? dispatch({
               type: "ADD_SESSION",
               isLoggedIn: true,
-              currentUser: account.data.attributes
+              currentUser: account.data.attributes,
             })
           : null
       )
@@ -59,13 +61,13 @@ export const removeSession = () => {
   return dispatch => {
     fetch("api/v1/delete_session", {
       method: "DELETE",
-      credentials: "include"
+      credentials: "include",
     })
       .then(response => response.json())
       .then(data =>
         !data.error
           ? dispatch({
-              type: "REMOVE_SESSION"
+              type: "REMOVE_SESSION",
             })
           : null
       )

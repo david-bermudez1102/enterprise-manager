@@ -11,8 +11,8 @@ import AllRecordsContainer from "./Records/AllRecordsContainer";
 import { FormCard } from "../components/Cards/Cards";
 
 const OrganizationContainer = props => {
-  const { match, admins, session } = props;
-  const { organizations, resources } = useSelector(s => s);
+  const { match } = props;
+  const { organizations, resources, session, admins } = useSelector(s => s);
   const [loaded, setLoaded] = useState(false);
   const mounted = useRef();
   const dispatch = useDispatch();
@@ -21,13 +21,21 @@ const OrganizationContainer = props => {
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
+      setLoaded(false);
+      if (organizations.length > 0 && session.isLoggedIn)
+        dispatch(fetchResources(organizations[0].id)).then(() =>
+          setLoaded(true)
+        );
     } else {
-      if (organizations.length > 0)
-        fetchResources(organizations[0].id).then(() => setLoaded(true));
-      if (organizations.length > 0 && admins.length === 0)
+      setLoaded(false);
+      if (organizations.length > 0 && session.isLoggedIn)
+        dispatch(fetchResources(organizations[0].id)).then(() =>
+          setLoaded(true)
+        );
+      if (organizations.length > 0 && admins.length === 0 && session.isLoggedIn)
         history.push("/accounts/new");
     }
-  }, [admins, organizations]);
+  }, [admins, organizations, dispatch, history, session]);
 
   return (
     <Switch>

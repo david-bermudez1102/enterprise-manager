@@ -12,13 +12,10 @@ import Footer from "../../components/Footer/Footer";
 import ResetPassword from "../../components/Accounts/ResetPassword";
 import Home from "../../components/Home";
 import useSession from "./Hooks/useSession";
+import { useSelector } from "react-redux";
 
-const HomeContainer = ({
-  organizations,
-  admins,
-  addSession,
-  removeSession,
-}) => {
+const HomeContainer = ({ addSession }) => {
+  const { organizations, admins } = useSelector(s => s);
   const location = useLocation();
   const session = useSession();
 
@@ -68,10 +65,7 @@ const HomeContainer = ({
                 />
               )}
             />
-            <Route
-              path={`/logout`}
-              render={() => <LogoutContainer removeSession={removeSession} />}
-            />
+            <Route path={`/logout`} render={() => <LogoutContainer />} />
             <Route path="/accounts/new">
               <AdminContainer organizations={organizations} admins={admins} />
             </Route>

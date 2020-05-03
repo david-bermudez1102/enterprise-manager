@@ -19,7 +19,7 @@ const SideBar = ({ session, organizations }) => {
   return (
     <CSSTransition in={!minimized} timeout={40} classNames="slider" appear>
       <div
-        className="sidebar position-relative pt-0 bg-secondary shadow text-light vh-100 sticky-top"
+        className="sidebar pt-0 bg-secondary shadow text-light vh-100 sticky-top"
         style={{ fontSize: "16px" }}>
         <nav
           className="px-0 py-0 nav nav-dark nav-pills flex-column h-100 d-flex"
@@ -28,7 +28,7 @@ const SideBar = ({ session, organizations }) => {
             style={{ width: "101%" }}
             onMouseEnter={openSideBar}
             onMouseLeave={closeSideBar}>
-            <div style={{ marginLeft: "-1%" }}>
+            <div style={{ marginLeft: "-1%", position: "sticky" }}>
               <SidebarHeader
                 currentUser={session.currentUser}
                 minimized={minimized}

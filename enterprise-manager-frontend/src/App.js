@@ -3,26 +3,24 @@ import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
-import { fetchAdmins } from "./actions/adminActions";
-import {
-  addSession,
-  removeSession,
-  fetchSession,
-} from "./actions/sessionActions";
+import { addSession, fetchSession } from "./actions/sessionActions";
 import Footer from "./components/Footer/Footer";
 import HomeContainer from "./containers/Home/HomeContainer";
+import { fetchAdmins } from "./actions/adminActions";
 
 const App = props => {
-  const { addSession, removeSession } = props;
-  const { organizations, admins, session } = useSelector(s => s);
+  const { addSession } = props;
+  const { organizations, session } = useSelector(s => s);
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchOrganizations())
-      .then(() => dispatch(fetchAdmins()))
-      .then(() => dispatch(fetchSession()))
-      .then(() => setLoaded(true));
+    dispatch(fetchOrganizations()).then(() => {
+      if (organizations.length > 0) {
+        dispatch(fetchAdmins());
+        dispatch(fetchSession()).then(() => setLoaded(true));
+      }
+    });
     // eslint-disable-next-line
   }, []);
 
@@ -37,13 +35,7 @@ const App = props => {
             <Route
               path="/"
               render={props => (
-                <HomeContainer
-                  organizations={organizations}
-                  {...props}
-                  admins={admins}
-                  addSession={addSession}
-                  removeSession={removeSession}
-                />
+                <HomeContainer {...props} addSession={addSession} />
               )}
             />
           </Switch>
@@ -58,5 +50,4 @@ const App = props => {
 
 export default connect(null, {
   addSession,
-  removeSession,
 })(App);

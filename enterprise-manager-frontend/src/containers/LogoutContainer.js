@@ -1,12 +1,22 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { removeSession } from "../actions/sessionActions";
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
-export default class LogoutContainer extends Component {
-  componentDidMount() {
-    this.props.removeSession()
-  }
+const LogoutContainer = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { session } = useSelector(s => s);
 
-  render() {
-    return <Redirect push to="/" />;
-  }
-}
+  useEffect(() => {
+    if (session.isLoggedIn)
+      dispatch(removeSession()).then(data => {
+        return data.message === "success" ? history.push("/") : null;
+      });
+    // eslint-disable-next-line
+  }, []);
+
+  return null;
+};
+
+export default LogoutContainer;

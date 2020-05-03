@@ -37,9 +37,9 @@ export const addSession = data => {
 };
 
 export const fetchSession = () => {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({ type: "CLEAR_ALERTS" });
-    fetch("/api/v1/current_user", {
+    return fetch("/api/v1/current_user", {
       credentials: "include",
     })
       .then(handleErrors)
@@ -51,6 +51,10 @@ export const fetchSession = () => {
               isLoggedIn: true,
               currentUser: account.data.attributes,
             })
+          : getState().session.isLoggedIn
+          ? dispatch({
+              type: "REMOVE_SESSION",
+            })
           : null
       )
       .catch(console.log);
@@ -59,18 +63,13 @@ export const fetchSession = () => {
 
 export const removeSession = () => {
   return dispatch => {
-    fetch("api/v1/delete_session", {
+    return fetch("api/v1/delete_session", {
       method: "DELETE",
       credentials: "include",
     })
+      .then(handleErrors)
       .then(response => response.json())
-      .then(data =>
-        !data.error
-          ? dispatch({
-              type: "REMOVE_SESSION",
-            })
-          : null
-      )
+      .then(data => data)
       .catch(console.log);
   };
 };

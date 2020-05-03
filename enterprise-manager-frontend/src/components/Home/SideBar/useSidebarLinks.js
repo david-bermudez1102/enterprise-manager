@@ -26,7 +26,7 @@ const useSidebarLinks = ({ organization }) => {
       levels: ["admin"],
     },
     {
-      path: `/organizations${organization.id}/records`,
+      path: `/organizations/${organization.id}/records`,
       className: `${navLinkClass}`,
       text: "Records",
       icon: "fas fa-th-list",

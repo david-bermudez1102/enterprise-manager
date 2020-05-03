@@ -13,15 +13,14 @@ const useSession = () => {
 
   useEffect(() => {
     dispatch(fetchSession());
-    // eslint-disable-next-line
-  }, [location]);
+  }, [dispatch, location]);
 
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
     } else {
       if (location.state)
-        if (location.state.loginFailed)
+        if (location.state.loginFailed && !routes.includes(location.pathname))
           dispatch({
             type: "ADD_ERRORS",
             errors: ["You need to login to view the page requested."],

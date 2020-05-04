@@ -14,45 +14,45 @@ class Navbar extends Component {
           path: "/login",
           text: "Login",
           icon: "fas fa-sign-in-alt",
-          loginRequired: false
+          loginRequired: false,
         },
         {
           path: "/",
           text: "Home",
           icon: "fas fa-home",
-          loginRequired: true
+          loginRequired: true,
         },
         {
           path: `/organizations/${props.organizations[0].id}/resources/new`,
           text: "Add Resource",
           icon: "fas fa-plus",
-          loginRequired: true
+          loginRequired: true,
         },
         {
           path: `/organizations/${props.organizations[0].id}/resources`,
           text: "Resources",
           icon: "fas fa-layer-group",
-          loginRequired: true
+          loginRequired: true,
         },
         {
           path: `/organizations/${props.organizations[0].id}/settings`,
           text: "Settings",
           icon: "fas fa-cog",
-          loginRequired: true
+          loginRequired: true,
         },
         {
           path: `/notifications`,
           text: "Notifications",
           icon: "fas fa-bell",
-          loginRequired: true
+          loginRequired: true,
         },
         {
           path: "/logout",
           icon: "fas fa-sign-out-alt",
           text: "Logout",
-          loginRequired: true
-        }
-      ]
+          loginRequired: true,
+        },
+      ],
     };
   }
 
@@ -64,18 +64,31 @@ class Navbar extends Component {
     const { session, organizations } = this.props;
     const { collapse, links } = this.state;
 
-    const collapseClassName = collapse ? "collapse navbar-collapse d-block" : "collapse navbar-collapse";
+    const collapseClassName = collapse
+      ? "collapse navbar-collapse d-block"
+      : "collapse navbar-collapse";
     return (
-      <nav className="navbar navbar-expand-md navbar-light bg-white shadow-sm py-0 text-center">
-        <div className={session.isLoggedIn ? "container-fluid p-0" : "container"}>
+      <nav
+        className="navbar navbar-expand-md navbar-light bg-white shadow-sm py-0 text-center"
+        style={{ zIndex: 4 }}>
+        <div
+          className={session.isLoggedIn ? "container-fluid p-0" : "container"}>
           <NavLink to="#" className="navbar-brand">
             <Logo organization={organizations[0]} width={180} height={40} />
           </NavLink>
-          <button className="navbar-toggler" type="button" onClick={this.collapse}>
+          <button
+            className="navbar-toggler"
+            type="button"
+            onClick={this.collapse}>
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className={collapseClassName} id="navbarNav">
-            <div className={`w-100 d-flex ${session.isLoggedIn ? "justify-content-between" : "justify-content-end"}`}>
+            <div
+              className={`w-100 d-flex ${
+                session.isLoggedIn
+                  ? "justify-content-between"
+                  : "justify-content-end"
+              }`}>
               {session.isLoggedIn ? (
                 <div className="w-50 d-flex order-sm-last order-md-last">
                   <SearchBar organization={organizations[0]} />
@@ -101,7 +114,11 @@ class Navbar extends Component {
                   : links.map(link =>
                       !link.loginRequired ? (
                         <li className="nav-item" key={cuid()}>
-                          <NavLink to={link.path} exact className="nav-link" activeClassName="active bg-light">
+                          <NavLink
+                            to={link.path}
+                            exact
+                            className="nav-link"
+                            activeClassName="active bg-light">
                             <i className={link.icon}></i> {link.text}
                           </NavLink>
                         </li>

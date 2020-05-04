@@ -16,10 +16,9 @@ const App = props => {
 
   useEffect(() => {
     dispatch(fetchOrganizations()).then(() => {
-      if (organizations.length > 0) {
-        dispatch(fetchAdmins());
-        dispatch(fetchSession()).then(() => setLoaded(true));
-      }
+      dispatch(fetchAdmins()).then(() =>
+        dispatch(fetchSession()).then(() => setLoaded(true))
+      );
     });
     // eslint-disable-next-line
   }, []);
@@ -32,7 +31,7 @@ const App = props => {
             <Navbar session={session} organizations={organizations} />
           ) : null}
           <Switch>
-            <Route path="/" render={() => <HomeContainer />} />
+            <Route path="/" component={HomeContainer} />
           </Switch>
           {organizations[0] && !session.isLoggedIn ? (
             <Footer organization={organizations[0]} session={session} />

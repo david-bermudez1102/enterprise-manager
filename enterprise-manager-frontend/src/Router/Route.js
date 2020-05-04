@@ -1,12 +1,18 @@
 import React from "react";
 import { Route as ReactRoute } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function Route(props) {
   const { routes } = useSelector(s => s);
   const dispatch = useDispatch();
-  if (!routes.includes(props.path))
-    dispatch({ type: "ADD_ROUTE", path: props.path });
+
+  useEffect(() => {
+    if (!routes.includes(props.path))
+      dispatch({ type: "ADD_ROUTE", path: props.path });
+    // eslint-disable-next-line
+  }, []);
+
   return <ReactRoute {...props} />;
 }
 

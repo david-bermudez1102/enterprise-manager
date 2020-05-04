@@ -1,7 +1,6 @@
 import { useLocation, matchPath } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const useMatchedRoute = () => {
   const { routes } = useSelector(s => s);
@@ -23,6 +22,11 @@ const useMatchedRoute = () => {
       setRoutesList(null);
     }
   }, [routesList, location]);
+
+  useEffect(() => {
+    if (!matched) setMatched(true);
+    // eslint-disable-next-line
+  }, [location]);
 
   return matched;
 };

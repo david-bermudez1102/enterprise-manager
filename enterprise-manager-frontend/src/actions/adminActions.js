@@ -6,17 +6,20 @@ export const addAdmin = admin => {
     fetch("/api/v1/admins", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(admin)
+      body: JSON.stringify(admin),
     })
       .then(response => response.json())
       .then(admin => {
         if (!admin.errors) {
-          dispatch({ type: "ADD_ADMIN", admin: camelcaseKeys(admin.data.attributes) });
+          dispatch({
+            type: "ADD_ADMIN",
+            admin: camelcaseKeys(admin.data.attributes),
+          });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: admin.messages || ["Account was successfully created."]
+            messages: admin.messages || ["Account was successfully created."],
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: admin.errors });
@@ -32,17 +35,23 @@ export const updateAdmin = (admin, adminId) => {
     fetch(`/api/v1/admins/${adminId}`, {
       credentials: "include",
       method: "PATCH",
-      body: jsonToFormData({ admin })
+      body: jsonToFormData({ admin }),
     })
       .then(response => response.json())
       .then(admin => {
         if (!admin.errors) {
-          console.log(admin.data.attributes);
-          dispatch({ type: "UPDATE_ADMIN", admin: camelcaseKeys(admin.data.attributes), adminId });
-          dispatch({ type: "UPDATE_SESSION", currentUser: camelcaseKeys(admin.data.attributes) });
+          dispatch({
+            type: "UPDATE_ADMIN",
+            admin: camelcaseKeys(admin.data.attributes),
+            adminId,
+          });
+          dispatch({
+            type: "UPDATE_SESSION",
+            currentUser: camelcaseKeys(admin.data.attributes),
+          });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: admin.messages || ["Profile updated successfully."]
+            messages: admin.messages || ["Profile updated successfully."],
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: admin.errors });

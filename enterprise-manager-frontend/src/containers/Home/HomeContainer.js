@@ -17,7 +17,7 @@ import Route from "../../Router/Route";
 import NoMatch from "../../components/NoMatch";
 import useMatchedRoute from "../../components/NoMatch/useMatchedRoute";
 
-const HomeContainer = props => {
+const HomeContainer = () => {
   const { organizations, admins } = useSelector(s => s);
   const location = useLocation();
   const session = useSession();
@@ -37,14 +37,14 @@ const HomeContainer = props => {
           organizations={organizations}
         />
       ) : null}
-      <div className="w-100 d-flex flex-column min-h-100 flex-wrap">
+      <div className="w-100 d-flex flex-column min-h-100 flex-nowrap">
         {session.isLoggedIn ? (
           <Navbar session={session} organizations={organizations} />
         ) : null}
         <main
           className={`${
             !session.isLoggedIn ? "h-100" : ""
-          } w-100 bg-transparent px-4 py-3 position-relative`}>
+          } w-100 bg-transparent px-4 py-3 position-relative h-100`}>
           {!matchedRoute ? <NoMatch /> : null}
           <Switch>
             <Route
@@ -92,7 +92,7 @@ const HomeContainer = props => {
                 )}
               />
             ) : null}
-            <Route exact path="/" render={props => <Home />} />
+            <Route exact path="/" component={Home} />
           </Switch>
         </main>
         {session.isLoggedIn ? (

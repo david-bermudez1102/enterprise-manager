@@ -16,7 +16,7 @@ const store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
 
 store.subscribe(
   throttle(() => {
-    const { session, ...newState } = store.getState();
+    const { session, routes, ...newState } = store.getState();
     saveState(newState);
   }, 1000)
 );

@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import ConnectionsForm from '../../components/Connections/ConnectionsForm';
-import { Switch, Route, Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { updateResource } from '../../actions/resourceActions';
-import ConnectionsList from '../../components/Connections/ConnectionsList';
-import { FormCard } from '../../components/Cards/Cards';
-import { NoContent } from '../../components/NoContent';
-import Alert from '../../components/Alerts/Alert';
+import React, { Component } from "react";
+import ConnectionsForm from "../../components/Connections/ConnectionsForm";
+import { Switch, Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { updateResource } from "../../actions/resourceActions";
+import ConnectionsList from "../../components/Connections/ConnectionsList";
+import { FormCard } from "../../components/Cards/Cards";
+import { NoContent } from "../../components/NoContent";
+import Alert from "../../components/Alerts/Alert";
+import Route from "../../Router/Route";
 
 class ConnectionsContainer extends Component {
   constructor() {
@@ -34,8 +35,8 @@ class ConnectionsContainer extends Component {
                 <FormCard
                   header={
                     <span
-                      className={'display-4 card-title mb-0'}
-                      style={{ fontSize: '32px' }}>
+                      className={"display-4 card-title mb-0"}
+                      style={{ fontSize: "32px" }}>
                       Connect to ZohoBooks
                     </span>
                   }>
@@ -54,11 +55,11 @@ class ConnectionsContainer extends Component {
                   ) : (
                     <NoContent>
                       This organization is not currently integrated with Zoho.
-                      Click{' '}
+                      Click{" "}
                       <Link
                         to={`/organizations/${organization.id}/settings/integrations/zoho_books/edit`}>
                         here
-                      </Link>{' '}
+                      </Link>{" "}
                       to integrate it.
                     </NoContent>
                   )}

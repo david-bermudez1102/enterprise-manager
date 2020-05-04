@@ -2,13 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import OrganizationForm from "../components/Organizations/OrganizationForm";
 import { useSelector, useDispatch } from "react-redux";
 import { addOrganization } from "../actions/organizationAction";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Switch, useHistory } from "react-router-dom";
 import ResourcesContainer from "./ResourceCreator/ResourcesContainer";
 import Organization from "../components/Organizations/Organization";
 import { fetchResources } from "../actions/resourceActions";
 import Settings from "./Settings/Settings";
 import AllRecordsContainer from "./Records/AllRecordsContainer";
 import { FormCard } from "../components/Cards/Cards";
+import Route from "../Router/Route";
 
 const OrganizationContainer = props => {
   const { match } = props;

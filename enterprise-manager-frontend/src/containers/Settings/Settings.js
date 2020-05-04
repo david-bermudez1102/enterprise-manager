@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Switch, Route, NavLink } from "react-router-dom";
+import { Switch, NavLink } from "react-router-dom";
 import Privileges from "../../components/Settings/Privileges";
 import Integrations from "../../components/Settings/Integrations";
 import AccountSettings from "../../components/Settings/AccountSettings";
 import cuid from "cuid";
+import Route from "../../Router/Route";
 
 class Settings extends Component {
   render() {
@@ -12,18 +13,18 @@ class Settings extends Component {
       {
         text: "Privileges",
         url: `${match.url}/privileges`,
-        icon: `fas fa-user-shield mr-2`
+        icon: `fas fa-user-shield mr-2`,
       },
       {
         text: "Integrations",
         url: `${match.url}/integrations`,
-        icon: `fas fa-network-wired mr-2`
+        icon: `fas fa-network-wired mr-2`,
       },
       {
         text: "Account Settings",
         url: `${match.url}/account`,
-        icon: `fas fa-user-cog mr-2`
-      }
+        icon: `fas fa-user-cog mr-2`,
+      },
     ];
     return (
       <div className="row">

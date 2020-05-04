@@ -11,7 +11,7 @@ import {
 import AdminsList from "../../components/Accounts/AdminsList";
 import ManagersList from "../../components/Accounts/ManagersList";
 import EmployeesList from "../../components/Accounts/EmployeesList";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import AccountForm from "../../components/Accounts/AccountForm";
 import { FormCard } from "../../components/Cards/Cards";
 import { addAdmin } from "../../actions/adminActions";
@@ -19,6 +19,7 @@ import Alert from "../../components/Alerts/Alert";
 import AccountDelete from "../../components/Accounts/AccountDelete";
 import AccountDisable from "../../components/Accounts/AccountDisable.js";
 import AccountUnlock from "../../components/Accounts/AccountUnlock";
+import Route from "../../Router/Route";
 
 class AccountsContainer extends Component {
   componentDidMount() {

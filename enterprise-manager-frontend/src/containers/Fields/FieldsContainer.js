@@ -1,6 +1,6 @@
 import React from "react";
 import FieldForm from "../../components/Fields/FieldForm";
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { updateField, removeField, addField } from "../../actions/fieldActions";
 import FieldDelete from "../../components/Fields/FieldDelete";
 import { FormCard } from "../../components/Cards/Cards";
@@ -8,8 +8,9 @@ import { plural } from "pluralize";
 import FieldsList from "../../components/Fields/FieldsList/FieldsList";
 import {
   addRecordField,
-  updateRecordField
+  updateRecordField,
 } from "../../actions/recordFieldActions";
+import Route from "../../Router/Route";
 
 const FieldsContainer = props => {
   const { match, location, organizationId, resource, fields } = props;

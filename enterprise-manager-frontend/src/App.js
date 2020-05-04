@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./components/Navbar/Navbar";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
-import { addSession, fetchSession } from "./actions/sessionActions";
+import { fetchSession } from "./actions/sessionActions";
 import Footer from "./components/Footer/Footer";
 import HomeContainer from "./containers/Home/HomeContainer";
 import { fetchAdmins } from "./actions/adminActions";
+import Route from "./Router/Route";
 
 const App = props => {
-  const { addSession } = props;
   const { organizations, session } = useSelector(s => s);
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
@@ -32,12 +32,7 @@ const App = props => {
             <Navbar session={session} organizations={organizations} />
           ) : null}
           <Switch>
-            <Route
-              path="/"
-              render={props => (
-                <HomeContainer {...props} addSession={addSession} />
-              )}
-            />
+            <Route path="/" render={() => <HomeContainer />} />
           </Switch>
           {organizations[0] && !session.isLoggedIn ? (
             <Footer organization={organizations[0]} session={session} />
@@ -48,6 +43,4 @@ const App = props => {
   );
 };
 
-export default connect(null, {
-  addSession,
-})(App);
+export default App;

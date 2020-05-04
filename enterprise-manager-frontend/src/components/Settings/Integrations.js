@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Link } from "react-router-dom";
 import ZohoBooksForm from "../Integrations/ZohoBooksForm";
 import { connect } from "react-redux";
 import { updateOrganization } from "../../actions/organizationAction";
@@ -7,6 +7,7 @@ import { FormCard } from "../Cards/Cards";
 import { NoContent } from "../NoContent";
 import zohoBooksIcon from "../../containers/ZohoBooks/favicon.ico";
 import Alert from "../Alerts/Alert";
+import Route from "../../Router/Route";
 
 class Integrations extends Component {
   render() {

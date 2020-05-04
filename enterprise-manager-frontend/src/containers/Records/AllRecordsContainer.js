@@ -1,23 +1,24 @@
 import React, { Component } from "react";
-import { Route, Switch, matchPath } from "react-router-dom";
+import { Switch, matchPath } from "react-router-dom";
 import RecordsResourcesList from "../../components/Records/RecordsPerResource/RecordsResourcesList";
 import RecordsList from "../../components/Records/RecordsList";
 import { connect } from "react-redux";
 import { fetchRecords } from "../../actions/recordActions";
 import {
   removeRecordField,
-  fetchRecordFields
+  fetchRecordFields,
 } from "../../actions/recordFieldActions";
 import { NoContent } from "../../components/NoContent";
+import Route from "../../Router/Route";
 
 class AllRecordsContainer extends Component {
   constructor(props) {
     super(props);
     const currentParams = matchPath(props.location.pathname, {
-      path: `/organizations/:organizationId/records/:resourceId`
+      path: `/organizations/:organizationId/records/:resourceId`,
     });
     this.state = {
-      resourceId: currentParams ? currentParams.params.resourceId : null
+      resourceId: currentParams ? currentParams.params.resourceId : null,
     };
   }
 
@@ -28,7 +29,7 @@ class AllRecordsContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.location.pathname !== this.props.location.pathname) {
       const currentParams = matchPath(this.props.location.pathname, {
-        path: `/organizations/:organizationId/records/:resourceId`
+        path: `/organizations/:organizationId/records/:resourceId`,
       });
       const resourceId = currentParams ? currentParams.params.resourceId : null;
       if (this.state.resourceId !== resourceId) this.handleFetch(resourceId);
@@ -80,5 +81,5 @@ const mapStateToProps = ({ records, values, recordFields, session }) => {
 export default connect(mapStateToProps, {
   fetchRecords,
   removeRecordField,
-  fetchRecordFields
+  fetchRecordFields,
 })(AllRecordsContainer);

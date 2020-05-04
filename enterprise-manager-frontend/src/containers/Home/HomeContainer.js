@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch, Redirect, useLocation } from "react-router-dom";
+import { Switch, Redirect, useLocation } from "react-router-dom";
 import SideBar from "../../components/Home/SideBar/SideBar";
 import Navbar from "../../components/Navbar/Navbar";
 import LoginContainer from "../LoginContainer";
@@ -13,11 +13,15 @@ import ResetPassword from "../../components/Accounts/ResetPassword";
 import Home from "../../components/Home";
 import useSession from "./Hooks/useSession";
 import { useSelector } from "react-redux";
+import Route from "../../Router/Route";
+import NoMatch from "../../components/NoMatch";
+import useMatchedRoute from "../../components/NoMatch/useMatchedRoute";
 
-const HomeContainer = ({ addSession }) => {
+const HomeContainer = props => {
   const { organizations, admins } = useSelector(s => s);
   const location = useLocation();
   const session = useSession();
+  const matchedRoute = useMatchedRoute();
 
   return (
     <div className="w-100 d-flex flex-grow-1">
@@ -41,6 +45,7 @@ const HomeContainer = ({ addSession }) => {
           className={`${
             !session.isLoggedIn ? "h-100" : ""
           } w-100 bg-transparent px-4 py-3 position-relative`}>
+          {!matchedRoute ? <NoMatch /> : null}
           <Switch>
             <Route
               path={`/organizations`}
@@ -60,7 +65,6 @@ const HomeContainer = ({ addSession }) => {
                   {...props}
                   admins={admins}
                   session={session}
-                  addSession={addSession}
                   organizations={organizations}
                 />
               )}

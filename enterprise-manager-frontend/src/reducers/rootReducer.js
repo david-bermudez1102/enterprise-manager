@@ -6,7 +6,7 @@ import { fieldsReducer } from "./fieldsReducer";
 import {
   recordsReducer,
   recordsSortedBy,
-  sortedRecords
+  sortedRecords,
 } from "./recordsReducer";
 import { valuesReducer } from "./valuesReducer";
 import { sessionReducer } from "./sessionReducer";
@@ -16,6 +16,7 @@ import { zohoBooksReducer } from "./zohoBooksReducer";
 import { alerts } from "./alertsReducer";
 import { token } from "./tokenReducer";
 import { pagination } from "./paginationReducer";
+import { routes } from "./routesReducer";
 
 const requesting = (state = false, action) => {
   switch (action.type) {
@@ -44,5 +45,6 @@ export const rootReducer = combineReducers({
   requesting,
   alerts,
   token,
-  pagination
+  pagination,
+  routes,
 });

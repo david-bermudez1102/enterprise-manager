@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
-import { Route, Switch } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   addResource,
   updateResource,
-  removeResource
+  removeResource,
 } from "../../actions/resourceActions";
 import ResourcesList from "../../components/Resources/ResourcesList";
 import Resource from "../../components/Resources/Resource";
@@ -13,6 +13,7 @@ import { FormCard } from "../../components/Cards/Cards";
 import ResourceDelete from "../../components/Resources/ResourceDelete";
 import ConnectionsContainer from "../Connections/ConnectionsContainer";
 import Alert from "../../components/Alerts/Alert";
+import Route from "../../Router/Route";
 
 class ResourcesContainer extends Component {
   render() {
@@ -24,7 +25,7 @@ class ResourcesContainer extends Component {
       removeResource,
       resources,
       location,
-      history
+      history,
     } = this.props;
     const { organizationId } = match.params;
     const isFieldsPath = location.pathname.includes("fields");
@@ -133,5 +134,5 @@ class ResourcesContainer extends Component {
 export default connect(null, {
   addResource,
   updateResource,
-  removeResource
+  removeResource,
 })(ResourcesContainer);

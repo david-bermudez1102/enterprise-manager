@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import "./styles.css";
 import { CSSTransition } from "react-transition-group";
 
-const SidebarLinks = ({ links, minimized, toggleDropDown }) => {
+const SidebarLinks = ({ links, minimized, toggleDropDown, appear }) => {
   return (
     <div className="px-2 py-2">
       {links.map((link, id) => (
@@ -27,7 +27,14 @@ const SidebarLinks = ({ links, minimized, toggleDropDown }) => {
                   in={!minimized}
                   timeout={40}
                   classNames="hide-text">
-                  <span className={link.textClass}>{link.text}</span>
+                  <span
+                    className={
+                      appear
+                        ? `${link.textClass} hide-text-exit-done`
+                        : link.textClass
+                    }>
+                    {link.text}
+                  </span>
                 </CSSTransition>
               </span>
 

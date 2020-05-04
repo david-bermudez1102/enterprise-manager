@@ -17,6 +17,7 @@ import { alerts } from "./alertsReducer";
 import { token } from "./tokenReducer";
 import { pagination } from "./paginationReducer";
 import { routes } from "./routesReducer";
+import { sidebar } from "./sidebarReducer";
 
 const requesting = (state = false, action) => {
   switch (action.type) {
@@ -47,4 +48,5 @@ export const rootReducer = combineReducers({
   token,
   pagination,
   routes,
+  sidebar,
 });

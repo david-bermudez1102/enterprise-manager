@@ -1,18 +1,18 @@
 .slider-enter {
-  width: 70px;
+  width: 66px;
 }
 
 .slider-enter-done {
   width: 230px;
-  transition: all 40ms ease-in;
+  transition: all 80ms ease-in;
 }
 
 .slider-appear {
-  width: 70px;
+  width: 230px;
 }
 
 .slider-appear-done {
-  width: 230px;
+  width: 66px;
   transition: all 40ms ease-in;
 }
 
@@ -21,8 +21,8 @@
 }
 
 .slider-exit-done {
-  width: 70px;
-  transition: all 40ms ease-out;
+  width: 66px;
+  transition: all 80ms ease-out;
 }
 
 .sidebar-fade-enter {

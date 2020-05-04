@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useCallback } from "react";
 
-const useSidebarLinks = ({ organization }) => {
+const useSidebar = ({ organization }) => {
   const navLinkClass = "nav-item nav-link text-light pr-0";
   const location = useLocation();
   const activePath = location.pathname;
@@ -87,9 +89,12 @@ const useSidebarLinks = ({ organization }) => {
       ],
     },
   ];
-  const [minimized, setMinimized] = useState(false);
-  const [minimizedFromToggle, setMinimizedFromToggle] = useState(false);
+
+  const dispatch = useDispatch();
   const [links, setLinks] = useState(initalLinks);
+  const { minimized, minimizedFromToggle } = useSelector(
+    state => state.sidebar
+  );
   useEffect(() => {
     setLinks(
       links.map((link, id) => {
@@ -112,6 +117,17 @@ const useSidebarLinks = ({ organization }) => {
       )
     );
   };
+
+  const setMinimized = useCallback(minimized => {
+    dispatch({ type: "SET-MINIMIZED", minimized });
+  }, []);
+
+  const setMinimizedFromToggle = useCallback(minimizedFromToggle => {
+    dispatch({
+      type: "SET-MINIMIZEDFROMTOGGLE",
+      minimizedFromToggle,
+    });
+  }, []);
 
   const toggle = () => {
     setMinimized(minimized ? false : true);
@@ -137,4 +153,4 @@ const useSidebarLinks = ({ organization }) => {
   };
 };
 
-export default useSidebarLinks;
+export default useSidebar;

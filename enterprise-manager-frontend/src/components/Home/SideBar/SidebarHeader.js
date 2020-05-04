@@ -3,12 +3,12 @@ import Avatar from "./Avatar";
 import "./styles.css";
 import { CSSTransition } from "react-transition-group";
 
-const SidebarHeader = ({ currentUser, minimized }) => {
+const SidebarHeader = ({ currentUser, minimized, appear }) => {
   return (
     <div
       className={`d-flex align-items-center w-100 text-nowrap flex-nowrap px-3 `}
       style={{ height: "60.59px" }}>
-      <CSSTransition in={!minimized} timeout={40} classNames="sidebar-fade">
+      <CSSTransition in={!minimized} timeout={80} classNames="sidebar-fade">
         <div
           className="row flex-nowrap w-100 no-gutters"
           style={{ height: "35px" }}>
@@ -16,7 +16,7 @@ const SidebarHeader = ({ currentUser, minimized }) => {
             <Avatar currentUser={currentUser} size="35" />
           </div>
           <CSSTransition in={!minimized} timeout={40} classNames="hide-text">
-            <div className="col-auto">
+            <div className={`col-auto ${appear ? "hide-text-exit-done" : ""}`}>
               <span className="d-flex h-100 ml-2 align-items-center">
                 {currentUser.name}
               </span>

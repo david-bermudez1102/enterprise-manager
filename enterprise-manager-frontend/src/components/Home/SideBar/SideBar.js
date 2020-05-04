@@ -1,10 +1,10 @@
 import React from "react";
 import { CSSTransition } from "react-transition-group";
 import "./styles.css";
-import useSidebarLinks from "./useSidebarLinks";
 import SidebarHeader from "./SidebarHeader";
 import SidebarLinks from "./SidebarLinks";
 import ToggleButton from "./ToggleButton";
+import useSidebar from "./useSidebar";
 
 const SideBar = ({ session, organizations }) => {
   const {
@@ -14,12 +14,15 @@ const SideBar = ({ session, organizations }) => {
     toggle,
     openSideBar,
     closeSideBar,
-  } = useSidebarLinks({ organization: organizations[0] });
+  } = useSidebar({ organization: organizations[0] });
+  const appear = minimized;
 
   return (
-    <CSSTransition in={!minimized} timeout={40} classNames="slider" appear>
+    <CSSTransition in={!minimized} timeout={40} classNames="slider">
       <div
-        className="sidebar pt-0 bg-secondary shadow text-light vh-100 sticky-top"
+        className={`sidebar pt-0 bg-secondary shadow text-light vh-100 sticky-top ${
+          appear ? "slider-appear-done" : "slider-enter-done"
+        }`}
         style={{ fontSize: "16px" }}>
         <nav
           className="px-0 py-0 nav nav-dark nav-pills flex-column h-100 d-flex"
@@ -32,6 +35,7 @@ const SideBar = ({ session, organizations }) => {
               <SidebarHeader
                 currentUser={session.currentUser}
                 minimized={minimized}
+                appear={appear}
               />
               <hr
                 className="my-0 w-100"
@@ -41,6 +45,7 @@ const SideBar = ({ session, organizations }) => {
                 links={links}
                 minimized={minimized}
                 toggleDropDown={toggleDropDown}
+                appear={appear}
               />
             </div>
           </div>

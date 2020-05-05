@@ -16,7 +16,6 @@ import { useSelector, shallowEqual } from "react-redux";
 import Route from "../../Router/Route";
 import NoMatch from "../../components/NoMatch";
 import useMatchedRoute from "../../components/NoMatch/useMatchedRoute";
-import cuid from "cuid";
 
 const HomeContainer = () => {
   const { organizations, admins } = useSelector(
@@ -26,9 +25,6 @@ const HomeContainer = () => {
   const location = useLocation();
   const session = useSession();
   const matchedRoute = useMatchedRoute();
-
-  const key = cuid();
-  console.log(key);
   return (
     <div className="w-100 d-flex flex-grow-1">
       {organizations.length === 0 ? (
@@ -53,37 +49,14 @@ const HomeContainer = () => {
           } w-100 bg-transparent px-4 py-3 position-relative h-100`}>
           {!matchedRoute ? <NoMatch /> : null}
           <Switch>
-            <Route
-              path={`/organizations`}
-              render={props => (
-                <OrganizationContainer
-                  session={session}
-                  admins={admins}
-                  {...props}
-                />
-              )}
-            />
-            <Route path={`/reset_password`} render={() => <ResetPassword />} />
-            <Route
-              path={`/login`}
-              render={props => (
-                <LoginContainer
-                  {...props}
-                  admins={admins}
-                  session={session}
-                  organizations={organizations}
-                />
-              )}
-            />
-            <Route path={`/logout`} render={() => <LogoutContainer />} />
-            <Route path="/accounts/new">
-              <AdminContainer organizations={organizations} admins={admins} />
-            </Route>
+            <Route path={`/organizations`} component={OrganizationContainer} />
+            <Route path={`/reset_password`} component={ResetPassword} />
+            <Route path={`/login`} component={LoginContainer} />
+            <Route path={`/logout`} component={LogoutContainer} />
+            <Route path={"/accounts/new"} component={AdminContainer} />
             <Route
               path={`/accounts`}
-              render={props => (
-                <AccountsContainer {...props} session={session} />
-              )}
+              render={props => <AccountsContainer {...props} />}
             />
             {!session.isLoggedIn ? (
               <Route

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import OrganizationForm from "../components/Organizations/OrganizationForm";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { addOrganization } from "../actions/organizationAction";
-import { Switch, useHistory } from "react-router-dom";
+import { Switch, useHistory, useRouteMatch } from "react-router-dom";
 import ResourcesContainer from "./ResourceCreator/ResourcesContainer";
 import Organization from "../components/Organizations/Organization";
 import { fetchResources } from "../actions/resourceActions";
@@ -10,10 +10,8 @@ import Settings from "./Settings/Settings";
 import AllRecordsContainer from "./Records/AllRecordsContainer";
 import { FormCard } from "../components/Cards/Cards";
 import Route from "../Router/Route";
-import cuid from "cuid";
 
-const OrganizationContainer = props => {
-  const { match } = props;
+const OrganizationContainer = () => {
   const { organizations, resources, session, admins } = useSelector(
     ({ organizations, resources, session, admins }) => ({
       organizations,
@@ -28,6 +26,7 @@ const OrganizationContainer = props => {
   const mounted = useRef();
   const dispatch = useDispatch();
   const history = useHistory();
+  const match = useRouteMatch();
 
   useEffect(() => {
     if (!mounted.current) {

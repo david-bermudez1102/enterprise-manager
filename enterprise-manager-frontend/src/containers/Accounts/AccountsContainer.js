@@ -161,8 +161,8 @@ class AccountsContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ accounts, admins }) => {
-  return { accounts, admins };
+const mapStateToProps = ({ accounts, admins, session }) => {
+  return { accounts, admins, session };
 };
 
 export default connect(mapStateToProps, {

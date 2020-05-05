@@ -31,7 +31,7 @@ const ResourcesList = ({ loaded, match, resources, location, history }) => {
             className={`row mx-0 border-0 shadow-sm rounded list-group-item list-group-item-action py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 ${
               isActive ? "active text-white" : ""
             }`}
-            key={cuid()}
+            key={`resourceList${resource.id}`}
             style={{
               cursor: "pointer",
               fontSize: "24px",

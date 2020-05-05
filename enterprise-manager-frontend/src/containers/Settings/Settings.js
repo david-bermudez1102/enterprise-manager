@@ -44,10 +44,7 @@ class Settings extends Component {
         </div>
         <div className="col-lg-7">
           <Switch>
-            <Route
-              path={`${match.path}/privileges`}
-              render={props => <Privileges {...props} />}
-            />
+            <Route path={`${match.path}/privileges`} component={Privileges} />
             <Route
               path={`${match.path}/integrations`}
               render={props => (

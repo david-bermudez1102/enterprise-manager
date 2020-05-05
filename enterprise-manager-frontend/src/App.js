@@ -8,11 +8,8 @@ import Footer from "./components/Footer/Footer";
 import HomeContainer from "./containers/Home/HomeContainer";
 import { fetchAdmins } from "./actions/adminActions";
 import Route from "./Router/Route";
-import cuid from "cuid";
 
 const App = () => {
-  const key = cuid();
-  console.log(key);
   const { organizations, session } = useSelector(
     ({ organizations, session }) => ({
       organizations,

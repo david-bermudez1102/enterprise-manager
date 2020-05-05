@@ -1,12 +1,16 @@
 import React from "react";
 import AdminForm from "../components/AdminForm";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { addAdmin } from "../actions/adminActions";
 import { FormCard } from "../components/Cards/Cards";
 
-const AdminContainer = ({ organizations, admins }) => {
+const AdminContainer = () => {
   const dispatch = useDispatch();
+  const { organizations, admins } = useSelector(
+    ({ organizations, admins }) => ({ organizations, admins }),
+    shallowEqual
+  );
   return (
     <>
       {organizations.length === 0 ? (

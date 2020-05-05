@@ -9,92 +9,90 @@ import zohoBooksIcon from "../../containers/ZohoBooks/favicon.ico";
 import Alert from "../Alerts/Alert";
 import Route from "../../Router/Route";
 
-class Integrations extends Component {
-  render() {
-    const { match, organization, session, updateOrganization } = this.props;
-    const { zohoIntegration, quickbooksIntegration } = organization;
-    const currentlyConnectedTo = [];
-    if (zohoIntegration) currentlyConnectedTo.push("Zoho Books");
-    if (quickbooksIntegration) currentlyConnectedTo.push("QuickBooks");
-    return (
-      <div>
-        {!zohoIntegration && !quickbooksIntegration ? (
-          <NoContent>
-            This organization is not connected to any Accounting Software.
-          </NoContent>
-        ) : (
-          <div className="alert alert-primary shadow-sm">
-            <i className="fas fa-info-circle mr-2"></i>
-            This organization is currently connected to{" "}
-            {currentlyConnectedTo.join(" and ")}.
-          </div>
-        )}
-        <div className="alert alert-light d-flex justify-content-around shadow-sm rounded">
-          <Link to={`${match.url}/zoho_books/edit`}>
-            <button className="btn btn-info shadow">
-              <img
-                src={zohoBooksIcon}
-                className="pr-1"
-                style={{ width: "24px" }}
-                alt="Connect with ZohoBooks"
-              />
-              Connect to Zoho Books
-            </button>
-          </Link>
-          <Link to={`${match.url}/quickbooks/edit`}>
-            <button className="btn btn-info shadow">
-              <img
-                src="https://quickbooks.intuit.com/etc/designs/harmony/images/favicon/quickbooks/apple-touch-icon-60x60.png"
-                style={{ width: "24px" }}
-                className="pr-1"
-                alt="Connect with QuickBooks"
-              />
-              Connect to QuickBooks
-            </button>
-          </Link>
+const Integrations = props => {
+  const { match, organization, session, updateOrganization } = props;
+  const { zohoIntegration, quickbooksIntegration } = organization;
+  const currentlyConnectedTo = [];
+  if (zohoIntegration) currentlyConnectedTo.push("Zoho Books");
+  if (quickbooksIntegration) currentlyConnectedTo.push("QuickBooks");
+  return (
+    <div>
+      {!zohoIntegration && !quickbooksIntegration ? (
+        <NoContent>
+          This organization is not connected to any Accounting Software.
+        </NoContent>
+      ) : (
+        <div className="alert alert-primary shadow-sm">
+          <i className="fas fa-info-circle mr-2"></i>
+          This organization is currently connected to{" "}
+          {currentlyConnectedTo.join(" and ")}.
         </div>
-        <div>
-          <Alert />
-          <Switch>
-            <Route
-              path={`${match.url}/zoho_books/connect`}
-              component={() => {
-                window.location.href = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=${zohoIntegration.client_id}&response_type=code&redirect_uri=${zohoIntegration.redirect_uri}&access_type=offline&prompt=consent`;
-                return null;
-              }}
+      )}
+      <div className="alert alert-light d-flex justify-content-around shadow-sm rounded">
+        <Link to={`${match.url}/zoho_books/edit`}>
+          <button className="btn btn-info shadow">
+            <img
+              src={zohoBooksIcon}
+              className="pr-1"
+              style={{ width: "24px" }}
+              alt="Connect with ZohoBooks"
             />
-            <Route
-              path={`${match.url}/zoho_books/edit`}
-              render={props => (
-                <FormCard
-                  header={
-                    <>
-                      <span
-                        className="display-4 card-title mb-0"
-                        style={{ fontSize: "32px" }}>
-                        Connect to Zoho
-                      </span>
-                      <Link
-                        to={`${match.url}/zoho_books/connect`}
-                        title="Refresh Zoho Token">
-                        <i className="fas fa-sync"></i>
-                      </Link>
-                    </>
-                  }>
-                  <ZohoBooksForm
-                    organization={organization}
-                    updateOrganization={updateOrganization}
-                    session={session}
-                  />
-                </FormCard>
-              )}
+            Connect to Zoho Books
+          </button>
+        </Link>
+        <Link to={`${match.url}/quickbooks/edit`}>
+          <button className="btn btn-info shadow">
+            <img
+              src="https://quickbooks.intuit.com/etc/designs/harmony/images/favicon/quickbooks/apple-touch-icon-60x60.png"
+              style={{ width: "24px" }}
+              className="pr-1"
+              alt="Connect with QuickBooks"
             />
-          </Switch>
-        </div>
+            Connect to QuickBooks
+          </button>
+        </Link>
       </div>
-    );
-  }
-}
+      <div>
+        <Alert />
+        <Switch>
+          <Route
+            path={`${match.url}/zoho_books/connect`}
+            component={() => {
+              window.location.href = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=${zohoIntegration.client_id}&response_type=code&redirect_uri=${zohoIntegration.redirect_uri}&access_type=offline&prompt=consent`;
+              return null;
+            }}
+          />
+          <Route
+            path={`${match.url}/zoho_books/edit`}
+            render={props => (
+              <FormCard
+                header={
+                  <>
+                    <span
+                      className="display-4 card-title mb-0"
+                      style={{ fontSize: "32px" }}>
+                      Connect to Zoho
+                    </span>
+                    <Link
+                      to={`${match.url}/zoho_books/connect`}
+                      title="Refresh Zoho Token">
+                      <i className="fas fa-sync"></i>
+                    </Link>
+                  </>
+                }>
+                <ZohoBooksForm
+                  organization={organization}
+                  updateOrganization={updateOrganization}
+                  session={session}
+                />
+              </FormCard>
+            )}
+          />
+        </Switch>
+      </div>
+    </div>
+  );
+};
 
 const mapStateToProps = ({ session }) => {
   return { session };

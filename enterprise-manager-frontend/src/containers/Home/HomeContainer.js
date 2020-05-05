@@ -47,7 +47,7 @@ const HomeContainer = () => {
           className={`${
             !session.isLoggedIn ? "h-100" : ""
           } w-100 bg-transparent px-4 py-3 position-relative h-100`}>
-          {!matchedRoute ? <NoMatch /> : null}
+          {!matchedRoute && session.isLoggedIn ? <NoMatch /> : null}
           <Switch>
             <Route path={`/organizations`} component={OrganizationContainer} />
             <Route path={`/reset_password`} component={ResetPassword} />
@@ -58,19 +58,18 @@ const HomeContainer = () => {
               path={`/accounts`}
               render={props => <AccountsContainer {...props} />}
             />
-            {!session.isLoggedIn ? (
-              <Route
-                path={`/auth/zohobooks/callback`}
-                render={props => (
-                  <ZohoBooks
-                    {...props}
-                    session={session}
-                    redirectTo={`/organizations/${organizations[0].id}/settings/integrations/zoho_books/edit`}
-                    organization={organizations[0]}
-                  />
-                )}
-              />
-            ) : null}
+            <Route
+              path={`/auth/zohobooks/callback`}
+              render={props => (
+                <ZohoBooks
+                  {...props}
+                  session={session}
+                  redirectTo={`/organizations/${organizations[0].id}/settings/integrations/zoho_books/edit`}
+                  organization={organizations[0]}
+                />
+              )}
+            />
+            )
             <Route exact path="/" component={Home} />
           </Switch>
         </main>

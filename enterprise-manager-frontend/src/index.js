@@ -20,10 +20,10 @@ const store = createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
-const { session, routes, token, alerts, ...newState } = store.getState();
 
 store.subscribe(
   throttle(() => {
+    const { session, routes, token, alerts, ...newState } = store.getState();
     saveState(newState);
   }, 1000)
 );

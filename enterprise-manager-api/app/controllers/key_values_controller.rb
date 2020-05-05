@@ -1,5 +1,6 @@
 class KeyValuesController < ApplicationController
-   before_action :set_organization
+  before_action :authenticate_user
+  before_action :set_organization
   before_action :set_form
 
   def index

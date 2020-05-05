@@ -44,6 +44,7 @@ const RecordOptions = ({ record, checked, selectRecord }) => {
       <button className="btn btn-transparent p-0 mt-n1 d-block-inline">
         <img
           src={ZohoBooks}
+          alt="ZohoBooks"
           style={{ filter: " grayscale(100%)", width: "16px" }}
         />
       </button>

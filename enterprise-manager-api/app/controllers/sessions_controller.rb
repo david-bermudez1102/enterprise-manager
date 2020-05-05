@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :authenticate_user, only: %i[show]
+
   def create
     account = Account.find_by(
         "username = ? OR email = ?",
@@ -27,11 +29,7 @@ class SessionsController < ApplicationController
   end
 
   def show
-    if current_account
-      render json: AccountSerializer.new(current_account)
-    else
-      render json: { errors: ["Not logged in"] }
-    end
+    render json: AccountSerializer.new(current_account)
   end
 
   def destroy

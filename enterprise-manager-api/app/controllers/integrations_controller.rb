@@ -1,4 +1,6 @@
 class IntegrationsController < ApplicationController
+  before_action :authenticate_user
+
  def create
     integration = Integration.new(integration_params)
     render json: IntegrationSerializer.new(integration) if integration.save

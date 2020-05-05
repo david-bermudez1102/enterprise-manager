@@ -73,7 +73,7 @@ class Navbar extends Component {
         style={{ zIndex: 4 }}>
         <div
           className={session.isLoggedIn ? "container-fluid p-0" : "container"}>
-          <NavLink to="#" className="navbar-brand">
+          <NavLink to="/" className="navbar-brand">
             <Logo organization={organizations[0]} width={180} height={40} />
           </NavLink>
           <button

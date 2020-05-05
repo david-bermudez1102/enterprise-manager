@@ -1,4 +1,5 @@
 class RecordsController < ApplicationController
+  before_action :authenticate_user
   before_action :set_organization
   before_action :set_form
   before_action :set_is_deleted, only: %i[show index]

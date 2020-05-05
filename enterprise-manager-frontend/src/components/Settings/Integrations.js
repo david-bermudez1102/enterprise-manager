@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Switch, Link } from "react-router-dom";
 import ZohoBooksForm from "../Integrations/ZohoBooksForm";
 import { connect } from "react-redux";

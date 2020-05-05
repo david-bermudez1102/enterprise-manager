@@ -7,20 +7,21 @@ export const addEmployee = (adminId, employee) => {
     fetch(`/api/v1/admins/${adminId}/employees`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(employee)
+      credentials: "include",
+      body: JSON.stringify(employee),
     })
       .then(response => response.json())
       .then(employee => {
         if (!employee.errors) {
           dispatch({
             type: "ADD_EMPLOYEE",
-            employee: employee.data.attributes
+            employee: employee.data.attributes,
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: employee.messages || ["Employee was added with success."]
+            messages: employee.messages || ["Employee was added with success."],
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: employee.errors });
@@ -45,9 +46,9 @@ export const addManager = (adminId, manager) => {
     fetch(`/api/v1/admins/${adminId}/managers`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(manager)
+      body: JSON.stringify(manager),
     })
       .then(response => response.json())
       .then(manager => {
@@ -55,7 +56,7 @@ export const addManager = (adminId, manager) => {
           dispatch({ type: "ADD_MANAGER", manager: manager.data.attributes });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: manager.messages || ["Manager was added with success."]
+            messages: manager.messages || ["Manager was added with success."],
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: manager.errors });
@@ -71,20 +72,20 @@ export const updateAccount = account => {
     return fetch(`/api/v1/accounts/${account.id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ account })
+      body: JSON.stringify({ account }),
     })
       .then(response => response.json())
       .then(account => {
         if (!account.errors) {
           dispatch({
             type: "UPDATE_ACCOUNT",
-            account: account.data.attributes
+            account: account.data.attributes,
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: account.messages || ["Account updated with success."]
+            messages: account.messages || ["Account updated with success."],
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: account.errors });
@@ -107,18 +108,18 @@ export const removeAccount = accountId => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
     return fetch(`/api/v1/accounts/${accountId}`, {
-      method: "DELETE"
+      method: "DELETE",
     })
       .then(response => response.json())
       .then(account => {
         if (!account.errors) {
           dispatch({
             type: "ADD_MESSAGES",
-            messages: account.messages || ["Account was deleted with success."]
+            messages: account.messages || ["Account was deleted with success."],
           });
           return dispatch({
             type: "REMOVE_ACCOUNT",
-            accountId
+            accountId,
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: account.errors });
@@ -134,20 +135,20 @@ export const resetPassword = (token, activation) => {
     return fetch(`/api/v1/account_unlock/${token}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(snakecaseKeys({ activation }))
+      body: JSON.stringify(snakecaseKeys({ activation })),
     })
       .then(handleErrors)
       .then(response => response.json())
       .then(response => {
         if (!response.errors) {
           dispatch({
-            type: "REMOVE_TOKEN"
+            type: "REMOVE_TOKEN",
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: response.messages
+            messages: response.messages,
           });
           return "success";
         } else {

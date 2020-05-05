@@ -18,8 +18,6 @@ const Records = props => {
     setOptionsHeight,
   } = useRecords(props);
 
-  console.log(listHeight);
-
   return (
     <div
       className="col-lg-12 pt-4 d-block float-left position-relative"

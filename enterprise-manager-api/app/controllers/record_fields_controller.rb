@@ -1,4 +1,5 @@
 class RecordFieldsController < ApplicationController
+  before_action :authenticate_user
   before_action :set_form
   def create
     record_field = @form.record_fields.build(record_field_params)

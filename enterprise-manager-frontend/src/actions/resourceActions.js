@@ -8,9 +8,10 @@ export const addResource = resource => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json"
+        Accept: "application/json",
       },
-      body: JSON.stringify({ form: resource })
+
+      body: JSON.stringify({ form: resource }),
     })
       .catch(handleErrors)
       .then(response => response.json())
@@ -18,11 +19,11 @@ export const addResource = resource => {
         if (!resource.errors) {
           dispatch({
             type: "ADD_RESOURCE",
-            resource
+            resource,
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: resource.messages || ["Resource added successfully."]
+            messages: resource.messages || ["Resource added successfully."],
           });
           return resource;
         } else {
@@ -35,7 +36,9 @@ export const addResource = resource => {
 
 export const fetchResources = organizationId => {
   return dispatch => {
-    return fetch(`/api/v1/organizations/${organizationId}/forms`)
+    return fetch(`/api/v1/organizations/${organizationId}/forms`, {
+      credentials: "include",
+    })
       .then(response => response.json())
       .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }))
       .catch(console.log);
@@ -51,9 +54,10 @@ export const updateResource = (resource, organizationId, resourceId) => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json"
+          Accept: "application/json",
         },
-        body: JSON.stringify({ form: resource })
+        credentials: "include",
+        body: JSON.stringify({ form: resource }),
       }
     )
       .then(handleErrors)
@@ -63,11 +67,11 @@ export const updateResource = (resource, organizationId, resourceId) => {
           dispatch({
             type: "UPDATE_RESOURCE",
             resourceId,
-            resource
+            resource,
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: resource.messages || ["Resource updated successfully."]
+            messages: resource.messages || ["Resource updated successfully."],
           });
           return resource;
         } else {
@@ -84,7 +88,8 @@ export const removeResource = (organizationId, resourceId) => {
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
       {
-        method: "DELETE"
+        method: "DELETE",
+        credentials: "include",
       }
     )
       .then(response => response.json())
@@ -93,15 +98,15 @@ export const removeResource = (organizationId, resourceId) => {
           dispatch({
             type: "REMOVE_RESOURCE",
             resourceId,
-            status: "deleted"
+            status: "deleted",
           });
           dispatch({
             type: "REMOVE_RECORDS",
-            resourceId
+            resourceId,
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: resource.messages || ["Resource deleted successfully."]
+            messages: resource.messages || ["Resource deleted successfully."],
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: resource.errors });

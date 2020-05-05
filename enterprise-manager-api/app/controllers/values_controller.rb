@@ -1,4 +1,5 @@
 class ValuesController < ApplicationController
+  before_action :authenticate_user
   before_action :set_organization
   before_action :set_form
   before_action :set_record_field, only: :create

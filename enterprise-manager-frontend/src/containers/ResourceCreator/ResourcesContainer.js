@@ -57,11 +57,9 @@ class ResourcesContainer extends PureComponent {
                 <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"}`}>
                   <FormCard
                     header={
-                      <span
-                        className="card-title display-4 mb-0 text-light"
-                        style={{ fontSize: "32px" }}>
+                      <h2>
                         <i className="fas fa-layer-plus mr-2"></i>New Resource
-                      </span>
+                      </h2>
                     }>
                     <ResourceForm
                       {...props}
@@ -82,11 +80,9 @@ class ResourcesContainer extends PureComponent {
                     } min-h-100`}>
                     <FormCard
                       header={
-                        <span
-                          className="card-title display-4 mb-0 text-primary"
-                          style={{ fontSize: "32px" }}>
+                        <h2>
                           <i className="far fa-edit mr-2"></i>Edit Resource
-                        </span>
+                        </h2>
                       }>
                       <ResourceForm
                         {...props}

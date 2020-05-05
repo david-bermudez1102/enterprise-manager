@@ -1,5 +1,6 @@
 class IntegrationRecordsController < ApplicationController
   before_action :set_integration_record, only: [:show, :update, :destroy]
+  before_action :current_account
 
   # GET /integration_records
   def index

@@ -1,5 +1,5 @@
 class EmployeesController < ApplicationController
-
+  before_action :authenticate_user
   before_action :set_organization
   before_action :set_admin
   before_action :set_token, only: %i[create]

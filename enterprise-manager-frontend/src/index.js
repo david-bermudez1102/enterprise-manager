@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./custom.scss";
 import * as serviceWorker from "./serviceWorker";
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { rootReducer } from "./reducers/rootReducer";
@@ -12,11 +12,18 @@ import throttle from "lodash/throttle";
 
 const persistedState = loadState();
 
-const store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
+const store = createStore(
+  rootReducer,
+  persistedState,
+  compose(
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+);
+const { session, routes, token, alerts, ...newState } = store.getState();
 
 store.subscribe(
   throttle(() => {
-    const { session, routes, ...newState } = store.getState();
     saveState(newState);
   }, 1000)
 );

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import ResourceForm from "../../components/ResourceCreator/ResourceForm";
 import { Switch } from "react-router-dom";
 import { connect } from "react-redux";
@@ -15,7 +15,7 @@ import ConnectionsContainer from "../Connections/ConnectionsContainer";
 import Alert from "../../components/Alerts/Alert";
 import Route from "../../Router/Route";
 
-class ResourcesContainer extends Component {
+class ResourcesContainer extends PureComponent {
   render() {
     const {
       loaded,
@@ -27,6 +27,7 @@ class ResourcesContainer extends Component {
       location,
       history,
     } = this.props;
+
     const { organizationId } = match.params;
     const isFieldsPath = location.pathname.includes("fields");
     return (
@@ -119,10 +120,7 @@ class ResourcesContainer extends Component {
               )}
             />
             {resources.length > 0 ? (
-              <Route
-                path={`${match.path}/:formAlias`}
-                render={props => <Resource {...props} location={location} />}
-              />
+              <Route path={`${match.path}/:formAlias`} component={Resource} />
             ) : null}
           </Switch>
         </div>

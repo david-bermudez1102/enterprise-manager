@@ -3,12 +3,19 @@ import LoginForm from "../components/LoginForm";
 import { FormCard } from "../components/Cards/Cards";
 import Alert from "../components/Alerts/Alert";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { addSession } from "../actions/sessionActions";
 
 const LoginContainer = () => {
-  const { session, organizations, admins } = useSelector(s => s);
+  const { session, organizations, admins } = useSelector(
+    ({ session, organizations, admins }) => ({
+      session,
+      organizations,
+      admins,
+    }),
+    shallowEqual
+  );
   const history = useHistory();
   const dispatch = useDispatch();
 

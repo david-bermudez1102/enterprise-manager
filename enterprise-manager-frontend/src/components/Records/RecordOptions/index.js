@@ -1,11 +1,11 @@
 import React from "react";
 import ZohoBooks from "../../../containers/ZohoBooks/favicon.ico";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { removeRecord } from "../../../actions/recordActions";
 
 const RecordOptions = ({ record, checked, selectRecord }) => {
   const dispatch = useDispatch();
-  const { session } = useSelector((s) => s);
+  const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
   return (
     <div className="d-flex flex-nowrap align-items-center">
       <div className="check mr-2">

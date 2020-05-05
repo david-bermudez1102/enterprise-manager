@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import OrganizationForm from "../components/Organizations/OrganizationForm";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { addOrganization } from "../actions/organizationAction";
 import { Switch, useHistory } from "react-router-dom";
 import ResourcesContainer from "./ResourceCreator/ResourcesContainer";
@@ -10,10 +10,20 @@ import Settings from "./Settings/Settings";
 import AllRecordsContainer from "./Records/AllRecordsContainer";
 import { FormCard } from "../components/Cards/Cards";
 import Route from "../Router/Route";
+import cuid from "cuid";
 
 const OrganizationContainer = props => {
   const { match } = props;
-  const { organizations, resources, session, admins } = useSelector(s => s);
+  const { organizations, resources, session, admins } = useSelector(
+    ({ organizations, resources, session, admins }) => ({
+      organizations,
+      resources,
+      session,
+      admins,
+    }),
+    shallowEqual
+  );
+
   const [loaded, setLoaded] = useState(false);
   const mounted = useRef();
   const dispatch = useDispatch();
@@ -89,9 +99,7 @@ const OrganizationContainer = props => {
           />
           <Route
             path={`${match.path}/:organizationId/records`}
-            render={props => (
-              <AllRecordsContainer {...props} resources={resources} />
-            )}
+            component={AllRecordsContainer}
           />
           <Route
             path={`${match.path}/:organizationId`}
@@ -103,4 +111,4 @@ const OrganizationContainer = props => {
   );
 };
 
-export default OrganizationContainer;
+export default React.memo(OrganizationContainer);

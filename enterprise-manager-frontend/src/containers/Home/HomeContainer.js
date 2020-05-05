@@ -12,17 +12,23 @@ import Footer from "../../components/Footer/Footer";
 import ResetPassword from "../../components/Accounts/ResetPassword";
 import Home from "../../components/Home";
 import useSession from "./Hooks/useSession";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import Route from "../../Router/Route";
 import NoMatch from "../../components/NoMatch";
 import useMatchedRoute from "../../components/NoMatch/useMatchedRoute";
+import cuid from "cuid";
 
 const HomeContainer = () => {
-  const { organizations, admins } = useSelector(s => s);
+  const { organizations, admins } = useSelector(
+    ({ organizations, admins }) => ({ organizations, admins }),
+    shallowEqual
+  );
   const location = useLocation();
   const session = useSession();
   const matchedRoute = useMatchedRoute();
 
+  const key = cuid();
+  console.log(key);
   return (
     <div className="w-100 d-flex flex-grow-1">
       {organizations.length === 0 ? (
@@ -105,4 +111,4 @@ const HomeContainer = () => {
   );
 };
 
-export default HomeContainer;
+export default React.memo(HomeContainer);

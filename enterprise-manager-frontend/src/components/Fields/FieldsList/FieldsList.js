@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Field from "./Field";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { addRecord } from "../../../actions/recordActions";
 import { Link } from "react-router-dom";
 import { CardHeader, CardBody } from "../../Cards/Cards";
@@ -13,9 +13,7 @@ const FieldsList = props => {
   const { match, resource, fields } = props;
   const dispatch = useDispatch();
   const [state, setState] = useState([]);
-  const recordFields = useSelector(s =>
-    s.recordFields.filter(recordField => recordField.formId === resource.id)
-  );
+  const recordFields = useSelector(s => s.recordFields, shallowEqual);
 
   useEffect(() => {
     setState([]);
@@ -24,7 +22,7 @@ const FieldsList = props => {
   const handleChange = newState => {
     setState([
       ...state.filter(v => v.recordFieldId !== newState.recordFieldId),
-      newState
+      newState,
     ]);
   };
 
@@ -77,9 +75,9 @@ const FieldsList = props => {
             {fields
               .filter(f => f)
               .map(field => {
-                const recordField = recordFields.find(
-                  f => f.fieldId === field.id
-                );
+                const recordField = recordFields
+                  .filter(recordField => recordField.formId === resource.id)
+                  .find(f => f.fieldId === field.id);
                 return recordField ? (
                   <Field
                     key={field.key}

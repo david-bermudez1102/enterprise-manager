@@ -40,7 +40,7 @@ export const useSelectRecords = ({ sortedRecords, filteredRecords }) => {
     } else {
       const records = filteredRecords || sortedRecords;
       const newChecked = [
-        ...checked.filter(r => records.some(record => record.id === r))
+        ...checked.filter(r => records.some(record => record.id === r)),
       ];
       setChecked(newChecked);
       if (

@@ -1,10 +1,10 @@
 import React from "react";
 import { Route as ReactRoute } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { useEffect } from "react";
 
 function Route(props) {
-  const { routes } = useSelector(s => s);
+  const { routes } = useSelector(({ routes }) => ({ routes }), shallowEqual);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,4 +16,4 @@ function Route(props) {
   return <ReactRoute {...props} />;
 }
 
-export default Route;
+export default React.memo(Route);

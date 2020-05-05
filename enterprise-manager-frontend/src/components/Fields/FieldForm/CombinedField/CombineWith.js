@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import SelectableInput from "../../SelectableInput";
 import cuid from "cuid";
 import OptionBadge from "../OptionBadge";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import Portal from "../../../Portal/Portal";
 import FieldFormat from "./FieldFormat";
 import DraggableOption from "../OptionBadge/DraggableOption";
@@ -12,21 +12,23 @@ const CombineWith = ({
   handleChange,
   fieldType,
   initialState,
-  fieldFormat
+  fieldFormat,
 }) => {
   const mounted = useRef();
 
   const [items, setItems] = useState(initialState || []);
   const [key, setKey] = useState(cuid());
 
-  const availableFields = useSelector(state =>
-    state.recordFields
-      .filter(
-        field =>
-          field.formId === resourceId &&
-          !items.some(item => item.id === field.id)
-      )
-      .map(field => ({ id: field.id, value: field.name }))
+  const availableFields = useSelector(
+    state =>
+      state.recordFields
+        .filter(
+          field =>
+            field.formId === resourceId &&
+            !items.some(item => item.id === field.id)
+        )
+        .map(field => ({ id: field.id, value: field.name })),
+    shallowEqual
   );
 
   const handleFieldChange = item => {

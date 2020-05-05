@@ -4,18 +4,21 @@ import Icon from "@mdi/react";
 import { mdiCheckboxMultipleBlank } from "@mdi/js";
 import CombinedFieldOptions from "./CombinedFieldOptions";
 import { useHandleChange } from "../../Hooks/useHandleChange";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 
 const CombinedField = ({ field, resourceId, fieldType, onChange }) => {
   const { combinedFields, fieldFormat } = field;
-  const { recordFields } = useSelector(s => s);
+  const { recordFields } = useSelector(
+    ({ recordFields }) => ({ recordFields }),
+    shallowEqual
+  );
 
   const [state, setState] = useState(
     combinedFields ? { combinedFields } : null
   );
   const { handleChange, handleCombinedField } = useHandleChange({
     field,
-    onChange
+    onChange,
   });
 
   const handleCombinedFieldChange = useCallback(

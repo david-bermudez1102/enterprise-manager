@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 const LogoutContainer = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { session } = useSelector(s => s);
+  const { session } = useSelector(({ session }) => ({ session }));
 
   useEffect(() => {
     if (session.isLoggedIn)

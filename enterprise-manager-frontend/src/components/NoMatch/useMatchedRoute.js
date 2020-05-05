@@ -1,9 +1,9 @@
 import { useLocation, matchPath } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import { useState, useEffect } from "react";
 
 const useMatchedRoute = () => {
-  const { routes } = useSelector(s => s);
+  const { routes } = useSelector(({ routes }) => ({ routes }), shallowEqual);
   const location = useLocation();
   const [routesList, setRoutesList] = useState(routes);
   const [matched, setMatched] = useState(true);

@@ -96,9 +96,9 @@ class Navbar extends Component {
               ) : null}
               <ul className="navbar-nav nav-pills order-sm-first order-md-last">
                 {session.isLoggedIn
-                  ? links.map(link =>
+                  ? links.map((link, i) =>
                       link.loginRequired ? (
-                        <li className="nav-item" key={cuid()}>
+                        <li className="nav-item" key={`navbarLink_${i}`}>
                           <NavLink
                             to={link.path}
                             exact

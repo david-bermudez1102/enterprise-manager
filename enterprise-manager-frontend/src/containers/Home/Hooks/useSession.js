@@ -1,11 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchSession } from "../../../actions/sessionActions";
 import { useEffect, useRef } from "react";
 
 const useSession = () => {
   const routes = ["/", "/login", "/reset_password"];
-  const { session, organizations } = useSelector(s => s);
+  const { session, organizations } = useSelector(
+    ({ session, organizations }) => ({ session, organizations }),
+    shallowEqual
+  );
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();

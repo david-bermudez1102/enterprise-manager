@@ -1,8 +1,14 @@
 import React from "react";
 import cuid from "cuid";
-import { NavLink } from "react-router-dom";
+import { NavLink, useRouteMatch } from "react-router-dom";
+import { useSelector, shallowEqual } from "react-redux";
 
-const RecordsResourcesList = ({ match, resources }) => {
+const RecordsResourcesList = () => {
+  const match = useRouteMatch();
+  const { resources } = useSelector(
+    ({ resources }) => ({ resources }),
+    shallowEqual
+  );
   return (
     <div className="list-group">
       {resources.map(resource => (

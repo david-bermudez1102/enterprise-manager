@@ -59,4 +59,4 @@ const SideBar = ({ session, organizations }) => {
   );
 };
 
-export default SideBar;
+export default React.memo(SideBar);

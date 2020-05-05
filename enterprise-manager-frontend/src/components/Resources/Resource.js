@@ -1,19 +1,23 @@
 import React, { useEffect } from "react";
 import FieldsContainer from "../../containers/Fields/FieldsContainer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
 import RecordsContainer from "../../containers/Records/RecordsContainer";
+import { useRouteMatch, useLocation } from "react-router-dom";
 
-const Resource = ({ match, location }) => {
-  const resource = useSelector(s =>
-    s.resources.find(resource => resource.formAlias === match.params.formAlias)
+const Resource = () => {
+  const location = useLocation();
+  const match = useRouteMatch();
+
+  const { resources, fields } = useSelector(
+    ({ resources, fields }) => ({ resources, fields }),
+    shallowEqual
   );
 
-  const fields = useSelector(s =>
-    s.fields.filter(f => f.formId === resource.id)
+  const resource = resources.find(
+    resource => resource.formAlias === match.params.formAlias
   );
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,11 +33,11 @@ const Resource = ({ match, location }) => {
         match={match}
         organizationId={resource.organizationId}
         resource={resource}
-        fields={fields}
+        fields={fields.filter(f => f.formId === resource.id)}
         location={location}
       />
       <RecordsContainer match={match} resource={resource} />
     </>
   ) : null;
 };
-export default Resource;
+export default React.memo(Resource);

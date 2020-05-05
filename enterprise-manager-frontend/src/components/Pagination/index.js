@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import cuid from "cuid";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { NavLink, Link, useHistory, useLocation } from "react-router-dom";
 
 const limitOptions = [
@@ -8,11 +8,11 @@ const limitOptions = [
   { value: 10, key: cuid() },
   { value: 25, key: cuid() },
   { value: 50, key: cuid() },
-  { value: 100, key: cuid() }
+  { value: 100, key: cuid() },
 ];
 
 const Pagination = ({ resource, page }) => {
-  const pagination = useSelector(state => state.pagination);
+  const pagination = useSelector(state => state.pagination, shallowEqual);
 
   const pagesCount = Math.ceil(resource.recordsCount / pagination.limit);
   const pages =
@@ -25,12 +25,12 @@ const Pagination = ({ resource, page }) => {
             "...",
             ...Array.from({ length: 3 }, (v, i) => page + i),
             "...",
-            pagesCount
+            pagesCount,
           ]
         : [
             1,
             "...",
-            ...Array.from({ length: 3 }, (v, i) => pagesCount - i).reverse()
+            ...Array.from({ length: 3 }, (v, i) => pagesCount - i).reverse(),
           ]
       : [...Array.from({ length: pagesCount }, (v, i) => i + 1)];
 
@@ -44,7 +44,7 @@ const Pagination = ({ resource, page }) => {
     e.persist();
     dispatch({
       type: "SET_LIMIT",
-      limit: parseInt(e.target.value)
+      limit: parseInt(e.target.value),
     });
   };
 
@@ -104,7 +104,7 @@ const Pagination = ({ resource, page }) => {
           <Link
             to={location => ({
               pathname: location.pathname,
-              search: `?page=${page > 1 ? page - 1 : pagesCount}`
+              search: `?page=${page > 1 ? page - 1 : pagesCount}`,
             })}
             className="page-item page-link"
             aria-label="Previous">
@@ -115,7 +115,7 @@ const Pagination = ({ resource, page }) => {
               <NavLink
                 to={location => ({
                   pathname: location.pathname,
-                  search: `?page=${page}`
+                  search: `?page=${page}`,
                 })}
                 isActive={(match, location) =>
                   location.search === `?page=${page}` ||
@@ -155,7 +155,7 @@ const Pagination = ({ resource, page }) => {
             to={location => ({
               ...location,
               pathname: location.pathname,
-              search: `?page=${page < pagesCount ? page + 1 : 1}`
+              search: `?page=${page < pagesCount ? page + 1 : 1}`,
             })}
             className="page-item page-link"
             aria-label="Next">

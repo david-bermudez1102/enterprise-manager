@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { fetchOrganizations } from "./actions/organizationAction";
 import { fetchSession } from "./actions/sessionActions";
 import Footer from "./components/Footer/Footer";
 import HomeContainer from "./containers/Home/HomeContainer";
 import { fetchAdmins } from "./actions/adminActions";
 import Route from "./Router/Route";
+import cuid from "cuid";
 
-const App = props => {
-  const { organizations, session } = useSelector(s => s);
+const App = () => {
+  const key = cuid();
+  console.log(key);
+  const { organizations, session } = useSelector(
+    ({ organizations, session }) => ({
+      organizations,
+      session,
+    }),
+    shallowEqual
+  );
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState(false);
 

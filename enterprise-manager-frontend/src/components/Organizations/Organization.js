@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 
 class Organization extends Component {
   render() {
@@ -7,4 +6,4 @@ class Organization extends Component {
   }
 }
 
-export default connect()(Organization);
+export default Organization;

@@ -35,4 +35,4 @@ const AdminContainer = ({ organizations, admins }) => {
   );
 };
 
-export default AdminContainer;
+export default React.memo(AdminContainer);

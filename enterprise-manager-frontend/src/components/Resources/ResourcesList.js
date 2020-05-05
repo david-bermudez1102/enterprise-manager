@@ -35,7 +35,7 @@ const ResourcesList = ({ loaded, match, resources, location, history }) => {
             style={{
               cursor: "pointer",
               fontSize: "24px",
-              zIndex: "inherit"
+              zIndex: "inherit",
             }}
             onClick={e => {
               e.stopPropagation();
@@ -115,4 +115,4 @@ const ResourcesList = ({ loaded, match, resources, location, history }) => {
   );
 };
 
-export default ResourcesList;
+export default React.memo(ResourcesList);

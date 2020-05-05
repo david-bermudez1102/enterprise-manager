@@ -1,29 +1,35 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import FileUploader from "../Uploader/FileUploader";
 import LogoUploader from "../Uploader/LogoUploader";
 import "./styles.css";
 import snakecaseKeys from "snakecase-keys";
 
-export default class OrganizationForm extends Component {
-  state = { logo: "", name: "", logoMarginLeft: 0, logoMarginTop: 0, logoWidthRatio: 0 };
+export default class OrganizationForm extends PureComponent {
+  state = {
+    logo: "",
+    name: "",
+    logoMarginLeft: 0,
+    logoMarginTop: 0,
+    logoWidthRatio: 0,
+  };
 
   handleOnChange = event => {
     event.persist();
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
   handleLogoChange = file => {
     this.setState({
-      logo: file
+      logo: file,
     });
   };
 
   handleCoordinates = (x, y) => {
     this.setState({
       logoMarginLeft: x,
-      logoMarginTop: y
+      logoMarginTop: y,
     });
   };
 
@@ -34,7 +40,10 @@ export default class OrganizationForm extends Component {
   handleOnSubmit = event => {
     event.preventDefault();
     const { logo, name, logoMarginLeft, logoMarginTop } = this.state;
-    this.props.addOrganization({ logo, ...snakecaseKeys({ name, logoMarginLeft, logoMarginTop }) });
+    this.props.addOrganization({
+      logo,
+      ...snakecaseKeys({ name, logoMarginLeft, logoMarginTop }),
+    });
   };
 
   render() {
@@ -46,7 +55,11 @@ export default class OrganizationForm extends Component {
             className="logo-uploader bg-transparent text-center"
             size="200px"
             handleChange={this.handleLogoChange}>
-            <LogoUploader handleCoordinates={this.handleCoordinates} x={logoMarginLeft} y={logoMarginTop} />
+            <LogoUploader
+              handleCoordinates={this.handleCoordinates}
+              x={logoMarginLeft}
+              y={logoMarginTop}
+            />
           </FileUploader>
         </div>
         <div className="form-group">
@@ -60,7 +73,9 @@ export default class OrganizationForm extends Component {
             placeholder={"Enter the name of your organization"}
             required
           />
-          <label className="form-control-placeholder" htmlFor="organization_name">
+          <label
+            className="form-control-placeholder"
+            htmlFor="organization_name">
             Organization Name
           </label>
         </div>

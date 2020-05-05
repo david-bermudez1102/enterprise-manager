@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { useCallback } from "react";
 
 const useSidebar = ({ organization }) => {
@@ -38,13 +38,13 @@ const useSidebar = ({ organization }) => {
       levels: ["admin", "manager", "employee"],
       subLinks: [
         {
-          path: `records/deleted`,
+          path: `/organizations/${organization.id}/records/deleted`,
           text: "Deleted",
           icon: "fas fa-folder-times",
           className: `${navLinkClass}`,
         },
         {
-          path: "/accounts/add",
+          path: `/organizations/${organization.id}/archived/deleted`,
           text: "Archived",
           icon: "fas fa-archive",
           className: `${navLinkClass}`,
@@ -93,7 +93,8 @@ const useSidebar = ({ organization }) => {
   const dispatch = useDispatch();
   const [links, setLinks] = useState(initalLinks);
   const { minimized, minimizedFromToggle } = useSelector(
-    state => state.sidebar
+    state => state.sidebar,
+    shallowEqual
   );
   useEffect(() => {
     setLinks(
@@ -120,6 +121,7 @@ const useSidebar = ({ organization }) => {
 
   const setMinimized = useCallback(minimized => {
     dispatch({ type: "SET-MINIMIZED", minimized });
+    // eslint-disable-next-line
   }, []);
 
   const setMinimizedFromToggle = useCallback(minimizedFromToggle => {
@@ -127,20 +129,21 @@ const useSidebar = ({ organization }) => {
       type: "SET-MINIMIZEDFROMTOGGLE",
       minimizedFromToggle,
     });
+    // eslint-disable-next-line
   }, []);
 
-  const toggle = () => {
+  const toggle = useCallback(() => {
     setMinimized(minimized ? false : true);
     setMinimizedFromToggle(minimizedFromToggle ? false : true);
-  };
+  }, [minimized, minimizedFromToggle, setMinimized, setMinimizedFromToggle]);
 
-  const openSideBar = () => {
+  const openSideBar = useCallback(() => {
     if (minimizedFromToggle) setMinimized(false);
-  };
+  }, [minimizedFromToggle, setMinimized]);
 
-  const closeSideBar = () => {
+  const closeSideBar = useCallback(() => {
     if (minimizedFromToggle) setMinimized(true);
-  };
+  }, [minimizedFromToggle, setMinimized]);
 
   return {
     links,

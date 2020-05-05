@@ -8,7 +8,7 @@ import { useFilterRecords } from "./hooks/useFilterRecords";
 import { useChangePage } from "./hooks/useChangePage";
 import recordsSort from "./RecordsSort";
 
-const RecordsList = (props) => {
+const RecordsList = props => {
   const { sortedRecords, records, recordFields, values, resource } = props;
   const { filteredRecords, filterRecords } = useFilterRecords({
     sortedRecords,
@@ -62,7 +62,7 @@ const RecordsList = (props) => {
                   <Record
                     key={`record_key_${id}`}
                     record={record}
-                    checked={checked.find((r) => r === record.id) || false}
+                    checked={checked.find(r => r === record.id) || false}
                     selectRecord={selectRecord}
                     recordFields={recordFields}
                     resourceId={resource.id}

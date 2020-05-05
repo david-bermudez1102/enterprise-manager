@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 
-export default class ToggleContent extends Component {
+export default class ToggleContent extends PureComponent {
   state = { isShown: false };
   hide = event => {
     event.stopPropagation();

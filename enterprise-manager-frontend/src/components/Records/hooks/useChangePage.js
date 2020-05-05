@@ -1,20 +1,23 @@
 import { useState, useEffect, useCallback } from "react";
 import { chunk } from "lodash";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import workerInstance from "../../../workers/workerActions";
 import { setSortedRecords } from "../../../actions/recordActions";
 import { addInfoAlert } from "../../../actions/alertsActions";
 import chunkOfRecordsProxy from "./chunkOfRecordsProxy";
 
-export const useChangePage = (props) => {
+export const useChangePage = props => {
   const { sortedRecords, filteredRecords, records, values, resource } = props;
   const location = useLocation();
   const history = useHistory();
   const match = useRouteMatch();
   const dispatch = useDispatch();
   const queryParams = new URLSearchParams(location.search);
-  const { pagination, recordsSortedBy } = useSelector((state) => state);
+  const { pagination, recordsSortedBy } = useSelector(
+    ({ pagination, recordsSortedBy }) => ({ pagination, recordsSortedBy }),
+    shallowEqual
+  );
 
   const page =
     parseInt(queryParams.get("page")) >
@@ -57,14 +60,14 @@ export const useChangePage = (props) => {
     chunkOfRecordsProxy(
       filteredRecords || sortedRecords,
       pagination.limit
-    ).then((resp) => {
+    ).then(resp => {
       const currentValue = chunkOfRecords[page - 1][0];
       const newChunk = resp;
       setPaginationLimit(pagination.limit);
       setChunkOfRecords(newChunk);
       history.replace(
         `${location.pathname}?page=${
-          newChunk.findIndex((e) => e.some((y) => y.id === currentValue.id)) + 1
+          newChunk.findIndex(e => e.some(y => y.id === currentValue.id)) + 1
         }`
       );
     });

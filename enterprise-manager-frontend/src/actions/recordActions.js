@@ -1,4 +1,4 @@
-import { handleErrors } from "./handleErrors";
+import { handleErrors, displayErrors } from "./handleErrors";
 import snakecaseKeys from "snakecase-keys";
 import workerInstance from "../workers/workerActions";
 import { remove } from "./fetchActions";
@@ -42,7 +42,7 @@ export const addRecord = (record, organizationId, formId) => {
         }
       })
       .then(values => dispatch({ type: "ADD_VALUES", values }))
-      .catch(console.log);
+      .catch(resp => displayErrors(resp, dispatch));
   };
 };
 

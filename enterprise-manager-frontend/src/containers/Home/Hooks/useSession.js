@@ -1,7 +1,7 @@
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchSession } from "../../../actions/sessionActions";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 const useSession = () => {
   const routes = ["/", "/login", "/reset_password"];
@@ -35,7 +35,7 @@ const useSession = () => {
     ) {
       history.push("/login", { loginFailed: true });
     }
-  }, [session, routes, location]);
+  }, [session, routes, location, history, organizations.length]);
 
   return session;
 };

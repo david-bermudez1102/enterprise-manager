@@ -1,23 +1,47 @@
-import React from "react";
-import { NavLink, Link, matchPath, Redirect } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  NavLink,
+  Link,
+  matchPath,
+  useRouteMatch,
+  useLocation,
+  useHistory,
+} from "react-router-dom";
 import ToggleContent from "../ToggleContent";
 import { DeletionModal } from "../Modal/Modals";
 import { NoContent } from "../NoContent";
+import { useSelector, shallowEqual } from "react-redux";
 
 const pluralize = require("pluralize");
 
-const ResourcesList = ({ loaded, match, resources, location, history }) => {
-  if (resources.length === 0 && loaded) {
+const ResourcesList = ({ loaded }) => {
+  const location = useLocation();
+  const match = useRouteMatch();
+  const history = useHistory();
+
+  const { resources } = useSelector(
+    ({ resources }) => ({ resources }),
+    shallowEqual
+  );
+
+  useEffect(() => {
+    if (
+      resources.length === 0 &&
+      location.pathname !== `${match.url}/new` &&
+      loaded
+    ) {
+      history.push(`${match.url}/new`);
+    }
+    // eslint-disable-next-line
+  }, [resources, location, loaded]);
+
+  if (resources.length === 0)
     return (
-      <>
-        <NoContent>
-          <i className="fas fa-exclamation-circle mr-2"></i>
-          There are no resources created yet!
-        </NoContent>
-        <Redirect to={`${match.url}/new`} />
-      </>
+      <NoContent>
+        <i className="fas fa-exclamation-circle mr-2"></i>
+        There are no resources created yet!
+      </NoContent>
     );
-  }
   return (
     <div className="list-group h-100 scroller">
       {resources.map(resource => {
@@ -30,7 +54,7 @@ const ResourcesList = ({ loaded, match, resources, location, history }) => {
             className={`row mx-0 border-0 shadow-sm rounded list-group-item list-group-item-action py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 ${
               isActive ? "active text-white" : ""
             }`}
-            key={`resourceList${resource.id}`}
+            key={`resourceList_${resource.id}`}
             style={{
               cursor: "pointer",
               fontSize: "24px",

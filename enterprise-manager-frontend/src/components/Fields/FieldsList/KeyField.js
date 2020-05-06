@@ -8,7 +8,7 @@ const KeyField = props => {
     const date = new Date()
       .toLocaleDateString("en-US", {
         year: "2-digit",
-        month: "2-digit"
+        month: "2-digit",
       })
       .replace(/[&/\\#,+()$~%.'":*?<>{}]/g, "");
     const keyValuesCount =
@@ -18,11 +18,13 @@ const KeyField = props => {
 
   if (props.fields.some(r => r.id === recordKeyAttributes.resourceFieldId)) {
     keyValue =
-      keyValues.find(
-        kV =>
-          props.state.some(v => v.recordValueId === kV.recordValueId) &&
-          props.fields.some(r => r.id === recordKeyAttributes.resourceFieldId)
-      ) || generateKeyValue();
+      keyValues
+        .sort((kV_a, kV_b) => kV_b.id - kV_a.id)
+        .find(
+          kV =>
+            props.state.some(v => v.recordValueId === kV.recordValueId) &&
+            props.fields.some(r => r.id === recordKeyAttributes.resourceFieldId)
+        ) || generateKeyValue();
   }
 
   return (

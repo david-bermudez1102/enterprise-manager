@@ -1,24 +1,31 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { removeResource } from "../../actions/resourceActions";
 
-export default class ResourceDelete extends Component {
-  constructor() {
-    super();
-    this.state = { status: "deleting" };
-  }
+const ResourceDelete = ({ redirectTo, organizationId }) => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { resourceId } = useParams();
+  const { resources, requesting } = useSelector(
+    ({ resources, requesting }) => ({ resources, requesting }),
+    shallowEqual
+  );
+  const mounted = useRef();
 
-  componentDidMount() {
-    const { match, organizationId, removeResource } = this.props;
-    console.log(match);
-    removeResource(organizationId, match.params.resourceId).then(action =>
-      this.setState({ status: action ? action.status : "deleted" })
-    );
-  }
+  useEffect(() => {
+    dispatch(removeResource(organizationId, resourceId));
+  }, []);
 
-  render() {
-    const { redirectTo } = this.props;
-    return this.state.status === "deleted" ? (
-      <Redirect to={redirectTo} />
-    ) : null;
-  }
-}
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      if (!requesting) setTimeout(() => history.replace(redirectTo), 3000);
+    }
+  }, [resources]);
+
+  return null;
+};
+
+export default ResourceDelete;

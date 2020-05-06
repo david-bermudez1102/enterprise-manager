@@ -7,7 +7,7 @@ const SidebarHeader = ({ currentUser, minimized, appear }) => {
   return (
     <div
       className={`d-flex align-items-center w-100 text-nowrap flex-nowrap px-3 `}
-      style={{ height: "60.59px" }}>
+      style={{ height: "58px" }}>
       <CSSTransition in={!minimized} timeout={80} classNames="sidebar-fade">
         <div
           className="row flex-nowrap w-100 no-gutters"

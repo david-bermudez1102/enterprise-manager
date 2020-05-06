@@ -11,7 +11,7 @@ function Route(props) {
     if (!routes.includes(props.path))
       dispatch({ type: "ADD_ROUTE", path: props.path });
     // eslint-disable-next-line
-  }, []);
+  }, [props]);
 
   return <ReactRoute {...props} />;
 }

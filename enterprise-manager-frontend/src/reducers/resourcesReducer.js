@@ -18,25 +18,23 @@ export const resourcesReducer = (state = [], action) => {
           }),
         ...action.resources.filter(
           resource => !state.some(res => resource.id === res.id)
-        )
+        ),
       ];
     case "UPDATE_RESOURCE":
-      const resource = state.find(
-        resource => resource.id === parseInt(action.resourceId)
-      );
-      return [...state.map(r => (r.id === resource.id ? action.resource : r))];
+      console.log(action.resource);
+      return [
+        ...state.map(r => (r.id === action.resource.id ? action.resource : r)),
+      ];
     case "UPDATE_RECORDS_COUNT":
       return [
         ...state.map(r =>
           r.id === parseInt(action.formId)
             ? { ...r, recordsCount: action.recordsCount }
             : r
-        )
+        ),
       ];
     case "REMOVE_RESOURCE":
-      return [
-        ...state.filter(resource => resource.id !== parseInt(action.resourceId))
-      ];
+      return [...state.filter(resource => resource.id !== parseInt(action.id))];
     default:
       return state;
   }

@@ -1,4 +1,5 @@
 import { handleErrors } from "./handleErrors";
+import { remove } from "./fetchActions";
 
 export const addResource = resource => {
   const organizationsPath = `/api/v1/organizations/${resource.organization_id}`;
@@ -38,6 +39,7 @@ export const fetchResources = organizationId => {
   return dispatch => {
     return fetch(`/api/v1/organizations/${organizationId}/forms`, {
       credentials: "include",
+      cache: "no-cache"
     })
       .then(response => response.json())
       .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }))
@@ -45,11 +47,11 @@ export const fetchResources = organizationId => {
   };
 };
 
-export const updateResource = (resource, organizationId, resourceId) => {
+export const updateResource = resource => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
     return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
+      `/api/v1/organizations/${resource.organizationId}/forms/${resource.id}`,
       {
         method: "PATCH",
         headers: {
@@ -66,7 +68,6 @@ export const updateResource = (resource, organizationId, resourceId) => {
         if (!resource.errors) {
           dispatch({
             type: "UPDATE_RESOURCE",
-            resourceId,
             resource,
           });
           dispatch({
@@ -82,35 +83,17 @@ export const updateResource = (resource, organizationId, resourceId) => {
   };
 };
 
-export const removeResource = (organizationId, resourceId) => {
+export const removeResource = (organizationId, id) => {
   return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" });
-    return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${resourceId}`,
+    return remove(
+      dispatch,
+      `/api/v1/organizations/${organizationId}/forms/${id}`,
+      id,
+      "REMOVE_RESOURCE",
       {
-        method: "DELETE",
-        credentials: "include",
+        type: "REMOVE_RECORDS",
+        resourceId: id,
       }
-    )
-      .then(response => response.json())
-      .then(resource => {
-        if (resource.message) {
-          dispatch({
-            type: "REMOVE_RESOURCE",
-            resourceId,
-            status: "deleted",
-          });
-          dispatch({
-            type: "REMOVE_RECORDS",
-            resourceId,
-          });
-          dispatch({
-            type: "ADD_MESSAGES",
-            messages: resource.messages || ["Resource deleted successfully."],
-          });
-        } else {
-          dispatch({ type: "ADD_ERRORS", errors: resource.errors });
-        }
-      });
+    );
   };
 };

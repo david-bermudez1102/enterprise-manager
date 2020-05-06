@@ -5,29 +5,29 @@ import { useState, useEffect } from "react";
 const useMatchedRoute = () => {
   const { routes } = useSelector(({ routes }) => ({ routes }), shallowEqual);
   const location = useLocation();
-  const [routesList, setRoutesList] = useState(routes);
+  const [checking, setChecking] = useState(false);
   const [matched, setMatched] = useState(true);
 
   useEffect(() => {
-    setRoutesList(routes);
+    setChecking(true);
   }, [routes]);
 
   useEffect(() => {
-    if (routesList) {
+    if (checking) {
       setMatched(
-        routesList.some(route =>
+        routes.some(route =>
           matchPath(location.pathname, { path: route, exact: true })
         )
       );
-      setRoutesList(null);
+      setChecking(false);
     }
-  }, [routesList, location]);
+    // eslint-disable-next-line
+  }, [checking, location]);
 
   useEffect(() => {
     if (!matched) setMatched(true);
     // eslint-disable-next-line
   }, [location]);
-
   return matched;
 };
 

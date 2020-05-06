@@ -1,4 +1,5 @@
 class Value < ApplicationRecord
+  include ::ValueConcern
   belongs_to :field, touch: true, optional: true
   belongs_to :record_field, touch: true, optional: true
   belongs_to :record, touch: true
@@ -12,44 +13,7 @@ class Value < ApplicationRecord
 
   accepts_nested_attributes_for :checkbox_options, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 
-  def generate_key_value
-    unless record_value.nil?
-      if record_value.key_value.nil?
-        record_key = RecordKey.find_by(resource_field_id: record_field.field.id)
-        unless record_key.nil?
-          unless KeyValue.find_by(record_value_id: record_value.id)
-            key_value = KeyValue.where(record_key: record_key)
-            count = key_value ? key_value.size : 0
-            count = count + 1 < 10 ? "0#{count + 1}" : count + 1
-            value = "#{self.created_at.strftime("%m%y")}-#{count}"
-            new_key_value = record_value.build_key_value(record_value:record_value, record_key: record_key,value: value)
-            new_key_value.save
-            record_value.key_value_id = new_key_value.id
-            record_value.save
-            Value.create(record:record, field_id:record_key.field_id, record_field_id:record_key.field.record_field_id, content: value, key_value:new_key_value)
-            Value.where(content: "", record_field_id:record_key.field.record_field_id).update_all(content: value)
-            Record.joins(:values).where(values: {record_value_id: record_value.id}).map do |rec|
-              rec.values.find_or_create_by(content:value, record_field_id:record_key.field.record_field_id)
-            end
-          end
-        end
-      else
-        record_key = RecordKey.find_by(resource_field_id: record_field.field.id)
-        Value.create(record:record, field_id:record_key.field_id, record_field_id:record_key.field.record_field_id, content: record_value.key_value.value, key_value:record_value.key_value)
-        Value.where(content: "", record_field_id:record_key.field.record_field_id).update_all(content: record_value.key_value.value)
-      end
-    end
-  end
-
-  def key_value_generator(record_key)
-    key_value = KeyValue.where(record_key: record_key)
-    count = key_value ? key_value.size : 0
-    value = "#{self.created_at.strftime("%m%y")}-#{count+1}"
-    new_key_value = record_value.build_key_value(record_value:record_value, record_key: record_key,value: value)
-    new_key_value.save
-    record_value.key_value_id = new_key_value.id
-    record_value.save
-  end
+  scope :this_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
 
   def cache_key
     "/values/#{id}-#{updated_at}"
@@ -57,9 +21,7 @@ class Value < ApplicationRecord
 
   private
     def touch_selectable_resource
-      selectable_resource = SelectableResource.find_by(resource_field_id: record_field.field.id)
-      if selectable_resource
-        selectable_resource.field.update_column(:updated_at, Time.now)
-      end
+      selectable_resource = SelectableResource.where(resource_field_id: record_field.field.id).where.not( record_field:nil)
+      selectable_resource.each { |sel| sel.record_field.touch} if selectable_resource
     end
 end

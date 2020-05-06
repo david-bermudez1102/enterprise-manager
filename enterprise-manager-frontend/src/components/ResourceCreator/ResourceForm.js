@@ -1,74 +1,62 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 
-class ResourceForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      organization_id: props.organizationId
-    };
-  }
-
-  componentDidMount() {
-    const { match, resources } = this.props;
-    const resource = resources ? resources.find(resource => resource.formAlias === match.params.formAlias) : null;
-    return resource ? this.setState({ name: resource.name, resourceId: resource.id }) : null;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.match !== this.props.match) {
-      const { match, resources } = this.props;
-      const resource = resources ? resources.find(resource => resource.formAlias === match.params.formAlias) : null;
-      return resource ? this.setState({ name: resource.name, resourceId: resource.id }) : null;
-    }
-  }
-
-  handleChange = event => {
-    event.persist();
-    this.setState({ ...this.state, [event.target.name]: event.target.value });
+const ResourceForm = ({ addResource, updateResource, url, resource }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
+  const { organizationId } = session.currentUser;
+  const initialState = {
+    name: resource ? resource.name : "",
+    organizationId,
   };
+  const [state, setState] = useState(initialState);
 
-  handleSubmit = event => {
-    const { addResource, updateResource, history, url } = this.props;
-    const { name, organization_id, resourceId } = this.state;
-    event.preventDefault();
+  useEffect(() => {
+    if (resource) setState({ ...state, name: resource.name, id: resource.id });
+    else setState(initialState);
+    // eslint-disable-next-line
+  }, [resource]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
     if (addResource)
-      addResource({ name, organization_id }, history).then(resource =>
-        resource ? history.push(resource.formAlias) : null
+      dispatch(addResource(state)).then(resource =>
+        resource ? history.push(`${resource.formAlias}`) : null
       );
     else if (updateResource)
-      updateResource({ name }, organization_id, resourceId, url).then(resource =>
-        resource ? history.push(`${url}/${resource.formAlias}/edit`) : null
+      dispatch(updateResource(state)).then(resource =>
+        resource ? history.replace(`${url}/${resource.formAlias}/edit`) : null
       );
   };
 
-  render() {
-    const { addResource } = this.props;
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <input
-            name="name"
-            id="resource_name"
-            type="text"
-            placeholder="Enter name..."
-            onChange={this.handleChange}
-            value={this.state.name}
-            className="form-control rounded-pill"
-            required
-          />
-          <label className="form-control-placeholder" htmlFor="resource_name">
-            Resource Name
-          </label>
-        </div>
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="form-group">
         <input
-          type="submit"
-          value={addResource ? "Create Resource" : "Update Resource"}
-          className="btn btn-primary shadow"
+          name="name"
+          id="resource_name"
+          type="text"
+          placeholder="Enter name..."
+          onChange={e =>
+            setState({ ...state, [e.target.name]: e.target.value })
+          }
+          value={state.name}
+          className="form-control rounded-pill"
+          required
         />
-      </form>
-    );
-  }
-}
+        <label className="form-control-placeholder" htmlFor="resource_name">
+          Resource Name
+        </label>
+      </div>
+      <input
+        type="submit"
+        value={addResource ? "Create Resource" : "Update Resource"}
+        className="btn btn-primary shadow"
+      />
+    </form>
+  );
+};
 
-export default ResourceForm;
+export default React.memo(ResourceForm);

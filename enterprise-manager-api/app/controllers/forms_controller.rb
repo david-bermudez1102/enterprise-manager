@@ -28,7 +28,8 @@ class FormsController < ApplicationController
   def update
     form = @organization.forms.find_by(id: params[:id])
     if form.update(form_params)
-      render json: FormSerializer.new(form, messages: ["Changes were successfully saved"])
+      serialized_data = FormSerializer.new(form).serializable_hash
+      render json: serialized_data[:data][:attributes], messages: ["Changes were successfully saved"]
     else
       render json: { errors: form.errors.full_messages }
     end
@@ -36,7 +37,11 @@ class FormsController < ApplicationController
 
   def destroy
     form = @organization.forms.find_by(id: params[:id])
-    render json: { id: params[:id], message: 'Success' } if form.destroy
+    if form.destroy
+      render json: { id: params[:id], messages: ['Success'], destroyed:true }
+    else
+      render json: { errors: form.errors.full_messages }
+    end
   end
 
   private

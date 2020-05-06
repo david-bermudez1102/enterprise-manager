@@ -1,12 +1,12 @@
 class Form < ApplicationRecord
-  belongs_to :organization
+  belongs_to :organization, touch: true
   has_one :zoho_connection, class_name:"Connection", foreign_key: "zoho_connection_id", dependent: :destroy
   has_one :quickbooks_connection, class_name:"Connection", foreign_key: "quickbooks_connection_id", dependent: :destroy
   has_many :fields, dependent: :destroy
   has_many :records, dependent: :destroy
   has_many :record_fields, dependent: :destroy
   has_many :values, through: :records
-  validates :name, length: { in: 2..12 }
+  validates :name, length: { in: 2..20 }
   has_many :selectable_resources, dependent: :destroy
   before_create :generate_form_alias
   after_save :nullify_form_alias, if: :saved_change_to_name?

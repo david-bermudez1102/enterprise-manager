@@ -16,7 +16,6 @@ import { useSelector, shallowEqual } from "react-redux";
 import Route from "../../Router/Route";
 import NoMatch from "../../components/NoMatch";
 import useMatchedRoute from "../../components/NoMatch/useMatchedRoute";
-import Loader from "../../components/Loader";
 
 const HomeContainer = () => {
   const { organizations, admins } = useSelector(
@@ -73,7 +72,6 @@ const HomeContainer = () => {
             )
             <Route exact path="/" component={Home} />
           </Switch>
-          <Loader />
         </main>
         {session.isLoggedIn ? (
           <div className="d-flex mt-auto w-100">

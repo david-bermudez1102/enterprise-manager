@@ -21,7 +21,6 @@ export const resourcesReducer = (state = [], action) => {
         ),
       ];
     case "UPDATE_RESOURCE":
-      console.log(action.resource);
       return [
         ...state.map(r => (r.id === action.resource.id ? action.resource : r)),
       ];

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector, shallowEqual, useDispatch } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
+import ButtonLoader from "../Loader/ButtonLoader";
+import useLoader from "../Loader/useLoader";
 
 const ResourceForm = ({ addResource, updateResource, url, resource }) => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  const { dispatchWithLoader, loading } = useLoader();
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
   const { organizationId } = session.currentUser;
   const initialState = {
@@ -22,11 +24,11 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
   const handleSubmit = e => {
     e.preventDefault();
     if (addResource)
-      dispatch(addResource(state)).then(resource =>
+      dispatchWithLoader(addResource(state)).then(resource =>
         resource ? history.push(`${resource.formAlias}`) : null
       );
     else if (updateResource)
-      dispatch(updateResource(state)).then(resource =>
+      dispatchWithLoader(updateResource(state)).then(resource =>
         resource ? history.replace(`${url}/${resource.formAlias}/edit`) : null
       );
   };
@@ -50,11 +52,9 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
           Resource Name
         </label>
       </div>
-      <input
-        type="submit"
-        value={addResource ? "Create Resource" : "Update Resource"}
-        className="btn btn-primary shadow"
-      />
+      <ButtonLoader loading={loading}>
+        {addResource ? "Create Resource" : "Update Resource"}
+      </ButtonLoader>
     </form>
   );
 };

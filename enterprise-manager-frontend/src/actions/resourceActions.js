@@ -2,7 +2,7 @@ import { handleErrors } from "./handleErrors";
 import { remove } from "./fetchActions";
 
 export const addResource = resource => {
-  const organizationsPath = `/api/v1/organizations/${resource.organization_id}`;
+  const organizationsPath = `/api/v1/organizations/${resource.organizationId}`;
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
     return fetch(`${organizationsPath}/forms`, {
@@ -39,7 +39,7 @@ export const fetchResources = organizationId => {
   return dispatch => {
     return fetch(`/api/v1/organizations/${organizationId}/forms`, {
       credentials: "include",
-      cache: "no-cache"
+      cache: "no-cache",
     })
       .then(response => response.json())
       .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }))

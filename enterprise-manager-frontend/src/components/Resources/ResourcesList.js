@@ -11,10 +11,10 @@ import ToggleContent from "../ToggleContent";
 import { DeletionModal } from "../Modal/Modals";
 import { NoContent } from "../NoContent";
 import { useSelector, shallowEqual } from "react-redux";
+import Loader from "../Loader";
+import pluralize from "pluralize";
 
-const pluralize = require("pluralize");
-
-const ResourcesList = ({ loaded }) => {
+const ResourcesList = ({ loaded, loading }) => {
   const location = useLocation();
   const match = useRouteMatch();
   const history = useHistory();
@@ -43,7 +43,8 @@ const ResourcesList = ({ loaded }) => {
       </NoContent>
     );
   return (
-    <div className="list-group h-100 scroller">
+    <div className="position-relative list-group h-100 scroller">
+      <Loader loading={loading} />
       {resources.map(resource => {
         const isActive = !!matchPath(
           location.pathname,

@@ -17,7 +17,7 @@ import Alert from "../../components/Alerts/Alert";
 import Route from "../../Router/Route";
 
 const ResourcesContainer = props => {
-  const { loaded } = props;
+  const { loaded, loading } = props;
   const location = useLocation();
   const match = useRouteMatch();
   const { resources } = useSelector(
@@ -52,7 +52,7 @@ const ResourcesContainer = props => {
           } col-md-12 pr-3 pr-lg-0 min-h-100`}
           style={{ maxHeight: "80vh" }}>
           <div className="bg-light rounded p-2 h-100 shadow-sm">
-            <ResourcesList loaded={loaded} />
+            <ResourcesList loaded={loaded} loading={loading} />
           </div>
         </div>
         <Switch>

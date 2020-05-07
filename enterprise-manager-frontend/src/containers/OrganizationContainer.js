@@ -10,6 +10,7 @@ import Settings from "./Settings/Settings";
 import AllRecordsContainer from "./Records/AllRecordsContainer";
 import { FormCard } from "../components/Cards/Cards";
 import Route from "../Router/Route";
+import useLoader from "../components/Loader/useLoader";
 
 const OrganizationContainer = () => {
   const { organizations, resources, session, admins } = useSelector(
@@ -27,19 +28,20 @@ const OrganizationContainer = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const match = useRouteMatch();
+  const { loading, dispatchWithLoader } = useLoader();
 
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
       setLoaded(false);
       if (organizations.length > 0 && session.isLoggedIn)
-        dispatch(fetchResources(organizations[0].id)).then(() =>
+        dispatchWithLoader(fetchResources(organizations[0].id)).then(() =>
           setLoaded(true)
         );
     } else {
       setLoaded(false);
       if (organizations.length > 0 && session.isLoggedIn)
-        dispatch(fetchResources(organizations[0].id)).then(() =>
+        dispatchWithLoader(fetchResources(organizations[0].id)).then(() =>
           setLoaded(true)
         );
       if (organizations.length > 0 && admins.length === 0 && session.isLoggedIn)
@@ -93,6 +95,7 @@ const OrganizationContainer = () => {
                 {...props}
                 resources={resources}
                 loaded={loaded}
+                loading={loading}
               />
             )}
           />

@@ -6,14 +6,17 @@ import { remove } from "./fetchActions";
 export const addRecord = (record, organizationId, formId) => {
   return dispatch => {
     dispatch({ type: "CLEAR_ALERTS" });
-    fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/records`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(snakecaseKeys({ record })),
-    })
+    return fetch(
+      `/api/v1/organizations/${organizationId}/forms/${formId}/records`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(snakecaseKeys({ record })),
+      }
+    )
       .then(handleErrors)
       .then(response => response.json())
       .then(record => {

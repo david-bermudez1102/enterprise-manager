@@ -10,13 +10,13 @@ const InputGroup = ({ children }) => {
           style={{ zIndex: 3 }}>
           {React.cloneElement(children[0], {
             className: `${children[0].props.className}`,
-            style: { fontSize: "12px" }
+            style: { fontSize: "12px" },
           })}
         </button>
       </div>
       <div className="col col-sm-12">
         {React.cloneElement(children[1], {
-          className: `${children[1].props.className} pl-3`
+          className: `${children[1].props.className} pl-3`,
         })}
       </div>
     </div>

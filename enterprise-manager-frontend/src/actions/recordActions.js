@@ -53,7 +53,7 @@ export const fetchRecords = (organizationId, formId, offset) => {
   //const query = offset ? `?offset=${offset}` : "";
   return (dispatch, getState) => {
     const { records, values } = getState();
-    workerInstance
+    return workerInstance
       .fetchRecords({ records, values }, formId, organizationId)
       .then(({ records, values }) => {
         dispatch({ type: "FETCH_RECORDS", records });

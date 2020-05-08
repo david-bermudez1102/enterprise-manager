@@ -2,6 +2,7 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { useState, useEffect } from "react";
 import { fetchRecords } from "../../../actions/recordActions";
 import { useRouteMatch } from "react-router-dom";
+import useLoader from "../../../components/Loader/useLoader";
 
 const useRecords = props => {
   const { resource } = props;
@@ -15,7 +16,7 @@ const useRecords = props => {
     }),
     shallowEqual
   );
-  const dispatch = useDispatch();
+  const { dispatch, loading, dispatchWithLoader } = useLoader();
 
   const [listHeight, setListHeight] = useState(0);
   const [optionsHeight, setOptionsHeight] = useState(0);
@@ -25,8 +26,9 @@ const useRecords = props => {
       ...records.filter(record => record.formId === resource.id).map(r => r.id),
       0
     ); // return the most recent record */
-    if (resource) dispatch(fetchRecords(resource.organizationId, resource.id));
-  }, [dispatch, resource]);
+    if (resource)
+      dispatchWithLoader(fetchRecords(resource.organizationId, resource.id));
+  }, [dispatchWithLoader, resource]);
 
   return {
     resource,
@@ -40,6 +42,7 @@ const useRecords = props => {
     optionsHeight,
     setOptionsHeight,
     dispatch,
+    loading,
   };
 };
 

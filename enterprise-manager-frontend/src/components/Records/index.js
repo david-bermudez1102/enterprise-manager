@@ -4,6 +4,7 @@ import { ReactHeight } from "react-height/lib/ReactHeight";
 import RecordsOptions from "./RecordsOptions";
 import RecordsList from "./RecordsList";
 import { NoContent } from "../NoContent";
+import Loader from "../Loader";
 
 const Records = props => {
   const { resource } = props;
@@ -16,8 +17,8 @@ const Records = props => {
     setListHeight,
     optionsHeight,
     setOptionsHeight,
+    loading,
   } = useRecords(props);
-
   return (
     <div
       className="col-lg-12 pt-4 d-block float-left position-relative"
@@ -25,6 +26,7 @@ const Records = props => {
         height: `${listHeight + optionsHeight + 50}px`,
       }}>
       <div className="w-100 position-relative">
+        <Loader loading={loading} />
         <div className="bg-white shadow-sm p-2 d-inline-block rounded w-100 position-absolute">
           <ReactHeight onHeightReady={height => setOptionsHeight(height)}>
             <RecordsOptions resource={resource} />
@@ -41,6 +43,7 @@ const Records = props => {
                   f => f.formId === resource.id
                 )}
                 values={values.filter(f => f.formId === resource.id)}
+                loading={loading}
               />
             </ReactHeight>
           ) : (

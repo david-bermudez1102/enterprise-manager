@@ -19,7 +19,7 @@ const useLoader = () => {
     });
   }, []);
 
-  return { loading, dispatchWithLoader };
+  return { loading, dispatchWithLoader, dispatch };
 };
 
 export default useLoader;

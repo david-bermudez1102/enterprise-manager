@@ -20,6 +20,7 @@ import AccountDelete from "../../components/Accounts/AccountDelete";
 import AccountDisable from "../../components/Accounts/AccountDisable.js";
 import AccountUnlock from "../../components/Accounts/AccountUnlock";
 import Route from "../../Router/Route";
+import AccountsFeed from "../../components/Accounts";
 
 class AccountsContainer extends Component {
   componentDidMount() {
@@ -146,14 +147,7 @@ class AccountsContainer extends Component {
                 </FormCard>
               )}
             />
-            <Route
-              path={`${match.path}`}
-              render={props => (
-                <div className="w-100 h-100 bg-white rounded shadow-sm d-flex justify-content-center align-items-center alert-light">
-                  Coming Soon
-                </div>
-              )}
-            />
+            <Route path={`${match.path}`} component={AccountsFeed} />
           </Switch>
         </div>
       </div>

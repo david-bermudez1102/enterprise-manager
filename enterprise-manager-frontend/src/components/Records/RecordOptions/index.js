@@ -39,7 +39,7 @@ const RecordOptions = ({ record, checked, selectRecord }) => {
           }></i>
       </button>
       <button className="btn btn-transparent p-0 d-block-inline">
-        <i className="fad fa-archive text-info mr-2"></i>
+        <i className="fad fa-archive text-warning mr-2"></i>
       </button>
       <button className="btn btn-transparent p-0 mt-n1 d-block-inline">
         <img

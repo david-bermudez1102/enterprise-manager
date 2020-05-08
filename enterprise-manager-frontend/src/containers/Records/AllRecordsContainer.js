@@ -37,8 +37,6 @@ const AllRecordsContainer = () => {
   if (resources.length === 0)
     return <NoContent>There are no resources created yet!</NoContent>;
 
-  console.log(resource);
-
   return (
     <Switch>
       <Route

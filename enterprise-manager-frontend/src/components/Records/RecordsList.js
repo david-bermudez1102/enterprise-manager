@@ -7,6 +7,7 @@ import RecordsFilter from "./RecordsFilter";
 import { useFilterRecords } from "./hooks/useFilterRecords";
 import { useChangePage } from "./hooks/useChangePage";
 import recordsSort from "./RecordsSort";
+import FilterOptions from "./RecordsFilter/FilterOptions/";
 
 const RecordsList = props => {
   const { sortedRecords, records, recordFields, values, resource } = props;
@@ -40,8 +41,14 @@ const RecordsList = props => {
   }, [page, match]);
 
   return (
-    <div ref={allRecordsRef} className="table-responsive">
-      <Pagination resource={resource} page={page} />
+    <div
+      ref={allRecordsRef}
+      className="table-responsive"
+      style={{ height: "auto" }}>
+      <div className="d-flex justify-content-between w-100 flex-nowrap align-items-center">
+        <FilterOptions />
+        <Pagination resource={resource} page={page} />
+      </div>
       <table className="table table-striped mb-0 table-hover border-0">
         <RecordsHeader
           {...{

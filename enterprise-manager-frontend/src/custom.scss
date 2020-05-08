@@ -1,17 +1,15 @@
 /*! `Custom` Bootstrap 4 theme */
 @import url(https://pro.fontawesome.com/releases/v5.10.0/css/all.css);
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap');
-$font-family-base: 'Source Sans Pro',
-sans-serif;
-@import url('https://fonts.googleapis.com/css?family=Catamaran&display=swap');
-$headings-font-family: 'Catamaran',
-sans-serif;
-@import url('https://fonts.googleapis.com/css?family=Yantramanav&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap");
+$font-family-base: "Source Sans Pro", sans-serif;
+@import url("https://fonts.googleapis.com/css?family=Catamaran&display=swap");
+$headings-font-family: "Catamaran", sans-serif;
+@import url("https://fonts.googleapis.com/css?family=Yantramanav&display=swap");
 
 $enable-grid-classes: true;
 $primary: #ff304f;
 $secondary: #303030;
-$success: #28A745;
+$success: #28a745;
 $danger: #dc3545;
 $info: #0f81c7;
 $warning: #0de2ea;
@@ -26,8 +24,7 @@ $btn-border-radius: 0.25rem;
 }
 
 .sidebar {
-  font-family: 'Yantramanav',
-    sans-serif;
+  font-family: "Yantramanav", sans-serif;
 }
 
 .form-group {
@@ -46,8 +43,8 @@ $btn-border-radius: 0.25rem;
   cursor: text;
 }
 
-.form-control:focus+.form-control-placeholder,
-.form-control:valid+.form-control-placeholder {
+.form-control:focus + .form-control-placeholder,
+.form-control:valid + .form-control-placeholder {
   font-size: 80% !important;
   transform: translate3d(0, -55%, 0) !important;
   opacity: 1 !important;
@@ -71,7 +68,7 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s !important;
 }
 
-::-webkit-input-placeholder {
+.form-control::-webkit-input-placeholder {
   opacity: 0 !important;
 }
 
@@ -80,7 +77,7 @@ select:-webkit-autofill:focus {
   transition: all 200ms !important;
 }
 
-::-moz-placeholder {
+.form-control::-moz-placeholder {
   opacity: 0 !important;
 }
 
@@ -89,7 +86,7 @@ select:-webkit-autofill:focus {
   transition: all 200ms !important;
 }
 
-:-ms-input-placeholder {
+.form-control:-ms-input-placeholder {
   opacity: 0 !important;
 }
 
@@ -98,7 +95,7 @@ select:-webkit-autofill:focus {
   transition: all 200ms !important;
 }
 
-:-moz-placeholder {
+.form-control:-moz-placeholder {
   opacity: 0 !important;
 }
 
@@ -189,14 +186,14 @@ body {
   display: none;
 }
 
-.check input:checked+label .box {
+.check input:checked + label .box {
   -webkit-animation: animOnTransform 1s 1 forwards;
   animation: animOnTransform 1s 1 forwards;
   background: #40e0d0;
   color: #fff;
 }
 
-.check input:checked+label .box i {
+.check input:checked + label .box i {
   -webkit-transform: translate(25%, -50%) scale(1);
   transform: translate(25%, -50%) scale(1);
   -webkit-transition-duration: 200ms;

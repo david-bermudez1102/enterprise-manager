@@ -4,7 +4,7 @@ import { useSelector, shallowEqual } from "react-redux";
 import { addRecord } from "../../../actions/recordActions";
 import { Link } from "react-router-dom";
 import { CardHeader, CardBody } from "../../Cards/Cards";
-import { NoContent } from "../../NoContent";
+import { Empty } from "antd";
 import zohoBooksIcon from "../../../containers/ZohoBooks/favicon.ico";
 import useLoader from "../../Loader/useLoader";
 import ButtonLoader from "../../Loader/ButtonLoader";
@@ -105,7 +105,7 @@ const FieldsList = props => {
             </ButtonLoader>
           </form>
         ) : (
-          <NoContent>This form doesn't have any fields yet</NoContent>
+          <Empty description={"This form doesn't have any fields yet."} />
         )}
       </CardBody>
     </>

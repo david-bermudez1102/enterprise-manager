@@ -34,7 +34,7 @@ const useRecords = props => {
     resource,
     match,
     recordFields,
-    records,
+    records: records.filter(f => f.formId === resource.id),
     sortedRecords,
     values,
     listHeight,

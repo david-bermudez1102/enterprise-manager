@@ -3,7 +3,7 @@ import useRecords from "../../containers/Records/Hooks/useRecords";
 import { ReactHeight } from "react-height/lib/ReactHeight";
 import RecordsOptions from "./RecordsOptions";
 import RecordsList from "./RecordsList";
-import { NoContent } from "../NoContent";
+import { Empty } from "antd";
 import Loader from "../Loader";
 
 const Records = props => {
@@ -19,6 +19,7 @@ const Records = props => {
     setOptionsHeight,
     loading,
   } = useRecords(props);
+  console.log(records);
   return (
     <div
       className="col-lg-12 pt-4 d-block float-left position-relative"
@@ -38,7 +39,7 @@ const Records = props => {
                   f => f.formId === resource.id
                 )}
                 resource={resource}
-                records={records.filter(f => f.formId === resource.id)}
+                records={records}
                 sortedRecords={sortedRecords.filter(
                   f => f.formId === resource.id
                 )}
@@ -48,7 +49,9 @@ const Records = props => {
             </ReactHeight>
           ) : (
             <ReactHeight onHeightReady={height => setListHeight(height)}>
-              <NoContent>This resource doesn't have any records yet.</NoContent>
+              <Empty
+                description={"This resource doesn't have any records yet."}
+              />
             </ReactHeight>
           )}
         </div>

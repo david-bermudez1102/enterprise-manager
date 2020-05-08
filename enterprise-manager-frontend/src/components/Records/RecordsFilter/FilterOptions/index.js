@@ -1,5 +1,4 @@
 import React from "react";
-import "react-day-picker/lib/style.css";
 import DateRange from "./DateRange";
 
 const FilterOptions = () => {

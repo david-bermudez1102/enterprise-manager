@@ -9,6 +9,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.1.2",
     "@types/react-transition-group": "^4.2.4",
+    "antd": "^4.2.0",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "camelcase-keys": "^6.2.2",
@@ -39,8 +40,6 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.2",
     "snakecase-keys": "^3.2.0",
     "workerize": "^0.1.8"
   },

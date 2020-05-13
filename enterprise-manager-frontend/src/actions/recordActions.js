@@ -1,7 +1,8 @@
 import { handleErrors, displayErrors } from "./handleErrors";
 import snakecaseKeys from "snakecase-keys";
 import workerInstance from "../workers/workerActions";
-import { remove } from "./fetchActions";
+import { remove, update } from "./fetchActions";
+import { message } from "antd";
 
 export const addRecord = (record, organizationId, formId) => {
   return dispatch => {
@@ -31,10 +32,7 @@ export const addRecord = (record, organizationId, formId) => {
             formId,
             recordsCount: record.attributes.recordsCount,
           });
-          dispatch({
-            type: "ADD_MESSAGES",
-            messages: ["Record was successfully created."],
-          });
+          message.success("Record was successfully created.");
           return record.links.values;
         } else {
           dispatch({
@@ -44,7 +42,7 @@ export const addRecord = (record, organizationId, formId) => {
           return;
         }
       })
-      .then(values => dispatch({ type: "ADD_VALUES", values }))
+      .then(value => dispatch({ type: "ADD_VALUE", value }))
       .catch(resp => displayErrors(resp, dispatch));
   };
 };
@@ -84,5 +82,15 @@ export const removeRecord = (organizationId, formId, id) => {
         formId,
         recordsCount: resp.records_count,
       })
+    );
+};
+
+export const updateRecord = value => {
+  return dispatch =>
+    update(
+      dispatch,
+      `/api/v1/organizations/${value.organizationId}/forms/${value.formId}/records/${value.recordId}`,
+      value,
+      { type: "UPDATE_VALUE", value }
     );
 };

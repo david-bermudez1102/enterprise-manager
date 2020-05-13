@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { Col, Checkbox } from "antd";
 
 const AcceptsDecimals = ({ handleChange, fieldType }) => {
   const [acceptsDecimals, setAcceptsDecimals] = useState(false);
@@ -10,21 +11,15 @@ const AcceptsDecimals = ({ handleChange, fieldType }) => {
   };
 
   return fieldType === "numeric_field" ? (
-    <div className="col-12 order-last">
+    <Col span={24} order={24}>
       <hr />
-      <div className="form-check form-check-inline">
-        <input
-          type="checkbox"
-          name="acceptsDecimals"
-          className="form-check-input"
-          onChange={handleCheckBoxChange}
-          value={acceptsDecimals}
-        />
-        <label className="form-check-label" htmlFor="acceptsDecimals">
-          Accepts Decimals
-        </label>
-      </div>
-    </div>
+      <Checkbox
+        name="acceptsDecimals"
+        onChange={handleCheckBoxChange}
+        checked={acceptsDecimals}>
+        Accepts Decimals
+      </Checkbox>
+    </Col>
   ) : null;
 };
 export default AcceptsDecimals;

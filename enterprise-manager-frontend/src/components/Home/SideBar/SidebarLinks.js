@@ -1,56 +1,100 @@
 import React from "react";
-import DropdownButton from "./DropdownButton";
-import SidebarSubLinks from "./SidebarSubLinks";
-import { NavLink } from "react-router-dom";
-import "./styles.css";
-import { CSSTransition } from "react-transition-group";
+import { NavLink, useLocation } from "react-router-dom";
+import { Menu, Button, Avatar } from "antd";
+import defaultAvatar from "../../../default_user.png";
+import "./styles.scss";
 
-const SidebarLinks = ({ links, minimized, toggleDropDown, appear }) => {
+const { SubMenu } = Menu;
+
+const SidebarLinks = ({ links, session, collapsed }) => {
+  const location = useLocation();
   return (
-    <div className="px-2 py-2">
-      {links.map((link, id) => (
-        <CSSTransition
-          in={!minimized}
-          timeout={40}
-          classNames="sidebar-fade"
-          key={`sidebar_link_${id}`}>
-          <div className="p-0 m-0">
-            <NavLink
-              exact={link.exact}
-              to={link.path}
-              className={`${link.className} d-flex w-100 flex-nowrap mb-1 overflow-hidden justify-content-between text-nowrap align-items-center`}
-              activeClassName="bg-info active shadow"
-              style={{ height: "40px" }}>
-              <span style={{ marginLeft: "1px" }}>
-                <i className={link.icon}></i>
-                <CSSTransition
-                  in={!minimized}
-                  timeout={40}
-                  classNames="hide-text">
-                  <span
-                    className={
-                      appear
-                        ? `${link.textClass} hide-text-exit-done`
-                        : link.textClass
-                    }>
-                    {link.text}
-                  </span>
-                </CSSTransition>
-              </span>
-
-              <DropdownButton
-                link={link}
-                minimized={minimized}
-                toggleDropDown={toggleDropDown}
-              />
+    <Menu
+      className="shadow-sm"
+      theme="dark"
+      mode="inline"
+      style={{ position: "sticky", top: 0 }}
+      selectedKeys={[location.pathname]}>
+      <Menu.Item
+        key={"sidebar_header"}
+        className={
+          collapsed ? "sidebar-header-collapsed" : "sidebar-header-expanded"
+        }>
+        <NavLink to={"/"} style={{ color: "#fff" }}>
+          <Avatar src={defaultAvatar} />
+          {!collapsed ? (
+            <div
+              style={{
+                display: "inline",
+                marginLeft: 5,
+                verticalAlign: "middle",
+              }}>
+              {session.currentUser.name}
+            </div>
+          ) : null}
+        </NavLink>
+      </Menu.Item>
+      <Menu.Divider
+        key={"sidebar_divider_1"}
+        style={{
+          height: 0.4,
+          backgroundColor: "rgba(0, 0, 0, 0.9)",
+          margin: 0,
+        }}
+      />
+      {links.map(link =>
+        !link.dropdown ? (
+          <Menu.Item key={link.path}>
+            <NavLink exact={link.exact} to={link.path}>
+              <Button
+                type="link"
+                style={{ textAlign: "left", padding: 0 }}
+                icon={link.icon}
+                ghost
+                block>
+                {link.text}
+              </Button>
             </NavLink>
-
-            <SidebarSubLinks link={link} minimized={minimized} />
-          </div>
-        </CSSTransition>
-      ))}
-    </div>
+          </Menu.Item>
+        ) : (
+          <SubMenu
+            key={link.path}
+            className={
+              location.pathname.includes(link.path)
+                ? "ant-menu-item-selected"
+                : undefined
+            }
+            title={
+              <NavLink exact={link.exact} to={link.path}>
+                <Button
+                  type="link"
+                  style={{ textAlign: "left", padding: 0 }}
+                  icon={link.icon}
+                  ghost
+                  block>
+                  {link.text}
+                </Button>
+              </NavLink>
+            }>
+            {link.subLinks.map(subLink => (
+              <Menu.Item key={subLink.path}>
+                <NavLink to={subLink.path}>
+                  <Button
+                    icon={subLink.icon}
+                    style={{ textAlign: "left", padding: 0 }}
+                    type="link"
+                    ghost
+                    block>
+                    {subLink.text}
+                  </Button>
+                </NavLink>
+              </Menu.Item>
+            ))}
+          </SubMenu>
+        )
+      )}
+    </Menu>
   );
 };
 
-export default SidebarLinks;
+export default React.memo(SidebarLinks);

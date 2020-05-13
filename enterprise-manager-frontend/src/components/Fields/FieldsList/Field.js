@@ -9,13 +9,12 @@ import CheckboxField from "./CheckboxField";
 import CombinedField from "./CombinedField";
 import TextField from "./TextField";
 import KeyField from "./KeyField";
-
-const { formControl } = {
-  formControl: "form-control rounded-pill"
-};
+import { Popover } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
+import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const Field = props => {
-  const { match, field, recordField } = props;
+  const { match, field, recordField, Item } = props;
 
   const fieldName = field.name
     .split("_")
@@ -24,14 +23,23 @@ const Field = props => {
 
   let inputField;
   const inputAttributes = {
-    className: formControl,
     name: recordField.id,
-    id: field.fieldAlias,
-    type: field.fieldType,
+    id: field.fieldAlias + "_field_list",
     placeholder: `Enter ${fieldName}`,
     onChange: props.handleChange,
-    required: true,
-    field
+    suffix: (
+      <Popover
+        content={
+          <Options
+            url={`${match.url}/fields`}
+            content={field}
+            deletionMessage="The field will be deleted from the resource."
+          />
+        }>
+        <SettingOutlined style={{ color: "rgba(0,0,0,.45)" }} />
+      </Popover>
+    ),
+    field,
   };
   switch (field.fieldType) {
     case "selectable":
@@ -70,38 +78,7 @@ const Field = props => {
       inputField = <TextField {...inputAttributes} />;
       break;
   }
-  const isLabelable =
-    field.fieldType === "checkbox" || field.fieldType === "radio";
-  // Used to check if label should be inside field.
-  return (
-    <>
-      <Options
-        url={`${match.url}/fields`}
-        content={field}
-        deletionMessage="The field will be deleted from the resource."
-        style={{ marginTop: "-15px" }}
-      />
-      <div className={isLabelable ? "form-group mb-0" : "form-group"}>
-        {inputField}
-        {field.fieldType !== "selectable" ? (
-          <label
-            htmlFor={field.fieldAlias}
-            className={isLabelable ? "ml-1" : "form-control-placeholder"}
-            style={
-              isLabelable
-                ? {
-                    fontSize: "16px",
-                    marginTop: "-55px",
-                    position: "absolute"
-                  }
-                : undefined
-            }>
-            {fieldName}
-          </label>
-        ) : null}
-      </div>
-    </>
-  );
+  return inputField;
 };
 
 export default Field;

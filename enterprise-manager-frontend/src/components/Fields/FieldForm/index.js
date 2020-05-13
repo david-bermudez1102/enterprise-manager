@@ -11,6 +11,8 @@ import RadioField from "./RadioField";
 import CheckBoxField from "./CheckBoxField";
 import DateField from "./DateField";
 import CombinedField from "./CombinedField";
+import { Form, Input, Button, Radio, Row, Checkbox, Divider } from "antd";
+import { AppstoreTwoTone } from "@ant-design/icons";
 
 const FieldForm = props => {
   const { organizationId, action, resourceId } = props;
@@ -22,7 +24,7 @@ const FieldForm = props => {
   const initalState = {
     name: name || "",
     formId: formId || resourceId,
-    isRequired: isRequired || false
+    isRequired: isRequired || false,
   };
 
   const [state, setState] = useState(initalState);
@@ -42,7 +44,6 @@ const FieldForm = props => {
   };
 
   const handleSubmit = e => {
-    e.preventDefault();
     const { addField, updateField, addRecordField, updateRecordField } = props;
     if (addField) {
       dispatch(addField({ ...state, ...fieldState }, organizationId)).then(
@@ -68,65 +69,70 @@ const FieldForm = props => {
   const fieldProps = {
     field,
     fieldType: fieldState.fieldType || "",
-    onChange
+    onChange,
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          className="form-control rounded-pill"
-          type="text"
-          name="name"
-          id="field_name"
-          onChange={e =>
-            setState({
-              ...state,
-              name: e.target.value
-            })
-          }
-          value={state.name}
+    <Form
+      name="new_resource"
+      onFinish={handleSubmit}
+      layout={"vertical"}
+      initialValues={initalState}>
+      <Form.Item
+        name="name"
+        id="field_name"
+        label="Field Name"
+        onChange={e =>
+          setState({
+            ...state,
+            name: e.target.value,
+          })
+        }
+        rules={[
+          {
+            required: true,
+            message: "Please enter a valid field name!",
+          },
+        ]}>
+        <Input
+          size="large"
+          prefix={<AppstoreTwoTone />}
           placeholder="Enter field name..."
-          required
         />
-        <label className="form-control-placeholder" htmlFor="field_name">
-          Field Name
-        </label>
-      </div>
-      <hr />
-      <div className="form-group row">
-        <label htmlFor="fieldType" className="col-12 order-first">
-          Field Type:
-        </label>
-        <RecordKeyField resourceId={resourceId} {...fieldProps} />
-        <TextField {...fieldProps} />
-        <NumericField {...fieldProps} />
-        <TextareaField {...fieldProps} />
-        <PasswordField {...fieldProps} />
-        <SelectableField {...fieldProps} />
-        <RadioField {...fieldProps} />
-        <CheckBoxField {...fieldProps} />
-        <DateField {...fieldProps} />
-        <CombinedField {...fieldProps} resourceId={resourceId} />
-      </div>
-      <hr />
-      <div className="form-check form-check-inline">
-        <input
-          type="checkbox"
+      </Form.Item>
+      <Divider />
+      <Form.Item label="Field Type:">
+        <Row>
+          <RecordKeyField resourceId={resourceId} {...fieldProps} />
+          <TextField {...fieldProps} />
+          <NumericField {...fieldProps} />
+          <TextareaField {...fieldProps} />
+          <PasswordField {...fieldProps} />
+          <SelectableField {...fieldProps} />
+          <RadioField {...fieldProps} />
+          <CheckBoxField {...fieldProps} />
+          <DateField {...fieldProps} />
+          <CombinedField {...fieldProps} resourceId={resourceId} />
+        </Row>
+      </Form.Item>
+      <Divider />
+      <Form.Item>
+        <Checkbox
           name="isRequired"
-          className="form-check-input"
           onChange={e =>
             setState({ ...state, isRequired: e.target.checked ? true : false })
           }
-          checked={state.isRequired}
-        />
-        <label className="form-check-label" htmlFor="isRequired">
+          checked={state.isRequired}>
           Required
-        </label>
-      </div>
-      <hr />
-      <input type="submit" value={action} className="btn btn-primary shadow" />
-    </form>
+        </Checkbox>
+      </Form.Item>
+      <Divider />
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          {action}
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 export default FieldForm;

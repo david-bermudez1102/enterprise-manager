@@ -2,6 +2,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { fetchSession } from "../../../actions/sessionActions";
 import { useEffect } from "react";
+import { message } from "antd";
 
 const useSession = () => {
   const routes = ["/", "/login", "/reset_password"];
@@ -20,10 +21,7 @@ const useSession = () => {
   useEffect(() => {
     if (location.state)
       if (location.state.loginFailed)
-        dispatch({
-          type: "ADD_ERRORS",
-          errors: ["You need to login to view the page requested."],
-        });
+        message.error("You need to login to view the page requested.");
     // eslint-disable-next-line
   }, [location]);
 

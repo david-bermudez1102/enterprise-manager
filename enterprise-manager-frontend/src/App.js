@@ -32,19 +32,7 @@ const App = () => {
 
   return (
     <Router>
-      {loaded ? (
-        <div className="bg-light container-fluid d-flex p-0 flex-column min-h-100">
-          {!session.isLoggedIn && organizations.length > 0 ? (
-            <Navbar session={session} organizations={organizations} />
-          ) : null}
-          <Switch>
-            <Route path="/" component={HomeContainer} />
-          </Switch>
-          {organizations[0] && !session.isLoggedIn ? (
-            <Footer organization={organizations[0]} session={session} />
-          ) : null}
-        </div>
-      ) : null}
+      {loaded ? <Route path="/" component={HomeContainer} /> : null}
     </Router>
   );
 };

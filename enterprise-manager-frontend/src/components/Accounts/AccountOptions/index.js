@@ -3,7 +3,7 @@ import cuid from "cuid";
 import { Link } from "react-router-dom";
 import IconWrapper from "../../Icons/IconWrapper";
 import ToggleContent from "../../ToggleContent";
-import Modal from "../../Modal";
+import DeletionModal from "../../Modal/DeletionModal";
 import { menuIcons } from "./menuIcons";
 import Avatar from "../../Home/SideBar/Avatar";
 
@@ -41,7 +41,7 @@ const AccountOptions = ({ account }) => {
               </a>
             )}
             content={hide => (
-              <Modal
+              <DeletionModal
                 title={
                   <span className="d-flex align-items-center">
                     <Avatar
@@ -62,7 +62,7 @@ const AccountOptions = ({ account }) => {
                     {icon.title}
                   </button>
                 </Link>
-              </Modal>
+              </DeletionModal>
             )}
           />
         )
@@ -73,7 +73,7 @@ const AccountOptions = ({ account }) => {
 
 const classNames = {
   accountOptions:
-    "order-1 order-xl-2 col-xl-6 px-0 py-2 py-xl-0 d-flex justify-content-between text-primary"
+    "order-1 order-xl-2 col-xl-6 px-0 py-2 py-xl-0 d-flex justify-content-between text-primary",
 };
 
 export default AccountOptions;

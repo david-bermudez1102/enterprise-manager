@@ -1,24 +1,32 @@
 import React from "react";
+import { InputNumber } from "antd";
+import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const NumericField = props => {
-  const { field, onChange, ...newProps } = props;
+  const { field, onChange, name, suffix, ...newProps } = props;
 
-  const handleChange = e => {
+  const handleChange = value => {
     onChange({
       recordFieldId: props.name,
-      content: e.target.value
+      content: value,
     });
   };
 
   return (
-    <input
-      {...newProps}
-      type="number"
-      onChange={handleChange}
-      step={field.acceptsDecimals ? "any" : undefined}
-      onInvalid={e => (e.target.value = "")}
-      onBlur={e => e.target.checkValidity()}
-    />
+    <FieldTypeWrapper name={name} field={field}>
+      {React.cloneElement(suffix, {
+        placement: "rightTop",
+        children: (
+          <InputNumber
+            {...newProps}
+            step={field.acceptsDecimals ? 0.1 : 1}
+            suffix={suffix}
+            style={{ width: "100%" }}
+            onChange={handleChange}
+          />
+        ),
+      })}
+    </FieldTypeWrapper>
   );
 };
 

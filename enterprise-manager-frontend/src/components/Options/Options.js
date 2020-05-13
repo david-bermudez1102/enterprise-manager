@@ -1,71 +1,33 @@
-import React, { PureComponent } from "react";
-import { Link } from "react-router-dom";
-import { DeletionModal } from "../Modal/Modals";
-import ToggleContent from "../ToggleContent";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Tabs } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-export default class Options extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = { isOpen: false };
-  }
+const { TabPane } = Tabs;
+const Options = ({ url, content }) => {
+  const location = useLocation();
+  return (
+    <Tabs type="line" activeKey={location.pathname}>
+      <TabPane
+        style={{ textAlign: "center" }}
+        tab={
+          <Link to={`${url}/${content.id}/delete`}>
+            <DeleteOutlined />
+          </Link>
+        }
+        key={`${url}/${content.id}/delete`}
+      />
+      <TabPane
+        style={{ textAlign: "center" }}
+        tab={
+          <Link to={`${url}/${content.id}/edit`}>
+            <EditOutlined />
+          </Link>
+        }
+        key={`${url}/${content.id}/edit`}
+      />
+    </Tabs>
+  );
+};
 
-  handleOpen = () => {
-    this.setState({ isOpen: true });
-  };
-
-  handleClose = () => {
-    this.setState({ isOpen: false });
-  };
-
-  render() {
-    const { content, url, fontSize, deletionMessage, style } = this.props;
-    const { isOpen } = this.state;
-    return (
-      <>
-        <div
-          onMouseOver={this.handleOpen}
-          onMouseOut={this.handleClose}
-          className="d-flex justify-content-end align-items-center position-absolute px-2"
-          style={{ right: 0, zIndex: 2, ...style }}>
-          <div
-            className="d-flex justify-content-between bg-white"
-            style={{
-              minWidth: "40px",
-              visibility: isOpen ? "visible" : "hidden"
-            }}>
-            <Link to={`${url}/${content.id}/edit`}>
-              <button className="btn btn-transparent text-primary p-0">
-                <i className="fad fa-edit" style={{ fontSize: fontSize }}></i>
-              </button>
-            </Link>
-            <ToggleContent
-              toggle={show => (
-                <button
-                  className="btn btn-transparent text-primary p-0"
-                  onClick={show}>
-                  <i
-                    className="fad fa-trash"
-                    style={{ fontSize: fontSize }}></i>
-                </button>
-              )}
-              content={hide => (
-                <DeletionModal
-                  {...this.props}
-                  handleClose={hide}
-                  deletionMessage={deletionMessage}>
-                  <Link to={`${url}/${content.id}/delete`}>
-                    <button type="button" className="btn btn-danger">
-                      Delete column and field
-                    </button>
-                  </Link>
-                </DeletionModal>
-              )}
-            />
-          </div>
-        </div>
-      </>
-    );
-  }
-}
-
-Options.defaultProps = { fontSize: "14px" };
+export default Options;

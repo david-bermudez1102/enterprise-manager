@@ -8,19 +8,18 @@ import {
   updateAccount,
   removeAccount,
 } from "../../actions/accountActions";
-import AdminsList from "../../components/Accounts/AdminsList";
-import ManagersList from "../../components/Accounts/ManagersList";
-import EmployeesList from "../../components/Accounts/EmployeesList";
 import { Switch } from "react-router-dom";
 import AccountForm from "../../components/Accounts/AccountForm";
-import { FormCard } from "../../components/Cards/Cards";
 import { addAdmin } from "../../actions/adminActions";
-import Alert from "../../components/Alerts/Alert";
 import AccountDelete from "../../components/Accounts/AccountDelete";
 import AccountDisable from "../../components/Accounts/AccountDisable.js";
 import AccountUnlock from "../../components/Accounts/AccountUnlock";
 import Route from "../../Router/Route";
 import AccountsFeed from "../../components/Accounts";
+import { Row, Col, Card } from "antd";
+import Title from "antd/lib/typography/Title";
+import { UserAddOutlined } from "@ant-design/icons";
+import AccountsList from "../../components/Accounts/AccountsList";
 
 class AccountsContainer extends Component {
   componentDidMount() {
@@ -45,7 +44,6 @@ class AccountsContainer extends Component {
   render() {
     const {
       accounts,
-      admins,
       match,
       addEmployee,
       addManager,
@@ -54,20 +52,14 @@ class AccountsContainer extends Component {
       removeAccount,
       session,
     } = this.props;
-    const managers = accounts.filter(account => account.type === "Manager");
-    const employees = accounts.filter(account => account.type === "Employee");
+
     if (!session.isLoggedIn) return null;
     return (
-      <div className="row">
-        <div className="col-lg-5 pr-0">
-          <div className="list-group">
-            <AdminsList admins={admins} />
-            <ManagersList managers={managers} />
-            <EmployeesList employees={employees} />
-          </div>
-        </div>
-        <div className="col-lg-7 px-0">
-          <Alert />
+      <Row gutter={16}>
+        <Col lg={10}>
+          <AccountsList accounts={accounts} />
+        </Col>
+        <Col lg={14}>
           <Switch>
             {accounts.length > 0 ? (
               <Route
@@ -88,11 +80,12 @@ class AccountsContainer extends Component {
                   acc => acc.id === parseInt(props.match.params.accountId)
                 );
                 return account ? (
-                  <FormCard
-                    header={
-                      <span className="card-title display-4">
-                        <h2>Edit Account</h2>
-                      </span>
+                  <Card
+                    title={
+                      <Title level={3}>
+                        <UserAddOutlined />
+                        Add Account
+                      </Title>
                     }>
                     <AccountForm
                       {...props}
@@ -100,7 +93,7 @@ class AccountsContainer extends Component {
                       updateAccount={updateAccount}
                       adminId={session.currentUser.id}
                     />
-                  </FormCard>
+                  </Card>
                 ) : null;
               }}
             />
@@ -129,13 +122,12 @@ class AccountsContainer extends Component {
             <Route
               path={`${match.path}/add`}
               render={props => (
-                <FormCard
-                  header={
-                    <span className="card-title text-white mb-0 display-4">
-                      <h2 className="mb-0">
-                        <i className="fad fa-plus-circle mr-2"></i>Add Account
-                      </h2>
-                    </span>
+                <Card
+                  title={
+                    <Title level={3}>
+                      <UserAddOutlined />
+                      Add Account
+                    </Title>
                   }>
                   <AccountForm
                     {...props}
@@ -144,13 +136,13 @@ class AccountsContainer extends Component {
                     addAdmin={addAdmin}
                     adminId={session.currentUser.id}
                   />
-                </FormCard>
+                </Card>
               )}
             />
             <Route path={`${match.path}`} component={AccountsFeed} />
           </Switch>
-        </div>
-      </div>
+        </Col>
+      </Row>
     );
   }
 }

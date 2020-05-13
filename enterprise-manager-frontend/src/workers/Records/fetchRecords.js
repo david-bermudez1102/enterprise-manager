@@ -17,9 +17,14 @@ export const fetchRecords = (state, formId, organizationId) => {
       );
       const values = normalize(
         state.values,
-        response.map(r => r.links.values),
+        response.map(r => ({
+          id: r.id,
+          formId: r.attributes.formId,
+          ...r.links.values,
+          key: `recordValues${r.id}`,
+        })),
         formId
-      ).flat();
+      );
 
       return { records, values };
     });

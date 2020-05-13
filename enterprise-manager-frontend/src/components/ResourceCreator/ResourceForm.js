@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, shallowEqual } from "react-redux";
-import ButtonLoader from "../Loader/ButtonLoader";
 import useLoader from "../Loader/useLoader";
+import { Form, Input, Button } from "antd";
 
-const ResourceForm = ({ addResource, updateResource, url, resource }) => {
+const ResourceForm = ({
+  addResource,
+  updateResource,
+  url,
+  resource,
+  initialValues,
+}) => {
   const history = useHistory();
   const { dispatchWithLoader, loading } = useLoader();
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
@@ -21,41 +27,48 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
     // eslint-disable-next-line
   }, [resource]);
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const onFinish = data => {
     if (addResource)
-      dispatchWithLoader(addResource(state)).then(resource =>
+      dispatchWithLoader(
+        addResource({ ...data, organizationId })
+      ).then(resource =>
         resource ? history.push(`${resource.formAlias}`) : null
       );
     else if (updateResource)
-      dispatchWithLoader(updateResource(state)).then(resource =>
+      dispatchWithLoader(
+        updateResource({ ...data, organizationId })
+      ).then(resource =>
         resource ? history.replace(`${url}/${resource.formAlias}/edit`) : null
       );
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <input
-          name="name"
-          id="resource_name"
-          type="text"
-          placeholder="Enter name..."
-          onChange={e =>
-            setState({ ...state, [e.target.name]: e.target.value })
-          }
-          value={state.name}
-          className="form-control rounded-pill"
-          required
+    <Form
+      name="new_resource"
+      onFinish={onFinish}
+      initialValues={initialValues}
+      layout={"vertical"}>
+      <Form.Item
+        name="name"
+        label="Name"
+        rules={[
+          {
+            required: true,
+            message: "Please enter a valid resource name!",
+          },
+        ]}>
+        <Input
+          size="large"
+          prefix={<i className="fas fa-layer-group"></i>}
+          placeholder="Enter resource name..."
         />
-        <label className="form-control-placeholder" htmlFor="resource_name">
-          Resource Name
-        </label>
-      </div>
-      <ButtonLoader loading={loading}>
-        {addResource ? "Create Resource" : "Update Resource"}
-      </ButtonLoader>
-    </form>
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="login-form-button">
+          Create Resource
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

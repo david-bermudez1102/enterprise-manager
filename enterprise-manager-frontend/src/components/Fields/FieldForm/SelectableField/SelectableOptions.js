@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import cuid from "cuid";
+import { Form, Button, Divider, Input, Tag } from "antd";
 
 class SelectableOptions extends Component {
   constructor(props) {
@@ -8,14 +9,14 @@ class SelectableOptions extends Component {
     this.itemValue = React.createRef();
     this.state = {
       itemValue: "",
-      optionsAttributes: optionsAttributes || []
+      optionsAttributes: optionsAttributes || [],
     };
   }
 
   handleChange = event => {
     this.setState({
       ...this.state,
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -30,12 +31,12 @@ class SelectableOptions extends Component {
           itemValue: "",
           optionsAttributes: [
             ...this.state.optionsAttributes,
-            { value: this.state.itemValue }
-          ]
+            { value: this.state.itemValue },
+          ],
         },
         () =>
           this.props.handleSelectable({
-            optionsAttributes: this.state.optionsAttributes
+            optionsAttributes: this.state.optionsAttributes,
           })
       );
     itemValue.focus();
@@ -49,12 +50,12 @@ class SelectableOptions extends Component {
         optionsAttributes: [
           ...this.state.optionsAttributes.filter(
             option => option.value !== value
-          )
-        ]
+          ),
+        ],
       },
       () =>
         handleSelectable({
-          optionsAttributes: this.state.optionsAttributes
+          optionsAttributes: this.state.optionsAttributes,
         })
     );
   };
@@ -64,42 +65,33 @@ class SelectableOptions extends Component {
     const { optionsAttributes, itemValue } = this.state;
 
     return (
-      <div className="">
-        <hr />
-        <div className="display-4" style={{ fontSize: "20px" }}>
+      <>
+        <Form.Item>
           {optionsAttributes.map(option => (
-            <span
+            <Tag
+              className="edit-tag"
               key={cuid()}
-              className="badge badge-primary badge-pill mr-2"
-              style={{ minWidth: "100px" }}>
-              <span className="float-left h-100">{option.value}</span>
-              <i
-                className="fas fa-minus-square pl-2 float-right"
-                style={{ cursor: "pointer" }}
-                title="Remove Item"
-                onClick={() => this.removeItem(option.value)}></i>
-            </span>
+              closable
+              onClose={() => this.removeItem(option.value)}>
+              {option.value}
+            </Tag>
           ))}
-        </div>
-        <div className="form-group mt-3">
-          <input
-            type="text"
+        </Form.Item>
+        <Divider />
+        <Form.Item label={`Add item to ${fieldType} field`}>
+          <Input
             name="itemValue"
             id="item_value"
             onChange={this.handleChange}
-            className="form-control"
             value={itemValue}
             autoFocus={true}
             ref={this.itemValue}
           />
-          <label className="form-control-placeholder" htmlFor="item_value">
-            Add item to {fieldType} field
-          </label>
-        </div>
-        <button onClick={this.handleClick} className="btn btn-secondary shadow">
+        </Form.Item>
+        <Button onClick={this.handleClick} className="btn btn-secondary shadow">
           {optionsAttributes.length === 0 ? "Add Item" : "Add Another Item"}
-        </button>
-      </div>
+        </Button>
+      </>
     );
   }
 }

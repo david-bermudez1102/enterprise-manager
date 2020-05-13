@@ -1,4 +1,6 @@
 import React from "react";
+import { Input } from "antd";
+import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const KeyField = props => {
   const { keyValues, recordKeyAttributes } = props.field;
@@ -28,7 +30,9 @@ const KeyField = props => {
   }
 
   return (
-    <input {...props} type="text" value={keyValue ? keyValue.value : ""} />
+    <FieldTypeWrapper name={props.name} field={props.field}>
+      <Input {...props} value={keyValue ? keyValue.value : ""} />
+    </FieldTypeWrapper>
   );
 };
 

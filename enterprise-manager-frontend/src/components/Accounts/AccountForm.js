@@ -1,34 +1,30 @@
 import React, { Component } from "react";
 import cuid from "cuid";
+import { Form, Input, Select, Button } from "antd";
 
 class AccountForm extends Component {
   constructor(props) {
     super(props);
     const account = props.account;
-    this.state = {
+    this.initialValues = {
       id: account ? account.id : "",
-      roles: ["Select", "Admin", "Manager", "Employee"],
       name: account ? account.name : "",
       email: account ? account.email : "",
-      role: account ? account.type : "Select"
+      role: account ? account.type : "Select",
     };
   }
 
-  handleChange = event => {
-    event.persist();
-    this.setState({
-      account: {
-        ...this.state.account,
-        [event.target.name]: event.target.value
-      },
-      [event.target.name]: event.target.value
-    });
-  };
+  roles = ["Select", "Admin", "Manager", "Employee"];
 
-  handleSubmit = event => {
-    const { addAdmin, addEmployee, addManager, updateAccount, adminId } = this.props;
-    const { role, id, name, email } = this.state;
-    event.preventDefault();
+  handleSubmit = data => {
+    const {
+      addAdmin,
+      addEmployee,
+      addManager,
+      updateAccount,
+      adminId,
+    } = this.props;
+    const { role, id, name, email } = data;
     if (updateAccount) updateAccount({ id, name, email });
     else {
       switch (role) {
@@ -49,59 +45,57 @@ class AccountForm extends Component {
   };
 
   render() {
-    const { roles, name, email, role } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="name"
-            id="account_name"
-            className="form-control"
-            onChange={this.handleChange}
-            value={name}
-            placeholder="Enter name..."
-            required
-          />
-          <label className="form-control-placeholder" htmlFor="account_name">
-            Employee Name
-          </label>
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="email"
-            id="account_email"
-            className="form-control"
-            onChange={this.handleChange}
-            value={email}
-            placeholder="Enter email..."
-            required
-          />
-          <label className="form-control-placeholder" htmlFor="account_email">
-            Employee Email
-          </label>
-        </div>
-        <div className="form-group">
-          <select
-            name="role"
-            id="account_role"
-            onChange={this.handleChange}
-            value={role}
-            className="form-control"
-            required>
-            {roles.map(role => (
-              <option value={role} key={cuid()}>
+      <Form
+        name="account_form"
+        onFinish={this.handleSubmit}
+        layout="vertical"
+        initialValues={this.initialValues}>
+        <Form.Item
+          name="name"
+          label={"Employee Name"}
+          rules={[
+            {
+              required: true,
+              message: "Please enter a valid name!",
+            },
+          ]}>
+          <Input id="account_name" placeholder="Enter name..." />
+        </Form.Item>
+        <Form.Item
+          name="email"
+          label={"Employee Email"}
+          rules={[
+            {
+              required: true,
+              message: "Please enter a valid Email!",
+            },
+          ]}>
+          <Input id="account_email" placeholder="Enter email..." />
+        </Form.Item>
+        <Form.Item
+          name="role"
+          label={"Employee Role"}
+          rules={[
+            {
+              required: true,
+              message: "Please enter a valid role!",
+            },
+          ]}>
+          <Select id="account_role" placeholder={"Select"}>
+            {this.roles.map(role => (
+              <Select.Option value={role} key={cuid()}>
                 {role}
-              </option>
+              </Select.Option>
             ))}
-          </select>
-          <label className="form-control-placeholder" htmlFor="account_role">
-            Employee Role
-          </label>
-        </div>
-        <input type="submit" className="btn btn-primary shadow" />
-      </form>
+          </Select>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     );
   }
 }

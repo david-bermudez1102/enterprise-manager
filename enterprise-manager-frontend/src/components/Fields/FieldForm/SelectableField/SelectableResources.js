@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import cuid from "cuid";
 import SelectableResourcesOptions from "./SelectableResourcesOptions";
+import { Divider, Select, Form } from "antd";
 
 const SelectableResources = props => {
   const { field, resources, fields, handleSelectable } = props;
@@ -14,13 +15,6 @@ const SelectableResources = props => {
   const [selected, setSelected] = useState(formId || "");
   const [state, setState] = useState(selectableResourceAttributes || {});
 
-  const handleChange = e => {
-    setState({
-      ...state,
-      [e.target.name]: e.target.value
-    });
-  };
-
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
@@ -28,8 +22,8 @@ const SelectableResources = props => {
       handleSelectable({
         selectableResourceAttributes: {
           formId: selected,
-          resourceFieldId: ""
-        }
+          resourceFieldId: "",
+        },
       });
     }
     // eslint-disable-next-line
@@ -47,29 +41,24 @@ const SelectableResources = props => {
 
   return (
     <>
-      <div className="form-group mb-0">
-        <hr />
-        <select
+      <Divider />
+      <Form.Item name="formId" label={"Connect to"}>
+        <Select
           name="formId"
           id="selectable_resource"
-          onChange={handleChange}
-          value={selected}
-          className="form-control">
-          <option value="" key={cuid()}>
+          onChange={value => setState({ ...state, formId: value })}
+          value={selected}>
+          <Select.Option value="" key={cuid()}>
             Select
-          </option>
+          </Select.Option>
           {resources.map(resource => (
-            <option value={resource.id} key={cuid()}>
+            <Select.Option value={resource.id} key={cuid()}>
               {resource.name}
-            </option>
+            </Select.Option>
           ))}
-        </select>
-        <label
-          className="form-control-placeholder"
-          htmlFor="selectable_resource">
-          Connect to
-        </label>
-      </div>
+        </Select>
+      </Form.Item>
+
       <SelectableResourcesOptions
         resourceFieldId={
           selectableResourceAttributes
@@ -78,7 +67,7 @@ const SelectableResources = props => {
         }
         fields={fields}
         selected={selected}
-        handleChange={handleChange}
+        handleChange={value => setState({ ...state, resourceFieldId: value })}
       />
     </>
   );

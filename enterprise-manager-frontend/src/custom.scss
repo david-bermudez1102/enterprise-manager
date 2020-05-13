@@ -1,9 +1,11 @@
 /*! `Custom` Bootstrap 4 theme */
 @import url(https://pro.fontawesome.com/releases/v5.10.0/css/all.css);
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap");
-$font-family-base: "Source Sans Pro", sans-serif;
+$font-family-base: "Source Sans Pro",
+sans-serif;
 @import url("https://fonts.googleapis.com/css?family=Catamaran&display=swap");
-$headings-font-family: "Catamaran", sans-serif;
+$headings-font-family: "Catamaran",
+sans-serif;
 @import url("https://fonts.googleapis.com/css?family=Yantramanav&display=swap");
 
 $enable-grid-classes: true;
@@ -43,8 +45,8 @@ $btn-border-radius: 0.25rem;
   cursor: text;
 }
 
-.form-control:focus + .form-control-placeholder,
-.form-control:valid + .form-control-placeholder {
+.form-control:focus+.form-control-placeholder,
+.form-control:valid+.form-control-placeholder {
   font-size: 80% !important;
   transform: translate3d(0, -55%, 0) !important;
   opacity: 1 !important;
@@ -104,22 +106,6 @@ select:-webkit-autofill:focus {
   transition: all 200ms !important;
 }
 
-@import "bootstrap";
-
-html,
-body {
-  height: 100% !important;
-  -webkit-font-smoothing: antialiased;
-}
-
-#root {
-  height: 100% !important;
-}
-
-.min-h-100 {
-  min-height: 100% !important;
-}
-
 .custom-scrollbar {
   overflow-y: scroll;
 }
@@ -164,36 +150,19 @@ body {
   overflow-y: auto;
 }
 
-.circular--square {
-  border-radius: 50%;
-}
-
-.circular--landscape {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
-}
-
-.circular--landscape img {
-  width: auto;
-  height: 100%;
-  top: 0px;
-  position: relative;
-}
 
 .check input {
   display: none;
 }
 
-.check input:checked + label .box {
+.check input:checked+label .box {
   -webkit-animation: animOnTransform 1s 1 forwards;
   animation: animOnTransform 1s 1 forwards;
   background: #40e0d0;
   color: #fff;
 }
 
-.check input:checked + label .box i {
+.check input:checked+label .box i {
   -webkit-transform: translate(25%, -50%) scale(1);
   transform: translate(25%, -50%) scale(1);
   -webkit-transition-duration: 200ms;

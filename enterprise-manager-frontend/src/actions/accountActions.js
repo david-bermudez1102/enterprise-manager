@@ -1,5 +1,6 @@
 import snakecaseKeys from "snakecase-keys";
 import { handleErrors } from "./handleErrors";
+import { message } from "antd";
 
 export const addEmployee = (adminId, employee) => {
   return dispatch => {
@@ -19,12 +20,9 @@ export const addEmployee = (adminId, employee) => {
             type: "ADD_EMPLOYEE",
             employee: employee.data.attributes,
           });
-          dispatch({
-            type: "ADD_MESSAGES",
-            messages: employee.messages || ["Employee was added with success."],
-          });
+          message.success("Employee was added with success.", 5);
         } else {
-          dispatch({ type: "ADD_ERRORS", errors: employee.errors });
+          employee.errors.map(err => message.error(err), 5);
         }
       })
       .catch(console.log);
@@ -54,12 +52,9 @@ export const addManager = (adminId, manager) => {
       .then(manager => {
         if (!manager.errors) {
           dispatch({ type: "ADD_MANAGER", manager: manager.data.attributes });
-          dispatch({
-            type: "ADD_MESSAGES",
-            messages: manager.messages || ["Manager was added with success."],
-          });
+          message.success("Manager was added with success.", 5);
         } else {
-          dispatch({ type: "ADD_ERRORS", errors: manager.errors });
+          manager.errors.map(err => message.error(err), 5);
         }
       })
       .catch(console.log);
@@ -83,12 +78,9 @@ export const updateAccount = account => {
             type: "UPDATE_ACCOUNT",
             account: account.data.attributes,
           });
-          dispatch({
-            type: "ADD_MESSAGES",
-            messages: account.messages || ["Account updated with success."],
-          });
+          message.success("Account saved with success.", 5);
         } else {
-          dispatch({ type: "ADD_ERRORS", errors: account.errors });
+          account.errors.map(err => message.error(err), 5);
         }
       })
       .catch(console.log);

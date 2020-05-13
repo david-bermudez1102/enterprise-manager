@@ -11,8 +11,9 @@ const Avatar = ({ currentUser, size }) => {
       }}>
       {currentUser.avatar ? (
         <div
-          className="w-100 h-100"
           style={{
+            width: "100%",
+            height: "100%",
             marginLeft: (currentUser.avatar.margin_left * size) / 150 + "px",
             marginTop: (currentUser.avatar.margin_top * size) / 150 + "px",
           }}>
@@ -20,7 +21,7 @@ const Avatar = ({ currentUser, size }) => {
             src={`http://localhost:3001/${currentUser.avatar.url}`}
             alt={currentUser.name}
             title={currentUser.name}
-            className="d-flex"
+            style={{ display: "flex " }}
           />
         </div>
       ) : (

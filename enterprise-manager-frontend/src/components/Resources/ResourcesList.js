@@ -1,24 +1,45 @@
 import React, { useEffect } from "react";
 import {
   NavLink,
-  Link,
   matchPath,
   useRouteMatch,
   useLocation,
   useHistory,
 } from "react-router-dom";
-import ToggleContent from "../ToggleContent";
-import { DeletionModal } from "../Modal/Modals";
 import { NoContent } from "../NoContent";
 import { useSelector, shallowEqual } from "react-redux";
 import Loader from "../Loader";
 import pluralize from "pluralize";
+import {
+  Card,
+  Badge,
+  Avatar,
+  Row,
+  Col,
+  Statistic,
+  Popover,
+  Menu,
+  Button,
+} from "antd";
+import {
+  EditOutlined,
+  EllipsisOutlined,
+  SettingOutlined,
+  LayoutFilled,
+  DeleteOutlined,
+  GroupOutlined,
+} from "@ant-design/icons";
+import Meta from "antd/lib/card/Meta";
+import Title from "antd/lib/typography/Title";
+import useModal from "../Modal/Hooks/useModal";
+import DeletionModal from "../Modal/DeletionModal";
+import { removeResource } from "../../actions/resourceActions";
 
 const ResourcesList = ({ loaded, loading }) => {
   const location = useLocation();
   const match = useRouteMatch();
   const history = useHistory();
-
+  const { showModal, ...deletionModal } = useModal();
   const { resources } = useSelector(
     ({ resources }) => ({ resources }),
     shallowEqual
@@ -43,7 +64,7 @@ const ResourcesList = ({ loaded, loading }) => {
       </NoContent>
     );
   return (
-    <div className="position-relative list-group h-100 scroller">
+    <>
       <Loader loading={loading} />
       {resources.map(resource => {
         const isActive = !!matchPath(
@@ -51,91 +72,93 @@ const ResourcesList = ({ loaded, loading }) => {
           `/organizations/:organizationId/resources/${resource.formAlias}`
         );
         return (
-          <div
-            className={`row mx-0 border-0 shadow-sm rounded list-group-item list-group-item-action py-md-3 py-sm-2 mb-1 d-flex align-items-center justify-content-between display-4 ${
-              isActive ? "active text-white" : ""
-            }`}
-            key={`resourceList_${resource.id}`}
-            style={{
-              cursor: "pointer",
-              fontSize: "24px",
-              zIndex: "inherit",
-            }}
-            onClick={e => {
-              e.stopPropagation();
-              history.push(
-                `/organizations/${resource.organizationId}/resources/${resource.formAlias}`
-              );
-            }}>
-            <span className="order-sm-2 order-md-1 py-3 col-xl-7 col-lg-6 col-md-8">
-              <NavLink
-                to={`${match.url}/${resource.formAlias}`}
-                className="nav-link"
-                activeClassName="active text-white">
-                <span>
-                  <i className="fas fa-stream mr-1"></i>
-                  {pluralize(resource.name)}
-                </span>
+          <Card
+            activeTabKey={location.pathname}
+            key={`resource_card_${resource.id}`}
+            style={{ width: "100%" }}
+            title={
+              <Title level={3} style={{ marginBottom: 0 }}>
+                <i className="fas fa-layer-group"></i> {resource.name}
+              </Title>
+            }
+            actions={[
+              <NavLink to={`${match.url}/${resource.formAlias}/records`}>
+                <Badge count={1000} overflowCount={999} offset={[10, -3]}>
+                  <GroupOutlined />
+                </Badge>
+              </NavLink>,
+              <SettingOutlined key="setting" />,
+              <NavLink to={`${match.url}/${resource.formAlias}/edit`}>
+                <EditOutlined key={`${match.url}/${resource.formAlias}/edit`} />
+              </NavLink>,
+              <Popover
+                content={
+                  <Menu mode="vertical">
+                    <Menu.Item key="1" title={"Delete resource"}>
+                      <Button
+                        type="link"
+                        icon={<DeleteOutlined />}
+                        onClick={() =>
+                          showModal({
+                            title: `Delete resource ${pluralize(
+                              resource.name
+                            )}`,
+                            text:
+                              "All of the associated content will be deleted!",
+                            action: removeResource(
+                              resource.organizationId,
+                              resource.id
+                            ),
+                          })
+                        }
+                        block
+                        ghost
+                        danger>
+                        Delete Resource
+                      </Button>
+                    </Menu.Item>
+                  </Menu>
+                }
+                title="More Options"
+                style={{ position: "relative", zIndex: 1 }}
+                trigger={["click"]}>
+                <EllipsisOutlined key="ellipsis" />
+              </Popover>,
+            ]}
+            size={"small"}
+            extra={
+              <NavLink to={`${match.url}/${resource.formAlias}`}>
+                <i
+                  className="fad fa-plus-circle"
+                  style={{ fontSize: "24px" }}></i>
               </NavLink>
-            </span>
-            <span className="order-sm-1 order-md-2 pl-0 py-3 col-xl-5 col-lg-6 col-md-4 d-flex justify-content-between align-items-center">
-              <Link
-                to={`${match.url}/${resource.formAlias}/records`}
-                style={{ color: "inherit" }}
-                className="d-flex p-0 m-0 text-decoration-none"
-                onClick={e => e.stopPropagation()}>
-                <button className="btn btn-lg p-0 m-0">
-                  <span
-                    className="badge badge-secondary shadow-sm text-truncate d-block my-auto"
-                    style={{ minWidth: "60px", maxWidth: "60px" }}
-                    title={`${resource.recordsCount || 0} ${pluralize(
-                      resource.name
-                    )}`}>
-                    <i className="fas fa-list-ul"></i>{" "}
-                    {resource.recordsCount || 0}
-                  </span>
-                </button>
-              </Link>
-              <Link
-                to={`${match.url}/${resource.formAlias}/edit`}
-                style={{ color: "inherit" }}
-                onClick={e => e.stopPropagation()}>
-                <button
-                  className="btn btn-transparent"
-                  style={{ color: "inherit" }}>
-                  <i className="fas fa-cog"></i>
-                </button>
-              </Link>
-              <ToggleContent
-                toggle={show => (
-                  <button
-                    className="btn btn-transparent"
-                    style={{ color: "inherit" }}
-                    onClick={show}>
-                    <i className="fas fa-trash-alt"></i>
-                  </button>
-                )}
-                content={hide => (
-                  <DeletionModal
-                    title={`Delete resource ${pluralize(resource.name)}`}
-                    handleClose={hide}
-                    deletionMessage="All of the associated content will be deleted!">
-                    <Link to={`${match.url}/${resource.id}/delete`}>
-                      <button
-                        type="button"
-                        className="btn btn-danger"
-                        onClick={e => e.stopPropagation()}>
-                        Delete resource
-                      </button>
-                    </Link>
-                  </DeletionModal>
-                )}
-              />
-            </span>
-          </div>
+            }>
+            <Meta
+              description={
+                <Row justify="space-around" gutter={[16, 16]}>
+                  <Col span={4}>
+                    <Statistic
+                      title={`Total ${pluralize(resource.name)}`}
+                      value={resource.recordsCount}
+                    />
+                  </Col>
+                  <Col span={4}>
+                    <Statistic
+                      title={"This month"}
+                      value={resource.recordsCount}
+                    />
+                  </Col>
+                  <Col span={4}>
+                    <Statistic title="Unmerged" value={93} suffix="/ 100" />
+                  </Col>
+                </Row>
+              }
+            />
+          </Card>
         );
       })}
-    </div>
+      <DeletionModal {...deletionModal} />
+    </>
   );
 };
 

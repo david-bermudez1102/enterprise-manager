@@ -17,6 +17,16 @@ class RecordsController < ApplicationController
     end
   end
 
+  def update
+    record = @form.records.find_by(id: params[:id])
+    value = record.values.find_by(record_field_id: params[:record_field_id])
+    if value.update(content: params[:content])
+      render json: { id: params[:id], message: "Record saved with success" }
+    else
+      render json: { errors: value.errors.full_messages }
+    end
+  end
+
   def index
     records = @form.records.where(is_deleted: @is_deleted).includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
     if stale?(records, public:true)
@@ -49,7 +59,7 @@ class RecordsController < ApplicationController
   private
 
   def record_params
-    params.require(:record).permit(
+    params.require(:record).permit(:record_field_id, :content,
       values_attributes: [:record_field_id, :content, :option_id, :record_value_id, checkbox_options_attributes:[:option_id]],
     )
   end

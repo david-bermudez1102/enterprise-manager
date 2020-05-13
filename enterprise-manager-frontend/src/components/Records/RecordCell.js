@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addValue, updateValue } from "../../actions/valueActions";
+import { addValue } from "../../actions/valueActions";
 import CellForm from "./CellForm";
+import { updateRecord } from "../../actions/recordActions";
 
 class RecordCell extends Component {
   state = { editing: false };
@@ -16,45 +17,45 @@ class RecordCell extends Component {
 
   render() {
     const {
-      values,
-      recordField,
+      organizationId,
+      title,
+      children,
+      dataIndex,
       record,
       addValue,
-      updateValue,
+      updateRecord,
       session,
+      ...restProps
     } = this.props;
     const { editing } = this.state;
-    const value = values.filter(
-      (value) =>
-        value.recordFieldId === recordField.id && value.recordId === record.id
-    );
-    const content = value.map((value) => value.content)[0];
+    const value = dataIndex;
+    const content = value ? record[value] : null;
+    if (!record) return <td {...restProps}>{children}</td>;
     return (
-      <td
-        onClick={this.handleClick}
-        className="text-nowrap border-0"
-        style={{
-          color: "#3c4858",
-          fontSize: "15px",
-          verticalAlign: "middle",
-        }}>
+      <td {...restProps} onClick={this.handleClick}>
         {editing ? (
-          <div className="position-relative w-100 d-flex flex-nowrap align-items-center">
-            {value[0] ? (
+          <div style={{ position: "relative" }}>
+            {content ? (
               <CellForm
-                value={value[0]}
+                content={content}
                 handleBlur={this.handleBlur}
-                updateValue={updateValue}
+                updateRecord={updateRecord}
+                recordId={record.id}
+                recordFieldId={dataIndex}
+                formId={record.formId}
                 session={session}
+                organizationId={organizationId}
               />
             ) : (
               <CellForm
                 formId={record.formId}
-                recordFieldId={recordField.id}
+                recordFieldId={dataIndex}
                 recordId={record.id}
                 handleBlur={this.handleBlur}
+                organizationId={organizationId}
                 addValue={addValue}
                 session={session}
+                formId={record.formId}
               />
             )}
           </div>
@@ -69,4 +70,4 @@ class RecordCell extends Component {
 const mapStateToProps = ({ session }) => {
   return { session };
 };
-export default connect(mapStateToProps, { addValue, updateValue })(RecordCell);
+export default connect(mapStateToProps, { addValue, updateRecord })(RecordCell);

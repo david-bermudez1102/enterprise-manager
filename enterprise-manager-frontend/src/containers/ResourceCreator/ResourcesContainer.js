@@ -10,11 +10,11 @@ import { useSelector, shallowEqual } from "react-redux";
 import { addResource, updateResource } from "../../actions/resourceActions";
 import ResourcesList from "../../components/Resources/ResourcesList";
 import Resource from "../../components/Resources/Resource";
-import { FormCard } from "../../components/Cards/Cards";
 import ResourceDelete from "../../components/Resources/ResourceDelete";
 import ConnectionsContainer from "../Connections/ConnectionsContainer";
-import Alert from "../../components/Alerts/Alert";
 import Route from "../../Router/Route";
+import { Row, Col, Card } from "antd";
+import Title from "antd/lib/typography/Title";
 
 const ResourcesContainer = props => {
   const { loaded, loading } = props;
@@ -44,52 +44,42 @@ const ResourcesContainer = props => {
 
   return (
     <>
-      <Alert />
-      <div className="row" style={{ zIndex: 1 }}>
-        <div
-          className={`${
-            isFieldsPath ? "col-lg-4" : "col-lg-5"
-          } col-md-12 pr-3 pr-lg-0 min-h-100`}
-          style={{ maxHeight: "80vh" }}>
-          <div className="bg-light rounded p-2 h-100 shadow-sm">
-            <ResourcesList loaded={loaded} loading={loading} />
-          </div>
-        </div>
+      <Row gutter={[16, 16]}>
+        <Col lg={!isFieldsPath ? 12 : 8} sm={24}>
+          <ResourcesList loaded={loaded} loading={loading} />
+        </Col>
         <Switch>
-          <Route
-            path={`${match.path}/new`}
-            render={props => (
-              <div className={`${isFieldsPath ? "col-lg-4" : "col-lg-7"}`}>
-                <FormCard
-                  header={
-                    <h2>
-                      <i className="fas fa-layer-plus mr-2"></i>New Resource
-                    </h2>
-                  }>
-                  <ResourceForm url={match.url} addResource={addResource} />
-                </FormCard>
-              </div>
-            )}
-          />
+          <Route path={`${match.path}/new`}>
+            <Col lg={12} sm={24}>
+              <Card
+                size={"small"}
+                title={
+                  <Title level={3} style={{ marginBottom: 0 }}>
+                    <i className="fas fa-layer-plus"></i>Create Resource
+                  </Title>
+                }>
+                <ResourceForm url={match.url} addResource={addResource} />
+              </Card>
+            </Col>
+          </Route>
           {resource ? (
             <Route path={`${match.path}/:formAlias/edit`}>
-              <div
-                className={`${
-                  isFieldsPath ? "col-lg-4" : "col-lg-7"
-                } min-h-100`}>
-                <FormCard
-                  header={
-                    <h2>
-                      <i className="far fa-edit mr-2"></i>Edit Resource
-                    </h2>
+              <Col lg={12} sm={24}>
+                <Card
+                  size={"small"}
+                  title={
+                    <Title level={3} style={{ marginBottom: 0 }}>
+                      <i className="fas fa-layer-plus"></i>Update Resource
+                    </Title>
                   }>
                   <ResourceForm
                     url={match.url}
                     updateResource={updateResource}
                     resource={resource}
+                    initialValues={resource}
                   />
-                </FormCard>
-              </div>
+                </Card>
+              </Col>
             </Route>
           ) : null}
           {resources.length > 0 ? (
@@ -108,10 +98,12 @@ const ResourcesContainer = props => {
           </Route>
           )} />
           {resources.length > 0 ? (
-            <Route path={`${match.path}/:formAlias`} component={Resource} />
+            <Route path={`${match.path}/:formAlias`}>
+              <Resource isFieldsPath={isFieldsPath} />
+            </Route>
           ) : null}
         </Switch>
-      </div>
+      </Row>
     </>
   );
 };

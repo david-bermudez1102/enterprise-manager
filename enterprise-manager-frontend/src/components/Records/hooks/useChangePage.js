@@ -4,7 +4,6 @@ import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import workerInstance from "../../../workers/workerActions";
 import { setSortedRecords } from "../../../actions/recordActions";
-import { addInfoAlert } from "../../../actions/alertsActions";
 import chunkOfRecordsProxy from "./chunkOfRecordsProxy";
 
 export const useChangePage = props => {
@@ -19,26 +18,13 @@ export const useChangePage = props => {
     shallowEqual
   );
 
-  const page =
-    parseInt(queryParams.get("page")) >
-      Math.ceil(resource.recordsCount / pagination.limit) ||
-    !queryParams.get("page")
-      ? 1
-      : parseInt(queryParams.get("page"));
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (sortedRecords.length < records.length) {
       const sortBy = async () => {
-        const { sortedRecords, message } = await workerInstance.sortBy(
-          0,
-          records,
-          values,
-          false,
-          resource
-        );
-        if (sortedRecords)
-          dispatch(setSortedRecords(sortedRecords, resource.id));
-        if (message) dispatch(addInfoAlert([message]));
+        const sorted = await workerInstance.sortBy(values);
+        if (sorted) dispatch(setSortedRecords(sorted, resource.id));
       };
       sortBy();
     }
@@ -50,24 +36,17 @@ export const useChangePage = props => {
     chunk(sortedRecords, paginationLimit)
   );
 
-  useEffect(() => {
-    chunkOfRecordsProxy(filteredRecords || sortedRecords, paginationLimit).then(
-      setChunkOfRecords
-    );
-  }, [filteredRecords, sortedRecords, paginationLimit]);
-
   const changePage = useCallback(() => {
     chunkOfRecordsProxy(
       filteredRecords || sortedRecords,
       pagination.limit
     ).then(resp => {
       const currentValue = chunkOfRecords[page - 1][0];
-      const newChunk = resp;
       setPaginationLimit(pagination.limit);
-      setChunkOfRecords(newChunk);
+      setChunkOfRecords(resp);
       history.replace(
         `${location.pathname}?page=${
-          newChunk.findIndex(e => e.some(y => y.id === currentValue.id)) + 1
+          resp.findIndex(e => e.some(y => y.id === currentValue.id)) + 1
         }`
       );
     });
@@ -78,19 +57,37 @@ export const useChangePage = props => {
     pagination.limit,
     history,
     location.pathname,
-    page,
   ]);
+
+  useEffect(() => {
+    setPage(
+      parseInt(queryParams.get("page")) >
+        Math.ceil(resource.recordsCount / pagination.limit) ||
+        !queryParams.get("page")
+        ? 1
+        : parseInt(queryParams.get("page"))
+    );
+  }, [queryParams]);
 
   useEffect(() => {
     if (pagination.limit !== paginationLimit) changePage();
   }, [pagination.limit, paginationLimit, changePage]);
 
+  useEffect(() => {
+    chunkOfRecordsProxy(filteredRecords || sortedRecords, paginationLimit).then(
+      setChunkOfRecords
+    );
+  }, [filteredRecords, sortedRecords, paginationLimit]);
+
   return {
-    chunkOfRecords,
     sortedRecords,
     recordsSortedBy,
     page,
     match,
     dispatch,
+    history,
+    location,
+    chunkOfRecords,
+    paginationLimit,
   };
 };

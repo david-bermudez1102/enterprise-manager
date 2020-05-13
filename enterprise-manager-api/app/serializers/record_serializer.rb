@@ -1,9 +1,9 @@
 class RecordSerializer
   include FastJsonapi::ObjectSerializer
-  set_key_transform :camel_lower
-  
   cache_options enabled: true, cache_length: 12.hours
-  attributes :id, :form_id
+  
+  set_key_transform :camel_lower
+    attributes :id, :form_id
   attribute :zoho_record_id do |obj|
     if obj.zoho_integration_record
       obj.zoho_integration_record.external_id
@@ -24,7 +24,11 @@ class RecordSerializer
   
   link :values do |object|
     ValueSerializer.new(object.values).serializable_hash[:data].map do |value|
-      value[:attributes]
-    end
+      new_hash = {}
+      new_hash[:id] = value[:attributes][:recordId]
+      new_hash[:formId] = value[:attributes][:formId]
+      new_hash[value[:attributes][:recordFieldId]] = value[:attributes][:content]
+      new_hash
+    end.reduce({}, :merge)
   end
 end

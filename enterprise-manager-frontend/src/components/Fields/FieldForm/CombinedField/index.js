@@ -5,6 +5,7 @@ import { mdiCheckboxMultipleBlank } from "@mdi/js";
 import CombinedFieldOptions from "./CombinedFieldOptions";
 import { useHandleChange } from "../../Hooks/useHandleChange";
 import { useSelector, shallowEqual } from "react-redux";
+import { Radio, Col } from "antd";
 
 const CombinedField = ({ field, resourceId, fieldType, onChange }) => {
   const { combinedFields, fieldFormat } = field;
@@ -34,19 +35,22 @@ const CombinedField = ({ field, resourceId, fieldType, onChange }) => {
 
   return (
     <>
-      <FieldTypeWrapper
-        id="combined_field"
-        fieldType={fieldType}
-        value={"combined_field"}
-        onChange={handleChange}>
-        Combined Fields
-        <Icon
-          path={mdiCheckboxMultipleBlank}
-          title="Combined Fields"
-          size={1}
-          color="#07689F"
-        />
-      </FieldTypeWrapper>
+      <Col span={"auto"} order={1}>
+        <Radio
+          id="combined_field"
+          name="fieldType"
+          value={"combined_field"}
+          onChange={handleChange}
+          checked={fieldType === "combined_field" ? true : false}>
+          Combined Fields
+          <Icon
+            path={mdiCheckboxMultipleBlank}
+            title="Combined Fields"
+            size={1}
+            color="#07689F"
+          />
+        </Radio>
+      </Col>
       <CombinedFieldOptions
         initialState={
           combinedFields

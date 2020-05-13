@@ -3,22 +3,13 @@ import {
   setRecordsSortedBy,
   setSortedRecords,
 } from "../../../actions/recordActions";
-import { addInfoAlert } from "../../../actions/alertsActions";
 
-const recordsSort = (
-  recordFieldId,
-  orders,
-  resource,
-  records,
-  values,
-  dispatch
-) => {
+const recordsSort = (recordFieldId, order, resource, values, dispatch) => {
   workerInstance
-    .handleSortBy(recordFieldId, orders, resource, records, values)
-    .then(({ id, recordFieldId, sortedRecords, message }) => {
-      dispatch(setRecordsSortedBy({ id, recordFieldId, orders }));
+    .handleSortBy(recordFieldId, order, resource, values)
+    .then(({ id, recordFieldId, sortedRecords }) => {
+      dispatch(setRecordsSortedBy({ id, recordFieldId, order }));
       if (sortedRecords) dispatch(setSortedRecords(sortedRecords, resource.id));
-      if (message) dispatch(addInfoAlert([message]));
     });
 };
 

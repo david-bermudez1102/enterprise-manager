@@ -1,13 +1,18 @@
 import React from "react";
 
-export const DeletionModal = ({ title, handleClose, deletionMessage, children }) => {
+export const Deletionmodal = ({
+  title,
+  handleClose,
+  deletionMessage,
+  children,
+}) => {
   return (
     <div
       className="d-block w-100 h-100 fixed-top m-0 text-dark"
       style={{
         backgroundColor: "rgba(0,0,0,0.5)",
         top: 0,
-        left: 0
+        left: 0,
       }}>
       <div className="modal d-block" tabIndex="-1" role="dialog">
         <div className="modal-dialog" role="document">
@@ -20,7 +25,10 @@ export const DeletionModal = ({ title, handleClose, deletionMessage, children })
             </div>
             <div className="modal-body">{deletionMessage}</div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={handleClose}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleClose}>
                 Cancel
               </button>
               {children}

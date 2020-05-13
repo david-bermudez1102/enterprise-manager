@@ -8,9 +8,10 @@ export const useHandleChange = props => {
   const handleChange = e => {
     setState({
       ...state,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
+
   const handleNumericField = newState => {
     setState({ ...state, ...newState });
   };
@@ -26,7 +27,7 @@ export const useHandleChange = props => {
   const handleKeyFieldChange = e => {
     setState({
       ...state,
-      recordKeyAttributes: { [e.target.name]: e.target.value }
+      recordKeyAttributes: { [e.target.name]: e.target.value },
     });
   };
 
@@ -53,6 +54,6 @@ export const useHandleChange = props => {
     handleSelectable,
     handleCombinedField,
     handleKeyFieldChange,
-    state
+    state,
   };
 };

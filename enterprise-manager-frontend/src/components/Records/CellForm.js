@@ -1,50 +1,56 @@
 import React, { Component } from "react";
+import { Form, Input } from "antd";
 
 export default class CellForm extends Component {
   constructor(props) {
     super(props);
-    const { value, formId, recordId, recordFieldId, session } = props;
+    const { content, formId, recordId, recordFieldId, organizationId } = props;
     this.state = {
-      content: value ? value.content : "",
-      id: value ? value.id : undefined,
-      formId: value ? value.formId : formId,
-      recordId: recordId || undefined,
-      recordFieldId: recordFieldId || undefined,
-      organizationId: session.currentUser.organizationId
+      content: content ? content : "",
+      formId,
+      recordId,
+      recordFieldId,
+      organizationId,
     };
   }
 
   handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ content: e.target.value });
   };
 
   handleBlur = () => {
     this.props.handleBlur();
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const { addValue, updateValue, value } = this.props;
-    if (value && this.state.content !== value.content) updateValue(this.state);
-    if (!value && addValue) addValue(this.state);
+  handleSubmit = () => {
+    const { addValue, updateRecord, content } = this.props;
+    if (!content) addValue(this.state);
+    else if (content !== this.state.content) updateRecord(this.state);
   };
 
   render() {
     return (
-      <form
+      <Form
         onSubmit={this.handleSubmit}
-        className="m-0 w-100 position-absolute">
-        <input
-          className="p-0 m-0 overflow-hidden w-100"
-          style={{ border: 0, outline: 0 }}
-          name="content"
-          type="text"
-          value={this.state.content}
-          onBlur={this.handleBlur}
-          onChange={this.handleChange}
-          autoFocus
-        />
-      </form>
+        initialValues={{ content: this.state.content }}
+        style={{ padding: 0, margin: 0 }}>
+        <Form.Item name="content" noStyle>
+          <Input
+            type="text"
+            style={{
+              border: 0,
+              outline: 0,
+              padding: 0,
+              margin: 0,
+              minHeight: "100%",
+            }}
+            onBlur={this.handleBlur}
+            onChange={this.handleChange}
+            onPressEnter={this.handleSubmit}
+            autoFocus
+          />
+        </Form.Item>
+      </Form>
     );
   }
 }

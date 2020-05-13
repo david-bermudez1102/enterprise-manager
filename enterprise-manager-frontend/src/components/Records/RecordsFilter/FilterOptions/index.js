@@ -1,11 +1,12 @@
 import React from "react";
 import DateRange from "./DateRange";
+import { Col } from "antd";
 
 const FilterOptions = () => {
   return (
-    <div className="pl-1">
+    <Col flex={"auto"}>
       <DateRange />
-    </div>
+    </Col>
   );
 };
 

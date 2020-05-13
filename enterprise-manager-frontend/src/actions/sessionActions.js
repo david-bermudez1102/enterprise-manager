@@ -1,4 +1,5 @@
 import { handleErrors } from "./handleErrors";
+import { message } from "antd";
 
 export const addSession = data => {
   return dispatch => {
@@ -25,10 +26,7 @@ export const addSession = data => {
           });
           return account;
         } else {
-          dispatch({
-            type: "ADD_ERRORS",
-            errors: account.errors,
-          });
+          account.errors.map(err => message.error(err));
           return account;
         }
       })

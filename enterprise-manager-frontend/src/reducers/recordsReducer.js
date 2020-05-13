@@ -11,12 +11,9 @@ export const recordsReducer = (state = [], action) => {
     case "FETCH_RECORDS":
       return action.records;
     case "UPDATE_RECORD":
-      const record = state.find(
-        record => record.id === parseInt(action.record.id)
-      );
       return [
         ...state.map(rec =>
-          rec.id === record.id ? { ...rec, ...action.record } : rec
+          rec.id === action.id ? { ...rec, ...action.record } : rec
         ),
       ];
     case "REMOVE_RECORDS":
@@ -53,6 +50,15 @@ export const sortedRecords = (state = [], action) => {
         ...state.filter(record => record.formId !== action.formId),
         ...action.records,
       ];
+    case "UPDATE_VALUE":
+      return [...state].map(value =>
+        value.id === parseInt(action.value.recordId)
+          ? {
+              ...value,
+              [action.value.recordFieldId]: action.value.content,
+            }
+          : value
+      );
     case "REMOVE_RECORD":
       return [...state.filter(record => record.id !== parseInt(action.id))];
     default:

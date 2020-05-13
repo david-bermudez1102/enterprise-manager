@@ -11,6 +11,8 @@ import {
   updateRecordField,
 } from "../../actions/recordFieldActions";
 import Route from "../../Router/Route";
+import { Col, Card } from "antd";
+import Title from "antd/lib/typography/Title";
 
 const FieldsContainer = props => {
   const { match, location, organizationId, resource, fields } = props;
@@ -18,31 +20,30 @@ const FieldsContainer = props => {
 
   return (
     <>
-      <div
-        className={`${isFieldsPath ? "col-lg-4 pr-0" : "col-lg-7"} min-h-100`}
-        style={{ maxHeight: "80vh" }}>
-        <div className="card border-0 shadow-sm h-100">
+      <Col lg={!isFieldsPath ? 12 : 8} sm={24}>
+        <Card>
           <FieldsList
             fields={fields}
             match={match}
             resource={resource}
             updateField={updateField}
           />
-        </div>
-      </div>
+        </Card>
+      </Col>
       <Switch>
         <Route
           exact
           path={`${match.path}/fields/new`}
           render={props => (
-            <div className="col-lg-4">
-              <FormCard
-                header={
-                  <h2>
-                    <i className="fad fa-plus-circle mr-2"></i>Add Field to{" "}
-                    {plural(resource.name)}
-                  </h2>
-                }>
+            <Col lg={8} sm={24}>
+              <Card>
+                <Card.Meta
+                  title={
+                    <Title level={2}>
+                      Add Field to {plural(resource.name)}
+                    </Title>
+                  }
+                />
                 <FieldForm
                   {...props}
                   addField={addField}
@@ -52,8 +53,8 @@ const FieldsContainer = props => {
                   organizationId={organizationId}
                   resourceId={resource.id}
                 />
-              </FormCard>
-            </div>
+              </Card>
+            </Col>
           )}
         />
         <Route
@@ -78,15 +79,11 @@ const FieldsContainer = props => {
             );
             if (field)
               return (
-                <div className="col-lg-4">
-                  <FormCard
-                    header={
-                      <span
-                        className="card-title display-4 mb-0"
-                        style={{ fontSize: "32px" }}>
-                        Edit Field "{field.name}"
-                      </span>
-                    }>
+                <Col sm={24} lg={8}>
+                  <Card>
+                    <Card.Meta
+                      title={<Title level={2}>Edit Field "{field.name}"</Title>}
+                    />
                     <FieldForm
                       {...props}
                       updateField={updateField}
@@ -96,8 +93,8 @@ const FieldsContainer = props => {
                       field={field}
                       action="Update Field"
                     />
-                  </FormCard>
-                </div>
+                  </Card>
+                </Col>
               );
           }}
         />

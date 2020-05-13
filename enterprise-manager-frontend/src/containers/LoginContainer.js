@@ -1,11 +1,12 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
-import { FormCard } from "../components/Cards/Cards";
 import Alert from "../components/Alerts/Alert";
 import { useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { addSession } from "../actions/sessionActions";
+import { Card, Row, Col, Layout } from "antd";
+import Title from "antd/lib/typography/Title";
 
 const LoginContainer = () => {
   const { session, organizations, admins } = useSelector(
@@ -32,14 +33,18 @@ const LoginContainer = () => {
   };
 
   return (
-    <div className="row d-flex h-100 align-items-center justify-content-center">
-      <div className="col-xl-5 col-lg-6 col-md-6 px-0">
-        <FormCard header={<h2>Login</h2>}>
-          <Alert />
-          <LoginForm handleOnSubmit={handleOnSubmit} />
-        </FormCard>
-      </div>
-    </div>
+    <Layout style={{ position: "absolute", width: "100%", height: "100%" }}>
+      <Row justify="center" align="middle" style={{ height: "100%" }}>
+        <Col xl={10} lg={12} md={12}>
+          <Card
+            title={<Title type={"primary"}>Login</Title>}
+            bordered={false}
+            style={{ width: "100%" }}>
+            <LoginForm handleOnSubmit={handleOnSubmit} />
+          </Card>
+        </Col>
+      </Row>
+    </Layout>
   );
 };
 

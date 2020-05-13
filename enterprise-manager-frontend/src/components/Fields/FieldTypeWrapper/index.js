@@ -1,23 +1,19 @@
 import React from "react";
+import { Form } from "antd";
 
-const FieldTypeWrapper = ({ id, value, fieldType, onChange, children }) => {
+const FieldTypeWrapper = ({ name, field, children }) => {
   return (
-    <div className="col-auto order-first my-auto">
-      <div className="form-check form-check-inline">
-        <input
-          className="form-check-input"
-          type="radio"
-          name="fieldType"
-          id={id}
-          value={value}
-          onChange={onChange}
-          checked={fieldType === value ? true : false}
-        />
-        <label htmlFor={id} className="form-check-label">
-          {children}
-        </label>
-      </div>
-    </div>
+    <Form.Item
+      label={field.name}
+      name={name}
+      rules={[
+        {
+          required: field.isRequired,
+          message: `Please enter a valid ${field.name.toLowerCase()}`,
+        },
+      ]}>
+      {children}
+    </Form.Item>
   );
 };
 export default FieldTypeWrapper;

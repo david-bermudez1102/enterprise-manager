@@ -2,12 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import cuid from "cuid";
 import { useHandleChange } from "../../Hooks/useHandleChange";
+import { Col, Form, Input, Radio, Select, Divider } from "antd";
 
 const RecordKeyField = props => {
   const { field, fieldType, resourceId, onChange } = props;
   const { handleChange, handleKeyFieldChange, state } = useHandleChange({
     field,
-    onChange
+    onChange,
   });
   const { recordKeyAttributes } = state;
 
@@ -17,50 +18,42 @@ const RecordKeyField = props => {
 
   return (
     <>
-      <div className="col-auto order-first my-auto">
-        <div className="form-check form-check-inline">
-          <input
-            className="form-check-input"
-            type="radio"
-            name="fieldType"
-            id="record_key_field"
-            value="key_field"
-            onChange={handleChange}
-            checked={fieldType === "key_field" ? true : false}
-          />
-          <label htmlFor="record_key_field" className="form-check-label">
-            Key Field{" "}
-            <i className="fas fa-key" style={{ color: "#07689F" }}></i>
-          </label>
-        </div>
-      </div>
+      <Col span={"auto"} order={1}>
+        <Radio
+          name="fieldType"
+          value="key_field"
+          onChange={handleChange}
+          checked={fieldType === "key_field" ? true : false}>
+          Key Field
+        </Radio>
+      </Col>
       {fieldType === "key_field" ? (
-        <div className="col-12 order-last">
-          <hr />
-          <div className="form-group">
-            <select
-              name="resourceFieldId"
-              onChange={handleKeyFieldChange}
+        <Col span={24} order={24}>
+          <Divider />
+          <Form.Item
+            name="resourceFieldId"
+            onChange={handleKeyFieldChange}
+            label="Grouped by">
+            <Select
               value={
                 recordKeyAttributes ? recordKeyAttributes.resourceFieldId : ""
               }
               className="form-control">
-              <option value="">Select a field</option>
+              <Select.Option value="">Select a field</Select.Option>
               {fields.map(field => (
-                <option key={cuid()} value={field.id}>
+                <Select.Option key={cuid()} value={field.id}>
                   {field.name}
-                </option>
+                </Select.Option>
               ))}
-            </select>
-            <label className="form-control-placeholder">Grouped by</label>
-          </div>
+            </Select>
+          </Form.Item>
           <p
             className="small text-muted text-justify"
             style={{ lineHeight: "16px" }}>
             The key field won't be visible in the form. It will be assigned
             automatically whenever a new record is submitted.
           </p>
-        </div>
+        </Col>
       ) : null}
     </>
   );

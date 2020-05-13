@@ -1,13 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import Record from "./Record";
-import RecordsHeader from "./RecordsHeader";
-import Pagination from "../Pagination";
-import { useSelectRecords } from "./hooks/useSelectRecords";
-import RecordsFilter from "./RecordsFilter";
 import { useFilterRecords } from "./hooks/useFilterRecords";
 import { useChangePage } from "./hooks/useChangePage";
 import recordsSort from "./RecordsSort";
 import FilterOptions from "./RecordsFilter/FilterOptions/";
+import { Table, Pagination, Row, Col } from "antd";
+import { useRecordsList } from "./hooks/useRecordsList";
 
 const RecordsList = props => {
   const { sortedRecords, records, recordFields, values, resource } = props;
@@ -16,70 +13,79 @@ const RecordsList = props => {
     values,
   });
   const {
-    chunkOfRecords,
-    recordsSortedBy,
-    page,
     match,
     dispatch,
+    history,
+    location,
+    chunkOfRecords,
+    page,
+    paginationLimit,
   } = useChangePage({ ...props, filteredRecords });
 
-  const allRecordsRef = useRef();
+  const { components, columns, rowSelection } = useRecordsList({
+    recordFields,
+    values,
+    resource,
+  });
 
-  const {
-    selectRecord,
-    selectAllRecords,
-    checked,
-    allChecked,
-  } = useSelectRecords({ sortedRecords, filteredRecords });
-
-  const handleSortBy = (recordFieldId, orders) => {
-    recordsSort(recordFieldId, orders, resource, records, values, dispatch);
+  const handleSortBy = (recordFieldId, order) => {
+    recordsSort(recordFieldId, order, resource, values, dispatch);
   };
+
+  const allRecordsRef = useRef();
 
   useEffect(() => {
     allRecordsRef.current.scrollIntoView();
   }, [page, match]);
 
+  const onShowSizeChange = (current, pageSize) => {
+    dispatch({
+      type: "SET_LIMIT",
+      limit: pageSize,
+    });
+  };
+
+  const setPage = page => {
+    history.push(`${location.pathname}?page=${page}`);
+  };
+
   return (
-    <div
-      ref={allRecordsRef}
-      className="table-responsive"
-      style={{ height: "auto" }}>
-      <div className="d-flex justify-content-between w-100 flex-nowrap align-items-center">
+    <div ref={allRecordsRef} style={{ maxWidth: "100%" }}>
+      <Row style={{ height: "80px" }}>
         <FilterOptions />
-        <Pagination resource={resource} page={page} />
-      </div>
-      <table className="table table-striped mb-0 table-hover border-0">
-        <RecordsHeader
-          {...{
-            ...props,
-            filteredRecords,
-            match,
-            recordsSortedBy,
-            handleSortBy,
-            selectAllRecords,
-            allChecked,
-          }}
-        />
-        <tbody>
-          <RecordsFilter {...props} filterRecords={filterRecords} />
-          {chunkOfRecords[page - 1]
-            ? chunkOfRecords[page - 1].map((record, id) =>
-                record.formId === resource.id ? (
-                  <Record
-                    key={`record_key_${id}`}
-                    record={record}
-                    checked={checked.find(r => r === record.id) || false}
-                    selectRecord={selectRecord}
-                    recordFields={recordFields}
-                    resourceId={resource.id}
-                    values={values}
-                  />
-                ) : null
-              )
-            : null}
-        </tbody>
-      </table>
+        <Col span="auto">
+          <Pagination
+            {...{
+              key: "pagination",
+              position: ["topRight"],
+              current: page,
+              pageSizeOptions: ["5", "10", "25", "50", "100"],
+              showSizeChanger: true,
+              showQuickJumper: true,
+              size: "small",
+              pageSize: paginationLimit,
+              onShowSizeChange: onShowSizeChange,
+              onChange: setPage,
+              total: values.length,
+              showTotal: (total, range) =>
+                `${range[0]}-${range[1]} of ${total} items`,
+            }}
+          />
+        </Col>
+      </Row>
+
+      <Table
+        components={components}
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={chunkOfRecords[page - 1]}
+        pagination={false}
+        onChange={(pagination, filter, sorter) =>
+          sorter.column
+            ? handleSortBy(sorter.column.dataIndex, sorter.order)
+            : handleSortBy(0)
+        }
+      />
     </div>
   );
 };

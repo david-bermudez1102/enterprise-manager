@@ -22,6 +22,8 @@ export const add = (dispatch, url, payload, ...actions) => {
       if (!response.errors) {
         actions.map(action => dispatch(action));
         message.success(response.message || SUCCESS_MESSAGE_DEFAULT);
+        console.log(response);
+        return response;
       } else {
         response.errors.map(err => message.error(err));
       }

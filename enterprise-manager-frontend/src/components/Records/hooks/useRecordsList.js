@@ -1,22 +1,26 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect } from "react";
 import capitalize from "capitalize";
 import ResizeableTitle from "../ResizableTitle";
 import RecordCell from "../RecordCell";
 import workerInstance from "../../../workers/workerActions";
-import { useDispatch } from "react-redux";
-import recordsSort from "../RecordsSort";
 
 export const useRecordsList = ({ recordFields, values, resource }) => {
-  const initialState = recordFields.map((field, index) => ({
-    key: `record_field_head_${field.id}`,
-    title: capitalize(field.name),
-    dataIndex: field.id,
-    sorter: true,
-    width: index < recordFields.length - 1 ? 200 : undefined,
-    wordWrap: "break-word",
-    editable: true,
-  }));
-  const [state, setState] = useState({ columns: initialState });
+  const [state, setState] = useState({ columns: [] });
+
+  useEffect(() => {
+    setState({
+      columns: recordFields.map((field, index) => ({
+        key: `record_field_head_${field.id}`,
+        title: capitalize(field.name),
+        dataIndex: field.id,
+        sorter: true,
+        filters: [],
+        width: index < recordFields.length - 1 ? 200 : undefined,
+        wordWrap: "break-word",
+        editable: true,
+      })),
+    });
+  }, [recordFields, resource]);
 
   useEffect(() => {
     Promise.all(

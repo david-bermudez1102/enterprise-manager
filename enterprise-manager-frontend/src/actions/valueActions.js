@@ -21,9 +21,8 @@ export const addValue = value => {
     add(
       dispatch,
       `/api/v1/organizations/${value.organizationId}/forms/${value.formId}/values`,
-      { value },
-      { type: "ADD_VALUE", value }
-    );
+      { value }
+    ).then(resp => dispatch({ type: "ADD_VALUE", value: resp }));
 };
 
 export const updateValue = value => {

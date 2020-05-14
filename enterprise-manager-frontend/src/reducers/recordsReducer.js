@@ -50,6 +50,15 @@ export const sortedRecords = (state = [], action) => {
         ...state.filter(record => record.formId !== action.formId),
         ...action.records,
       ];
+    case "ADD_VALUE":
+      return [...state].map(value =>
+        value.id === parseInt(action.value.recordId)
+          ? {
+              ...value,
+              [action.value.recordFieldId]: action.value.content,
+            }
+          : value
+      );
     case "UPDATE_VALUE":
       return [...state].map(value =>
         value.id === parseInt(action.value.recordId)

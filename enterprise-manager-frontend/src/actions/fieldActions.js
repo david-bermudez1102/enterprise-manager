@@ -1,41 +1,25 @@
 import snakecaseKeys from "snakecase-keys";
 import cuid from "cuid";
 import { handleErrors } from "./handleErrors";
+import { add } from "./fetchActions";
 
 export const addField = (field, organizationId) => {
   return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" });
-    return fetch(
+    return add(
+      dispatch,
       `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(snakecaseKeys({ field }))
-      }
-    )
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(f => {
-        if (!f.errors) {
-          dispatch({
-            type: "ADD_FIELD",
-            field: { key: cuid(), ...f }
-          });
-          return { ...field, fieldId: f.id };
-        } else {
-          dispatch({ type: "ADD_ERRORS", errors: f.errors });
-        }
-      })
-      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp.errors }));
+      { field }
+    ).then(f => {
+      dispatch({ type: "ADD_FIELD", field: { key: cuid(), ...f } });
+      return { ...field, fieldId: f.id };
+    });
   };
 };
 
 export const fetchFields = (organizationId, formId) => {
   return dispatch => {
     fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/fields`, {
-      cache: "no-cache"
+      cache: "no-cache",
     })
       .then(handleErrors)
       .then(response => response.json())
@@ -43,7 +27,7 @@ export const fetchFields = (organizationId, formId) => {
         dispatch({
           type: "FETCH_FIELDS",
           fields: fields.map(field => ({ key: cuid(), ...field })),
-          formId
+          formId,
         })
       );
   };
@@ -57,9 +41,9 @@ export const updateField = (field, organizationId, fieldId) => {
       {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(snakecaseKeys({ field }))
+        body: JSON.stringify(snakecaseKeys({ field })),
       }
     )
       .then(handleErrors)
@@ -69,7 +53,7 @@ export const updateField = (field, organizationId, fieldId) => {
           dispatch({
             type: "UPDATE_FIELD",
             fieldId,
-            field: { key: cuid(), ...field }
+            field: { key: cuid(), ...field },
           });
           return { ...field, fieldId };
         } else {
@@ -85,7 +69,7 @@ export const removeField = (organizationId, formId, fieldId) => {
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${formId}/fields/${fieldId}`,
       {
-        method: "DELETE"
+        method: "DELETE",
       }
     )
       .then(handleErrors)

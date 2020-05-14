@@ -5,6 +5,7 @@ import Integrations from "../../components/Settings/Integrations";
 import AccountSettings from "../../components/Settings/AccountSettings";
 import cuid from "cuid";
 import Route from "../../Router/Route";
+import { Row, Col, List } from "antd";
 
 class Settings extends Component {
   render() {
@@ -13,36 +14,40 @@ class Settings extends Component {
       {
         text: "Privileges",
         url: `${match.url}/privileges`,
-        icon: `fas fa-user-shield mr-2`,
+        icon: `fas fa-user-shield`,
       },
       {
         text: "Integrations",
         url: `${match.url}/integrations`,
-        icon: `fas fa-network-wired mr-2`,
+        icon: `fas fa-network-wired`,
       },
       {
         text: "Account Settings",
         url: `${match.url}/account`,
-        icon: `fas fa-user-cog mr-2`,
+        icon: `fas fa-user-cog`,
       },
     ];
     return (
-      <div className="row">
-        <div className="col-lg-5">
-          <div className="list-group sticky-top">
-            {links.map(link => (
-              <NavLink
-                className="list-group-item list-group-item-action"
-                activeClassName="active"
-                key={cuid()}
-                to={link.url}>
-                <i className={link.icon}></i>
-                {link.text}
-              </NavLink>
-            ))}
-          </div>
-        </div>
-        <div className="col-lg-7">
+      <Row gutter={16}>
+        <Col lg={12}>
+          <List
+            itemLayout="horizontal"
+            dataSource={links}
+            renderItem={item => (
+              <List.Item
+                style={{
+                  background: "#fff",
+                  paddingRight: "10px",
+                  paddingLeft: "20px",
+                }}>
+                <NavLink key={cuid()} to={item.url}>
+                  <i className={item.icon}></i>
+                  {item.text}
+                </NavLink>
+              </List.Item>
+            )}></List>
+        </Col>
+        <Col lg={12}>
           <Switch>
             <Route path={`${match.path}/privileges`} component={Privileges} />
             <Route
@@ -58,8 +63,8 @@ class Settings extends Component {
               )}
             />
           </Switch>
-        </div>
-      </div>
+        </Col>
+      </Row>
     );
   }
 }

@@ -32,6 +32,7 @@ const NumericField = ({ field, fieldType, onChange }) => {
       <NumericFieldOptions
         fieldType={fieldType}
         handleChange={handleNumericField}
+        field={field}
       />
     </>
   );

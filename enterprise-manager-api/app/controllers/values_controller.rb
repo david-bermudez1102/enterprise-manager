@@ -18,7 +18,8 @@ class ValuesController < ApplicationController
   def create
     value = @record.values.build(value_params)
     if !@record_field.nil? && value.save
-      render json: ValueSerializer.new(value, messages: ["Record saved successfully."])
+      serialized_data = ValueSerializer.new(value).serializable_hash[:data][:attributes]
+      render json: serialized_data
     else
       render json: { errors: value.errors.full_messages }
     end
@@ -27,7 +28,7 @@ class ValuesController < ApplicationController
   def update
     if @value.update(value_params)
       serialized_data = ValueSerializer.new(@value).serializable_hash[:data]
-      serialized_data[:attributes][:messages] = ["Record saved successfully."]
+      serialized_data[:attributes]
       render json: serialized_data[:attributes]
     else
       render json: { errors: @value.errors.full_messages }

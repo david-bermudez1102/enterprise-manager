@@ -2,8 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Col, Checkbox } from "antd";
 
-const AcceptsDecimals = ({ handleChange, fieldType }) => {
-  const [acceptsDecimals, setAcceptsDecimals] = useState(false);
+const AcceptsDecimals = ({ handleChange, fieldType, field }) => {
+  const [acceptsDecimals, setAcceptsDecimals] = useState(field.acceptsDecimals);
 
   const handleCheckBoxChange = e => {
     setAcceptsDecimals(e.target.checked);

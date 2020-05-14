@@ -65,7 +65,6 @@ const ResourcesList = ({ loaded, loading }) => {
     );
   return (
     <>
-      <Loader loading={loading} />
       {resources.map(resource => {
         const isActive = !!matchPath(
           location.pathname,

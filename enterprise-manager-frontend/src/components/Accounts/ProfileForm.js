@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FileUploader from "../Uploader/FileUploader";
 import AvatarUploader from "../Uploader/AvatarUploader";
 import snakecaseKeys from "snakecase-keys";
+import { Form, Divider, Input, Select, Button } from "antd";
 
 class ProfileForm extends Component {
   constructor(props) {
@@ -15,34 +16,41 @@ class ProfileForm extends Component {
       gender: "Select",
       avatarMarginLeft: avatar ? avatar.margin_left : 0,
       avatarMarginTop: avatar ? avatar.margin_top : 0,
-      avatarUrl: avatar ? `http://localhost:3001${avatar.url}` : ""
+      avatarUrl: avatar ? `http://localhost:3001${avatar.url}` : "",
     };
   }
 
   handleChange = event => {
     event.persist();
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     });
   };
 
   handleAvatarChange = file => {
     this.setState({
-      avatar: file
+      avatar: file,
     });
   };
 
   handleAvatarCoordinates = (x, y) => {
     this.setState({
       avatarMarginLeft: x,
-      avatarMarginTop: y
+      avatarMarginTop: y,
     });
   };
 
   handleSubmit = event => {
     event.preventDefault();
     const { updateAdmin, currentUser } = this.props;
-    const { avatar, name, email, gender, avatarMarginLeft, avatarMarginTop } = this.state;
+    const {
+      avatar,
+      name,
+      email,
+      gender,
+      avatarMarginLeft,
+      avatarMarginTop,
+    } = this.state;
     const formData = {
       avatar,
       ...snakecaseKeys({
@@ -50,17 +58,29 @@ class ProfileForm extends Component {
         email,
         gender,
         avatarMarginLeft,
-        avatarMarginTop
-      })
+        avatarMarginTop,
+      }),
     };
     updateAdmin(formData, currentUser.id);
   };
 
   render() {
-    const { avatarUrl, name, email, gender, avatarMarginLeft, avatarMarginTop } = this.state;
+    const {
+      avatarUrl,
+      name,
+      email,
+      gender,
+      avatarMarginLeft,
+      avatarMarginTop,
+    } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="d-flex display-4 mb-0 align-items-center" style={{ fontSize: "40px" }}>
+      <Form
+        onSubmit={this.handleSubmit}
+        layout={"vertical"}
+        initialValues={{ name, email, gender }}>
+        <div
+          className="d-flex display-4 mb-0 align-items-center"
+          style={{ fontSize: "40px" }}>
           <FileUploader
             className="circular--landscape shadow bg-light mr-2"
             size="150px"
@@ -75,45 +95,27 @@ class ProfileForm extends Component {
           </FileUploader>
           <span>{name}</span>
         </div>
-        <hr />
-        <div className="form-group">
-          <label htmlFor="account_name">Your Name:</label>
-          <input
-            type="text"
-            name="name"
+        <Divider />
+        <Form.Item name="name" label={"Your Name"}>
+          <Input
             id="account_name"
-            className="form-control rounded-pill"
             onChange={this.handleChange}
-            value={name}
             placeholder="Enter name..."
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="account_email">Your Email:</label>
-          <input
-            type="text"
-            name="email"
-            id="account_email"
-            className="form-control rounded-pill"
-            onChange={this.handleChange}
-            value={email}
-            placeholder="Enter email..."
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="account_gender">Gender:</label>
-          <select
-            type="text"
-            name="gender"
-            id="account_gender"
-            className="form-control rounded-pill"
-            onChange={this.handleChange}
-            value={gender}
-            placeholder="Enter email..."></select>
-        </div>
-        <hr />
-        <input type="submit" className="btn btn-primary shadow" value="Save Changes" />
-      </form>
+        </Form.Item>
+        <Form.Item name="email" label={"Your Email"}>
+          <Input id="account_email" onChange={this.handleChange} />
+        </Form.Item>
+        <Form.Item name="gender" label={"Gender"}>
+          <Select id="account_gender" onChange={this.handleChange}></Select>
+        </Form.Item>
+        <Divider />
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Save Changes
+          </Button>
+        </Form.Item>
+      </Form>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useFilterRecords } from "./hooks/useFilterRecords";
 import { useChangePage } from "./hooks/useChangePage";
 import recordsSort from "./RecordsSort";
@@ -7,8 +7,8 @@ import { Table, Pagination, Row, Col } from "antd";
 import { useRecordsList } from "./hooks/useRecordsList";
 
 const RecordsList = props => {
-  const { sortedRecords, records, recordFields, values, resource } = props;
-  const { filteredRecords, filterRecords } = useFilterRecords({
+  const { sortedRecords, recordFields, values, resource } = props;
+  const { filteredRecords } = useFilterRecords({
     sortedRecords,
     values,
   });
@@ -22,14 +22,18 @@ const RecordsList = props => {
     paginationLimit,
   } = useChangePage({ ...props, filteredRecords });
 
-  const { components, columns, rowSelection } = useRecordsList({
+  const { components, columns, rowSelection, recordsLoading } = useRecordsList({
     recordFields,
     values,
     resource,
   });
 
-  const handleSortBy = (recordFieldId, order) => {
-    recordsSort(recordFieldId, order, resource, values, dispatch);
+  const [dataSource, setDataSource] = useState();
+  const [loading, setLoading] = useState(false);
+  const handleSortBy = async (recordFieldId, order) => {
+    setLoading(true);
+    await recordsSort(recordFieldId, order, resource, values, dispatch);
+    setLoading(false);
   };
 
   const allRecordsRef = useRef();
@@ -48,6 +52,15 @@ const RecordsList = props => {
   const setPage = page => {
     history.push(`${location.pathname}?page=${page}`);
   };
+
+  useEffect(() => {
+    async function getDataSource() {
+      return await Promise.all(chunkOfRecords[page - 1]);
+    }
+    setLoading(true);
+
+    getDataSource().then(() => setLoading(false));
+  }, [chunkOfRecords]);
 
   return (
     <div ref={allRecordsRef} style={{ maxWidth: "100%" }}>
@@ -75,6 +88,7 @@ const RecordsList = props => {
       </Row>
 
       <Table
+        loading={loading}
         components={components}
         rowSelection={rowSelection}
         columns={columns}

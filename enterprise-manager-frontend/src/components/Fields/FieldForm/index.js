@@ -11,21 +11,24 @@ import RadioField from "./RadioField";
 import CheckBoxField from "./CheckBoxField";
 import DateField from "./DateField";
 import CombinedField from "./CombinedField";
-import { Form, Input, Button, Radio, Row, Checkbox, Divider } from "antd";
+import { Form, Input, Button, Row, Divider, Radio, Switch } from "antd";
 import { AppstoreTwoTone } from "@ant-design/icons";
+import { useRouteMatch } from "react-router-dom";
 
 const FieldForm = props => {
   const { organizationId, action, resourceId } = props;
   const { key, fieldAlias, name, formId, isRequired, ...field } = props.field;
   const [fieldState, setFieldState] = useState(field || {});
   const mounted = useRef();
-
+  const match = useRouteMatch();
   const dispatch = useDispatch();
   const initalState = {
     name: name || "",
     formId: formId || resourceId,
-    isRequired: isRequired || false,
+    isRequired: isRequired || true,
   };
+
+  const [form] = Form.useForm();
 
   const [state, setState] = useState(initalState);
 
@@ -35,9 +38,10 @@ const FieldForm = props => {
     } else {
       setFieldState(field || {});
       setState(initalState);
+      form.setFieldsValue(initalState);
     }
     // eslint-disable-next-line
-  }, [props.match]);
+  }, [match]);
 
   const onChange = state => {
     setFieldState(state);
@@ -74,20 +78,13 @@ const FieldForm = props => {
 
   return (
     <Form
-      name="new_resource"
+      form={form}
+      name="new_field"
       onFinish={handleSubmit}
-      layout={"vertical"}
-      initialValues={initalState}>
+      layout={"horizontal"}>
       <Form.Item
         name="name"
-        id="field_name"
         label="Field Name"
-        onChange={e =>
-          setState({
-            ...state,
-            name: e.target.value,
-          })
-        }
         rules={[
           {
             required: true,
@@ -96,13 +93,20 @@ const FieldForm = props => {
         ]}>
         <Input
           size="large"
+          id="field_name"
+          onChange={e =>
+            setState({
+              ...state,
+              name: e.target.value,
+            })
+          }
           prefix={<AppstoreTwoTone />}
           placeholder="Enter field name..."
         />
       </Form.Item>
       <Divider />
-      <Form.Item label="Field Type:">
-        <Row>
+      <Form.Item label="Field Type:" required>
+        <Row gutter={[16, 16]}>
           <RecordKeyField resourceId={resourceId} {...fieldProps} />
           <TextField {...fieldProps} />
           <NumericField {...fieldProps} />
@@ -116,15 +120,12 @@ const FieldForm = props => {
         </Row>
       </Form.Item>
       <Divider />
-      <Form.Item>
-        <Checkbox
+      <Form.Item label="Required">
+        <Switch
           name="isRequired"
-          onChange={e =>
-            setState({ ...state, isRequired: e.target.checked ? true : false })
-          }
-          checked={state.isRequired}>
-          Required
-        </Checkbox>
+          checked={state.isRequired}
+          onChange={checked => setState({ ...state, isRequired: checked })}
+        />
       </Form.Item>
       <Divider />
       <Form.Item>
@@ -135,4 +136,4 @@ const FieldForm = props => {
     </Form>
   );
 };
-export default FieldForm;
+export default React.memo(FieldForm);

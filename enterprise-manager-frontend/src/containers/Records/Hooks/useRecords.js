@@ -1,4 +1,4 @@
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 import { useState, useEffect } from "react";
 import { fetchRecords } from "../../../actions/recordActions";
 import { useRouteMatch } from "react-router-dom";

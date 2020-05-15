@@ -1,6 +1,5 @@
 import React from "react";
 import LoginForm from "../components/LoginForm";
-import Alert from "../components/Alerts/Alert";
 import { useEffect } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { useHistory } from "react-router-dom";

@@ -5,12 +5,12 @@ import {
   HomeOutlined,
   ApartmentOutlined,
   TableOutlined,
-  UserSwitchOutlined,
   UserAddOutlined,
   GroupOutlined,
   AppstoreAddOutlined,
   FlagOutlined,
   SwitcherOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 
 const useSidebar = ({ organization }) => {
@@ -52,7 +52,7 @@ const useSidebar = ({ organization }) => {
     {
       path: "/accounts",
       text: "Accounts",
-      icon: <UserSwitchOutlined />,
+      icon: <TeamOutlined />,
       levels: ["admin"],
       dropdown: true,
       status: activePath.includes("/accounts") ? "open" : "closed",

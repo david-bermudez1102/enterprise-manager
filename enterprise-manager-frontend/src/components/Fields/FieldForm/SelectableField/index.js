@@ -1,9 +1,9 @@
 import React from "react";
 import SelectableChoice from "./SelectableChoice";
-import Icon from "@mdi/react";
 import { mdiSelectPlace } from "@mdi/js";
 import { useHandleChange } from "../../Hooks/useHandleChange";
-import { Col, Radio } from "antd";
+import { Col } from "antd";
+import RadioWrapper from "../RadioWrapper";
 
 const SelectableField = props => {
   const { field, fieldType, onChange } = props;
@@ -14,22 +14,16 @@ const SelectableField = props => {
 
   return (
     <>
-      <Col span={"auto"} order={1}>
-        <Radio
-          name="fieldType"
-          id="selectable_field"
-          value="selectable"
-          onChange={handleChange}
-          checked={fieldType === "selectable" ? true : false}>
-          Selectable Field{" "}
-          <Icon
-            path={mdiSelectPlace}
-            title="Selectable Field"
-            size={1}
-            color="#07689F"
-          />
-        </Radio>
-      </Col>
+      <RadioWrapper
+        name="fieldType"
+        id="selectable_field"
+        value="selectable"
+        onChange={handleChange}
+        iconPath={mdiSelectPlace}
+        iconTitle={"Selectable Field"}
+        fieldType={fieldType}>
+        Selectable Field
+      </RadioWrapper>
       {fieldType === "selectable" ? (
         <Col span={24} order={24}>
           <SelectableChoice

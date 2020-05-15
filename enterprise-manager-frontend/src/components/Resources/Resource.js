@@ -5,7 +5,6 @@ import { fetchFields } from "../../actions/fieldActions";
 import { fetchRecordFields } from "../../actions/recordFieldActions";
 import RecordsContainer from "../../containers/Records/RecordsContainer";
 import { useRouteMatch, useLocation } from "react-router-dom";
-import { Col } from "antd";
 
 const Resource = ({ isFieldsPath }) => {
   const location = useLocation();

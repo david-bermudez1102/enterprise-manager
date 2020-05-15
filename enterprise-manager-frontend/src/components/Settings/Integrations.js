@@ -4,10 +4,10 @@ import ZohoBooksForm from "../Integrations/ZohoBooksForm";
 import { connect } from "react-redux";
 import { updateOrganization } from "../../actions/organizationAction";
 import { FormCard } from "../Cards/Cards";
-import { NoContent } from "../NoContent";
 import zohoBooksIcon from "../../containers/ZohoBooks/favicon.ico";
-import Alert from "../Alerts/Alert";
 import Route from "../../Router/Route";
+import { Empty, Button, Card } from "antd";
+import Title from "antd/lib/typography/Title";
 
 const Integrations = props => {
   const { match, organization, session, updateOrganization } = props;
@@ -18,9 +18,12 @@ const Integrations = props => {
   return (
     <div>
       {!zohoIntegration && !quickbooksIntegration ? (
-        <NoContent>
-          This organization is not connected to any Accounting Software.
-        </NoContent>
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          description={
+            "This organization is not connected to any Accounting Software."
+          }
+        />
       ) : (
         <div className="alert alert-primary shadow-sm">
           <i className="fas fa-info-circle mr-2"></i>
@@ -30,30 +33,39 @@ const Integrations = props => {
       )}
       <div className="alert alert-light d-flex justify-content-around shadow-sm rounded">
         <Link to={`${match.url}/zoho_books/edit`}>
-          <button className="btn btn-info shadow">
-            <img
-              src={zohoBooksIcon}
-              className="pr-1"
-              style={{ width: "24px" }}
-              alt="Connect with ZohoBooks"
-            />
+          <Button
+            icon={
+              <img
+                src={zohoBooksIcon}
+                style={{
+                  width: "15px",
+                  marginRight: "0.5em",
+                  marginTop: "-0.1em",
+                }}
+                alt="Connect with ZohoBooks"
+              />
+            }>
             Connect to Zoho Books
-          </button>
+          </Button>
         </Link>
         <Link to={`${match.url}/quickbooks/edit`}>
-          <button className="btn btn-info shadow">
-            <img
-              src="https://quickbooks.intuit.com/etc/designs/harmony/images/favicon/quickbooks/apple-touch-icon-60x60.png"
-              style={{ width: "24px" }}
-              className="pr-1"
-              alt="Connect with QuickBooks"
-            />
+          <Button
+            icon={
+              <img
+                src="https://quickbooks.intuit.com/etc/designs/harmony/images/favicon/quickbooks/apple-touch-icon-60x60.png"
+                style={{
+                  width: "15px",
+                  marginRight: "0.5em",
+                  marginTop: "-0.1em",
+                }}
+                alt="Connect with QuickBooks"
+              />
+            }>
             Connect to QuickBooks
-          </button>
+          </Button>
         </Link>
       </div>
       <div>
-        <Alert />
         <Switch>
           <Route
             path={`${match.url}/zoho_books/connect`}
@@ -65,27 +77,23 @@ const Integrations = props => {
           <Route
             path={`${match.url}/zoho_books/edit`}
             render={props => (
-              <FormCard
-                header={
-                  <>
-                    <span
-                      className="display-4 card-title mb-0"
-                      style={{ fontSize: "32px" }}>
-                      Connect to Zoho
-                    </span>
+              <Card
+                title={
+                  <Title>
+                    Connect to Zoho
                     <Link
                       to={`${match.url}/zoho_books/connect`}
                       title="Refresh Zoho Token">
                       <i className="fas fa-sync"></i>
                     </Link>
-                  </>
+                  </Title>
                 }>
                 <ZohoBooksForm
                   organization={organization}
                   updateOrganization={updateOrganization}
                   session={session}
                 />
-              </FormCard>
+              </Card>
             )}
           />
         </Switch>
@@ -94,7 +102,6 @@ const Integrations = props => {
   );
 };
 
-const mapStateToProps = ({ session }) => {
-  return { session };
-};
+const mapStateToProps = ({ session }) => ({ session });
+
 export default connect(mapStateToProps, { updateOrganization })(Integrations);

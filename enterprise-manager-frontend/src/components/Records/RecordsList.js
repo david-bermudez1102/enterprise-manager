@@ -22,13 +22,12 @@ const RecordsList = props => {
     paginationLimit,
   } = useChangePage({ ...props, filteredRecords });
 
-  const { components, columns, rowSelection, recordsLoading } = useRecordsList({
+  const { components, columns, rowSelection } = useRecordsList({
     recordFields,
     values,
     resource,
   });
 
-  const [dataSource, setDataSource] = useState();
   const [loading, setLoading] = useState(false);
   const handleSortBy = async (recordFieldId, order) => {
     setLoading(true);
@@ -52,15 +51,6 @@ const RecordsList = props => {
   const setPage = page => {
     history.push(`${location.pathname}?page=${page}`);
   };
-
-  useEffect(() => {
-    async function getDataSource() {
-      return await Promise.all(chunkOfRecords[page - 1]);
-    }
-    setLoading(true);
-
-    getDataSource().then(() => setLoading(false));
-  }, [chunkOfRecords]);
 
   return (
     <div ref={allRecordsRef} style={{ maxWidth: "100%" }}>

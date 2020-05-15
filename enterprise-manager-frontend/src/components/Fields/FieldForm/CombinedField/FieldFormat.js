@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import cuid from "cuid";
+import { Divider, Select, Tooltip, Button, Form } from "antd";
+import Text from "antd/lib/typography/Text";
 
 const FieldFormat = ({ items, handleChange, fieldFormat }) => {
   const itemsValues = items.map(item => item.value);
@@ -11,87 +13,78 @@ const FieldFormat = ({ items, handleChange, fieldFormat }) => {
     {
       value: "all_underscored",
       label: withUnderscore,
-      helper: "All values separated with underscore"
+      title: "All values separated with underscore",
     },
     {
       value: "all_dashed",
       label: withDashes,
-      helper: "All values separated with dashes"
+      title: "All values separated with dashes",
     },
     {
       value: "dashed_upper",
       label: withDashes.toUpperCase(),
-      helper: "All values separated with dashes and upper case"
+      title: "All values separated with dashes and upper case",
     },
     {
       value: "underscored_upper",
       label: withUnderscore.toUpperCase(),
-      helper: "All values separated with underscore and upper case"
+      title: "All values separated with underscore and upper case",
     },
     {
       value: "dashed_lower",
       label: withDashes.toLowerCase(),
-      helper: "All values separated with dashes and lower case"
+      title: "All values separated with dashes and lower case",
     },
     {
       value: "underscored_lower",
       label: withUnderscore.toLowerCase(),
-      helper: "All values separated with underscore and lower case"
+      title: "All values separated with underscore and lower case",
     },
     {
       value: "all_spaced_upper",
       label: allSpaced.toUpperCase(),
-      helper: "All values separated with a spaces and upper case"
+      title: "All values separated with a spaces and upper case",
     },
     {
       value: "all_spaced_lower",
       label: allSpaced.toLowerCase(),
-      helper: "All values separated with spaces and lower case"
+      title: "All values separated with spaces and lower case",
     },
     {
       value: "no_format",
       label: allSpaced,
-      helper: "No formatting. All values are saved separated by space only"
-    }
+      title: "No formatting. All values are saved separated by space only",
+    },
   ];
   const [formatSelected, setFormatSelected] = useState(
     fieldFormat || "no_format"
   );
 
-  const handleClick = state => {
-    setFormatSelected(state.fieldFormat);
-    handleChange(state);
+  const onChange = (value, option) => {
+    setFormatSelected(value);
+    handleChange({ fieldFormat: value });
   };
 
   return (
     <>
-      <hr />
-      <div className="form-group mb-0 w-1000" tabIndex={0}>
-        <legend className="col-form-label">Choose Format:</legend>
-        <div
-          className="list-group list-group-flush w-100 scroller"
-          style={{ maxHeight: "100px" }}>
-          {formatOptions.map(o => (
-            <div
-              key={cuid()}
-              style={{ cursor: "pointer" }}
-              className={`w-100 list-group-item list-group-item-action py-1.5 px-2 ${
-                formatSelected === o.value ? "active" : ""
-              }`}
-              onClick={() => handleClick({ fieldFormat: o.value })}>
-              <div
-                className="d-block w-auto small float-left text-truncate"
-                style={{ maxWidth: "50%" }}
-                title={o.label}>
-                {o.label}
-              </div>
-              <div className="pl-1 d-block text-truncate" title={o.helper}>
-                ({o.helper})
-              </div>
-            </div>
+      <Divider />
+      <Form.Item label="Format" required>
+        <Select placeholder="Select format" onChange={onChange}>
+          {formatOptions.map((option, id) => (
+            <Select.Option key={`format_option_${id}`} value={option.value}>
+              <Tooltip title={option.title} placement={"right"}>
+                <Button
+                  type="primary"
+                  ghost
+                  block
+                  style={{ border: 0, textAlign: "left" }}>
+                  {option.label}
+                </Button>
+              </Tooltip>
+            </Select.Option>
           ))}
-        </div>
-      </div>
+        </Select>
+      </Form.Item>
     </>
   );
 };

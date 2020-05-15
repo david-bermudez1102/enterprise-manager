@@ -6,6 +6,7 @@ import AccountSettings from "../../components/Settings/AccountSettings";
 import cuid from "cuid";
 import Route from "../../Router/Route";
 import { Row, Col, List } from "antd";
+import { ApiOutlined } from "@ant-design/icons";
 
 class Settings extends Component {
   render() {
@@ -14,17 +15,17 @@ class Settings extends Component {
       {
         text: "Privileges",
         url: `${match.url}/privileges`,
-        icon: `fas fa-user-shield`,
+        icon: <i className={`fas fa-user-shield`}></i>,
       },
       {
         text: "Integrations",
         url: `${match.url}/integrations`,
-        icon: `fas fa-network-wired`,
+        icon: <ApiOutlined />,
       },
       {
         text: "Account Settings",
         url: `${match.url}/account`,
-        icon: `fas fa-user-cog`,
+        icon: <i className={`fas fa-user-cog`}></i>,
       },
     ];
     return (
@@ -41,8 +42,7 @@ class Settings extends Component {
                   paddingLeft: "20px",
                 }}>
                 <NavLink key={cuid()} to={item.url}>
-                  <i className={item.icon}></i>
-                  {item.text}
+                  {item.icon} {item.text}
                 </NavLink>
               </List.Item>
             )}></List>

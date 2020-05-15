@@ -1,5 +1,5 @@
 import { handleErrors } from "./handleErrors";
-import { remove } from "./fetchActions";
+import { remove, update } from "./fetchActions";
 
 export const addResource = resource => {
   const organizationsPath = `/api/v1/organizations/${resource.organizationId}`;
@@ -48,39 +48,16 @@ export const fetchResources = organizationId => {
 };
 
 export const updateResource = resource => {
-  return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" });
-    return fetch(
+  return dispatch =>
+    update(
+      dispatch,
       `/api/v1/organizations/${resource.organizationId}/forms/${resource.id}`,
+      { form: resource },
       {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ form: resource }),
+        type: "UPDATE_RESOURCE",
+        resource,
       }
-    )
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(resource => {
-        if (!resource.errors) {
-          dispatch({
-            type: "UPDATE_RESOURCE",
-            resource,
-          });
-          dispatch({
-            type: "ADD_MESSAGES",
-            messages: resource.messages || ["Resource updated successfully."],
-          });
-          return resource;
-        } else {
-          dispatch({ type: "ADD_ERRORS", errors: resource.errors });
-        }
-      })
-      .catch(console.log);
-  };
+    );
 };
 
 export const removeResource = (organizationId, id) => {

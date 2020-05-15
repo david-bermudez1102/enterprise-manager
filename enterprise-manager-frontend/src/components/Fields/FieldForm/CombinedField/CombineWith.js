@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
-import SelectableInput from "../../SelectableInput";
 import cuid from "cuid";
 import OptionBadge from "../OptionBadge";
 import { useSelector, shallowEqual } from "react-redux";
-import Portal from "../../../Portal/Portal";
 import FieldFormat from "./FieldFormat";
 import DraggableOption from "../OptionBadge/DraggableOption";
+import { Col, Divider, Select, Form, Row } from "antd";
 
 const CombineWith = ({
   resourceId,
@@ -31,7 +30,9 @@ const CombineWith = ({
     shallowEqual
   );
 
-  const handleFieldChange = item => {
+  console.log(availableFields);
+
+  const handleFieldChange = (value, item) => {
     if (!items.some(i => i.id === item.id) && item !== "")
       setItems([...items, item]);
   };
@@ -55,54 +56,49 @@ const CombineWith = ({
   };
 
   return fieldType === "combined_field" ? (
-    <div className="col-12 order-last">
+    <Col span={24} order={24}>
       {items.length > 0 ? (
-        <div>
-          <hr />
-          <small className="form-text pb-2">Fields to combine:</small>
-          <DraggableOption items={items} onDragEnd={handleSwapOptions}>
-            {items.map(item => (
-              <OptionBadge
-                key={cuid()}
-                value={item.value}
-                handleClose={() => removeItem(item.id)}
-              />
-            ))}
-          </DraggableOption>
-          <small className="form-text text-muted">
-            You can rearrange the order in which the fields will be combined by
-            dragging them to the desired position.
-          </small>
-        </div>
+        <Row>
+          <Divider />
+          <Col span={24} style={{ marginBottom: "8px" }}>
+            <small>Fields to combine:</small>
+          </Col>
+          <Col span={24}>
+            <DraggableOption items={items} onDragEnd={handleSwapOptions}>
+              {items.map(item => (
+                <OptionBadge
+                  color="cyan"
+                  key={`combined_field_option_${item.id}`}
+                  value={item.value}
+                  handleClose={() => removeItem(item.id)}
+                />
+              ))}
+            </DraggableOption>
+          </Col>
+          <Col style={{ marginTop: "8px" }}>
+            <small className="form-text text-muted">
+              You can rearrange the order in which the fields will be combined
+              by dragging them to the desired position.
+            </small>
+          </Col>
+        </Row>
       ) : null}
       {availableFields.length > 0 ? (
         <>
-          <hr />
-          <Portal>
-            <form
-              id="combineWith"
-              noValidate
-              onSubmit={e => e.preventDefault()}></form>
-          </Portal>
-          <div className="form-group mb-0">
-            <SelectableInput
+          <Divider />
+          <Form.Item label="Select fields">
+            <Select
+              showSearch
               name="combineWith"
               id="combine_with"
-              form={items.length > 1 ? "combineWith" : undefined}
               key={key}
-              className="form-control"
               options={availableFields}
               onChange={handleFieldChange}
               placeholder="Select fields to combine"
               autoFocus
-              required>
-              <label
-                className="form-control-placeholder"
-                htmlFor="combine_with">
-                Select fields
-              </label>
-            </SelectableInput>
-          </div>
+              required
+            />
+          </Form.Item>
           <small className="form-text text-muted">
             Combined fields require at least 2 fields
           </small>
@@ -116,7 +112,7 @@ const CombineWith = ({
           fieldType={fieldType}
         />
       ) : null}
-    </div>
+    </Col>
   ) : null;
 };
 export default CombineWith;

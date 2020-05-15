@@ -1,27 +1,21 @@
 import React from "react";
+import { Tag } from "antd";
 
 const OptionBadge = props => {
   const { value, handleClose, onDragEnter, style, ...newProps } = props;
   return (
-    <span
-      className="badge badge-primary badge-pill mr-2"
+    <Tag
+      draggable
+      closable
+      onClose={handleClose}
       style={{
-        minWidth: "100px",
         cursor: "move",
         userSelect: "none",
-        ...style
+        ...style,
       }}
       {...newProps}>
-      <span className="float-left h-100" onDragEnter={onDragEnter}>
-        {value}
-      </span>
-
-      <i
-        className="fas fa-minus-square pl-2 float-right"
-        style={{ cursor: "pointer" }}
-        title="Remove Item"
-        onClick={handleClose}></i>
-    </span>
+      <span onDragEnter={onDragEnter}>{value}</span>
+    </Tag>
   );
 };
 export default OptionBadge;

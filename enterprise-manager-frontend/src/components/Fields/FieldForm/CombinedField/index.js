@@ -1,11 +1,10 @@
 import React, { useCallback, useState, useEffect } from "react";
-import FieldTypeWrapper from "../../FieldTypeWrapper";
-import Icon from "@mdi/react";
 import { mdiCheckboxMultipleBlank } from "@mdi/js";
 import CombinedFieldOptions from "./CombinedFieldOptions";
 import { useHandleChange } from "../../Hooks/useHandleChange";
 import { useSelector, shallowEqual } from "react-redux";
-import { Radio, Col } from "antd";
+import { Col } from "antd";
+import RadioWrapper from "../RadioWrapper";
 
 const CombinedField = ({ field, resourceId, fieldType, onChange }) => {
   const { combinedFields, fieldFormat } = field;
@@ -35,22 +34,16 @@ const CombinedField = ({ field, resourceId, fieldType, onChange }) => {
 
   return (
     <>
-      <Col span={"auto"} order={1}>
-        <Radio
-          id="combined_field"
-          name="fieldType"
-          value={"combined_field"}
-          onChange={handleChange}
-          checked={fieldType === "combined_field" ? true : false}>
-          Combined Fields
-          <Icon
-            path={mdiCheckboxMultipleBlank}
-            title="Combined Fields"
-            size={1}
-            color="#07689F"
-          />
-        </Radio>
-      </Col>
+      <RadioWrapper
+        id="combined_field"
+        name="fieldType"
+        value={"combined_field"}
+        onChange={handleChange}
+        iconPath={mdiCheckboxMultipleBlank}
+        iconTitle={"Combined Fields"}
+        fieldType={fieldType}>
+        Combined Fields
+      </RadioWrapper>
       <CombinedFieldOptions
         initialState={
           combinedFields

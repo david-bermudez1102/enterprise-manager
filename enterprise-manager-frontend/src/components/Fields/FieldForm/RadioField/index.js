@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import Icon from "@mdi/react";
 import { mdiCheckboxMultipleMarkedCircleOutline } from "@mdi/js";
 import SelectableOptions from "../SelectableField/SelectableOptions";
 import { useHandleChange } from "../../Hooks/useHandleChange";
-import { Radio, Col } from "antd";
+import { Col } from "antd";
+import RadioWrapper from "../RadioWrapper";
 
 const RadioField = props => {
   const { field, fieldType, onChange } = props;
@@ -15,22 +15,16 @@ const RadioField = props => {
 
   return (
     <>
-      <Col span={"auto"} order={1}>
-        <Radio
-          name="fieldType"
-          id="radio_field"
-          value="radio"
-          onChange={handleChange}
-          checked={fieldType === "radio" ? true : false}>
-          Radio Field
-          <Icon
-            path={mdiCheckboxMultipleMarkedCircleOutline}
-            title="Radio Field"
-            size={1}
-            color="#07689F"
-          />
-        </Radio>
-      </Col>
+      <RadioWrapper
+        name="fieldType"
+        id="radio_field"
+        value="radio"
+        onChange={handleChange}
+        iconPath={mdiCheckboxMultipleMarkedCircleOutline}
+        iconTitle={"Radio Field"}
+        fieldType={fieldType}>
+        Radio Field
+      </RadioWrapper>
       {fieldType === "radio" ? (
         <Col span={24} order={24}>
           <SelectableOptions

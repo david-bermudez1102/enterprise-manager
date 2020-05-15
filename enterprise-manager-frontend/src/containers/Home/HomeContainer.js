@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Redirect, useLocation } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import SideBar from "../../components/Home/SideBar/SideBar";
 import Navbar from "../../components/Navbar/Navbar";
 import LoginContainer from "../LoginContainer";
@@ -24,7 +24,6 @@ const HomeContainer = () => {
     ({ organizations, admins }) => ({ organizations, admins }),
     shallowEqual
   );
-  const location = useLocation();
   const session = useSession();
   const matchedRoute = useMatchedRoute();
 

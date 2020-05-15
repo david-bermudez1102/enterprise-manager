@@ -1,24 +1,23 @@
 import React from "react";
-import Icon from "@mdi/react";
 import { mdiTextbox } from "@mdi/js";
 import { useHandleChange } from "../../Hooks/useHandleChange";
-import { Col, Radio } from "antd";
+import { Col } from "antd";
+import RadioWrapper from "../RadioWrapper";
 
 const TextField = ({ field, fieldType, onChange }) => {
   const { handleChange } = useHandleChange({ field, onChange });
 
   return (
-    <Col span={"auto"} order={1}>
-      <Radio
-        name="fieldType"
-        id="text_field"
-        value="text"
-        onChange={handleChange}
-        checked={fieldType === "text" ? true : false}>
-        Text Field{" "}
-        <Icon path={mdiTextbox} title="Text Field" size={1} color="#07689F" />
-      </Radio>
-    </Col>
+    <RadioWrapper
+      name="fieldType"
+      id="text_field"
+      value="text"
+      onChange={handleChange}
+      iconPath={mdiTextbox}
+      iconTitle={"Text Field"}
+      fieldType={fieldType}>
+      Text Field
+    </RadioWrapper>
   );
 };
 export default TextField;

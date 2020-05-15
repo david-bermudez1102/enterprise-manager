@@ -10,7 +10,6 @@ const SidebarLinks = ({ links, session, collapsed }) => {
   const location = useLocation();
   return (
     <Menu
-      className="shadow-sm"
       theme="dark"
       mode="inline"
       style={{ position: "sticky", top: 0 }}

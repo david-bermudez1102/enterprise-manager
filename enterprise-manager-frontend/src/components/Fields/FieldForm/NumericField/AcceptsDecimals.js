@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Col, Checkbox } from "antd";
+import { Col, Checkbox, Divider } from "antd";
 
 const AcceptsDecimals = ({ handleChange, fieldType, field }) => {
   const [acceptsDecimals, setAcceptsDecimals] = useState(field.acceptsDecimals);
@@ -12,7 +12,7 @@ const AcceptsDecimals = ({ handleChange, fieldType, field }) => {
 
   return fieldType === "numeric_field" ? (
     <Col span={24} order={24}>
-      <hr />
+      <Divider />
       <Checkbox
         name="acceptsDecimals"
         onChange={handleCheckBoxChange}

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import Logo from "./Logo/Logo";
 import Search from "antd/lib/input/Search";

@@ -18,7 +18,11 @@ const SideBar = ({ session, organizations }) => {
   };
 
   return (
-    <Sider collapsible collapsed={collapsed} onCollapse={handleCollapse}>
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      onCollapse={handleCollapse}
+      className="shadow-sm">
       <SidebarLinks links={links} session={session} collapsed={collapsed} />
     </Sider>
   );

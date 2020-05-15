@@ -11,10 +11,9 @@ import TextField from "./TextField";
 import KeyField from "./KeyField";
 import { Popover } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
-import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const Field = props => {
-  const { match, field, recordField, Item } = props;
+  const { match, field, recordField } = props;
 
   const fieldName = field.name
     .split("_")

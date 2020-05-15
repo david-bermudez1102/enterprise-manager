@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector, shallowEqual } from "react-redux";
-import useLoader from "../Loader/useLoader";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { Form, Input, Button } from "antd";
 
 const ResourceForm = ({
@@ -12,31 +11,18 @@ const ResourceForm = ({
   initialValues,
 }) => {
   const history = useHistory();
-  const { dispatchWithLoader, loading } = useLoader();
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
+  const dispatch = useDispatch();
   const { organizationId } = session.currentUser;
-  const initialState = {
-    name: resource ? resource.name : "",
-    organizationId,
-  };
-  const [state, setState] = useState(initialState);
-
-  useEffect(() => {
-    if (resource) setState({ ...state, name: resource.name, id: resource.id });
-    else setState(initialState);
-    // eslint-disable-next-line
-  }, [resource]);
 
   const onFinish = data => {
     if (addResource)
-      dispatchWithLoader(
-        addResource({ ...data, organizationId })
-      ).then(resource =>
+      dispatch(addResource({ ...data, organizationId })).then(resource =>
         resource ? history.push(`${resource.formAlias}`) : null
       );
     else if (updateResource)
-      dispatchWithLoader(
-        updateResource({ ...data, organizationId })
+      dispatch(
+        updateResource({ ...data, id: resource.id, organizationId })
       ).then(resource =>
         resource ? history.replace(`${url}/${resource.formAlias}/edit`) : null
       );
@@ -44,10 +30,10 @@ const ResourceForm = ({
 
   return (
     <Form
-      name="new_resource"
+      name={resource ? "update_resource" :"new_resource"}
       onFinish={onFinish}
       initialValues={initialValues}
-      layout={"vertical"}>
+      layout={"horizontal"}>
       <Form.Item
         name="name"
         label="Name"
@@ -64,8 +50,12 @@ const ResourceForm = ({
         />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Create Resource
+        <Button
+          size={"large"}
+          type="primary"
+          htmlType="submit"
+          className="login-form-button">
+          {addResource ? "Create Resource" : "Update Resource"}
         </Button>
       </Form.Item>
     </Form>

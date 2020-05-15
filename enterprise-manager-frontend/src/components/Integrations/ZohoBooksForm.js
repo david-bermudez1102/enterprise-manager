@@ -1,178 +1,76 @@
-import React, { Component } from 'react';
+import React, { useEffect } from "react";
+import { Form, Input, Divider, Button } from "antd";
+import { useLocation } from "react-router-dom";
 
-export default class ZohoBooksForm extends Component {
-  constructor() {
-    super();
-    this.state = {
-      auth_token: '',
-      client_id: '',
-      client_secret: '',
-      redirect_uri: '',
-      external_organization_id: ''
-    };
-  }
+const ZohoBooksForm = props => {
+  const organization = props.organization || {};
+  const { zohoIntegration } = organization;
+  const location = useLocation();
+  const [form] = Form.useForm();
 
-  componentDidMount() {
-    const { organization } = this.props;
-    return organization
-      ? this.setState({
-          auth_token: organization.zohoIntegration
-            ? organization.zohoIntegration.auth_token
-            : '',
-          client_id: organization.zohoIntegration
-            ? organization.zohoIntegration.client_id
-            : '',
-          client_secret: organization.zohoIntegration
-            ? organization.zohoIntegration.client_secret
-            : '',
-          redirect_uri: organization.zohoIntegration
-            ? organization.zohoIntegration.redirect_uri
-            : '',
-          external_organization_id: organization.zohoIntegration
-            ? organization.zohoIntegration.external_organization_id
-            : ''
-        })
-      : null;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.organization !== this.props.organization) {
-      const { organization } = this.props;
-      return organization
-        ? this.setState({
-            auth_token: organization.zohoIntegration
-              ? organization.zohoIntegration.auth_token
-              : '',
-            client_id: organization.zohoIntegration
-              ? organization.zohoIntegration.client_id
-              : '',
-            client_secret: organization.zohoIntegration
-              ? organization.zohoIntegration.client_secret
-              : '',
-            redirect_uri: organization.zohoIntegration
-              ? organization.zohoIntegration.redirect_uri
-              : '',
-            external_organization_id: organization.zohoIntegration
-              ? organization.zohoIntegration.external_organization_id
-              : ''
-          })
-        : null;
-    }
-  }
-
-  handleChange = event => {
-    event.persist();
-    this.setState({
-      ...this.state,
-      [event.target.name]: event.target.value
+  useEffect(() => {
+    form.setFieldsValue({
+      authToken: zohoIntegration ? zohoIntegration.authToken : "",
+      clientId: zohoIntegration ? zohoIntegration.clientId : "",
+      clientSecret: zohoIntegration ? zohoIntegration.clientSecret : "",
+      redirectUri: zohoIntegration ? zohoIntegration.redirectUri : "",
+      externalOrganizationId: zohoIntegration
+        ? zohoIntegration.externalOrganizationId
+        : "",
     });
-  };
+  }, [location]);
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const { updateOrganization, organization, session } = this.props;
-    const {
-      auth_token,
-      client_id,
-      client_secret,
-      redirect_uri,
-      external_organization_id
-    } = this.state;
+  const onFinish = data => {
+    const { updateOrganization, organization, session } = props;
     updateOrganization(
       {
-        zoho_integration_attributes: {
-          auth_token,
-          client_id,
-          client_secret,
-          account_id: session.currentUser.id,
-          organization_id: organization.id,
-          redirect_uri,
-          external_organization_id
-        }
+        zohoIntegrationAttributes: {
+          ...data,
+          accountId: session.currentUser.id,
+          organizationId: organization.id,
+        },
       },
       organization.id
     );
   };
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="client_id">Client Id</label>
-          <input
-            type="password"
-            name="client_id"
-            id="client_id"
-            className="form-control"
-            onChange={this.handleChange}
-            value={this.state.client_id}
-            placeholder="Enter Zoho Client Id"
-          />
-          <small id="encrypted_block" className="form-text text-muted">
-            This field is encrypted.
-          </small>
-        </div>
-        <div className="form-group">
-          <label htmlFor="client_secret">Client Secret</label>
-          <input
-            type="password"
-            name="client_secret"
-            id="client_secret"
-            className="form-control"
-            onChange={this.handleChange}
-            value={this.state.client_secret}
-            placeholder="Enter Zoho Client Secret"
-          />
-          <small id="encrypted_block" className="form-text text-muted">
-            This field is encrypted.
-          </small>
-        </div>
-        <div className="form-group">
-          <label htmlFor="auth_token">Zoho Auth Token</label>
-          <input
-            type="password"
-            name="auth_token"
-            id="auth_token"
-            className="form-control"
-            onChange={this.handleChange}
-            value={this.state.auth_token}
-            placeholder="Enter Zoho Auth Token"
-          />
-          <small id="encrypted_block" className="form-text text-muted">
-            This field is encrypted.
-          </small>
-        </div>
-        <div className="form-group">
-          <label htmlFor="redirect_uri">Redirect URI</label>
-          <input
-            type="text"
-            name="redirect_uri"
-            id="redirect_uri"
-            className="form-control"
-            onChange={this.handleChange}
-            value={this.state.redirect_uri}
-            placeholder="Enter Zoho Redirect URI"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="external_organization_id">Organization Id</label>
-          <input
-            type="text"
-            name="external_organization_id"
-            id="external_organization_id"
-            className="form-control"
-            onChange={this.handleChange}
-            value={this.state.external_organization_id}
-            placeholder="Enter Zoho Organization Id"
-          />
-        </div>
-        <hr />
-        <input
-          type="submit"
-          className="btn btn-primary shadow"
-          value="Update"
+  return (
+    <Form
+      form={form}
+      name="zohoBooksForm"
+      onFinish={onFinish}
+      layout={"vertical"}>
+      <Form.Item name="clientId" label="Client Id">
+        <Input.Password id="client_id" placeholder="Enter Zoho Client Id" />
+        <small id="encrypted_block">This field is encrypted.</small>
+      </Form.Item>
+      <Form.Item name="clientSecret" label="Client Secret">
+        <Input.Password
+          id="client_secret"
+          placeholder="Enter Zoho Client Secret"
         />
-      </form>
-    );
-  }
-}
+        <small id="encrypted_block">This field is encrypted.</small>
+      </Form.Item>
+      <Form.Item name="authToken" label="Zoho Auth Token">
+        <Input.Password id="auth_token" placeholder="Enter Zoho Auth Token" />
+        <small id="encrypted_block">This field is encrypted.</small>
+      </Form.Item>
+      <Form.Item name="redirectUri" label="Redirect URI">
+        <Input id="redirect_uri" placeholder="Enter Zoho Redirect URI" />
+      </Form.Item>
+      <Form.Item name="externalOganizationId" label="Organization Id">
+        <Input
+          id="external_organization_id"
+          placeholder="Enter Zoho Organization Id"
+        />
+      </Form.Item>
+      <Divider />
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Update
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+};
+
+export default ZohoBooksForm;

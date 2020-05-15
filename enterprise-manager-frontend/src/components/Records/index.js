@@ -22,6 +22,7 @@ const Records = props => {
   return (
     <Col
       span={24}
+      order={24}
       style={{
         height: `${listHeight + optionsHeight + 50}px`,
       }}>

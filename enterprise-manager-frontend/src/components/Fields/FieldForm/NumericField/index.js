@@ -5,6 +5,7 @@ import FieldTypeWrapper from "../../FieldTypeWrapper";
 import NumericFieldOptions from "./NumericFieldOptions";
 import { useHandleChange } from "../../Hooks/useHandleChange";
 import { Radio, Col } from "antd";
+import RadioWrapper from "../RadioWrapper";
 
 const NumericField = ({ field, fieldType, onChange }) => {
   const { handleChange, handleNumericField } = useHandleChange({
@@ -13,22 +14,16 @@ const NumericField = ({ field, fieldType, onChange }) => {
   });
   return (
     <>
-      <Col span={"auto"} order={1}>
-        <Radio
-          id="numeric_field"
-          name={"fieldType"}
-          value={"numeric_field"}
-          onChange={handleChange}
-          checked={fieldType === "numeric_field" ? true : false}>
-          Numeric Field
-          <Icon
-            path={mdiNumeric}
-            title="Numeric Field"
-            size={1}
-            color="#07689F"
-          />
-        </Radio>
-      </Col>
+      <RadioWrapper
+        id="numeric_field"
+        name={"fieldType"}
+        value={"numeric_field"}
+        onChange={handleChange}
+        iconPath={mdiNumeric}
+        iconTitle={"Numeric Field"}
+        fieldType={fieldType}>
+        Numeric Field
+      </RadioWrapper>
       <NumericFieldOptions
         fieldType={fieldType}
         handleChange={handleNumericField}

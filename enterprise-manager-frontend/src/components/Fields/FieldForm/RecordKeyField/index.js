@@ -2,7 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import cuid from "cuid";
 import { useHandleChange } from "../../Hooks/useHandleChange";
-import { Col, Form, Input, Radio, Select, Divider } from "antd";
+import { Col, Form, Select, Divider } from "antd";
+import { mdiKey } from "@mdi/js";
+import RadioWrapper from "../RadioWrapper";
 
 const RecordKeyField = props => {
   const { field, fieldType, resourceId, onChange } = props;
@@ -10,7 +12,6 @@ const RecordKeyField = props => {
     field,
     onChange,
   });
-  const { recordKeyAttributes } = state;
 
   const fields = props.fields.filter(
     f => f.formId === resourceId && f.fieldType === "selectable"
@@ -18,49 +19,49 @@ const RecordKeyField = props => {
 
   return (
     <>
-      <Col span={"auto"} order={1}>
-        <Radio
-          name="fieldType"
-          value="key_field"
-          onChange={handleChange}
-          checked={fieldType === "key_field" ? true : false}>
-          Key Field
-        </Radio>
-      </Col>
+      <RadioWrapper
+        name="fieldType"
+        value="key_field"
+        onChange={handleChange}
+        iconPath={mdiKey}
+        iconTitle={"Key Field"}
+        fieldType={fieldType}>
+        Key Field
+      </RadioWrapper>
+
       {fieldType === "key_field" ? (
         <Col span={24} order={24}>
           <Divider />
           <Form.Item
-            name="resourceFieldId"
-            onChange={handleKeyFieldChange}
-            label="Grouped by">
+            label="Grouped by"
+            rules={[
+              {
+                required: true,
+                message: "Please select a valid field!",
+              },
+            ]}>
             <Select
-              value={
-                recordKeyAttributes ? recordKeyAttributes.resourceFieldId : ""
-              }
-              className="form-control">
-              <Select.Option value="">Select a field</Select.Option>
+              showSearch
+              placeholder="Select a field"
+              name="resourceFieldId"
+              onChange={handleKeyFieldChange}>
               {fields.map(field => (
                 <Select.Option key={cuid()} value={field.id}>
                   {field.name}
                 </Select.Option>
               ))}
             </Select>
+            <p style={{ lineHeight: "16px" }}>
+              The key field won't be visible in the form. It will be assigned
+              automatically whenever a new record is submitted.
+            </p>
           </Form.Item>
-          <p
-            className="small text-muted text-justify"
-            style={{ lineHeight: "16px" }}>
-            The key field won't be visible in the form. It will be assigned
-            automatically whenever a new record is submitted.
-          </p>
         </Col>
       ) : null}
     </>
   );
 };
 
-const mapStateToProps = ({ fields }) => {
-  return { fields };
-};
+const mapStateToProps = ({ fields }) => ({ fields });
 
 export default connect(mapStateToProps)(RecordKeyField);

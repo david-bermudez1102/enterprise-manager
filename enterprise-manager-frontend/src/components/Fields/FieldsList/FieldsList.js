@@ -110,6 +110,7 @@ const FieldsList = props => {
                       key={field.key}
                       field={field}
                       recordField={recordField}
+                      form={form}
                       fields={
                         field.fieldType === "key_field" ? fields : undefined
                       }

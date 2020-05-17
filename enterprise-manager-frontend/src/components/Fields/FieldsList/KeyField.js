@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "antd";
 import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const KeyField = props => {
   const { keyValues, recordKeyAttributes } = props.field;
-  const { editingMode, field, ...newProps } = props;
+  const { editingMode, field, form, ...newProps } = props;
   let keyValue = null;
 
   const generateKeyValue = () => {
@@ -30,13 +30,13 @@ const KeyField = props => {
         ) || generateKeyValue();
   }
 
+  useEffect(() => {
+    form.setFieldsValue({ [props.name]: keyValue.value });
+  }, [props.name, keyValue.value, form]);
+
   return (
     <FieldTypeWrapper name={props.name} field={props.field}>
-      <Input
-        {...newProps}
-        defaultValue={keyValue ? keyValue.value : ""}
-        readOnly
-      />
+      <Input {...newProps} readOnly />
     </FieldTypeWrapper>
   );
 };

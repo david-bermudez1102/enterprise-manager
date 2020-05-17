@@ -62,13 +62,22 @@ export const useChangePage = props => {
   ]);
 
   useEffect(() => {
+    if (parseInt(queryParams.get("page")) !== page)
+      history.replace(`${location.pathname}?page=${page}`);
+    // eslint-disable-next-line
+  }, [page]);
+
+  useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
     } else {
       setPage(
         parseInt(queryParams.get("page")) >
-          Math.ceil(resource.recordsCount / pagination.limit) ||
-          !queryParams.get("page")
+          Math.ceil(
+            filteredRecords
+              ? filteredRecords.length / pagination.limit
+              : resource.recordsCount / pagination.limit
+          ) || !queryParams.get("page")
           ? 1
           : parseInt(queryParams.get("page"))
       );

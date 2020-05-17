@@ -74,6 +74,7 @@ const Field = props => {
           {...inputAttributes}
           state={props.state}
           fields={props.fields}
+          form={props.form}
         />
       );
       break;

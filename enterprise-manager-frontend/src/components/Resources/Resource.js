@@ -33,7 +33,7 @@ const Resource = ({ isFieldsPath }) => {
         match={match}
         organizationId={resource.organizationId}
         resource={resource}
-        fields={fields.filter(f => f.formId === resource.id)}
+        fields={fields[resource.id] || []}
         location={location}
       />
       <RecordsContainer match={match} resource={resource} />

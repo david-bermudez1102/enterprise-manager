@@ -20,12 +20,8 @@ const CombineWith = ({
 
   const availableFields = useSelector(
     state =>
-      state.recordFields
-        .filter(
-          field =>
-            field.formId === resourceId &&
-            !items.some(item => item.id === field.id)
-        )
+      (state.recordFields[resourceId] || [])
+        .filter(field => !items.some(item => item.id === field.id))
         .map(field => ({ id: field.id, value: field.name })),
     shallowEqual
   );

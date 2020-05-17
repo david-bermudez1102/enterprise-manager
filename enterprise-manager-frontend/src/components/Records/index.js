@@ -16,11 +16,11 @@ const Records = props => {
         <RecordsOptions resource={resource} />
         {records.length > 0 ? (
           <RecordsList
-            recordFields={recordFields.filter(f => f.formId === resource.id)}
+            recordFields={recordFields[resource.id] || []}
             resource={resource}
             records={records}
-            sortedRecords={sortedRecords.filter(f => f.formId === resource.id)}
-            values={values.filter(f => f.formId === resource.id)}
+            sortedRecords={sortedRecords[resource.id] || []}
+            values={values[resource.id] || []}
             loading={loading}
           />
         ) : (

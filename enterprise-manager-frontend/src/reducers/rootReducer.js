@@ -8,7 +8,7 @@ import {
   recordsSortedBy,
   sortedRecords,
 } from "./recordsReducer";
-import { valuesReducer } from "./valuesReducer";
+import { valuesReducer, archivedValues } from "./valuesReducer";
 import { sessionReducer } from "./sessionReducer";
 import { recordFieldsReducer } from "./recordFieldsReducer";
 import { accountsReducer } from "./accountsReducer";
@@ -18,6 +18,7 @@ import { token } from "./tokenReducer";
 import { pagination } from "./paginationReducer";
 import { routes } from "./routesReducer";
 import { sidebar } from "./sidebarReducer";
+import { archivedRecords } from "./archivedRecordsReducer";
 
 const requesting = (state = false, action) => {
   switch (action.type) {
@@ -49,4 +50,6 @@ export const rootReducer = combineReducers({
   pagination,
   routes,
   sidebar,
+  archivedRecords,
+  archivedValues,
 });

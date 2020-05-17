@@ -102,9 +102,9 @@ const FieldsList = props => {
               {fields
                 .filter(f => f)
                 .map(field => {
-                  const recordField = recordFields
-                    .filter(recordField => recordField.formId === resource.id)
-                    .find(f => f.fieldId === field.id);
+                  const recordField = (recordFields[resource.id] || []).find(
+                    f => f.fieldId === field.id
+                  );
                   return recordField ? (
                     <Field
                       key={field.key}

@@ -13,8 +13,8 @@ const RecordKeyField = props => {
     onChange,
   });
 
-  const fields = props.fields.filter(
-    f => f.formId === resourceId && f.fieldType === "selectable"
+  const fields = (props.fields[resourceId] || []).filter(
+    f => f.fieldType === "selectable"
   );
 
   return (

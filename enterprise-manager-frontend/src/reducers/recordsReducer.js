@@ -1,29 +1,36 @@
-export const recordsReducer = (state = [], action) => {
+export const recordsReducer = (state = {}, action) => {
   switch (action.type) {
     case "ADD_RECORD":
-      return [
+      return {
         ...state,
-        {
-          ...action.record,
-          listingId: state.filter(r => r.formId === action.formId).length + 1,
-        },
-      ];
+        [action.formId]: [
+          ...(state[action.formId] || []),
+          {
+            ...action.record,
+            listingId: (state[action.formId] || []).length + 1,
+          },
+        ],
+      };
     case "FETCH_RECORDS":
       return action.records;
     case "UPDATE_RECORD":
-      return [
-        ...state.map(rec =>
+      return {
+        ...state,
+        [action.record.formId]: (state[action.record.formId] || []).map(rec =>
           rec.id === action.id ? { ...rec, ...action.record } : rec
         ),
-      ];
+      };
     case "REMOVE_RECORDS":
-      return [
-        ...state.filter(
-          record => record.resourceId !== parseInt(action.resourceId)
-        ),
-      ];
+      const newRecords = { ...state };
+      delete newRecords[action.resourceId];
+      return newRecords;
     case "REMOVE_RECORD":
-      return [...state.filter(record => record.id !== parseInt(action.id))];
+      return {
+        ...state,
+        [action.formId]: (state[action.formId] || []).filter(
+          record => record.id !== parseInt(action.id)
+        ),
+      };
     case "CLEAR_RECORDS":
       return [];
     default:
@@ -43,33 +50,49 @@ export const recordsSortedBy = (state = [], action) => {
   }
 };
 
-export const sortedRecords = (state = [], action) => {
+export const sortedRecords = (state = {}, action) => {
   switch (action.type) {
     case "SET_SORTED_RECORDS":
-      return [
-        ...state.filter(record => record.formId !== action.formId),
-        ...action.records,
-      ];
+      return { ...state, [action.formId]: action.records };
+    case "ADD_VALUES":
+      return {
+        ...state,
+        [action.formId]: [
+          ...(state[action.formId] || []),
+          { ...action.values },
+        ],
+      };
     case "ADD_VALUE":
-      return [...state].map(value =>
-        parseInt(value.id) === parseInt(action.value.recordId)
-          ? {
-              ...value,
-              [action.value.recordFieldId]: action.value.content,
-            }
-          : value
-      );
+      return {
+        ...state,
+        [action.value.formId]: (state[action.value.formId] || []).map(value =>
+          parseInt(value.id) === parseInt(action.value.recordId)
+            ? {
+                ...value,
+                [action.value.recordFieldId]: action.value.content,
+              }
+            : value
+        ),
+      };
     case "UPDATE_VALUE":
-      return [...state].map(value =>
-        parseInt(value.id) === parseInt(action.value.recordId)
-          ? {
-              ...value,
-              [action.value.recordFieldId]: action.value.content,
-            }
-          : value
-      );
+      return {
+        ...state,
+        [action.value.formId]: (state[action.value.formId] || []).map(value =>
+          parseInt(value.id) === parseInt(action.value.recordId)
+            ? {
+                ...value,
+                [action.value.recordFieldId]: action.value.content,
+              }
+            : value
+        ),
+      };
     case "REMOVE_RECORD":
-      return [...state.filter(record => record.id !== parseInt(action.id))];
+      return {
+        ...state,
+        [action.formId]: (state[action.formId] || []).filter(
+          record => record.id !== parseInt(action.id)
+        ),
+      };
     default:
       return state;
   }

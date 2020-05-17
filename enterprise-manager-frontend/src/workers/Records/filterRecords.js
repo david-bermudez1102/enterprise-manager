@@ -6,6 +6,3 @@ export const filters = (values, dataIndex) => {
       value: value,
     }));
 };
-
-export const filterRecords = (value, record, dataIndex) =>
-  record[dataIndex].indexOf(value) === 0;

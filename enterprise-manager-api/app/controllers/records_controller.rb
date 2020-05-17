@@ -50,7 +50,10 @@ class RecordsController < ApplicationController
     if record.is_deleted && record.destroy
       render json: { id: params[:id], messages: ['Record was removed from'], destroyed: true, records_count:record.form.records_count }
     elsif record.update(is_deleted: true)
-      render json: { id: params[:id], messages: ['Success'], archived: true, records_count:record.form.records_count }
+      serialized_data = RecordSerializer.new(record).serializable_hash[:data]
+      serialized_data[:message] = "Record was moved to the Deleted Records folder."
+      serialized_data[:archived] = true
+      render json: serialized_data
     else
       render json: { errors: record.errors.full_messages }
     end

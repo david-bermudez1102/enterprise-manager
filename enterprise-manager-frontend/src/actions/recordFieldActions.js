@@ -8,9 +8,9 @@ export const addRecordField = (recordField, organizationId) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(snakecaseKeys({ recordField }))
+        body: JSON.stringify(snakecaseKeys({ recordField })),
       }
     )
       .then(handleErrors)
@@ -19,7 +19,7 @@ export const addRecordField = (recordField, organizationId) => {
         dispatch({ type: "ADD_RECORD_FIELD", recordField });
         dispatch({
           type: "ADD_MESSAGES",
-          messages: recordField.messages || ["Field Added successfully."]
+          messages: recordField.messages || ["Field Added successfully."],
         });
       })
       .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }));
@@ -38,9 +38,9 @@ export const updateRecordField = (
       {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(snakecaseKeys({ recordField }))
+        body: JSON.stringify(snakecaseKeys({ recordField })),
       }
     )
       .then(handleErrors)
@@ -50,11 +50,11 @@ export const updateRecordField = (
           dispatch({
             type: "UPDATE_RECORD_FIELD",
             recordFieldId,
-            recordField
+            recordField,
           });
           dispatch({
             type: "ADD_MESSAGES",
-            messages: recordField.messages || ["Field updated successfully."]
+            messages: recordField.messages || ["Field updated successfully."],
           });
         } else {
           dispatch({ type: "ADD_ERRORS", errors: recordField.errors });
@@ -72,7 +72,7 @@ export const fetchRecordFields = (organizationId, formId) => {
     )
       .then(response => response.json())
       .then(recordFields =>
-        dispatch({ type: "FETCH_RECORD_FIELDS", recordFields })
+        dispatch({ type: "FETCH_RECORD_FIELDS", recordFields, formId })
       );
   };
 };
@@ -82,7 +82,7 @@ export const removeRecordField = (organizationId, formId, recordFieldId) => {
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${formId}/record_fields/${recordFieldId}`,
       {
-        method: "DELETE"
+        method: "DELETE",
       }
     )
       .then(response => response.json())
@@ -91,7 +91,7 @@ export const removeRecordField = (organizationId, formId, recordFieldId) => {
           ? dispatch({
               type: "REMOVE_RECORD_FIELD",
               recordFieldId,
-              status: "deleted"
+              status: "deleted",
             })
           : null
       );

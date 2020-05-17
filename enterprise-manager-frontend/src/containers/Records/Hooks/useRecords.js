@@ -31,7 +31,7 @@ const useRecords = props => {
     resource,
     match,
     recordFields,
-    records: records.filter(f => f.formId === resource.id),
+    records: records[resource.id] || [],
     sortedRecords,
     values,
     dispatch,

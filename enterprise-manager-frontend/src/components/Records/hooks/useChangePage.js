@@ -60,13 +60,6 @@ export const useChangePage = props => {
     history,
     location.pathname,
   ]);
-
-  useEffect(() => {
-    if (parseInt(queryParams.get("page")) !== page)
-      history.replace(`${location.pathname}?page=${page}`);
-    // eslint-disable-next-line
-  }, [page]);
-
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
@@ -92,6 +85,14 @@ export const useChangePage = props => {
       if (pagination.limit !== paginationLimit) changePage();
     }
   }, [pagination.limit, paginationLimit, changePage]);
+
+  useEffect(() => {
+    if (parseInt(queryParams.get("page")) !== page) {
+      history.replace(`${location.pathname}?page=${page}`);
+      console.log("done");
+    }
+    // eslint-disable-next-line
+  }, [page]);
 
   useEffect(() => {
     if (!mounted.current) {

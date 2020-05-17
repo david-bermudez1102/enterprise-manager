@@ -12,7 +12,9 @@ export const CellForm = props => {
     ({ fields, recordFields }) => ({ fields, recordFields }),
     shallowEqual
   );
-  const field = fields.find(f => f.recordFieldId === recordFieldId);
+  const field = (fields[formId] || []).find(
+    f => f.recordFieldId === recordFieldId
+  );
   const [state, setState] = useState({
     content: content ? content : "",
     formId,
@@ -60,7 +62,9 @@ export const CellForm = props => {
       <Field
         key={field.key}
         field={field}
-        recordField={recordFields.find(f => f.id === recordFieldId)}
+        recordField={(recordFields[formId] || []).find(
+          f => f.id === recordFieldId
+        )}
         fields={field.fieldType === "key_field" ? fields : undefined}
         state={
           field.fieldType === "combined_field" ||

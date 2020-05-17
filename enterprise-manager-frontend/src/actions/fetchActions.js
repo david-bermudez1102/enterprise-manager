@@ -53,8 +53,6 @@ export const update = (dispatch, url, payload, ...actions) => {
 };
 
 export const remove = (dispatch, url, id, type, ...actions) => {
-  dispatch({ type: "CLEAR_ALERTS" });
-  dispatch({ type: "REQUESTING_DATA" });
   return fetch(url, {
     method: "DELETE",
   })
@@ -62,24 +60,16 @@ export const remove = (dispatch, url, id, type, ...actions) => {
     .then(response => response.json())
     .then(response => {
       if (response.destroyed) {
+        actions.forEach(act => dispatch(act));
         message.success(response.message || DESTROYED_MESSAGE_DEFAULT);
-        return dispatch({
-          type,
-          id,
-          status: "destroyed",
-        });
+        return response;
       } else if (response.archived) {
+        actions.forEach(act => dispatch(act));
         message.success(response.message || SOFT_DELETED_MESSAGE_DEFAULT);
-        return dispatch({
-          type,
-          id,
-          status: "deleted",
-        });
+        return response;
       } else {
         throw new Error(response.errors.join(", "));
       }
     })
-    .then(() => actions.forEach(act => dispatch(act)))
-    .then(() => dispatch({ type: "FINISHED_REQUESTING" }))
     .catch(resp => message.error(resp.toString()));
 };

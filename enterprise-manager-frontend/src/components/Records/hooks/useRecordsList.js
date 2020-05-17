@@ -42,7 +42,7 @@ export const useRecordsList = ({ recordFields, values, resource }) => {
       )
     ).then(cols => setState({ columns: cols }));
     // eslint-disable-next-line
-  }, [values]);
+  }, [recordFields, values]);
 
   const handleResize = index => (e, { size }) => {
     const nextColumns = [...state.columns];

@@ -16,13 +16,19 @@ const FieldFormLayout = ({ organizationId, resource }) => {
   const match = useRouteMatch();
   const { fields } = useSelector(({ fields }) => ({ fields }), shallowEqual);
   const [field, setField] = useState(
-    fields.find(field => field.id === parseInt(match.params.fieldId))
+    (fields[resource.id] || []).find(
+      field => field.id === parseInt(match.params.fieldId)
+    )
   );
   useEffect(() => {
-    setField(fields.find(field => field.id === parseInt(match.params.fieldId)));
+    setField(
+      (fields[resource.id] || []).find(
+        field => field.id === parseInt(match.params.fieldId)
+      )
+    );
     // eslint-disable-next-line
   }, [location]);
-  console.log(field);
+
   return (
     <Col span={24}>
       <Row justify={"center"} align={"middle"} style={{ background: "#fff" }}>

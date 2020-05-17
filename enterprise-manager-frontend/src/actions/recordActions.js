@@ -6,21 +6,19 @@ export const addRecord = (record, organizationId, formId) => dispatch =>
     dispatch,
     `/api/v1/organizations/${organizationId}/forms/${formId}/records`,
     { record }
-  )
-    .then(resp => {
-      dispatch({
-        type: "ADD_RECORD",
-        record: resp.attributes,
-        formId,
-      });
-      dispatch({
-        type: "UPDATE_RECORDS_COUNT",
-        formId,
-        recordsCount: resp.attributes.recordsCount,
-      });
-      return resp.links.values;
-    })
-    .then(value => dispatch({ type: "ADD_VALUE", value }));
+  ).then(resp => {
+    dispatch({
+      type: "ADD_RECORD",
+      record: resp.attributes,
+      formId,
+    });
+    dispatch({ type: "ADD_VALUES", values: resp.links.values });
+    dispatch({
+      type: "UPDATE_RECORDS_COUNT",
+      formId,
+      recordsCount: resp.attributes.recordsCount,
+    });
+  });
 
 export const fetchRecords = (organizationId, formId, offset) => {
   //const query = offset ? `?offset=${offset}` : "";
@@ -49,15 +47,31 @@ export const removeRecord = (organizationId, formId, id) => {
       dispatch,
       `/api/v1/organizations/${organizationId}/forms/${formId}/records/${id}`,
       id,
-      "REMOVE_RECORD",
-      { type: "REMOVE_VALUES", recordId: id }
-    ).then(resp =>
+      { type: "REMOVE_VALUES", recordId: id, formId }
+    ).then(resp => {
       dispatch({
+        type: "REMOVE_RECORD",
+        id,
+        formId,
+      });
+      if (resp.archived) {
+        dispatch({
+          type: "ADD_ARCHIVED_RECORD",
+          record: resp.attributes,
+          formId,
+        });
+        dispatch({
+          type: "ADD_ARCHIVED_VALUES",
+          values: resp.links.values,
+          formId,
+        });
+      }
+      return dispatch({
         type: "UPDATE_RECORDS_COUNT",
         formId,
         recordsCount: resp.records_count,
-      })
-    );
+      });
+    });
 };
 
 export const updateRecord = value => {

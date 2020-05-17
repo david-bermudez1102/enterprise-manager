@@ -3,7 +3,7 @@ import { Input } from "antd";
 import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const TextField = props => {
-  const { field, name, onChange, ...newProps } = props;
+  const { field, name, editingMode, onChange, ...newProps } = props;
   const handleChange = e => {
     onChange({
       recordFieldId: props.name,
@@ -12,7 +12,7 @@ const TextField = props => {
   };
 
   return (
-    <FieldTypeWrapper name={name} field={field}>
+    <FieldTypeWrapper editingMode={editingMode} name={name} field={field}>
       <Input {...newProps} onChange={handleChange} allowClear />
     </FieldTypeWrapper>
   );

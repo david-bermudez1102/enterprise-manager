@@ -9,9 +9,15 @@ export const addField = (field, organizationId) => {
       dispatch,
       `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields`,
       { field }
-    ).then(f => {
-      dispatch({ type: "ADD_FIELD", field: { key: cuid(), ...f } });
-      return { ...field, fieldId: f.id };
+    ).then(resp => {
+      dispatch({
+        type: "ADD_FIELD",
+        field: { key: `resource_field_${resp.field.id}`, ...resp.field },
+      });
+      return dispatch({
+        type: "ADD_RECORD_FIELD",
+        recordField: resp.recordField,
+      });
     });
   };
 };
@@ -26,7 +32,10 @@ export const fetchFields = (organizationId, formId) => {
       .then(fields =>
         dispatch({
           type: "FETCH_FIELDS",
-          fields: fields.map(field => ({ key: cuid(), ...field })),
+          fields: fields.map(field => ({
+            key: `resource_field_${field.id}`,
+            ...field,
+          })),
           formId,
         })
       );

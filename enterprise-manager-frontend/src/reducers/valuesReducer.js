@@ -10,7 +10,7 @@ export const valuesReducer = (state = [], action) => {
 
     case "ADD_VALUE":
       return [...state].map(value =>
-        value.id === parseInt(action.value.recordId)
+        parseInt(value.id) === parseInt(action.value.id)
           ? {
               ...value,
               [action.value.recordFieldId]: action.value.content,
@@ -20,7 +20,7 @@ export const valuesReducer = (state = [], action) => {
 
     case "UPDATE_VALUE":
       return [...state].map(value =>
-        value.id === parseInt(action.value.recordId)
+        parseInt(value.id) === parseInt(action.value.recordId)
           ? {
               ...value,
               [action.value.recordFieldId]: action.value.content,

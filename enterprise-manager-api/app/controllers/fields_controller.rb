@@ -5,10 +5,11 @@ class FieldsController < ApplicationController
   def create
     field = @form.fields.build(field_params)
     if field.save
-      serialized_data = FieldSerializer.new(field).serializable_hash[:data][:attributes]
-      serialized_data[:messages] = ["Field added with success."]
-      render json: serialized_data
+      serialized_field = FieldSerializer.new(field).serializable_hash[:data][:attributes]
+      serialized_record_field = RecordFieldSerializer.new(field.record_field).serializable_hash[:data][:attributes]
+      render json: {field:serialized_field, recordField:serialized_record_field, message: "Field was added successfully."}
     else
+      field.destroy
       render json: { errors: field.errors.full_messages }
     end
   end

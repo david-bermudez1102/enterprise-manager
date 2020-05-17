@@ -3,21 +3,24 @@ import { Switch, Link } from "react-router-dom";
 import ZohoBooksForm from "../Integrations/ZohoBooksForm";
 import { connect } from "react-redux";
 import { updateOrganization } from "../../actions/organizationAction";
-import { FormCard } from "../Cards/Cards";
 import zohoBooksIcon from "../../containers/ZohoBooks/favicon.ico";
 import Route from "../../Router/Route";
 import { Empty, Button, Card } from "antd";
 import Title from "antd/lib/typography/Title";
+import Text from "antd/lib/typography/Text";
 
 const Integrations = props => {
   const { match, organization, session, updateOrganization } = props;
-  const { zohoIntegration, quickbooksIntegration } = organization;
+  const {
+    zohoIntegrationAttributes,
+    quickbooksIntegrationAttributes,
+  } = organization;
   const currentlyConnectedTo = [];
-  if (zohoIntegration) currentlyConnectedTo.push("Zoho Books");
-  if (quickbooksIntegration) currentlyConnectedTo.push("QuickBooks");
+  if (zohoIntegrationAttributes) currentlyConnectedTo.push("Zoho Books");
+  if (quickbooksIntegrationAttributes) currentlyConnectedTo.push("QuickBooks");
   return (
     <div>
-      {!zohoIntegration && !quickbooksIntegration ? (
+      {!zohoIntegrationAttributes && !quickbooksIntegrationAttributes ? (
         <Empty
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={
@@ -25,13 +28,13 @@ const Integrations = props => {
           }
         />
       ) : (
-        <div className="alert alert-primary shadow-sm">
+        <Text>
           <i className="fas fa-info-circle mr-2"></i>
           This organization is currently connected to{" "}
           {currentlyConnectedTo.join(" and ")}.
-        </div>
+        </Text>
       )}
-      <div className="alert alert-light d-flex justify-content-around shadow-sm rounded">
+      <div>
         <Link to={`${match.url}/zoho_books/edit`}>
           <Button
             icon={
@@ -70,7 +73,7 @@ const Integrations = props => {
           <Route
             path={`${match.url}/zoho_books/connect`}
             component={() => {
-              window.location.href = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=${zohoIntegration.client_id}&response_type=code&redirect_uri=${zohoIntegration.redirect_uri}&access_type=offline&prompt=consent`;
+              window.location.href = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoBooks.fullaccess.all&client_id=${zohoIntegrationAttributes.clientId}&response_type=code&redirect_uri=${zohoIntegrationAttributes.redirectUri}&access_type=offline&prompt=consent`;
               return null;
             }}
           />

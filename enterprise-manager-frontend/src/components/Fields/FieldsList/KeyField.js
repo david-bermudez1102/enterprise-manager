@@ -4,6 +4,7 @@ import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const KeyField = props => {
   const { keyValues, recordKeyAttributes } = props.field;
+  const { editingMode, field, ...newProps } = props;
   let keyValue = null;
 
   const generateKeyValue = () => {
@@ -31,7 +32,11 @@ const KeyField = props => {
 
   return (
     <FieldTypeWrapper name={props.name} field={props.field}>
-      <Input {...props} value={keyValue ? keyValue.value : ""} />
+      <Input
+        {...newProps}
+        defaultValue={keyValue ? keyValue.value : ""}
+        readOnly
+      />
     </FieldTypeWrapper>
   );
 };

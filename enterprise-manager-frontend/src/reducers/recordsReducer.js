@@ -52,7 +52,7 @@ export const sortedRecords = (state = [], action) => {
       ];
     case "ADD_VALUE":
       return [...state].map(value =>
-        value.id === parseInt(action.value.recordId)
+        parseInt(value.id) === parseInt(action.value.recordId)
           ? {
               ...value,
               [action.value.recordFieldId]: action.value.content,
@@ -61,7 +61,7 @@ export const sortedRecords = (state = [], action) => {
       );
     case "UPDATE_VALUE":
       return [...state].map(value =>
-        value.id === parseInt(action.value.recordId)
+        parseInt(value.id) === parseInt(action.value.recordId)
           ? {
               ...value,
               [action.value.recordFieldId]: action.value.content,

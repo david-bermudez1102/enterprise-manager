@@ -1,11 +1,14 @@
-export const sortBy = (values, dataIndex, order, resource) => {
-  console.log(order);
+export const sortBy = (values, dataIndex, order) => {
   return !dataIndex
     ? order
       ? order === "ascend"
         ? [...values]
         : [...values].reverse()
       : [...values].reverse()
+    : dataIndex === "listingId"
+    ? order === "ascend"
+      ? [...values].sort((a, b) => a.listingId - b.listingId)
+      : [...values].sort((a, b) => b.listingId - a.listingId)
     : order === "ascend"
     ? [...values].sort((a, b) =>
         (a[dataIndex] || "").localeCompare(b[dataIndex] || "")

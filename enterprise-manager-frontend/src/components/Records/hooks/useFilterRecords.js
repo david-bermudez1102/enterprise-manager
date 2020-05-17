@@ -1,22 +1,23 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
-export const useFilterRecords = ({ sortedRecords, values }) => {
+export const useFilterRecords = ({ sortedRecords }) => {
   const [filteredRecords, setFilteredRecords] = useState(null);
 
-  const filterRecords = (value, recordFieldId) => {
-    if (value !== "")
-      setFilteredRecords(
-        sortedRecords.filter(r =>
-          values
-            .filter(
-              v =>
-                v.content.includes(value) && v.recordFieldId === recordFieldId
+  const filterRecords = useCallback(
+    filters => {
+      const filtersKeys = Object.keys(filters).filter(f => filters[f]); //Remove any null keys
+      if (filtersKeys.length > 0)
+        setFilteredRecords(
+          sortedRecords.filter(record =>
+            filtersKeys.every(f =>
+              filters[f].some(value => record[f] === value)
             )
-            .some(v => v.recordId === r.id)
-        )
-      );
-    else setFilteredRecords(null);
-  };
+          )
+        );
+      else setFilteredRecords(null);
+    },
+    [sortedRecords]
+  );
 
   return { filteredRecords, filterRecords };
 };

@@ -30,8 +30,6 @@ const CombineWith = ({
     shallowEqual
   );
 
-  console.log(availableFields);
-
   const handleFieldChange = (value, item) => {
     if (!items.some(i => i.id === item.id) && item !== "")
       setItems([...items, item]);

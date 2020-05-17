@@ -12,6 +12,7 @@ class Field < ApplicationRecord
   serialize :combined_fields, Array
   
   before_create :generate_field_alias
+  before_save :generate_record_field
   after_save :nullify_form_alias, if: :saved_change_to_name?
   
   validates :name, presence: true
@@ -59,6 +60,28 @@ class Field < ApplicationRecord
   def cache_key
     "/fields/#{id}-#{updated_at}"
   end
+
+  private
+  def generate_record_field
+    begin
+      RecordField.find_or_create_by(field_id:id, :name => name,
+      :field_type => field_type,
+      :form_id => form_id,
+      :is_required => is_required,
+      :default_value => default_value,
+      :accepts_decimals => accepts_decimals,
+      :field_format => field_format,
+      :combined_fields => combined_fields,
+      :selectable_resource => selectable_resource,
+      :options => options
+      )
+    rescue => exception
+      errors.add(:record_field, "Couldn't be saved")
+      
+    end
+    
+  end
+
 
   
 end

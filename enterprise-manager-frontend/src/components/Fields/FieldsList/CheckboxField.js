@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import cuid from "cuid";
 
 const CheckboxField = props => {
-  const { field, onChange, ...newProps } = props;
+  const { field, editingMode, onChange, ...newProps } = props;
   const [state, setState] = useState({
     recordFieldId: props.name,
     content: "",
-    checkboxOptionsAttributes: []
+    checkboxOptionsAttributes: [],
   });
   const [values, setValues] = useState([]);
   const [checked, setChecked] = useState({});
@@ -15,7 +15,7 @@ const CheckboxField = props => {
     const newValues = e.target.checked
       ? [
           ...values.filter(v => v.id !== e.target.id),
-          { id: e.target.id, value: e.target.value }
+          { id: e.target.id, value: e.target.value },
         ]
       : values.filter(v => v.id !== e.target.id);
     const newState = {
@@ -26,11 +26,11 @@ const CheckboxField = props => {
             ...state.checkboxOptionsAttributes.filter(
               o => o.option_id !== e.target.dataset.optionValueId
             ),
-            { option_id: e.target.dataset.optionValueId }
+            { option_id: e.target.dataset.optionValueId },
           ]
         : state.checkboxOptionsAttributes.filter(
             o => o.option_id !== e.target.dataset.optionValueId
-          )
+          ),
     };
     setChecked({ [e.target.id]: e.target.checked });
     setValues(newValues);

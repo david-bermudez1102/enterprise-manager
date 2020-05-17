@@ -1,19 +1,20 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { Form, Input, Button } from "antd";
 
-const ResourceForm = ({
-  addResource,
-  updateResource,
-  url,
-  resource,
-  initialValues,
-}) => {
+const ResourceForm = ({ addResource, updateResource, url, resource }) => {
+  const location = useLocation();
   const history = useHistory();
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
   const dispatch = useDispatch();
   const { organizationId } = session.currentUser;
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    form.setFieldsValue({ name: resource ? resource.name : "" });
+    // eslint-disable-next-line
+  }, [location]);
 
   const onFinish = data => {
     if (addResource)
@@ -30,9 +31,9 @@ const ResourceForm = ({
 
   return (
     <Form
-      name={resource ? "update_resource" :"new_resource"}
+      form={form}
+      name={"resource_form"}
       onFinish={onFinish}
-      initialValues={initialValues}
       layout={"horizontal"}>
       <Form.Item
         name="name"

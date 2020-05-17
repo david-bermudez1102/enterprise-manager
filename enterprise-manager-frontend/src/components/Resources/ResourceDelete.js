@@ -15,6 +15,7 @@ const ResourceDelete = ({ redirectTo, organizationId }) => {
 
   useEffect(() => {
     dispatch(removeResource(organizationId, resourceId));
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -23,6 +24,7 @@ const ResourceDelete = ({ redirectTo, organizationId }) => {
     } else {
       if (!requesting) setTimeout(() => history.replace(redirectTo), 3000);
     }
+    // eslint-disable-next-line
   }, [resources]);
 
   return null;

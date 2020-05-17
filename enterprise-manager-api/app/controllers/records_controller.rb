@@ -32,7 +32,7 @@ class RecordsController < ApplicationController
     if stale?(records, public:true)
       serialized_data = RecordSerializer.new(records).serializable_hash[:data]
       serialized_data.each.with_index(1) do |data, i| 
-        data[:attributes]["listingId"] = i
+        data[:links][:values]["listingId"] = i
       end
       render json: serialized_data
     end

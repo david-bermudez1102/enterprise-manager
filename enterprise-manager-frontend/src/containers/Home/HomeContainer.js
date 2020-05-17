@@ -15,7 +15,7 @@ import { useSelector, shallowEqual } from "react-redux";
 import Route from "../../Router/Route";
 import NoMatch from "../../components/NoMatch";
 import useMatchedRoute from "../../components/NoMatch/useMatchedRoute";
-import { Layout } from "antd";
+import { Layout, BackTop } from "antd";
 
 const { Content, Footer } = Layout;
 
@@ -76,6 +76,7 @@ const HomeContainer = () => {
             </Switch>
           )}
         </Content>
+        <BackTop visibilityHeight={100} />
         <Footer
           style={{
             borderTop: "1px solid #dee2e6",

@@ -1,10 +1,7 @@
 import React from "react";
-import Icon from "@mdi/react";
 import { mdiNumeric } from "@mdi/js";
-import FieldTypeWrapper from "../../FieldTypeWrapper";
 import NumericFieldOptions from "./NumericFieldOptions";
 import { useHandleChange } from "../../Hooks/useHandleChange";
-import { Radio, Col } from "antd";
 import RadioWrapper from "../RadioWrapper";
 
 const NumericField = ({ field, fieldType, onChange }) => {

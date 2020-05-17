@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import {
   NavLink,
-  matchPath,
   useRouteMatch,
   useLocation,
   useHistory,
@@ -65,10 +64,6 @@ const ResourcesList = ({ loaded, loading }) => {
   return (
     <Row gutter={[16, 16]}>
       {resources.map(resource => {
-        const isActive = !!matchPath(
-          location.pathname,
-          `/organizations/:organizationId/resources/${resource.formAlias}`
-        );
         return (
           <Col
             xl={8}

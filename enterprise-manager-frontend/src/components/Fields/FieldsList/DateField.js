@@ -6,7 +6,7 @@ import moment from "moment";
 const dateFormat = "YYYY/MM/DD";
 
 const DateField = props => {
-  const { field, name, onChange, suffix, ...newProps } = props;
+  const { field, name, editingMode, onChange, suffix, ...newProps } = props;
 
   const handleChange = (date, dateString) => {
     onChange({
@@ -16,7 +16,7 @@ const DateField = props => {
   };
 
   return (
-    <FieldTypeWrapper name={name} field={field}>
+    <FieldTypeWrapper editingMode={editingMode} name={name} field={field}>
       <DatePicker
         {...newProps}
         dropdownAlign={"left"}

@@ -15,6 +15,11 @@ class Value < ApplicationRecord
 
   scope :this_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
 
+  validates :content, numericality: true, if: -> {record_field.field.field_type == "numeric_field"}
+  validates :content, numericality: {only_integer: true}, if: -> {record_field.field.field_type == "numeric_field" && !record_field.field.accepts_decimals}
+
+  validates :record_value, presence:true, if: -> {record_field.field.field_type == "selectable"}
+
   def cache_key
     "/values/#{id}-#{updated_at}"
   end

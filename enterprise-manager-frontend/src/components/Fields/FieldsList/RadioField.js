@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import cuid from "cuid";
 
 const RadioField = props => {
-  const { field, onChange, ...newProps } = props;
+  const { field, onChange, editingMode, ...newProps } = props;
   const [state, setState] = useState({
     recordFieldId: props.name,
-    content: ""
+    content: "",
   });
   const handleChange = e => {
     const newState = {
       ...state,
       content: e.target.value,
-      optionValueId: e.target.dataset.optionValueId
+      optionValueId: e.target.dataset.optionValueId,
     };
     setState(newState);
     onChange(newState);

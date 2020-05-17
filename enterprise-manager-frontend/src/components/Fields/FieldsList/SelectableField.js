@@ -3,9 +3,17 @@ import { Select } from "antd";
 import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const SelectableField = props => {
-  const { field, fieldName, suffix, name, onChange, ...newProps } = props;
-  const [state, setState] = useState(null);
+  const {
+    field,
+    fieldName,
+    suffix,
+    editingMode,
+    name,
+    onChange,
+    ...newProps
+  } = props;
 
+  const [state, setState] = useState(null);
   const handleChange = useCallback((value, option) => {
     if (field.selectableResourceAttributes)
       setState({
@@ -28,41 +36,39 @@ const SelectableField = props => {
   }, [state]);
 
   return (
-    <FieldTypeWrapper name={name} field={field}>
-      {React.cloneElement(suffix, {
-        placement: "rightTop",
-        children: (
-          <Select
-            showSearch
-            placeholder={`Select a ${field.name.toLowerCase()}`}
-            allowClear
-            optionFilterProp="children"
-            onChange={handleChange}
-            filterOption={(input, option) =>
-              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }>
-            {field.selectableResourceAttributes
-              ? field.selectableResourceAttributes.optionsAttributes.map(
-                  option => (
-                    <Select.Option
-                      key={`selectable_option_${field.id}_${option.id}`}
-                      id={option.id}
-                      value={option.value}>
-                      {option.value}
-                    </Select.Option>
-                  )
-                )
-              : field.optionsAttributes.map(option => (
-                  <Select.Option
-                    key={`selectable_option_${field.id}_${option.id}`}
-                    id={option.id}
-                    value={option.value}>
-                    {option.value}
-                  </Select.Option>
-                ))}
-          </Select>
-        ),
+    <FieldTypeWrapper
+      editingMode={editingMode}
+      name={name}
+      label={React.cloneElement(suffix, {
+        placement: "left",
+        children: field.name,
       })}
+      field={field}>
+      <Select
+        name={name}
+        showSearch
+        placeholder={`Select a ${field.name.toLowerCase()}`}
+        allowClear
+        onChange={handleChange}
+        {...newProps}>
+        {field.selectableResourceAttributes
+          ? field.selectableResourceAttributes.optionsAttributes.map(option => (
+              <Select.Option
+                key={`selectable_option_${field.id}_${option.id}`}
+                id={option.id}
+                value={option.value}>
+                {option.value}
+              </Select.Option>
+            ))
+          : field.optionsAttributes.map(option => (
+              <Select.Option
+                key={`selectable_option_${field.id}_${option.id}`}
+                id={option.id}
+                value={option.value}>
+                {option.value}
+              </Select.Option>
+            ))}
+      </Select>
     </FieldTypeWrapper>
   );
 };

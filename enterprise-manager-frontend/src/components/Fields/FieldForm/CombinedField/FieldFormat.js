@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import cuid from "cuid";
+import React from "react";
 import { Divider, Select, Tooltip, Button, Form } from "antd";
-import Text from "antd/lib/typography/Text";
 
 const FieldFormat = ({ items, handleChange, fieldFormat }) => {
   const itemsValues = items.map(item => item.value);
@@ -56,12 +54,8 @@ const FieldFormat = ({ items, handleChange, fieldFormat }) => {
       title: "No formatting. All values are saved separated by space only",
     },
   ];
-  const [formatSelected, setFormatSelected] = useState(
-    fieldFormat || "no_format"
-  );
 
   const onChange = (value, option) => {
-    setFormatSelected(value);
     handleChange({ fieldFormat: value });
   };
 

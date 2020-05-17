@@ -1,7 +1,6 @@
 import React from "react";
 import { mdiTextarea } from "@mdi/js";
 import { useHandleChange } from "../../Hooks/useHandleChange";
-import { Col } from "antd";
 import RadioWrapper from "../RadioWrapper";
 
 const TextareaField = ({ field, fieldType, onChange }) => {

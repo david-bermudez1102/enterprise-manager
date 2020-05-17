@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { chunk } from "lodash";
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
@@ -12,6 +12,7 @@ export const useChangePage = props => {
   const history = useHistory();
   const match = useRouteMatch();
   const dispatch = useDispatch();
+  const mounted = useRef();
   const queryParams = new URLSearchParams(location.search);
   const { pagination, recordsSortedBy } = useSelector(
     ({ pagination, recordsSortedBy }) => ({ pagination, recordsSortedBy }),
@@ -33,7 +34,7 @@ export const useChangePage = props => {
   const [paginationLimit, setPaginationLimit] = useState(pagination.limit);
 
   const [chunkOfRecords, setChunkOfRecords] = useState(
-    chunk(sortedRecords, paginationLimit)
+    chunk(filteredRecords || sortedRecords, paginationLimit)
   );
 
   const changePage = useCallback(() => {
@@ -50,6 +51,7 @@ export const useChangePage = props => {
         }`
       );
     });
+    // eslint-disable-next-line
   }, [
     chunkOfRecords,
     filteredRecords,
@@ -60,23 +62,37 @@ export const useChangePage = props => {
   ]);
 
   useEffect(() => {
-    setPage(
-      parseInt(queryParams.get("page")) >
-        Math.ceil(resource.recordsCount / pagination.limit) ||
-        !queryParams.get("page")
-        ? 1
-        : parseInt(queryParams.get("page"))
-    );
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      setPage(
+        parseInt(queryParams.get("page")) >
+          Math.ceil(resource.recordsCount / pagination.limit) ||
+          !queryParams.get("page")
+          ? 1
+          : parseInt(queryParams.get("page"))
+      );
+    }
+    // eslint-disable-next-line
   }, [queryParams]);
 
   useEffect(() => {
-    if (pagination.limit !== paginationLimit) changePage();
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      if (pagination.limit !== paginationLimit) changePage();
+    }
   }, [pagination.limit, paginationLimit, changePage]);
 
   useEffect(() => {
-    chunkOfRecordsProxy(filteredRecords || sortedRecords, paginationLimit).then(
-      setChunkOfRecords
-    );
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      chunkOfRecordsProxy(
+        filteredRecords || sortedRecords,
+        paginationLimit
+      ).then(setChunkOfRecords);
+    }
   }, [filteredRecords, sortedRecords, paginationLimit]);
 
   return {

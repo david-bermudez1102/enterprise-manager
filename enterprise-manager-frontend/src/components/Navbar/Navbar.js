@@ -60,14 +60,16 @@ const Navbar = props => {
         zIndex: 1,
         width: "100%",
         background: "#fff",
-        position: "sticky",
-        top: 0,
       }}>
       <Logo organization={organizations[0]} width={180} height={40} />
       <Menu
         mode="horizontal"
         selectedKeys={[location.pathname]}
-        style={{ textAlign: "right", height: "100%", border: 0 }}>
+        style={{
+          textAlign: "right",
+          height: "100%",
+          border: 0,
+        }}>
         {session.isLoggedIn ? (
           <Menu.Item key="navbarLinkSearch">
             <Search

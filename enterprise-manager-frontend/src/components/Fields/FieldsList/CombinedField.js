@@ -2,12 +2,12 @@ import React from "react";
 import FieldValueGenerator from "../FieldValueGenerator";
 
 const CombinedField = props => {
-  const { field, onChange, ...newProps } = props;
+  const { field, editingMode, onChange, ...newProps } = props;
 
   const handleChange = e => {
     onChange({
       recordFieldId: props.name,
-      content: e.target.value
+      content: e.target.value,
     });
   };
 

@@ -1,4 +1,4 @@
-import { handleErrors, displayErrors } from "./handleErrors";
+import { handleErrors } from "./handleErrors";
 import snakecaseKeys from "snakecase-keys";
 import { message } from "antd";
 
@@ -22,10 +22,9 @@ export const add = (dispatch, url, payload, ...actions) => {
       if (!response.errors) {
         actions.map(action => dispatch(action));
         message.success(response.message || SUCCESS_MESSAGE_DEFAULT);
-        console.log(response);
         return response;
       } else {
-        response.errors.map(err => message.error(err));
+        throw new Error(response.errors.join(", "));
       }
     })
     .catch(resp => message.error(resp.toString()));
@@ -47,7 +46,7 @@ export const update = (dispatch, url, payload, ...actions) => {
         actions.map(action => dispatch(action));
         message.success(response.message || UPDATED_MESSAGE_DEFAULT);
       } else {
-        response.errors.map(err => message.error(err));
+        throw new Error(response.errors.join(", "));
       }
     })
     .catch(resp => message.error(resp.toString()));
@@ -77,10 +76,10 @@ export const remove = (dispatch, url, id, type, ...actions) => {
           status: "deleted",
         });
       } else {
-        return dispatch({ type: "ADD_ERRORS", errors: response.errors });
+        throw new Error(response.errors.join(", "));
       }
     })
     .then(() => actions.forEach(act => dispatch(act)))
     .then(() => dispatch({ type: "FINISHED_REQUESTING" }))
-    .catch(resp => displayErrors(resp, dispatch));
+    .catch(resp => message.error(resp.toString()));
 };

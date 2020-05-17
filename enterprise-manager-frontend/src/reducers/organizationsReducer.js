@@ -8,14 +8,13 @@ export const organizationsReducer = (state = [], action) => {
         ...state,
         ...action.organizations.filter(
           organization => !state.some(org => organization.id === org.id)
-        )
+        ),
       ];
     case "UPDATE_ORGANIZATION":
-      const organization = state.find(
-        organization => organization.id === parseInt(action.organizationId)
-      );
-      return [...state].map(org =>
-        org.id === organization.id ? action.organization : org
+      return [...state].map(organization =>
+        organization.id === action.organization.id
+          ? { ...organization, ...action.organization }
+          : organization
       );
     default:
       return state;

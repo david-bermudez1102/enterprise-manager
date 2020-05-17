@@ -15,6 +15,9 @@ const FieldsList = props => {
   const [state, setState] = useState([]);
   const recordFields = useSelector(s => s.recordFields, shallowEqual);
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setState([]);
   }, [resource]);
@@ -28,19 +31,19 @@ const FieldsList = props => {
 
   const handleSubmit = useCallback(
     data => {
+      form.resetFields();
+      setLoading(true);
       dispatch(
         addRecord(
           { valuesAttributes: state },
           resource.organizationId,
           resource.id
         )
-      );
+      ).then(() => setLoading(false));
     },
     // eslint-disable-next-line
     [state]
   );
-
-  console.log(state);
 
   return (
     <Row justify={"center"} align={"middle"} style={{ background: "#fff" }}>
@@ -93,6 +96,7 @@ const FieldsList = props => {
           {fields.length > 0 ? (
             <Form
               name={`new_${resource.formAlias}`}
+              form={form}
               onFinish={handleSubmit}
               layout="vertical">
               {fields
@@ -121,7 +125,7 @@ const FieldsList = props => {
                   ) : null;
                 })}
               <Divider />
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={loading}>
                 Create {pluralize.singular(resource.name)}
               </Button>
             </Form>

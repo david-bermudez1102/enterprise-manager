@@ -3,7 +3,6 @@ import { mdiCheckboxMultipleBlank } from "@mdi/js";
 import CombinedFieldOptions from "./CombinedFieldOptions";
 import { useHandleChange } from "../../Hooks/useHandleChange";
 import { useSelector, shallowEqual } from "react-redux";
-import { Col } from "antd";
 import RadioWrapper from "../RadioWrapper";
 
 const CombinedField = ({ field, resourceId, fieldType, onChange }) => {

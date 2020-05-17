@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { Form, Input, Spin } from "antd";
+import { Form, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import "./styles.css";
+import "./styles.scss";
+import { useSelector, shallowEqual } from "react-redux";
+import Field from "../Fields/FieldsList/Field";
+import useMatchedRoute from "../NoMatch/useMatchedRoute";
 export const CellForm = props => {
   const { content, formId, recordId, recordFieldId, organizationId } = props;
+  const match = useMatchedRoute();
+  const { fields, recordFields } = useSelector(
+    ({ fields, recordFields }) => ({ fields, recordFields }),
+    shallowEqual
+  );
+  const field = fields.find(f => f.recordFieldId === recordFieldId);
   const [state, setState] = useState({
     content: content ? content : "",
     formId,
@@ -12,6 +21,8 @@ export const CellForm = props => {
     organizationId,
   });
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm();
+
   const suffix = loading ? (
     <Spin
       indicator={<LoadingOutlined style={{ fontSize: 14 }} spin />}
@@ -21,8 +32,9 @@ export const CellForm = props => {
     <span style={{ display: "none" }} />
   );
 
-  const handleChange = e => {
-    setState({ ...state, content: e.target.value });
+  const handleChange = newState => {
+    setLoading(false);
+    setState({ ...state, ...newState });
   };
 
   const handleBlur = () => {
@@ -30,7 +42,7 @@ export const CellForm = props => {
     setLoading(false);
   };
 
-  const handleSubmit = () => {
+  const onFinish = data => {
     setLoading(true);
     const { addValue, updateRecord } = props;
     if (!content) addValue(state);
@@ -39,27 +51,39 @@ export const CellForm = props => {
 
   return (
     <Form
-      onSubmit={handleSubmit}
-      initialValues={{ content: state.content }}
-      style={{ padding: 0, margin: 0 }}>
-      <Form.Item name="content" noStyle>
-        <Input
-          type="text"
-          style={{
-            border: 0,
-            outline: 0,
-            padding: 0,
-            margin: 0,
-          }}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          onPressEnter={handleSubmit}
-          suffix={suffix}
-          autoFocus
-        />
-      </Form.Item>
+      form={form}
+      size={"small"}
+      onFinish={onFinish}
+      initialValues={{ [recordFieldId]: state.content }}
+      style={{ padding: 0, margin: 0 }}
+      className="custom-form">
+      <Field
+        key={field.key}
+        field={field}
+        recordField={recordFields.find(f => f.id === recordFieldId)}
+        fields={field.fieldType === "key_field" ? fields : undefined}
+        state={
+          field.fieldType === "combined_field" ||
+          field.fieldType === "key_field"
+            ? state
+            : undefined
+        }
+        match={match}
+        handleChange={handleChange}
+        onBlur={handleBlur}
+        editingMode={true}
+        style={{
+          border: 0,
+          outline: 0,
+          padding: 0,
+          margin: 0,
+        }}
+        suffix={suffix}
+        onPressEnter={field.fieldType === "textarea" ? onFinish : undefined}
+        autoFocus
+      />
     </Form>
   );
 };
 
-export default CellForm;
+export default React.memo(CellForm);

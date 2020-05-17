@@ -1,7 +1,6 @@
 import React from "react";
 import { Modal } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-import useModal from "./Hooks/useModal";
+import ExclamationCircleOutlined from "@ant-design/icons/ExclamationCircleOutlined";
 
 const { confirm } = Modal;
 const DeletionModal = ({ state, handleOk, handleCancel, modalProps }) => {
@@ -20,7 +19,6 @@ const DeletionModal = ({ state, handleOk, handleCancel, modalProps }) => {
 };
 
 function showDeleteConfirm(title, content, handleOk, handleCancel, state) {
-  const { visible, confirmLoading, ModalText } = state;
   confirm({
     title,
     icon: <ExclamationCircleOutlined />,

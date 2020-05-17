@@ -24,10 +24,10 @@ export const useHandleChange = props => {
     setState({ ...state, ...newState });
   };
 
-  const handleKeyFieldChange = e => {
+  const handleKeyFieldChange = value => {
     setState({
       ...state,
-      recordKeyAttributes: { [e.target.name]: e.target.value },
+      recordKeyAttributes: { resourceFieldId: value },
     });
   };
 

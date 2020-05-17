@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-
 import { useDispatch } from "react-redux";
 import RecordKeyField from "./RecordKeyField";
 import TextField from "./TextField";
@@ -11,7 +10,7 @@ import RadioField from "./RadioField";
 import CheckBoxField from "./CheckBoxField";
 import DateField from "./DateField";
 import CombinedField from "./CombinedField";
-import { Form, Input, Button, Row, Divider, Radio, Switch } from "antd";
+import { Form, Input, Button, Row, Divider, Switch } from "antd";
 import { AppstoreTwoTone } from "@ant-design/icons";
 import { useRouteMatch } from "react-router-dom";
 
@@ -48,14 +47,10 @@ const FieldForm = props => {
   };
 
   const handleSubmit = e => {
-    const { addField, updateField, addRecordField, updateRecordField } = props;
+    const { addField, updateField, updateRecordField } = props;
     if (addField) {
-      dispatch(addField({ ...state, ...fieldState }, organizationId)).then(
-        field => {
-          setState(initalState);
-          setFieldState({});
-          return field ? dispatch(addRecordField(field, organizationId)) : null;
-        }
+      dispatch(addField({ ...state, ...fieldState }, organizationId)).then(() =>
+        form.resetFields()
       );
     }
     if (updateField)
@@ -69,6 +64,8 @@ const FieldForm = props => {
           : null
       );
   };
+
+  console.log({ ...state, ...fieldState });
 
   const fieldProps = {
     field,

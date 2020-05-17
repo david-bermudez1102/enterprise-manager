@@ -1,17 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useFilterRecords } from "./hooks/useFilterRecords";
 import { useChangePage } from "./hooks/useChangePage";
 import recordsSort from "./RecordsSort";
 import FilterOptions from "./RecordsFilter/FilterOptions/";
 import { Table, Pagination, Row, Col } from "antd";
 import { useRecordsList } from "./hooks/useRecordsList";
+import { DndProvider } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+import { useFilterRecords } from "./hooks/useFilterRecords";
 
 const RecordsList = props => {
   const { sortedRecords, recordFields, values, resource } = props;
-  const { filteredRecords } = useFilterRecords({
+  const { filteredRecords, filterRecords } = useFilterRecords({
     sortedRecords,
-    values,
   });
+
+  const { components, columns, rowSelection, totalSelected } = useRecordsList({
+    recordFields,
+    values,
+    resource,
+  });
+
   const {
     match,
     dispatch,
@@ -21,12 +29,6 @@ const RecordsList = props => {
     page,
     paginationLimit,
   } = useChangePage({ ...props, filteredRecords });
-
-  const { components, columns, rowSelection } = useRecordsList({
-    recordFields,
-    values,
-    resource,
-  });
 
   const [loading, setLoading] = useState(false);
   const handleSortBy = async (recordFieldId, order) => {
@@ -39,6 +41,7 @@ const RecordsList = props => {
 
   useEffect(() => {
     allRecordsRef.current.scrollIntoView();
+    // eslint-disable-next-line
   }, [page, match]);
 
   const onShowSizeChange = (current, pageSize) => {
@@ -53,8 +56,8 @@ const RecordsList = props => {
   };
 
   return (
-    <div ref={allRecordsRef} style={{ maxWidth: "100%" }}>
-      <Row style={{ height: "80px" }}>
+    <div ref={allRecordsRef} style={{ maxWidth: "100%", overflowX: "auto" }}>
+      <Row style={{ height: "70px" }}>
         <FilterOptions />
         <Col span="auto">
           <Pagination
@@ -69,29 +72,43 @@ const RecordsList = props => {
               pageSize: paginationLimit,
               onShowSizeChange: onShowSizeChange,
               onChange: setPage,
-              total: values.length,
+              total: filteredRecords ? filteredRecords.length : values.length,
               showTotal: (total, range) =>
                 `${range[0]}-${range[1]} of ${total} items`,
             }}
           />
         </Col>
       </Row>
-
-      <Table
-        loading={loading}
-        components={components}
-        rowSelection={rowSelection}
-        columns={columns}
-        dataSource={chunkOfRecords[page - 1]}
-        pagination={false}
-        onChange={(pagination, filter, sorter) =>
-          sorter.column
-            ? handleSortBy(sorter.column.dataIndex, sorter.order)
-            : handleSortBy(0)
-        }
-      />
+      <Row>
+        <Col>{totalSelected}</Col>
+      </Row>
+      <DndProvider backend={HTML5Backend}>
+        <Table
+          tableLayout={"auto"}
+          loading={loading}
+          components={components}
+          rowSelection={rowSelection}
+          columns={[
+            {
+              key: `record_field_head_listing_id${resource.id}`,
+              title: "#",
+              dataIndex: "listingId",
+              sorter: true,
+            },
+            ...columns,
+          ]}
+          dataSource={chunkOfRecords[page - 1]}
+          pagination={false}
+          onChange={(pagination, filters, sorter) => {
+            filterRecords(filters);
+            sorter.column
+              ? handleSortBy(sorter.column.dataIndex, sorter.order)
+              : handleSortBy(0);
+          }}
+        />
+      </DndProvider>
     </div>
   );
 };
 
-export default React.memo(RecordsList);
+export default RecordsList;

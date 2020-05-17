@@ -38,7 +38,8 @@ const ResourcesContainer = props => {
 
   useEffect(() => {
     setResource(resources.find(resource => resource.formAlias === formAlias));
-  }, [resources, formAlias]);
+    // eslint-disable-next-line
+  }, [formAlias]);
 
   return (
     <Row gutter={[16, 16]}>

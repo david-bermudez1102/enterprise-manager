@@ -23,7 +23,6 @@ const ResourceFormLayout = ({ title, resource }) => {
             addResource={resource ? undefined : addResource}
             updateResource={resource ? updateResource : undefined}
             resource={resource}
-            initialValues={resource || undefined}
           />
         </Col>
       </Row>

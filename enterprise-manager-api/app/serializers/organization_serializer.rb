@@ -3,7 +3,7 @@ class OrganizationSerializer
   set_key_transform :camel_lower
   
   attributes :id, :name
-  attribute :zoho_integration do |obj|
+  attribute :zoho_integration_attributes do |obj|
     if obj.zoho_integration
       zi = IntegrationSerializer.new(obj.zoho_integration).serializable_hash[:data]
       if zi 
@@ -12,7 +12,7 @@ class OrganizationSerializer
     end
   end
 
-  attribute :quickbooks_integration do |obj|
+  attribute :quickbooks_integration_attributes do |obj|
     if obj.quickbooks_integration
       IntegrationSerializer.new(obj.quickbooks_integration)
     else

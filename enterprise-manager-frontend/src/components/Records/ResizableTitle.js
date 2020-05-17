@@ -1,13 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import { Resizable } from "react-resizable";
+import { useDrag, useDrop } from "react-dnd";
+
+const type = "DragableBodyColumn";
 
 const ResizeableTitle = props => {
-  const { onResize, width, ...restProps } = props;
+  const {
+    onResize,
+    className,
+    width,
+    index,
+    moveColumn,
+    style,
+    ...restProps
+  } = props;
+  const ref = React.useRef();
+  const [isResizing, setIsResizing] = useState(false);
+  const [{ isOver, dropClassName }, drop] = useDrop({
+    accept: type,
+    collect: monitor => {
+      const { index: dragIndex } = monitor.getItem() || {};
+      if (dragIndex === index) {
+        return {};
+      }
+      return {
+        isOver: monitor.isOver(),
+        dropClassName:
+          dragIndex < index ? " drop-over-left" : " drop-over-right",
+      };
+    },
+    drop: item => {
+      moveColumn(item.index, index);
+    },
+  });
+  const [, drag] = useDrag({
+    item: { type, index },
+    collect: monitor => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  drop(drag(ref));
 
   if (!width) {
-    return <th {...restProps} />;
+    return (
+      <th
+        {...restProps}
+        ref={isResizing ? undefined : ref}
+        className={`${className}${isOver ? dropClassName : ""}`}
+        style={{ cursor: "move", ...style }}
+      />
+    );
   }
-
   return (
     <Resizable
       width={width}
@@ -20,9 +63,16 @@ const ResizeableTitle = props => {
           }}
         />
       }
+      onResizeStart={() => setIsResizing(true)}
+      onResizeStop={() => setIsResizing(false)}
       onResize={onResize}
       draggableOpts={{ enableUserSelectHack: false }}>
-      <th {...restProps} />
+      <th
+        {...restProps}
+        ref={isResizing ? undefined : ref}
+        className={`${className}${isOver ? dropClassName : ""}`}
+        style={{ cursor: "move", ...style }}
+      />
     </Resizable>
   );
 };

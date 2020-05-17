@@ -3,7 +3,7 @@ import { InputNumber } from "antd";
 import FieldTypeWrapper from "../FieldTypeWrapper";
 
 const NumericField = props => {
-  const { field, onChange, name, suffix, ...newProps } = props;
+  const { field, onChange, name, editingMode, suffix, ...newProps } = props;
 
   const handleChange = value => {
     onChange({
@@ -13,19 +13,20 @@ const NumericField = props => {
   };
 
   return (
-    <FieldTypeWrapper name={name} field={field}>
-      {React.cloneElement(suffix, {
-        placement: "rightTop",
-        children: (
-          <InputNumber
-            {...newProps}
-            step={field.acceptsDecimals ? 0.1 : 1}
-            suffix={suffix}
-            style={{ width: "100%" }}
-            onChange={handleChange}
-          />
-        ),
+    <FieldTypeWrapper
+      name={name}
+      editingMode={editingMode}
+      label={React.cloneElement(suffix, {
+        placement: "left",
+        children: field.name,
       })}
+      field={field}>
+      <InputNumber
+        {...newProps}
+        step={field.acceptsDecimals ? 0.1 : 1}
+        style={{ width: "100%" }}
+        onChange={handleChange}
+      />
     </FieldTypeWrapper>
   );
 };

@@ -17,6 +17,7 @@ const useLoader = () => {
       setLoading(false);
       return response;
     });
+    // eslint-disable-next-line
   }, []);
 
   return { loading, dispatchWithLoader, dispatch };

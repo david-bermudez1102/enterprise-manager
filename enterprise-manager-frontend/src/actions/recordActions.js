@@ -1,51 +1,26 @@
-import { handleErrors, displayErrors } from "./handleErrors";
-import snakecaseKeys from "snakecase-keys";
 import workerInstance from "../workers/workerActions";
-import { remove, update } from "./fetchActions";
-import { message } from "antd";
+import { remove, update, add } from "./fetchActions";
 
-export const addRecord = (record, organizationId, formId) => {
-  return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" });
-    return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${formId}/records`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(snakecaseKeys({ record })),
-      }
-    )
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(record => {
-        if (!record.errors) {
-          dispatch({
-            type: "ADD_RECORD",
-            record: record.attributes,
-            formId,
-          });
-          dispatch({
-            type: "UPDATE_RECORDS_COUNT",
-            formId,
-            recordsCount: record.attributes.recordsCount,
-          });
-          message.success("Record was successfully created.");
-          return record.links.values;
-        } else {
-          dispatch({
-            type: "ADD_ERRORS",
-            messages: record.errors,
-          });
-          return;
-        }
-      })
-      .then(value => dispatch({ type: "ADD_VALUE", value }))
-      .catch(resp => displayErrors(resp, dispatch));
-  };
-};
+export const addRecord = (record, organizationId, formId) => dispatch =>
+  add(
+    dispatch,
+    `/api/v1/organizations/${organizationId}/forms/${formId}/records`,
+    { record }
+  )
+    .then(resp => {
+      dispatch({
+        type: "ADD_RECORD",
+        record: resp.attributes,
+        formId,
+      });
+      dispatch({
+        type: "UPDATE_RECORDS_COUNT",
+        formId,
+        recordsCount: resp.attributes.recordsCount,
+      });
+      return resp.links.values;
+    })
+    .then(value => dispatch({ type: "ADD_VALUE", value }));
 
 export const fetchRecords = (organizationId, formId, offset) => {
   //const query = offset ? `?offset=${offset}` : "";

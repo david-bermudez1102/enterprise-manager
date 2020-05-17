@@ -1,20 +1,19 @@
 import React from "react";
-import { Input } from "antd";
 import FieldTypeWrapper from "../FieldTypeWrapper";
+import TextArea from "antd/lib/input/TextArea";
 
 const TextAreaField = props => {
-  const { field, name, onChange, ...newProps } = props;
-
+  const { field, name, editingMode, onChange, ...newProps } = props;
   const handleChange = e => {
     onChange({
-      recordFieldId: e.target.name,
+      recordFieldId: props.name,
       content: e.target.value,
     });
   };
 
   return (
-    <FieldTypeWrapper name={name} field={field}>
-      <Input.TextArea {...newProps} onChange={handleChange} />
+    <FieldTypeWrapper editingMode={editingMode} name={name} field={field}>
+      <TextArea onChange={handleChange} allowClear autoSize {...newProps} />
     </FieldTypeWrapper>
   );
 };

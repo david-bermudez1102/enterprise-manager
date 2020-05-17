@@ -8,7 +8,7 @@ import RadioWrapper from "../RadioWrapper";
 
 const RecordKeyField = props => {
   const { field, fieldType, resourceId, onChange } = props;
-  const { handleChange, handleKeyFieldChange, state } = useHandleChange({
+  const { handleChange, handleKeyFieldChange } = useHandleChange({
     field,
     onChange,
   });
@@ -33,17 +33,22 @@ const RecordKeyField = props => {
         <Col span={24} order={24}>
           <Divider />
           <Form.Item
+            name="resourceFieldId"
             label="Grouped by"
             rules={[
               {
                 required: true,
                 message: "Please select a valid field!",
               },
-            ]}>
+            ]}
+            extra={
+              "The key field won't be visible in the form. It will be assigned automatically whenever a new record is submitted."
+            }>
             <Select
+              allowClear
+              required
               showSearch
               placeholder="Select a field"
-              name="resourceFieldId"
               onChange={handleKeyFieldChange}>
               {fields.map(field => (
                 <Select.Option key={cuid()} value={field.id}>
@@ -51,10 +56,6 @@ const RecordKeyField = props => {
                 </Select.Option>
               ))}
             </Select>
-            <p style={{ lineHeight: "16px" }}>
-              The key field won't be visible in the form. It will be assigned
-              automatically whenever a new record is submitted.
-            </p>
           </Form.Item>
         </Col>
       ) : null}

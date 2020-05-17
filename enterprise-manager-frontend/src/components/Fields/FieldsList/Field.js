@@ -13,7 +13,7 @@ import { Popover } from "antd";
 import { SettingOutlined } from "@ant-design/icons";
 
 const Field = props => {
-  const { match, field, recordField } = props;
+  const { editingMode, match, field, recordField } = props;
 
   const fieldName = field.name
     .split("_")
@@ -26,7 +26,11 @@ const Field = props => {
     id: field.fieldAlias + "_field_list",
     placeholder: `Enter ${fieldName}`,
     onChange: props.handleChange,
-    suffix: (
+    editingMode: editingMode,
+    onBlur: props.onBlur,
+    autoFocus: props.autoFocus,
+    style: props.style,
+    suffix: props.suffix || (
       <Popover
         content={
           <Options
@@ -47,7 +51,16 @@ const Field = props => {
       );
       break;
     case "textarea":
-      inputField = <TextAreaField {...inputAttributes} />;
+      inputField = (
+        <TextAreaField
+          {...inputAttributes}
+          onPressEnter={e => {
+            if (!e.shiftKey) {
+              if (e.key === "Enter") props.onPressEnter(e);
+            }
+          }}
+        />
+      );
       break;
     case "numeric_field":
       inputField = <NumericField {...inputAttributes} />;

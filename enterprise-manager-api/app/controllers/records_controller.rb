@@ -76,7 +76,7 @@ class RecordsController < ApplicationController
   end
 
   def set_is_deleted
-    if params[:deleted] && params[:deleted] == true
+    if params[:deleted]
       @is_deleted = true
     else
       @is_deleted = false

@@ -1,4 +1,5 @@
 export const sortBy = (values, dataIndex, order) => {
+  console.log(values);
   return !dataIndex
     ? order
       ? order === "ascend"

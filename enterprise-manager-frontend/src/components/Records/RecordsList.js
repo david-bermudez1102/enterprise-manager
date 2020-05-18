@@ -3,7 +3,7 @@ import { useChangePage } from "./hooks/useChangePage";
 import recordsSort from "./RecordsSort";
 import FilterOptions from "./RecordsFilter/FilterOptions/";
 import { Table, Pagination, Row, Col, Button } from "antd";
-import { useRecordsList } from "./hooks/useRecordsList";
+import useRecordsList from "./hooks/useRecordsList";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { useFilterRecords } from "./hooks/useFilterRecords";
@@ -20,12 +20,6 @@ const RecordsList = props => {
     sortedRecords,
   });
 
-  const { components, columns, rowSelection, totalSelected } = useRecordsList({
-    recordFields,
-    values,
-    resource,
-  });
-
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
 
   const {
@@ -36,13 +30,23 @@ const RecordsList = props => {
     chunkOfRecords,
     page,
     paginationLimit,
+    loadingData,
   } = useChangePage({ ...props, filteredRecords });
 
-  const [loading, setLoading] = useState(false);
-  const handleSortBy = async (recordFieldId, order) => {
-    setLoading(true);
-    await recordsSort(recordFieldId, order, resource, values, dispatch);
-    setLoading(false);
+  const { components, columns, rowSelection, totalSelected } = useRecordsList({
+    recordFields,
+    values,
+    resource,
+  });
+  const handleSortBy = (recordFieldId, order) => {
+    recordsSort(
+      recordFieldId,
+      order,
+      resource,
+      values,
+      dispatch,
+      props.deleted
+    );
   };
 
   const allRecordsRef = useRef();
@@ -63,7 +67,6 @@ const RecordsList = props => {
   const setPage = page => {
     history.push(`${location.pathname}?page=${page}`);
   };
-
   return (
     <>
       <div ref={allRecordsRef} style={{ maxWidth: "100%", overflowX: "auto" }}>
@@ -95,7 +98,7 @@ const RecordsList = props => {
         <DndProvider backend={HTML5Backend}>
           <Table
             tableLayout={"auto"}
-            loading={loading}
+            loading={loadingData}
             components={components}
             rowSelection={rowSelection}
             columns={[
@@ -105,7 +108,7 @@ const RecordsList = props => {
                 key: "x",
                 render: (text, record) => (
                   <>
-                    <Link>
+                    <Link to={"edit"}>
                       <Button type="link" style={{ padding: 0 }}>
                         <EditOutlined />
                       </Button>
@@ -131,17 +134,16 @@ const RecordsList = props => {
                 ),
               },
               {
-                key: `record_field_head_listing_id${resource.id}`,
+                key: `record_field_head_listing_id_${resource.id}`,
                 title: "#",
                 dataIndex: "listingId",
                 sorter: true,
               },
-
               ...columns,
             ]}
             dataSource={chunkOfRecords[page - 1]}
             pagination={false}
-            onChange={(pagination, filters, sorter) => {
+            onChange={(pagination, filters, sorter, extra) => {
               filterRecords(filters);
               sorter.column
                 ? handleSortBy(sorter.column.dataIndex, sorter.order)
@@ -155,4 +157,4 @@ const RecordsList = props => {
   );
 };
 
-export default RecordsList;
+export default React.memo(RecordsList);

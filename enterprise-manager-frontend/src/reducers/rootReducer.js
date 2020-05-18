@@ -18,7 +18,11 @@ import { token } from "./tokenReducer";
 import { pagination } from "./paginationReducer";
 import { routes } from "./routesReducer";
 import { sidebar } from "./sidebarReducer";
-import { archivedRecords } from "./archivedRecordsReducer";
+import {
+  archivedRecords,
+  sortedArchivedRecords,
+  archivedRecordsSortedBy,
+} from "./archivedRecordsReducer";
 
 const requesting = (state = false, action) => {
   switch (action.type) {
@@ -52,4 +56,6 @@ export const rootReducer = combineReducers({
   sidebar,
   archivedRecords,
   archivedValues,
+  sortedArchivedRecords,
+  archivedRecordsSortedBy,
 });

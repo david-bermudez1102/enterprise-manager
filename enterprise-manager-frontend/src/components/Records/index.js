@@ -6,10 +6,7 @@ import { Empty, Col, Card } from "antd";
 
 const Records = props => {
   const { resource } = props;
-  const { recordFields, records, sortedRecords, values, loading } = useRecords(
-    props
-  );
-
+  const { recordFields, records, sortedRecords, values } = useRecords(props);
   return (
     <Col span={24} order={24}>
       <Card>
@@ -21,7 +18,7 @@ const Records = props => {
             records={records}
             sortedRecords={sortedRecords[resource.id] || []}
             values={values[resource.id] || []}
-            loading={loading}
+            deleted={props.deleted}
           />
         ) : (
           <Empty description={"This resource doesn't have any records yet."} />

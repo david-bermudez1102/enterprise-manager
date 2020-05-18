@@ -1,8 +1,10 @@
 import normalize from "../normalizeData";
 
-export const fetchRecords = (state, formId, organizationId) => {
+export const fetchRecords = (state, formId, organizationId, deleted) => {
   return fetch(
-    `http://localhost:3001/api/v1/organizations/${organizationId}/forms/${formId}/records`,
+    `http://localhost:3001/api/v1/organizations/${organizationId}/forms/${formId}/records${
+      deleted ? `?deleted=true` : ""
+    }`,
     {
       cache: "no-cache",
       credentials: "include",

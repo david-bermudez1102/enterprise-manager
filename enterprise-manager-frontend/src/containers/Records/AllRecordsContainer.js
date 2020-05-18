@@ -6,15 +6,18 @@ import {
   matchPath,
 } from "react-router-dom";
 import RecordsResourcesList from "../../components/Records/RecordsPerResource/RecordsResourcesList";
-import RecordsList from "../../components/Records/RecordsList";
-import { useSelector, shallowEqual } from "react-redux";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { NoContent } from "../../components/NoContent";
 import Route from "../../Router/Route";
 import Records from "../../components/Records";
+import DeletedRecords from "../../components/Records/DeletedRecords.js";
+import { fetchFields } from "../../actions/fieldActions";
+import { fetchRecordFields } from "../../actions/recordFieldActions";
 
 const AllRecordsContainer = () => {
   const location = useLocation();
   const match = useRouteMatch();
+  const dispatch = useDispatch();
   const path = matchPath(location.pathname, {
     path: `${match.path}/:resourceId`,
   });
@@ -34,15 +37,19 @@ const AllRecordsContainer = () => {
     );
   }, [resources, resourceId]);
 
+  useEffect(() => {
+    if (resource) {
+      dispatch(fetchFields(resource.organizationId, resource.id));
+      dispatch(fetchRecordFields(resource.organizationId, resource.id));
+    }
+  }, [resource, dispatch]);
+
   if (resources.length === 0)
     return <NoContent>There are no resources created yet!</NoContent>;
 
   return (
     <Switch>
-      <Route
-        path={`${match.path}/deleted`}
-        render={props => <RecordsList {...props} resource={resource} />}
-      />
+      <Route path={`${match.path}/deleted`} component={DeletedRecords} />
       {resource ? (
         <Route path={`${match.path}/:resourceId`}>
           <Records resource={resource} />

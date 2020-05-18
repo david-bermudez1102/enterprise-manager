@@ -5,44 +5,56 @@ import RecordCell from "../RecordCell";
 import workerInstance from "../../../workers/workerActions";
 import { useDispatch } from "react-redux";
 
-export const useRecordsList = ({ recordFields, values, resource }) => {
-  const [state, setState] = useState({ columns: [] });
+const useRecordsList = ({ recordFields, values, resource }) => {
+  const [state, setState] = useState({
+    columns: recordFields.map((field, index) => ({
+      key: field.id,
+      title: capitalize(field.name),
+      dataIndex: field.id,
+      sorter: true,
+      filters: [],
+      width: index < recordFields.length - 1 ? 200 : undefined,
+      wordWrap: "break-word",
+      ellipsis: true,
+      editable: true,
+      onCell: record => ({
+        record,
+        dataIndex: field.id,
+        fieldType: field.fieldType,
+        organizationId: resource.organizationId,
+      }),
+    })),
+  });
   const [totalSelected, setTotalSelected] = useState("");
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    setState({
-      columns: recordFields.map((field, index) => ({
-        key: field.id,
-        title: capitalize(field.name),
-        dataIndex: field.id,
-        sorter: true,
-        filters: [],
-        width: index < recordFields.length - 1 ? 200 : undefined,
-        wordWrap: "break-word",
-        ellipsis: true,
-        editable: true,
-        onCell: record => ({
-          record,
-          dataIndex: field.id,
-          fieldType: field.fieldType,
-          organizationId: resource.organizationId,
-        }),
-      })),
-    });
-  }, [recordFields, resource]);
-
   useEffect(() => {
     Promise.all(
-      state.columns.map(col =>
-        workerInstance.filters(values, col.dataIndex).then(filters => ({
-          ...col,
-          filters,
+      recordFields
+        .map((field, index) => ({
+          key: field.id,
+          title: capitalize(field.name),
+          dataIndex: field.id,
+          sorter: true,
+          filters: [],
+          width: index < recordFields.length - 1 ? 200 : undefined,
+          wordWrap: "break-word",
+          ellipsis: true,
+          editable: true,
+          onCell: record => ({
+            record,
+            dataIndex: field.id,
+            fieldType: field.fieldType,
+            organizationId: resource.organizationId,
+          }),
         }))
-      )
+        .map(col =>
+          workerInstance.filters(values, col.dataIndex).then(filters => ({
+            ...col,
+            filters,
+          }))
+        )
     ).then(cols => setState({ columns: cols }));
-    // eslint-disable-next-line
-  }, [recordFields, values]);
+  }, [recordFields, values, resource]);
 
   const handleResize = index => (e, { size }) => {
     const nextColumns = [...state.columns];
@@ -67,18 +79,6 @@ export const useRecordsList = ({ recordFields, values, resource }) => {
     dispatch({ type: "SORT_RECORD_FIELDS", recordFields: tmpRecordFields });
   };
 
-  const columns = state.columns.map((col, index) => {
-    return {
-      ...col,
-      onHeaderCell: column => ({
-        width: column.width,
-        onResize: handleResize(index),
-        moveColumn,
-        index,
-      }),
-    };
-  });
-
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       if (selectedRows.length === 1) setTotalSelected(`1 record selected.`);
@@ -97,5 +97,20 @@ export const useRecordsList = ({ recordFields, values, resource }) => {
     },
   };
 
-  return { components, columns, rowSelection, totalSelected };
+  return {
+    components,
+    columns: state.columns.map((col, index) => ({
+      ...col,
+      onHeaderCell: column => ({
+        width: column.width,
+        onResize: handleResize(index),
+        moveColumn,
+        index,
+      }),
+    })),
+    rowSelection,
+    totalSelected,
+  };
 };
+
+export default useRecordsList;

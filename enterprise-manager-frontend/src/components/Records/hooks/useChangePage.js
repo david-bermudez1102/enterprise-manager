@@ -20,15 +20,17 @@ export const useChangePage = props => {
   );
 
   const [page, setPage] = useState(1);
-
+  const [loadingData, setLoadingData] = useState(false);
   useEffect(() => {
     if (sortedRecords.length < records.length) {
       const sortBy = async () => {
         const sorted = await workerInstance.sortBy(values);
-        if (sorted) dispatch(setSortedRecords(sorted, resource.id));
+        if (sorted)
+          dispatch(setSortedRecords(sorted, resource.id, props.deleted));
       };
       sortBy();
     }
+    // eslint-disable-next-line
   }, [dispatch, records, values, resource, sortedRecords]);
 
   const [paginationLimit, setPaginationLimit] = useState(pagination.limit);
@@ -37,20 +39,31 @@ export const useChangePage = props => {
     chunk(filteredRecords || sortedRecords, paginationLimit)
   );
 
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+    } else {
+      setLoadingData(true);
+      chunkOfRecordsProxy(filteredRecords || sortedRecords, paginationLimit)
+        .then(setChunkOfRecords)
+        .then(() => setLoadingData(false));
+    }
+  }, [filteredRecords, sortedRecords, paginationLimit]);
+
   const changePage = useCallback(() => {
-    chunkOfRecordsProxy(
-      filteredRecords || sortedRecords,
-      pagination.limit
-    ).then(resp => {
-      const currentValue = chunkOfRecords[page - 1][0];
-      setPaginationLimit(pagination.limit);
-      setChunkOfRecords(resp);
-      history.replace(
-        `${location.pathname}?page=${
-          resp.findIndex(e => e.some(y => y.id === currentValue.id)) + 1
-        }`
-      );
-    });
+    setLoadingData(true);
+    chunkOfRecordsProxy(filteredRecords || sortedRecords, pagination.limit)
+      .then(resp => {
+        const currentValue = chunkOfRecords[page - 1][0];
+        setPaginationLimit(pagination.limit);
+        setChunkOfRecords(resp);
+        history.replace(
+          `${location.pathname}?page=${
+            resp.findIndex(e => e.some(y => y.id === currentValue.id)) + 1
+          }`
+        );
+      })
+      .then(() => setLoadingData(false));
     // eslint-disable-next-line
   }, [
     chunkOfRecords,
@@ -60,6 +73,7 @@ export const useChangePage = props => {
     history,
     location.pathname,
   ]);
+
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true;
@@ -69,7 +83,7 @@ export const useChangePage = props => {
           Math.ceil(
             filteredRecords
               ? filteredRecords.length / pagination.limit
-              : resource.recordsCount / pagination.limit
+              : sortedRecords.length / pagination.limit
           ) || !queryParams.get("page")
           ? 1
           : parseInt(queryParams.get("page"))
@@ -89,21 +103,9 @@ export const useChangePage = props => {
   useEffect(() => {
     if (parseInt(queryParams.get("page")) !== page) {
       history.replace(`${location.pathname}?page=${page}`);
-      console.log("done");
     }
     // eslint-disable-next-line
   }, [page]);
-
-  useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true;
-    } else {
-      chunkOfRecordsProxy(
-        filteredRecords || sortedRecords,
-        paginationLimit
-      ).then(setChunkOfRecords);
-    }
-  }, [filteredRecords, sortedRecords, paginationLimit]);
 
   return {
     sortedRecords,
@@ -115,5 +117,6 @@ export const useChangePage = props => {
     location,
     chunkOfRecords,
     paginationLimit,
+    loadingData,
   };
 };

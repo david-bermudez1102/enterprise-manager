@@ -1,41 +1,59 @@
-import { useSelector, shallowEqual } from "react-redux";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchRecords } from "../../../actions/recordActions";
 import { useRouteMatch } from "react-router-dom";
-import useLoader from "../../../components/Loader/useLoader";
 
 const useRecords = props => {
-  const { resource } = props;
+  const { resource, deleted } = props;
   const match = useRouteMatch();
-  const { recordFields, records, sortedRecords, values } = useSelector(
-    ({ recordFields, records, sortedRecords, values }) => ({
+  const dispatch = useDispatch();
+  const {
+    recordFields,
+    records,
+    archivedRecords,
+    archivedValues,
+    sortedRecords,
+    sortedArchivedRecords,
+    values,
+  } = useSelector(
+    ({
       recordFields,
       records,
+      archivedRecords,
+      archivedValues,
       sortedRecords,
+      sortedArchivedRecords,
+      values,
+    }) => ({
+      recordFields,
+      records,
+      archivedRecords,
+      archivedValues,
+      sortedRecords,
+      sortedArchivedRecords,
       values,
     }),
     shallowEqual
   );
-  const { dispatch, loading, dispatchWithLoader } = useLoader();
-
   useEffect(() => {
     /* const lastRecord = Math.max(
       ...records.filter(record => record.formId === resource.id).map(r => r.id),
       0
     ); // return the most recent record */
     if (resource)
-      dispatchWithLoader(fetchRecords(resource.organizationId, resource.id));
-  }, [dispatchWithLoader, resource]);
+      dispatch(fetchRecords(resource.organizationId, resource.id, deleted));
+  }, [dispatch, resource, deleted]);
 
   return {
     resource,
     match,
     recordFields,
-    records: records[resource.id] || [],
-    sortedRecords,
-    values,
+    records: deleted
+      ? archivedRecords[resource.id] || []
+      : records[resource.id] || [],
+    sortedRecords: deleted ? sortedArchivedRecords : sortedRecords,
+    values: deleted ? archivedValues : values,
     dispatch,
-    loading,
   };
 };
 

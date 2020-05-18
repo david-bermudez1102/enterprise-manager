@@ -20,25 +20,46 @@ export const addRecord = (record, organizationId, formId) => dispatch =>
     });
   });
 
-export const fetchRecords = (organizationId, formId, offset) => {
+export const fetchRecords = (organizationId, formId, deleted) => {
   //const query = offset ? `?offset=${offset}` : "";
   return (dispatch, getState) => {
-    const { records, values } = getState();
+    const { records, values, archivedRecords, archivedValues } = getState();
     return workerInstance
-      .fetchRecords({ records, values }, formId, organizationId)
+      .fetchRecords(
+        !deleted
+          ? { records, values }
+          : { records: archivedRecords, values: archivedValues },
+        formId,
+        organizationId,
+        deleted
+      )
       .then(({ records, values }) => {
-        dispatch({ type: "FETCH_RECORDS", records });
-        dispatch({ type: "FETCH_VALUES", values });
+        if (deleted) {
+          dispatch({ type: "FETCH_ARCHIVED_RECORDS", records });
+          dispatch({ type: "FETCH_ARCHIVED_VALUES", values });
+        } else {
+          dispatch({ type: "FETCH_RECORDS", records });
+          dispatch({ type: "FETCH_VALUES", values });
+        }
       });
   };
 };
 
-export const setSortedRecords = (records, formId) => {
-  return dispatch => dispatch({ type: "SET_SORTED_RECORDS", records, formId });
+export const setSortedRecords = (records, formId, deleted) => {
+  return dispatch =>
+    dispatch({
+      type: !deleted ? "SET_SORTED_RECORDS" : "SET_SORTED_ARCHIVED_RECORDS",
+      records,
+      formId,
+    });
 };
 
-export const setRecordsSortedBy = resource => {
-  return dispatch => dispatch({ type: "SET_SORTED_BY", resource });
+export const setRecordsSortedBy = (resource, deleted) => {
+  return dispatch =>
+    dispatch({
+      type: !deleted ? "SET_SORTED_BY" : "SET_ARCHIVED_SORTED_BY",
+      resource,
+    });
 };
 
 export const removeRecord = (organizationId, formId, id) => {

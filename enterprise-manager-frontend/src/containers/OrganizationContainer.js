@@ -95,9 +95,11 @@ const OrganizationContainer = () => {
           <Route
             path={`${match.path}/:organizationId/records`}
             component={AllRecordsContainer}
+            name={"All Records"}
           />
           <Route
             path={`${match.path}/:organizationId`}
+            name={`${organizations[0].name}`}
             render={props => <Organization {...props} />}
           />
         </>

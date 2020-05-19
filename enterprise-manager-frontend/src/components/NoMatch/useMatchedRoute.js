@@ -16,7 +16,7 @@ const useMatchedRoute = () => {
     if (checking) {
       setMatched(
         routes.some(route =>
-          matchPath(location.pathname, { path: route, exact: true })
+          matchPath(location.pathname, { path: route.path, exact: true })
         )
       );
       setChecking(false);

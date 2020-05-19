@@ -7,17 +7,7 @@ import {
 } from "react-router-dom";
 import { useSelector, shallowEqual } from "react-redux";
 import pluralize from "pluralize";
-import {
-  Card,
-  Badge,
-  Row,
-  Col,
-  Statistic,
-  Popover,
-  Menu,
-  Button,
-  Empty,
-} from "antd";
+import { Card, Badge, Row, Col, Popover, Menu, Button, Empty } from "antd";
 import {
   EditOutlined,
   EllipsisOutlined,
@@ -25,12 +15,12 @@ import {
   DeleteOutlined,
   GroupOutlined,
 } from "@ant-design/icons";
-import Meta from "antd/lib/card/Meta";
 import Title from "antd/lib/typography/Title";
 import useModal from "../Modal/Hooks/useModal";
 import DeletionModal from "../Modal/DeletionModal";
 import { removeResource } from "../../actions/resourceActions";
 import AddResourceButton from "./AddResourceButton";
+import Statistics from "./Statistics";
 
 const ResourcesList = ({ loaded, loading }) => {
   const location = useLocation();
@@ -138,27 +128,7 @@ const ResourcesList = ({ loaded, loading }) => {
                     style={{ fontSize: "24px" }}></i>
                 </NavLink>
               }>
-              <Meta
-                description={
-                  <Row justify="space-around" gutter={[16, 16]}>
-                    <Col span={4}>
-                      <Statistic
-                        title={`Total ${pluralize(resource.name)}`}
-                        value={resource.recordsCount}
-                      />
-                    </Col>
-                    <Col span={4}>
-                      <Statistic
-                        title={"This month"}
-                        value={resource.recordsCount}
-                      />
-                    </Col>
-                    <Col span={4}>
-                      <Statistic title="Unmerged" value={93} suffix="/ 100" />
-                    </Col>
-                  </Row>
-                }
-              />
+              <Card.Meta description={<Statistics resource={resource} />} />
             </Card>
           </Col>
         );

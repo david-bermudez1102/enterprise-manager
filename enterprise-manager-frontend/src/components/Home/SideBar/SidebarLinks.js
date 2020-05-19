@@ -36,8 +36,8 @@ const SidebarLinks = ({ links, session, collapsed }) => {
       <Menu.Divider
         key={"sidebar_divider_1"}
         style={{
-          height: 0.4,
-          backgroundColor: "rgba(0, 0, 0, 0.9)",
+          height: 1,
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
           margin: 0,
         }}
       />

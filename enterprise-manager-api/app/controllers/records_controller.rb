@@ -3,8 +3,6 @@ class RecordsController < ApplicationController
   before_action :set_organization
   before_action :set_form
   before_action :set_is_deleted, only: %i[show index]
-  # before_action :set_limit, only: %i[index]
-  # before_action :set_offset, only: %i[index]
   
   def create
     record = @form.records.create(record_params)
@@ -28,7 +26,7 @@ class RecordsController < ApplicationController
   end
 
   def index
-    records = @form.records.where(is_deleted: @is_deleted).includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
+    records = @form.records.with_filters(filterable_params).where(is_deleted:@is_deleted).includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
     if stale?(records, public:true)
       serialized_data = RecordSerializer.new(records).serializable_hash[:data]
       serialized_data.each.with_index(1) do |data, i| 
@@ -83,19 +81,7 @@ class RecordsController < ApplicationController
     end
   end
 
-  def set_limit
-    if !params[:limit] || params[:limit]< 0
-      @limit = 25
-    else
-      @limit = params[:limit]
-    end
-  end
-
-  def set_offset
-    if !params[:page] || params[:page] < 0
-      @offset = 0
-    else
-      @offset = @limit*params[:page]
-    end
+  def filterable_params
+    params.slice(:month, :year, :from_date, :to_date, :date)
   end
 end

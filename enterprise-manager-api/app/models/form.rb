@@ -10,6 +10,8 @@ class Form < ApplicationRecord
   has_many :selectable_resources, dependent: :destroy
   before_create :generate_form_alias
   after_save :nullify_form_alias, if: :saved_change_to_name?
+
+  scope :this_month, -> { where(created_at: DateTime.now.beginning_of_month..DateTime.now.end_of_month) }
   
   accepts_nested_attributes_for :zoho_connection, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 
@@ -55,6 +57,18 @@ class Form < ApplicationRecord
 
   def records_count
     records.select(:id).where(:is_deleted => false).size
+  end
+
+  def deleted_records_count
+    records.select(:id).where(:is_deleted => true).size
+  end
+
+  def current_month_records_count
+    records.select(:id).where(:is_deleted => false).this_month.size
+  end
+
+  def current_month_deleted_records_count
+    records.select(:id).where(:is_deleted => true).this_month.size
   end
 
   def cache_key

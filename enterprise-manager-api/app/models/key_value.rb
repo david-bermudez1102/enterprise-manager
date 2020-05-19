@@ -4,7 +4,7 @@ class KeyValue < ApplicationRecord
   belongs_to :option, optional: true, dependent: :destroy
   validates :value, uniqueness: {:scope => :record_key}
 
-  scope :this_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
+  scope :this_month, -> { where(created_at: DateTime.now.beginning_of_month..DateTime.now.end_of_month) }
 
   before_destroy :nullify_record_value
 

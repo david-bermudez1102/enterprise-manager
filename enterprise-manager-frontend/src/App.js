@@ -23,7 +23,9 @@ const App = () => {
 
   return (
     <Router>
-      {loaded ? <Route path="/" component={HomeContainer} /> : null}
+      {loaded ? (
+        <Route path="/" name={"Home"} component={HomeContainer} />
+      ) : null}
     </Router>
   );
 };

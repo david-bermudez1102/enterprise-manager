@@ -51,6 +51,8 @@ const HomeContainer = () => {
               <Route
                 path={`/organizations`}
                 component={OrganizationContainer}
+                title="Organizations"
+                name="Organizations"
               />
               <Route path={`/reset_password`} component={ResetPassword} />
               <Route path={`/login`} component={LoginContainer} />
@@ -72,7 +74,7 @@ const HomeContainer = () => {
                 )}
               />
               )
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" name={"Home"} component={Home} />
             </Switch>
           )}
         </Content>

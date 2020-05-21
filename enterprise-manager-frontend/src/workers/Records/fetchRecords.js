@@ -1,33 +1,42 @@
-import normalize from "../normalizeData";
+import { normalize, normalizeWithFilters } from "../normalizeData"
+import { handleErrors } from "../../actions/handleErrors"
 
-export const fetchRecords = (state, formId, organizationId, deleted) => {
+export const fetchRecords = (
+  state,
+  formId,
+  organizationId,
+  deleted,
+  withDateFilters,
+  queryParams
+) => {
+  const transform = withDateFilters ? normalizeWithFilters : normalize
   return fetch(
-    `http://localhost:3001/api/v1/organizations/${organizationId}/forms/${formId}/records${
-      deleted ? `?deleted=true` : ""
-    }`,
+    `http://localhost:3000/api/v1/organizations/${organizationId}/forms/${formId}/records?${
+      queryParams || "current_month=true"
+    }${deleted ? `&deleted=true` : ""}`,
     {
-      cache: "no-cache",
       credentials: "include",
+      mode: "same-origin"
     }
   )
+    .then(handleErrors)
     .then(response => response.json())
     .then(response => {
-      const records = normalize(
+      const records = transform(
         state.records,
         response.map(r => r.attributes),
         formId
-      );
-      const values = normalize(
+      )
+      const values = transform(
         state.values,
         response.map(r => ({
           id: r.id,
           formId: r.attributes.formId,
           ...r.links.values,
-          key: `recordValues${r.id}`,
+          key: `recordValues${r.id}`
         })),
         formId
-      );
-
-      return { records, values };
-    });
-};
+      )
+      return { records, values }
+    })
+}

@@ -1,5 +1,5 @@
-import snakecaseKeys from "snakecase-keys";
-import { handleErrors } from "./handleErrors";
+import snakecaseKeys from "snakecase-keys"
+import { handleErrors } from "./handleErrors"
 
 export const addRecordField = (recordField, organizationId) => {
   return dispatch => {
@@ -8,23 +8,23 @@ export const addRecordField = (recordField, organizationId) => {
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(snakecaseKeys({ recordField })),
+        body: JSON.stringify(snakecaseKeys({ recordField }))
       }
     )
       .then(handleErrors)
       .then(response => response.json())
       .then(recordField => {
-        dispatch({ type: "ADD_RECORD_FIELD", recordField });
+        dispatch({ type: "ADD_RECORD_FIELD", recordField })
         dispatch({
           type: "ADD_MESSAGES",
-          messages: recordField.messages || ["Field Added successfully."],
-        });
+          messages: recordField.messages || ["Field Added successfully."]
+        })
       })
-      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }));
-  };
-};
+      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }))
+  }
+}
 
 export const updateRecordField = (
   recordField,
@@ -32,15 +32,15 @@ export const updateRecordField = (
   recordFieldId
 ) => {
   return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" });
+    dispatch({ type: "CLEAR_ALERTS" })
     fetch(
       `/api/v1/organizations/${organizationId}/forms/${recordField.formId}/record_fields/${recordFieldId}`,
       {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(snakecaseKeys({ recordField })),
+        body: JSON.stringify(snakecaseKeys({ recordField }))
       }
     )
       .then(handleErrors)
@@ -50,19 +50,19 @@ export const updateRecordField = (
           dispatch({
             type: "UPDATE_RECORD_FIELD",
             recordFieldId,
-            recordField,
-          });
+            recordField
+          })
           dispatch({
             type: "ADD_MESSAGES",
-            messages: recordField.messages || ["Field updated successfully."],
-          });
+            messages: recordField.messages || ["Field updated successfully."]
+          })
         } else {
-          dispatch({ type: "ADD_ERRORS", errors: recordField.errors });
+          dispatch({ type: "ADD_ERRORS", errors: recordField.errors })
         }
       })
-      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }));
-  };
-};
+      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }))
+  }
+}
 
 export const fetchRecordFields = (organizationId, formId) => {
   return dispatch => {
@@ -73,16 +73,16 @@ export const fetchRecordFields = (organizationId, formId) => {
       .then(response => response.json())
       .then(recordFields =>
         dispatch({ type: "FETCH_RECORD_FIELDS", recordFields, formId })
-      );
-  };
-};
+      )
+  }
+}
 
 export const removeRecordField = (organizationId, formId, recordFieldId) => {
   return dispatch => {
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${formId}/record_fields/${recordFieldId}`,
       {
-        method: "DELETE",
+        method: "DELETE"
       }
     )
       .then(response => response.json())
@@ -91,9 +91,9 @@ export const removeRecordField = (organizationId, formId, recordFieldId) => {
           ? dispatch({
               type: "REMOVE_RECORD_FIELD",
               recordFieldId,
-              status: "deleted",
+              status: "deleted"
             })
           : null
-      );
-  };
-};
+      )
+  }
+}

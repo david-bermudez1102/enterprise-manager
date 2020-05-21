@@ -1,9 +1,16 @@
 {
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
-  "prettier.jsxBracketSameLine": true,
-  "editor.tabSize": 2,
-  "editor.fontSize": 17,
-  "editor.fontLigatures": true,
-  "prettier.arrowParens": "avoid",
+	"editor.wordWrapColumn": 80,
+	"editor.tabSize": 2,
+	"editor.fontFamily": "Fira Code",
+	"editor.fontLigatures": true,
+	"prettier.arrowParens": "avoid",
+	"prettier.eslintIntegration": true,
+	"prettier.jsxBracketSameLine": true,
+	"prettier.printWidth": 80,
+	"prettier.jsxSingleQuote": true,
+	"mssql.saveAsCsv.includeHeaders": false,
+	"prettier.semi": false,
+	"prettier.useTabs": false,
+	"prettier.trailingComma": "none",
+	"editor.formatOnSave": true
 }

@@ -1,12 +1,12 @@
-import React from "react";
-import useRecords from "../../containers/Records/Hooks/useRecords";
-import RecordsOptions from "./RecordsOptions";
-import RecordsList from "./RecordsList";
-import { Empty, Col, Card } from "antd";
+import React from "react"
+import useRecords from "../../containers/Records/Hooks/useRecords"
+import RecordsOptions from "./RecordsOptions"
+import RecordsList from "./RecordsList"
+import { Empty, Col, Card } from "antd"
 
 const Records = props => {
-  const { resource } = props;
-  const { recordFields, records, sortedRecords, values } = useRecords(props);
+  const { resource } = props
+  const { recordFields, records, sortedRecords, values } = useRecords(props)
   return (
     <Col span={24} order={24}>
       <Card>
@@ -25,7 +25,7 @@ const Records = props => {
         )}
       </Card>
     </Col>
-  );
-};
+  )
+}
 
-export default React.memo(Records);
+export default React.memo(Records)

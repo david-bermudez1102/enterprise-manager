@@ -64,11 +64,11 @@ class Form < ApplicationRecord
   end
 
   def current_month_records_count
-    records.select(:id).where(:is_deleted => false).this_month.size
+    records.select(:id).where(:is_deleted => false).with_current_month(nil).size
   end
 
   def current_month_deleted_records_count
-    records.select(:id).where(:is_deleted => true).this_month.size
+    records.select(:id).where(:is_deleted => true).with_current_month(nil).size
   end
 
   def cache_key

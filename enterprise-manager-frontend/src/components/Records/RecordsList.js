@@ -1,78 +1,104 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useChangePage } from "./hooks/useChangePage";
-import recordsSort from "./RecordsSort";
-import FilterOptions from "./RecordsFilter/FilterOptions/";
-import { Table, Pagination, Row, Col, Button } from "antd";
-import useRecordsList from "./hooks/useRecordsList";
-import { DndProvider } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
-import { useFilterRecords } from "./hooks/useFilterRecords";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import DeletionModal from "../Modal/DeletionModal";
-import { removeRecord } from "../../actions/recordActions";
-import { useSelector, shallowEqual } from "react-redux";
-import useModal from "../Modal/Hooks/useModal";
+import React, { useEffect, useRef } from "react"
+import { useChangePage } from "./hooks/useChangePage"
+import recordsSort from "./RecordsSort"
+import FilterOptions from "./RecordsFilter/FilterOptions/"
+import { Table, Pagination, Row, Col, Button, Empty } from "antd"
+import useRecordsList from "./hooks/useRecordsList"
+import { DndProvider } from "react-dnd"
+import HTML5Backend from "react-dnd-html5-backend"
+import { useFilterRecords } from "./hooks/useFilterRecords"
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons"
+import { Link } from "react-router-dom"
+import DeletionModal from "../Modal/DeletionModal"
+import { removeRecord, fetchRecords } from "../../actions/recordActions"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import useModal from "../Modal/Hooks/useModal"
+import useFilters from "../Filters/Hooks/useFilters"
 
 const RecordsList = props => {
-  const { sortedRecords, recordFields, values, resource } = props;
+  const dispatch = useDispatch()
+  const { sortedRecords, recordFields, values, resource } = props
   const { filteredRecords, filterRecords } = useFilterRecords({
-    sortedRecords,
-  });
+    records: sortedRecords
+  })
 
-  const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
+  const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
+
+  const { filteredData, ...filters } = useFilters({
+    dataSource: values,
+    oldest:
+      values.length > 0
+        ? values.reduce((r, o) => (o.createdAt < r.createdAt ? o : r)).createdAt
+        : undefined,
+    newest: resource.newestRecordDate,
+    action: queryParams =>
+      dispatch(
+        fetchRecords(
+          resource.organizationId,
+          resource.id,
+          props.deleted,
+          true,
+          queryParams
+        )
+      )
+  })
 
   const {
-    match,
-    dispatch,
-    history,
     location,
+    match,
+    history,
     chunkOfRecords,
     page,
     paginationLimit,
-    loadingData,
-  } = useChangePage({ ...props, filteredRecords });
+    loadingData
+  } = useChangePage({ ...props, filteredData, filteredRecords })
 
   const { components, columns, rowSelection, totalSelected } = useRecordsList({
     recordFields,
     values,
-    resource,
-  });
-  const handleSortBy = (recordFieldId, order) => {
+    resource
+  })
+
+  const handleSortBy = (recordFieldId, order) =>
     recordsSort(
       recordFieldId,
       order,
       resource,
-      values,
+      filteredData || values,
       dispatch,
       props.deleted
-    );
-  };
+    )
 
-  const allRecordsRef = useRef();
-  const { showModal, ...deletionModal } = useModal();
+  const allRecordsRef = useRef()
+  const { showModal, ...deletionModal } = useModal()
 
   useEffect(() => {
-    allRecordsRef.current.scrollIntoView();
+    allRecordsRef.current.scrollIntoView()
     // eslint-disable-next-line
-  }, [page, match]);
+  }, [page, match])
 
   const onShowSizeChange = (current, pageSize) => {
     dispatch({
       type: "SET_LIMIT",
-      limit: pageSize,
-    });
-  };
+      limit: pageSize
+    })
+  }
 
   const setPage = page => {
-    history.push(`${location.pathname}?page=${page}`);
-  };
+    const queryParams = new URLSearchParams(location.search)
+    if (queryParams.has("page")) queryParams.delete("page")
+    history.push({
+      path: location.pathname,
+      search: `page=${page}&${queryParams.toString()}`
+    })
+  }
+
   return (
     <>
       <div ref={allRecordsRef} style={{ maxWidth: "100%", overflowX: "auto" }}>
         <Row style={{ height: "70px" }}>
-          <FilterOptions />
-          <Col span="auto">
+          <FilterOptions {...filters} />
+          <Col span='auto'>
             <Pagination
               {...{
                 key: "pagination",
@@ -85,9 +111,11 @@ const RecordsList = props => {
                 pageSize: paginationLimit,
                 onShowSizeChange: onShowSizeChange,
                 onChange: setPage,
-                total: filteredRecords ? filteredRecords.length : values.length,
+                total: filteredRecords
+                  ? filteredRecords.length
+                  : sortedRecords.length,
                 showTotal: (total, range) =>
-                  `${range[0]}-${range[1]} of ${total} items`,
+                  `${range[0]}-${range[1]} of ${total} items`
               }}
             />
           </Col>
@@ -109,12 +137,12 @@ const RecordsList = props => {
                 render: (text, record) => (
                   <>
                     <Link to={"edit"}>
-                      <Button type="link" style={{ padding: 0 }}>
+                      <Button type='link' style={{ padding: 0 }}>
                         <EditOutlined />
                       </Button>
                     </Link>
                     <Button
-                      type="link"
+                      type='link'
                       style={{ padding: 0 }}
                       onClick={() =>
                         showModal({
@@ -125,36 +153,49 @@ const RecordsList = props => {
                             session.currentUser.organizationId,
                             record.formId,
                             record.id
-                          ),
+                          )
                         })
                       }>
                       <DeleteOutlined />
                     </Button>
                   </>
-                ),
+                )
               },
               {
                 key: `record_field_head_listing_id_${resource.id}`,
                 title: "#",
                 dataIndex: "listingId",
-                sorter: true,
+                sorter: true
               },
-              ...columns,
+              ...columns
             ]}
             dataSource={chunkOfRecords[page - 1]}
             pagination={false}
             onChange={(pagination, filters, sorter, extra) => {
-              filterRecords(filters);
+              console.log(filters)
+              filterRecords(filters)
               sorter.column
                 ? handleSortBy(sorter.column.dataIndex, sorter.order)
-                : handleSortBy(0);
+                : handleSortBy(0)
+            }}
+            locale={{
+              filterConfirm: "Ok",
+              filterReset: "Reset",
+              emptyText: (
+                <Empty
+                  description={
+                    "There are no records with the selected filters. Please try again"
+                  }
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                />
+              )
             }}
           />
         </DndProvider>
       </div>
       <DeletionModal {...deletionModal} />
     </>
-  );
-};
+  )
+}
 
-export default React.memo(RecordsList);
+export default React.memo(RecordsList)

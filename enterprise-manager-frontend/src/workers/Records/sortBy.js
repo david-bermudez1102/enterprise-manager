@@ -1,6 +1,5 @@
-export const sortBy = (values, dataIndex, order) => {
-  console.log(values);
-  return !dataIndex
+export const sortBy = async (values, dataIndex, order) =>
+  !dataIndex
     ? order
       ? order === "ascend"
         ? [...values]
@@ -16,5 +15,4 @@ export const sortBy = (values, dataIndex, order) => {
       )
     : [...values].sort((a, b) =>
         (b[dataIndex] || "").localeCompare(a[dataIndex] || "")
-      );
-};
+      )

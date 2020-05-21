@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Resizable } from "react-resizable";
-import { useDrag, useDrop } from "react-dnd";
+import React, { useState } from "react"
+import { Resizable } from "react-resizable"
+import { useDrag, useDrop } from "react-dnd"
 
-const type = "DragableBodyColumn";
+const type = "DragableBodyColumn"
 
 const ResizeableTitle = props => {
   const {
@@ -13,33 +13,33 @@ const ResizeableTitle = props => {
     moveColumn,
     style,
     ...restProps
-  } = props;
-  const ref = React.useRef();
-  const [isResizing, setIsResizing] = useState(false);
+  } = props
+  const ref = React.useRef()
+  const [isResizing, setIsResizing] = useState(false)
   const [{ isOver, dropClassName }, drop] = useDrop({
     accept: type,
     collect: monitor => {
-      const { index: dragIndex } = monitor.getItem() || {};
+      const { index: dragIndex } = monitor.getItem() || {}
       if (dragIndex === index) {
-        return {};
+        return {}
       }
       return {
         isOver: monitor.isOver(),
         dropClassName:
-          dragIndex < index ? " drop-over-left" : " drop-over-right",
-      };
+          dragIndex < index ? " drop-over-left" : " drop-over-right"
+      }
     },
     drop: item => {
-      moveColumn(item.index, index);
-    },
-  });
+      moveColumn(item.index, index)
+    }
+  })
   const [, drag] = useDrag({
     item: { type, index },
     collect: monitor => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
-  drop(drag(ref));
+      isDragging: monitor.isDragging()
+    })
+  })
+  drop(drag(ref))
 
   if (!width) {
     return (
@@ -49,7 +49,7 @@ const ResizeableTitle = props => {
         className={`${className}${isOver ? dropClassName : ""}`}
         style={{ cursor: "move", ...style }}
       />
-    );
+    )
   }
   return (
     <Resizable
@@ -57,9 +57,9 @@ const ResizeableTitle = props => {
       height={0}
       handle={
         <span
-          className="react-resizable-handle"
+          className='react-resizable-handle'
           onClick={e => {
-            e.stopPropagation();
+            e.stopPropagation()
           }}
         />
       }
@@ -74,7 +74,7 @@ const ResizeableTitle = props => {
         style={{ cursor: "move", ...style }}
       />
     </Resizable>
-  );
-};
+  )
+}
 
-export default ResizeableTitle;
+export default ResizeableTitle

@@ -1,12 +1,18 @@
-import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { fetchRecords } from "../../../actions/recordActions";
-import { useRouteMatch } from "react-router-dom";
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { useEffect } from "react"
+import { fetchRecords } from "../../../actions/recordActions"
+import { useRouteMatch, useLocation } from "react-router-dom"
 
 const useRecords = props => {
-  const { resource, deleted } = props;
-  const match = useRouteMatch();
-  const dispatch = useDispatch();
+  const { resource, deleted } = props
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  queryParams.delete("page")
+
+  const restOfParams = queryParams.toString()
+  const withDateFilters = restOfParams.length > 0 ? true : false
+  const match = useRouteMatch()
+  const dispatch = useDispatch()
   const {
     recordFields,
     records,
@@ -14,7 +20,7 @@ const useRecords = props => {
     archivedValues,
     sortedRecords,
     sortedArchivedRecords,
-    values,
+    values
   } = useSelector(
     ({
       recordFields,
@@ -23,7 +29,7 @@ const useRecords = props => {
       archivedValues,
       sortedRecords,
       sortedArchivedRecords,
-      values,
+      values
     }) => ({
       recordFields,
       records,
@@ -31,18 +37,23 @@ const useRecords = props => {
       archivedValues,
       sortedRecords,
       sortedArchivedRecords,
-      values,
+      values
     }),
     shallowEqual
-  );
+  )
+
   useEffect(() => {
-    /* const lastRecord = Math.max(
-      ...records.filter(record => record.formId === resource.id).map(r => r.id),
-      0
-    ); // return the most recent record */
-    if (resource)
-      dispatch(fetchRecords(resource.organizationId, resource.id, deleted));
-  }, [dispatch, resource, deleted]);
+    if (resource && !withDateFilters)
+      dispatch(
+        fetchRecords(
+          resource.organizationId,
+          resource.id,
+          deleted,
+          withDateFilters,
+          restOfParams
+        )
+      )
+  }, [location.pathname])
 
   return {
     resource,
@@ -53,8 +64,8 @@ const useRecords = props => {
       : records[resource.id] || [],
     sortedRecords: deleted ? sortedArchivedRecords : sortedRecords,
     values: deleted ? archivedValues : values,
-    dispatch,
-  };
-};
+    dispatch
+  }
+}
 
-export default useRecords;
+export default useRecords

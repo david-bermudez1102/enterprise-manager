@@ -28,6 +28,8 @@ class RecordSerializer
       new_hash[:id] = value[:attributes][:recordId]
       new_hash[:formId] = value[:attributes][:formId]
       new_hash[value[:attributes][:recordFieldId]] = value[:attributes][:content]
+      new_hash[:createdAt] = object.created_at
+      new_hash[:updatedAt] = object.updated_at
       new_hash
     end.reduce({}, :merge)
   end

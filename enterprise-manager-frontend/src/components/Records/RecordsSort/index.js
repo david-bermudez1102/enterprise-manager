@@ -1,24 +1,23 @@
-import workerInstance from "../../../workers/workerActions";
+import workerInstance from "../../../workers/workerActions"
 import {
   setRecordsSortedBy,
-  setSortedRecords,
-} from "../../../actions/recordActions";
+  setSortedRecords
+} from "../../../actions/recordActions"
 
-const recordsSort = async (
+const recordsSort = (
   recordFieldId,
   order,
   resource,
   values,
   dispatch,
   deleted
-) => {
-  return await workerInstance
+) =>
+  workerInstance
     .handleSortBy(recordFieldId, order, resource, values)
     .then(({ id, recordFieldId, sortedRecords }) => {
-      dispatch(setRecordsSortedBy({ id, recordFieldId, order, deleted }));
+      dispatch(setRecordsSortedBy({ id, recordFieldId, order, deleted }))
       if (sortedRecords)
-        dispatch(setSortedRecords(sortedRecords, resource.id, deleted));
-    });
-};
+        dispatch(setSortedRecords(sortedRecords, resource.id, deleted))
+    })
 
-export default recordsSort;
+export default recordsSort

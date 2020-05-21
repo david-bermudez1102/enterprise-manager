@@ -7,6 +7,12 @@ require 'faker'
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-1000.times do
-  Record.create(form_id:1,values_attributes:[{record_field_id:1, content:Faker::Name.name}, {record_field_id:2, content:Faker::Name.last_name}])
+4.times do
+  form = Form.create(name:Faker::Team.name, organization: Organization.last)
+  field_1 = form.fields.create(name:"Name",field_type:"text")
+  field_2 = form.fields.create(name:"Last Name",field_type:"text")
+  1000.times do
+    Record.create(form_id:form.id,created_at:Faker::Date.between(from: 3.months.ago, to: Date.today),values_attributes:[{record_field_id:field_1.record_field_id, content:Faker::Name.name}, {record_field_id:field_2.record_field_id, content:Faker::Name.last_name}])
+  end
 end
+

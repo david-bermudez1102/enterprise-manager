@@ -1,36 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from "react"
 import {
   NavLink,
   useRouteMatch,
   useLocation,
-  useHistory,
-} from "react-router-dom";
-import { useSelector, shallowEqual } from "react-redux";
-import pluralize from "pluralize";
-import { Card, Badge, Row, Col, Popover, Menu, Button, Empty } from "antd";
+  useHistory
+} from "react-router-dom"
+import { useSelector, shallowEqual } from "react-redux"
+import pluralize from "pluralize"
+import { Card, Badge, Row, Col, Popover, Menu, Button, Empty } from "antd"
 import {
   EditOutlined,
   EllipsisOutlined,
   SettingOutlined,
   DeleteOutlined,
-  GroupOutlined,
-} from "@ant-design/icons";
-import Title from "antd/lib/typography/Title";
-import useModal from "../Modal/Hooks/useModal";
-import DeletionModal from "../Modal/DeletionModal";
-import { removeResource } from "../../actions/resourceActions";
-import AddResourceButton from "./AddResourceButton";
-import Statistics from "./Statistics";
+  GroupOutlined
+} from "@ant-design/icons"
+import Title from "antd/lib/typography/Title"
+import useModal from "../Modal/Hooks/useModal"
+import DeletionModal from "../Modal/DeletionModal"
+import { removeResource } from "../../actions/resourceActions"
+import AddResourceButton from "./AddResourceButton"
+import Statistics from "./Statistics"
 
 const ResourcesList = ({ loaded, loading }) => {
-  const location = useLocation();
-  const match = useRouteMatch();
-  const history = useHistory();
-  const { showModal, ...deletionModal } = useModal();
+  const location = useLocation()
+  const match = useRouteMatch()
+  const history = useHistory()
+  const { showModal, ...deletionModal } = useModal()
   const { resources } = useSelector(
     ({ resources }) => ({ resources }),
     shallowEqual
-  );
+  )
 
   useEffect(() => {
     if (
@@ -38,10 +38,10 @@ const ResourcesList = ({ loaded, loading }) => {
       location.pathname !== `${match.url}/new` &&
       loaded
     ) {
-      history.push(`${match.url}/new`);
+      history.push(`${match.url}/new`)
     }
     // eslint-disable-next-line
-  }, [resources, location, loaded]);
+  }, [resources, location, loaded])
 
   if (resources.length === 0)
     return (
@@ -50,7 +50,7 @@ const ResourcesList = ({ loaded, loading }) => {
           <AddResourceButton />
         </Empty>
       </Col>
-    );
+    )
   return (
     <Row gutter={[16, 16]}>
       {resources.map(resource => {
@@ -68,7 +68,7 @@ const ResourcesList = ({ loaded, loading }) => {
               style={{ width: "100%" }}
               title={
                 <Title level={3} style={{ marginBottom: 0 }}>
-                  <i className="fas fa-layer-group"></i> {resource.name}
+                  <i className='fas fa-layer-group'></i> {resource.name}
                 </Title>
               }
               actions={[
@@ -80,7 +80,7 @@ const ResourcesList = ({ loaded, loading }) => {
                     <GroupOutlined />
                   </Badge>
                 </NavLink>,
-                <SettingOutlined key="setting" />,
+                <SettingOutlined key='setting' />,
                 <NavLink to={`${match.url}/${resource.formAlias}/edit`}>
                   <EditOutlined
                     key={`${match.url}/${resource.formAlias}/edit`}
@@ -88,10 +88,10 @@ const ResourcesList = ({ loaded, loading }) => {
                 </NavLink>,
                 <Popover
                   content={
-                    <Menu mode="vertical">
-                      <Menu.Item key="1" title={"Delete resource"}>
+                    <Menu mode='vertical'>
+                      <Menu.Item key='1' title={"Delete resource"}>
                         <Button
-                          type="link"
+                          type='link'
                           icon={<DeleteOutlined />}
                           onClick={() =>
                             showModal({
@@ -103,7 +103,7 @@ const ResourcesList = ({ loaded, loading }) => {
                               action: removeResource(
                                 resource.organizationId,
                                 resource.id
-                              ),
+                              )
                             })
                           }
                           block
@@ -114,31 +114,31 @@ const ResourcesList = ({ loaded, loading }) => {
                       </Menu.Item>
                     </Menu>
                   }
-                  title="More Options"
+                  title='More Options'
                   style={{ position: "relative", zIndex: 1 }}
                   trigger={["click"]}>
-                  <EllipsisOutlined key="ellipsis" />
-                </Popover>,
+                  <EllipsisOutlined key='ellipsis' />
+                </Popover>
               ]}
               size={"small"}
               extra={
                 <NavLink to={`${match.url}/${resource.formAlias}`}>
                   <i
-                    className="fad fa-plus-circle"
+                    className='fad fa-plus-circle'
                     style={{ fontSize: "24px" }}></i>
                 </NavLink>
               }>
               <Card.Meta description={<Statistics resource={resource} />} />
             </Card>
           </Col>
-        );
+        )
       })}
       <Col flex={"auto"}>
         <AddResourceButton />
       </Col>
       <DeletionModal {...deletionModal} />
     </Row>
-  );
-};
+  )
+}
 
-export default React.memo(ResourcesList);
+export default React.memo(ResourcesList)

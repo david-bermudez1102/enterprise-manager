@@ -71,6 +71,7 @@
   "devDependencies": {
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.2",
+    "prettier": "2.0.5",
     "react-app-rewired": "^2.1.6",
     "worker-loader": "^2.0.0",
     "workerize-loader": "^1.1.0"

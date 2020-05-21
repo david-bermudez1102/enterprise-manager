@@ -1,5 +1,6 @@
-import workerInstance from "../workers/workerActions";
-import { remove, update, add } from "./fetchActions";
+import workerInstance from "../workers/workerActions"
+import { remove, update, add } from "./fetchActions"
+import { message } from "antd"
 
 export const addRecord = (record, organizationId, formId) => dispatch =>
   add(
@@ -10,20 +11,31 @@ export const addRecord = (record, organizationId, formId) => dispatch =>
     dispatch({
       type: "ADD_RECORD",
       record: resp.attributes,
-      formId,
-    });
-    dispatch({ type: "ADD_VALUES", values: resp.links.values });
+      formId
+    })
+    dispatch({ type: "ADD_VALUES", values: resp.links.values })
     dispatch({
       type: "UPDATE_RECORDS_COUNT",
       formId,
-      recordsCount: resp.attributes.recordsCount,
-    });
-  });
+      recordsCount: resp.attributes.recordsCount
+    })
+  })
 
-export const fetchRecords = (organizationId, formId, deleted) => {
-  //const query = offset ? `?offset=${offset}` : "";
+export const fetchRecords = (
+  organizationId,
+  formId,
+  deleted,
+  withDateFilters,
+  queryParams
+) => {
   return (dispatch, getState) => {
-    const { records, values, archivedRecords, archivedValues } = getState();
+    const {
+      records,
+      values,
+      archivedRecords,
+      archivedValues,
+      sortedRecords
+    } = getState()
     return workerInstance
       .fetchRecords(
         !deleted
@@ -31,36 +43,41 @@ export const fetchRecords = (organizationId, formId, deleted) => {
           : { records: archivedRecords, values: archivedValues },
         formId,
         organizationId,
-        deleted
+        deleted,
+        withDateFilters,
+        queryParams
       )
       .then(({ records, values }) => {
         if (deleted) {
-          dispatch({ type: "FETCH_ARCHIVED_RECORDS", records });
-          dispatch({ type: "FETCH_ARCHIVED_VALUES", values });
+          dispatch({ type: "FETCH_ARCHIVED_RECORDS", records })
+          dispatch({ type: "FETCH_ARCHIVED_VALUES", values })
         } else {
-          dispatch({ type: "FETCH_RECORDS", records });
-          dispatch({ type: "FETCH_VALUES", values });
+          dispatch({ type: "FETCH_RECORDS", records })
+          dispatch({ type: "FETCH_VALUES", values })
         }
-      });
-  };
-};
+        return { records, values }
+      })
+      .then(({ values }) => values[formId])
+      .catch(err => message.error(err.message))
+  }
+}
 
 export const setSortedRecords = (records, formId, deleted) => {
   return dispatch =>
     dispatch({
       type: !deleted ? "SET_SORTED_RECORDS" : "SET_SORTED_ARCHIVED_RECORDS",
       records,
-      formId,
-    });
-};
+      formId
+    })
+}
 
 export const setRecordsSortedBy = (resource, deleted) => {
   return dispatch =>
     dispatch({
       type: !deleted ? "SET_SORTED_BY" : "SET_ARCHIVED_SORTED_BY",
-      resource,
-    });
-};
+      resource
+    })
+}
 
 export const removeRecord = (organizationId, formId, id) => {
   return dispatch =>
@@ -73,27 +90,27 @@ export const removeRecord = (organizationId, formId, id) => {
       dispatch({
         type: "REMOVE_RECORD",
         id,
-        formId,
-      });
+        formId
+      })
       if (resp.archived) {
         dispatch({
           type: "ADD_ARCHIVED_RECORD",
           record: resp.attributes,
-          formId,
-        });
+          formId
+        })
         dispatch({
           type: "ADD_ARCHIVED_VALUES",
           values: resp.links.values,
-          formId,
-        });
+          formId
+        })
       }
       return dispatch({
         type: "UPDATE_RECORDS_COUNT",
         formId,
-        recordsCount: resp.records_count,
-      });
-    });
-};
+        recordsCount: resp.records_count
+      })
+    })
+}
 
 export const updateRecord = value => {
   return dispatch =>
@@ -102,5 +119,5 @@ export const updateRecord = value => {
       `/api/v1/organizations/${value.organizationId}/forms/${value.formId}/records/${value.recordId}`,
       value,
       { type: "UPDATE_VALUE", value }
-    );
-};
+    )
+}

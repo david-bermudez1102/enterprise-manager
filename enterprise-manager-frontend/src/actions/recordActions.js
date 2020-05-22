@@ -51,9 +51,11 @@ export const fetchRecords = (
         if (deleted) {
           dispatch({ type: "FETCH_ARCHIVED_RECORDS", records })
           dispatch({ type: "FETCH_ARCHIVED_VALUES", values })
+          dispatch({ type: "REMOVE_ARCHIBED_SORTED_BY", formId })
         } else {
           dispatch({ type: "FETCH_RECORDS", records })
           dispatch({ type: "FETCH_VALUES", values })
+          dispatch({ type: "REMOVE_SORTED_BY", formId })
         }
         return { records, values }
       })

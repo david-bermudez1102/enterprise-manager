@@ -1,7 +1,8 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { DatePicker } from "antd"
 import { useHistory, useLocation } from "react-router-dom"
 import moment from "moment"
+import { useDispatch } from "react-redux"
 
 const dateFormat = "MMMM YYYY"
 
@@ -10,6 +11,9 @@ const MonthYear = ({ filterByMonth }) => {
   const history = useHistory()
   const queryParams = new URLSearchParams(location.search)
   const [month, year] = (queryParams.get("month_year") || "").split("/")
+  const [value, setValue] = useState(
+    moment(month && year ? new Date(year, month - 1) : new Date(), dateFormat)
+  )
 
   const onChange = value => {
     history.push({
@@ -25,17 +29,18 @@ const MonthYear = ({ filterByMonth }) => {
   }
 
   useEffect(() => {
-    if ((month, year)) filterByMonth()
+    if (month && year) filterByMonth()
   }, [month, year])
 
-  const date = new Date()
+  useEffect(() => {
+    setValue(
+      moment(month && year ? new Date(year, month - 1) : new Date(), dateFormat)
+    )
+  }, [location])
 
   return (
     <DatePicker
-      defaultValue={moment(
-        new Date(year || date.getFullYear(), month - 1 || date.getMonth()),
-        dateFormat
-      )}
+      value={value}
       format={dateFormat}
       onChange={onChange}
       onOk={onOk}

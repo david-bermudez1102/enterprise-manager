@@ -17,7 +17,7 @@ const recordsSort = (
     .then(({ id, recordFieldId, sortedRecords }) => {
       dispatch(setRecordsSortedBy({ id, recordFieldId, order, deleted }))
       if (sortedRecords)
-        dispatch(setSortedRecords(sortedRecords, resource.id, deleted))
+        return dispatch(setSortedRecords(sortedRecords, resource.id, deleted))
     })
 
 export default recordsSort

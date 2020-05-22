@@ -17,7 +17,7 @@ const Records = props => {
             resource={resource}
             records={records}
             sortedRecords={sortedRecords[resource.id] || []}
-            values={values[resource.id] || []}
+            values={values}
             deleted={props.deleted}
           />
         ) : (

@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom"
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { filterByDateRange as filterByDateRangeProxy } from "../filterByDateRange"
 import { filterByMonth as filterByMonthProxy } from "../filterByMonth"
 
@@ -17,7 +17,6 @@ const useFilters = ({ dataSource, oldest, newest, action }) => {
         queryParams,
         setFilteredData
       )
-    else setFilteredData(null)
   }, [location])
 
   const filterByMonth = useCallback(() => {
@@ -32,7 +31,9 @@ const useFilters = ({ dataSource, oldest, newest, action }) => {
       )
   }, [location])
 
-  console.log(dataSource)
+  useEffect(() => {
+    if (queryParams.toString().length === 0) setFilteredData(null)
+  }, [location])
 
   return { filteredData, filterByDateRange, filterByMonth }
 }

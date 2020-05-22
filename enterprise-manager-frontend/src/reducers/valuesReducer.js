@@ -3,11 +3,8 @@ export const valuesReducer = (state = {}, action) => {
     case "ADD_VALUES":
       return {
         ...state,
-        [action.formId]: [
-          ...(state[action.formId] || []),
-          { ...action.values },
-        ],
-      };
+        [action.formId]: [...(state[action.formId] || []), { ...action.values }]
+      }
 
     case "ADD_VALUE":
       return {
@@ -16,11 +13,11 @@ export const valuesReducer = (state = {}, action) => {
           parseInt(value.id) === parseInt(action.value.id)
             ? {
                 ...value,
-                [action.value.recordFieldId]: action.value.content,
+                [action.value.recordFieldId]: action.value.content
               }
             : value
-        ),
-      };
+        )
+      }
 
     case "UPDATE_VALUE":
       return {
@@ -29,49 +26,46 @@ export const valuesReducer = (state = {}, action) => {
           parseInt(value.id) === parseInt(action.value.recordId)
             ? {
                 ...value,
-                [action.value.recordFieldId]: action.value.content,
+                [action.value.recordFieldId]: action.value.content
               }
             : value
-        ),
-      };
+        )
+      }
 
     case "FETCH_VALUES":
-      return action.values;
+      return action.values
     case "REMOVE_VALUES":
       return {
         ...state,
         [action.formId]: (state[action.formId] || []).filter(
           v => v.recordId !== action.recordId
-        ),
-      };
+        )
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}
 
 export const archivedValues = (state = {}, action) => {
   switch (action.type) {
     case "ADD_ARCHIVED_VALUES":
       return {
         ...state,
-        [action.formId]: [
-          ...(state[action.formId] || []),
-          { ...action.values },
-        ],
-      };
+        [action.formId]: [...(state[action.formId] || []), { ...action.values }]
+      }
 
     case "FETCH_ARCHIVED_VALUES":
-      return action.values;
+      return action.values
     case "REMOVE_ARCHIVED_VALUES":
       return {
         ...state,
         [action.formId]: (state[action.formId] || []).filter(
           v => v.recordId !== action.recordId
-        ),
-      };
+        )
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}

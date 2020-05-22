@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import { chunk } from "lodash"
 import { useLocation, useHistory, useRouteMatch } from "react-router-dom"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import workerInstance from "../../../workers/workerActions"
-import { setSortedRecords } from "../../../actions/recordActions"
 import chunkOfRecordsProxy from "./chunkOfRecordsProxy"
 import recordsSort from "../RecordsSort"
 
@@ -35,6 +33,7 @@ export const useChangePage = props => {
       mounted.current = true
     } else {
       if (!recordsSortedBy.some(r => r.id === resource.id)) {
+        setLoadingData(true)
         recordsSort(
           "listingId",
           "descend",
@@ -42,11 +41,11 @@ export const useChangePage = props => {
           filteredData || values,
           dispatch,
           props.deleted
-        )
+        ).then(() => setLoadingData(false))
       }
     }
     // eslint-disable-next-line
-  }, [recordsSortedBy, resource])
+  }, [recordsSortedBy, resource, filteredData, values])
 
   const [paginationLimit, setPaginationLimit] = useState(pagination.limit)
 

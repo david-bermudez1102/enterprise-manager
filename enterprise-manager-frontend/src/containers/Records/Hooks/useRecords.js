@@ -63,7 +63,9 @@ const useRecords = props => {
       ? archivedRecords[resource.id] || []
       : records[resource.id] || [],
     sortedRecords: deleted ? sortedArchivedRecords : sortedRecords,
-    values: deleted ? archivedValues : values,
+    values: deleted
+      ? archivedValues[resource.id] || []
+      : values[resource.id] || [],
     dispatch
   }
 }

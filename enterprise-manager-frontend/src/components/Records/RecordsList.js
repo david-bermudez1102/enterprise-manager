@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useChangePage } from "./hooks/useChangePage"
 import recordsSort from "./RecordsSort"
 import FilterOptions from "./RecordsFilter/FilterOptions/"
@@ -51,11 +51,15 @@ const RecordsList = props => {
     page,
     paginationLimit,
     loadingData
-  } = useChangePage({ ...props, filteredData, filteredRecords })
+  } = useChangePage({
+    ...props,
+    filteredData,
+    filteredRecords
+  })
 
   const { components, columns, rowSelection, totalSelected } = useRecordsList({
     recordFields,
-    values,
+    values: filteredRecords || sortedRecords,
     resource
   })
 
@@ -76,6 +80,11 @@ const RecordsList = props => {
     allRecordsRef.current.scrollIntoView()
     // eslint-disable-next-line
   }, [page, match])
+
+  useEffect(() => {
+    allRecordsRef.current.scrollIntoView()
+    // eslint-disable-next-line
+  }, [location])
 
   const onShowSizeChange = (current, pageSize) => {
     dispatch({
@@ -171,7 +180,7 @@ const RecordsList = props => {
             ]}
             dataSource={chunkOfRecords[page - 1]}
             pagination={false}
-            onChange={(pagination, filters, sorter, extra) => {
+            onChange={(pagination, filters, sorter) => {
               console.log(filters)
               filterRecords(filters)
               sorter.column

@@ -16,6 +16,12 @@ class RecordSerializer
     record.form.records_count
   end
 
+  attribute :current_month_records_count, if: Proc.new { |record, params|
+    params && !params[:current_month_records_count].nil?
+  } do |record|
+    record.form.current_month_records_count
+  end
+
   attribute :quickbooks_record_id do |obj|
     if obj.quickbooks_integration_record
       obj.quickbooks_integration_record.external_id

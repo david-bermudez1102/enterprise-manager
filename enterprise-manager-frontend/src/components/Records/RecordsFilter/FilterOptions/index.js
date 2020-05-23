@@ -1,8 +1,8 @@
-import React from "react";
-import DateRange from "./DateRange";
-import { Col, Row } from "antd";
-import MonthYear from "./MonthYear";
-import DateSelector from "./DateSelector";
+import React from "react"
+import DateRange from "./DateRange"
+import { Col, Row } from "antd"
+import MonthYear from "./MonthYear"
+import DateSelector from "./DateSelector"
 
 const FilterOptions = props => {
   return (
@@ -19,7 +19,7 @@ const FilterOptions = props => {
         </Col>
       </Row>
     </Col>
-  );
-};
+  )
+}
 
-export default React.memo(FilterOptions);
+export default React.memo(FilterOptions)

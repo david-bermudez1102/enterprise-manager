@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { DatePicker } from "antd"
+import { DatePicker, Form } from "antd"
 import { useHistory, useLocation } from "react-router-dom"
 import moment from "moment"
 const { RangePicker } = DatePicker
@@ -26,24 +26,29 @@ const DateRange = ({ filterByDateRange }) => {
   }
 
   useEffect(() => {
-    if (queryParams.get("date_range")) filterByDateRange()
-  }, [queryParams])
+    if (startDate && endDate) filterByDateRange()
+    // eslint-disable-next-line
+  }, [startDate, endDate])
 
   const date = new Date()
 
   return (
-    <RangePicker
-      defaultValue={[
-        moment(
-          startDate || new Date(date.getFullYear(), date.getMonth(), 1),
-          dateFormat
-        ),
-        moment(endDate || new Date(), dateFormat)
-      ]}
-      format={dateFormat}
-      onChange={onChange}
-      onOk={onOk}
-    />
+    <Form layout='vertical'>
+      <Form.Item label='Filter by date range'>
+        <RangePicker
+          defaultValue={[
+            moment(
+              startDate || new Date(date.getFullYear(), date.getMonth(), 1),
+              dateFormat
+            ),
+            moment(endDate || new Date(), dateFormat)
+          ]}
+          format={dateFormat}
+          onChange={onChange}
+          onOk={onOk}
+        />
+      </Form.Item>
+    </Form>
   )
 }
 

@@ -4,7 +4,7 @@ import {
   setSortedRecords
 } from "../../../actions/recordActions"
 
-const recordsSort = (
+const recordsSort = async (
   recordFieldId,
   order,
   resource,
@@ -12,7 +12,7 @@ const recordsSort = (
   dispatch,
   deleted
 ) =>
-  workerInstance
+  await workerInstance
     .handleSortBy(recordFieldId, order, resource, values)
     .then(({ id, recordFieldId, sortedRecords }) => {
       dispatch(setRecordsSortedBy({ id, recordFieldId, order, deleted }))

@@ -15,8 +15,8 @@ export const fetchRecords = (
       queryParams || "current_month=true"
     }${deleted ? `&deleted=true` : ""}`,
     {
-      credentials: "include",
-      mode: "same-origin"
+      cache: "no-cache",
+      credentials: "include"
     }
   )
     .then(handleErrors)

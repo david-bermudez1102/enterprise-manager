@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import { useChangePage } from "./hooks/useChangePage"
 import recordsSort from "./RecordsSort"
 import FilterOptions from "./RecordsFilter/FilterOptions/"
@@ -17,20 +17,20 @@ import useFilters from "../Filters/Hooks/useFilters"
 
 const RecordsList = props => {
   const dispatch = useDispatch()
-  const { sortedRecords, recordFields, values, resource } = props
+  const {
+    loadingInitialData,
+    sortedRecords,
+    recordFields,
+    values,
+    resource
+  } = props
   const { filteredRecords, filterRecords } = useFilterRecords({
     records: sortedRecords
   })
 
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
 
-  const { filteredData, ...filters } = useFilters({
-    dataSource: values,
-    oldest:
-      values.length > 0
-        ? values.reduce((r, o) => (o.createdAt < r.createdAt ? o : r)).createdAt
-        : undefined,
-    newest: resource.newestRecordDate,
+  const { loadingFilteredData, filteredData, ...filters } = useFilters({
     action: queryParams =>
       dispatch(
         fetchRecords(
@@ -81,11 +81,6 @@ const RecordsList = props => {
     // eslint-disable-next-line
   }, [page, match])
 
-  useEffect(() => {
-    allRecordsRef.current.scrollIntoView()
-    // eslint-disable-next-line
-  }, [location])
-
   const onShowSizeChange = (current, pageSize) => {
     dispatch({
       type: "SET_LIMIT",
@@ -104,8 +99,8 @@ const RecordsList = props => {
 
   return (
     <>
-      <div ref={allRecordsRef} style={{ maxWidth: "100%", overflowX: "auto" }}>
-        <Row style={{ height: "70px" }}>
+      <div ref={allRecordsRef} style={{ maxWidth: "100%" }}>
+        <Row gutter={[16, 16]}>
           <FilterOptions {...filters} />
           <Col span='auto'>
             <Pagination
@@ -134,8 +129,9 @@ const RecordsList = props => {
         </Row>
         <DndProvider backend={HTML5Backend}>
           <Table
+            style={{ overflowX: "auto" }}
             tableLayout={"auto"}
-            loading={loadingData}
+            loading={loadingInitialData || loadingData || loadingFilteredData}
             components={components}
             rowSelection={rowSelection}
             columns={[
@@ -185,7 +181,7 @@ const RecordsList = props => {
               filterRecords(filters)
               sorter.column
                 ? handleSortBy(sorter.column.dataIndex, sorter.order)
-                : handleSortBy(0)
+                : handleSortBy("listingId")
             }}
             locale={{
               filterConfirm: "Ok",

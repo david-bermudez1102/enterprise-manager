@@ -4,7 +4,7 @@ export const sortBy = async (values, dataIndex, order) =>
       ? order === "ascend"
         ? [...values]
         : [...values].reverse()
-      : [...values].reverse()
+      : [...values]
     : dataIndex === "listingId"
     ? order === "ascend"
       ? [...values].sort((a, b) => a.listingId - b.listingId)

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import capitalize from "capitalize"
 import ResizeableTitle from "../ResizableTitle"
 import RecordCell from "../RecordCell"
@@ -7,33 +7,39 @@ import { SearchOutlined } from "@ant-design/icons"
 import ColumnSearch from "../ColumnSearch"
 
 const useRecordsList = ({ recordFields, values, resource }) => {
-  const getColumnSearchProps = dataIndex => ({
-    filterDropdown: props => {
-      return <ColumnSearch {...props} dataIndex={dataIndex} values={values} />
-    },
-    filterIcon: filtered => (
-      <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
-    )
-  })
+  const getColumnSearchProps = useCallback(
+    dataIndex => ({
+      filterDropdown: props => (
+        <ColumnSearch {...props} dataIndex={dataIndex} values={values} />
+      ),
+      filterIcon: filtered => (
+        <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
+      )
+    }),
+    [values]
+  )
 
-  const getColumns = recordFields =>
-    recordFields.map((field, index) => ({
-      key: field.id,
-      ...getColumnSearchProps(field.id),
-      title: capitalize(field.name),
-      dataIndex: field.id,
-      sorter: true,
-      wordWrap: "break",
-      width: index < recordFields.length - 1 ? 200 : undefined,
-      ellipsis: true,
-      editable: true,
-      onCell: record => ({
-        record,
+  const getColumns = useCallback(
+    recordFields =>
+      recordFields.map((field, index) => ({
+        key: field.id,
+        ...getColumnSearchProps(field.id),
+        title: capitalize(field.name),
         dataIndex: field.id,
-        fieldType: field.fieldType,
-        organizationId: resource.organizationId
-      })
-    }))
+        sorter: true,
+        wordWrap: "break",
+        width: index < recordFields.length - 1 ? 200 : undefined,
+        ellipsis: true,
+        editable: true,
+        onCell: record => ({
+          record,
+          dataIndex: field.id,
+          fieldType: field.fieldType,
+          organizationId: resource.organizationId
+        })
+      })),
+    [getColumnSearchProps, resource.organizationId]
+  )
 
   const [state, setState] = useState({
     columns: getColumns(recordFields)
@@ -44,7 +50,7 @@ const useRecordsList = ({ recordFields, values, resource }) => {
 
   useEffect(() => {
     setState({ columns: getColumns(recordFields) })
-  }, [recordFields, values, resource])
+  }, [getColumns, recordFields])
 
   const handleResize = index => (e, { size }) => {
     const nextColumns = [...state.columns]
@@ -66,7 +72,12 @@ const useRecordsList = ({ recordFields, values, resource }) => {
     tmpColumns.splice(dragIndex, 1)
     tmpColumns.splice(hoverIndex, 0, dragColumn)
     setState({ columns: tmpColumns })
-    dispatch({ type: "SORT_RECORD_FIELDS", recordFields: tmpRecordFields })
+    console.log(tmpColumns)
+    dispatch({
+      type: "SORT_RECORD_FIELDS",
+      recordFields: tmpRecordFields,
+      formId: resource.id
+    })
   }
 
   const rowSelection = {

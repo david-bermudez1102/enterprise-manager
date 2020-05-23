@@ -3,7 +3,7 @@ export const valuesReducer = (state = {}, action) => {
     case "ADD_VALUES":
       return {
         ...state,
-        [action.formId]: [...(state[action.formId] || []), { ...action.values }]
+        [action.formId]: [{ ...action.values }, ...(state[action.formId] || [])]
       }
 
     case "ADD_VALUE":

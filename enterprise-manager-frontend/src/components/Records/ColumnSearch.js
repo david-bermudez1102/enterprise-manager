@@ -41,10 +41,7 @@ const ColumnSearch = ({
           style={{ width: 90 }}>
           Search
         </Button>
-        <Button
-          onClick={() => this.handleReset(clearFilters)}
-          size='small'
-          style={{ width: 90 }}>
+        <Button onClick={clearFilters} size='small' style={{ width: 90 }}>
           Reset
         </Button>
       </Space>

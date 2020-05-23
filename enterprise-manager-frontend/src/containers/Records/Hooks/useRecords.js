@@ -1,5 +1,5 @@
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { fetchRecords } from "../../../actions/recordActions"
 import { useRouteMatch, useLocation } from "react-router-dom"
 
@@ -8,9 +8,8 @@ const useRecords = props => {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   queryParams.delete("page")
-
+  const [loadingInitialData, setLoadingInitialData] = useState(false)
   const restOfParams = queryParams.toString()
-  const withDateFilters = restOfParams.length > 0 ? true : false
   const match = useRouteMatch()
   const dispatch = useDispatch()
   const {
@@ -43,19 +42,23 @@ const useRecords = props => {
   )
 
   useEffect(() => {
-    if (resource && !withDateFilters)
+    if (resource && restOfParams.length === 0) {
+      setLoadingInitialData(true)
       dispatch(
         fetchRecords(
           resource.organizationId,
           resource.id,
           deleted,
-          withDateFilters,
+          false,
           restOfParams
         )
-      )
-  }, [location.pathname])
+      ).then(() => setLoadingInitialData(false))
+    }
+    // eslint-disable-next-line
+  }, [location])
 
   return {
+    loadingInitialData,
     resource,
     match,
     recordFields,

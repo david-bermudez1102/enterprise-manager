@@ -13,39 +13,25 @@ export const useChangePage = props => {
     values,
     resource
   } = props
+
+  const dispatch = useDispatch()
   const location = useLocation()
   const history = useHistory()
   const match = useRouteMatch()
-  const dispatch = useDispatch()
   const mounted = useRef()
   const queryParams = new URLSearchParams(location.search)
+
   const { pagination, recordsSortedBy } = useSelector(
     ({ pagination, recordsSortedBy }) => ({ pagination, recordsSortedBy }),
     shallowEqual
   )
-  const getPayload = () => filteredRecords || sortedRecords
+  const getPayload = useCallback(() => filteredRecords || sortedRecords, [
+    filteredRecords,
+    sortedRecords
+  ])
 
   const [page, setPage] = useState(1)
   const [loadingData, setLoadingData] = useState(false)
-
-  useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true
-    } else {
-      if (!recordsSortedBy.some(r => r.id === resource.id)) {
-        setLoadingData(true)
-        recordsSort(
-          "listingId",
-          "descend",
-          resource,
-          filteredData || values,
-          dispatch,
-          props.deleted
-        ).then(() => setLoadingData(false))
-      }
-    }
-    // eslint-disable-next-line
-  }, [recordsSortedBy, resource, filteredData, values])
 
   const [paginationLimit, setPaginationLimit] = useState(pagination.limit)
 
@@ -54,24 +40,50 @@ export const useChangePage = props => {
   )
 
   useEffect(() => {
-    setLoadingData(true)
-    chunkOfRecordsProxy(getPayload(), paginationLimit)
-      .then(setChunkOfRecords)
-      .then(() => setLoadingData(false))
-  }, [filteredRecords, sortedRecords, paginationLimit])
+    if (!mounted.current) {
+      mounted.current = true
+    } else {
+      setLoadingData(true)
+      chunkOfRecordsProxy(getPayload(), paginationLimit)
+        .then(setChunkOfRecords)
+        .then(() => setLoadingData(false))
+    }
+  }, [getPayload, paginationLimit])
+
+  useEffect(() => {
+    if (
+      !recordsSortedBy.some(r => r.id === resource.id) &&
+      (filteredData || values)
+    ) {
+      setLoadingData(true)
+      recordsSort(
+        "listingId",
+        "descend",
+        resource,
+        filteredData || values,
+        dispatch,
+        props.deleted
+      )
+    }
+    // eslint-disable-next-line
+  }, [recordsSortedBy, resource, filteredData, values])
 
   const changePage = useCallback(() => {
     setLoadingData(true)
     chunkOfRecordsProxy(getPayload(), pagination.limit)
       .then(resp => {
         const currentValue = chunkOfRecords[page - 1][0]
+        const newQueryParams = new URLSearchParams(location.search)
+        if (newQueryParams.has("page")) newQueryParams.delete("page")
+
         setPaginationLimit(pagination.limit)
         setChunkOfRecords(resp)
-        history.replace(
-          `${location.pathname}?page=${
+        history.replace({
+          path: location.pathname,
+          search: `page=${
             resp.findIndex(e => e.some(y => y.id === currentValue.id)) + 1
-          }`
-        )
+          }&${newQueryParams.toString()}`
+        })
       })
       .then(() => setLoadingData(false))
     // eslint-disable-next-line
@@ -86,6 +98,7 @@ export const useChangePage = props => {
 
   useEffect(() => {
     if (pagination.limit !== paginationLimit) changePage()
+    // eslint-disable-next-line
   }, [pagination.limit, paginationLimit])
 
   useEffect(() => {

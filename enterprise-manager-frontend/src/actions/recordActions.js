@@ -13,7 +13,15 @@ export const addRecord = (record, organizationId, formId) => dispatch =>
       record: resp.attributes,
       formId
     })
-    dispatch({ type: "ADD_VALUES", values: resp.links.values })
+    dispatch({
+      type: "ADD_VALUES",
+      values: {
+        ...resp.links.values,
+        listingId: resp.attributes.currentMonthRecordsCount,
+        key: `recordValues${resp.id}`
+      },
+      formId
+    })
     dispatch({
       type: "UPDATE_RECORDS_COUNT",
       formId,
@@ -29,13 +37,7 @@ export const fetchRecords = (
   queryParams
 ) => {
   return (dispatch, getState) => {
-    const {
-      records,
-      values,
-      archivedRecords,
-      archivedValues,
-      sortedRecords
-    } = getState()
+    const { records, values, archivedRecords, archivedValues } = getState()
     return workerInstance
       .fetchRecords(
         !deleted
@@ -51,15 +53,14 @@ export const fetchRecords = (
         if (deleted) {
           dispatch({ type: "FETCH_ARCHIVED_RECORDS", records })
           dispatch({ type: "FETCH_ARCHIVED_VALUES", values })
-          dispatch({ type: "REMOVE_ARCHIBED_SORTED_BY", formId })
+          dispatch({ type: "REMOVE_ARCHIVED_SORTED_BY", formId })
         } else {
           dispatch({ type: "FETCH_RECORDS", records })
           dispatch({ type: "FETCH_VALUES", values })
           dispatch({ type: "REMOVE_SORTED_BY", formId })
         }
-        return { records, values }
+        return values[formId]
       })
-      .then(({ values }) => values[formId])
       .catch(err => message.error(err.message))
   }
 }

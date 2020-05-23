@@ -65,7 +65,7 @@ const ResourcesList = ({ loaded, loading }) => {
               hoverable
               activeTabKey={location.pathname}
               key={`resource_card_${resource.id}`}
-              style={{ width: "100%" }}
+              style={{ width: "100%", height: "100%" }}
               title={
                 <Title level={3} style={{ marginBottom: 0 }}>
                   <i className='fas fa-layer-group'></i> {resource.name}

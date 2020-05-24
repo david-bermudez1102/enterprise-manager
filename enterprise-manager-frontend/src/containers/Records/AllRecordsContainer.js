@@ -17,6 +17,7 @@ import { fetchFields } from "../../actions/fieldActions"
 import { fetchRecordFields } from "../../actions/recordFieldActions"
 import { PageHeader } from "antd"
 import useCrumbs from "../../components/Crumbs/hooks/useCrumbs"
+import MainPageHeader from "../../components/MainPageHeader"
 
 const AllRecordsContainer = () => {
   const location = useLocation()
@@ -47,33 +48,11 @@ const AllRecordsContainer = () => {
     }
   }, [resource, dispatch])
 
-  const crumbs = useCrumbs()
-  function itemRender(route, params, routes, paths) {
-    return routes.indexOf(route) === routes.length - 1 ? (
-      <span>{route.breadcrumbName}</span>
-    ) : (
-      <Link to={route.path}>{route.breadcrumbName}</Link>
-    )
-  }
-
-  console.log(location.pathname, crumbs)
   if (resources.length === 0)
     return <NoContent>There are no resources created yet!</NoContent>
 
   return (
     <>
-      <PageHeader
-        className='site-page-header'
-        title={
-          crumbs.find(crumb => crumb.path === location.pathname)
-            ? crumbs.find(crumb => crumb.path === location.pathname)
-                .breadcrumbName
-            : null
-        }
-        breadcrumb={{ routes: crumbs, itemRender }}
-        onBack={() => history.goBack()}
-        subTitle='This is a subtitle'
-      />
       <Switch>
         <Route
           path={`${match.url}/deleted`}

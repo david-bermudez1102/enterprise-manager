@@ -3,7 +3,8 @@ import {
   NavLink,
   useRouteMatch,
   useLocation,
-  useHistory
+  useHistory,
+  Link
 } from "react-router-dom"
 import { useSelector, shallowEqual } from "react-redux"
 import pluralize from "pluralize"
@@ -81,9 +82,9 @@ const ResourcesList = ({ loaded, loading }) => {
                       <GroupOutlined />
                     </Badge>
                   </NavLink>,
-                  <NavLink to={`${match.url}/${resource.formAlias}/settings`}>
+                  <Link to={`${match.url}/${resource.formAlias}/settings`}>
                     <SettingOutlined key='setting' />
-                  </NavLink>,
+                  </Link>,
                   <NavLink to={`${match.url}/${resource.formAlias}/edit`}>
                     <EditOutlined
                       key={`${match.url}/${resource.formAlias}/edit`}
@@ -125,13 +126,19 @@ const ResourcesList = ({ loaded, loading }) => {
                 ]}
                 size={"small"}
                 extra={
-                  <NavLink to={`${match.url}/${resource.formAlias}`}>
+                  <NavLink to={`${match.url}/${resource.formAlias}/new`}>
                     <i
                       className='fad fa-plus-circle'
                       style={{ fontSize: "24px" }}></i>
                   </NavLink>
                 }>
-                <Card.Meta description={<Statistics resource={resource} />} />
+                <Card.Meta
+                  description={<Statistics resource={resource} />}
+                  onClick={e => {
+                    history.push(`${match.url}/${resource.formAlias}`)
+                    e.stopPropagation()
+                  }}
+                />
               </Card>
             </Col>
           )

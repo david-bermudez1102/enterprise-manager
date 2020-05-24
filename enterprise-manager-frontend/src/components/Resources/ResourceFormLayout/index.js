@@ -1,12 +1,12 @@
-import React from "react";
-import { Col, Row, Divider } from "antd";
-import Title from "antd/lib/typography/Title";
-import ResourceForm from "../../ResourceCreator/ResourceForm";
-import { addResource, updateResource } from "../../../actions/resourceActions";
-import { useRouteMatch } from "react-router-dom";
+import React from "react"
+import { Col, Row, Divider } from "antd"
+import Title from "antd/lib/typography/Title"
+import ResourceForm from "../../ResourceCreator/ResourceForm"
+import { addResource, updateResource } from "../../../actions/resourceActions"
+import { useRouteMatch } from "react-router-dom"
 
 const ResourceFormLayout = ({ title, resource }) => {
-  const match = useRouteMatch();
+  const match = useRouteMatch()
   return (
     <Col span={24}>
       <Row
@@ -15,7 +15,7 @@ const ResourceFormLayout = ({ title, resource }) => {
         style={{ background: "#fff", height: "100%" }}>
         <Col xl={14} lg={16} md={24}>
           <Title level={3} style={{ marginBottom: 0, paddingTop: "1em" }}>
-            <i className="fas fa-layer-plus"></i> {title}
+            <i className='fas fa-layer-plus'></i> {title}
           </Title>
           <Divider />
           <ResourceForm
@@ -27,7 +27,7 @@ const ResourceFormLayout = ({ title, resource }) => {
         </Col>
       </Row>
     </Col>
-  );
-};
+  )
+}
 
-export default React.memo(ResourceFormLayout);
+export default React.memo(ResourceFormLayout)

@@ -38,7 +38,7 @@ const DeletedRecords = () => {
           <Records resource={resource} deleted />
         </Route>
       ) : null}
-      <Route path={match.url} component={RecordsResourcesList} />
+      <Route path={match.path} component={RecordsResourcesList} />
     </Switch>
   )
 }

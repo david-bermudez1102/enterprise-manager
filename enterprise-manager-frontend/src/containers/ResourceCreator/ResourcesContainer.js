@@ -6,9 +6,8 @@ import Resource from "../../components/Resources/Resource"
 import ResourceDelete from "../../components/Resources/ResourceDelete"
 import ConnectionsContainer from "../Connections/ConnectionsContainer"
 import Route from "../../Router/Route"
-import { Row, Col } from "antd"
+import { Row } from "antd"
 import ResourceFormLayout from "../../components/Resources/ResourceFormLayout/index.js"
-import ResourceSettings from "../../components/Resources/ResourceSettings"
 
 const ResourcesContainer = props => {
   const { loaded, loading } = props
@@ -20,10 +19,9 @@ const ResourcesContainer = props => {
   )
 
   const { organizationId } = match.params
-  const isFieldsPath = location.pathname.includes("fields")
 
   const path = matchPath(location.pathname, {
-    path: [`${match.path}/:formAlias/edit`, `${match.path}/:formAlias/settings`]
+    path: [`${match.path}/:formAlias/edit`, `${match.path}/:formAlias`]
   })
   const { params } = path || {}
   const { formAlias } = params || {}
@@ -38,14 +36,20 @@ const ResourcesContainer = props => {
   }, [formAlias])
 
   return (
-    <Row gutter={[16, 16]}>
-      <ResourcesList loaded={loaded} loading={loading} />
+    <Row
+      gutter={[16, 16]}
+      style={{
+        background: "#fff",
+        paddingLeft: "15px",
+        paddingRight: "15px",
+        margin: 0
+      }}>
       <Switch>
-        <Route path={`${match.path}/new`}>
+        <Route path={`${match.path}/new`} name={"New Resource"}>
           <ResourceFormLayout title={"Create Resource"} />
         </Route>
         {resource ? (
-          <Route path={`${match.path}/:formAlias/edit`}>
+          <Route path={`${match.path}/:formAlias/edit`} name={"Edit Resource"}>
             <ResourceFormLayout title={"Update Resource"} resource={resource} />
           </Route>
         ) : null}
@@ -65,15 +69,13 @@ const ResourcesContainer = props => {
         </Route>
         )} />
         {resource ? (
-          <Route path={`${match.url}/:formAlias/settings`}>
-            <ResourceSettings resource={resource} />
+          <Route path={`${match.path}/:formAlias`} name={resource.name}>
+            <Resource resource={resource} />
           </Route>
         ) : null}
-        {resources.length > 0 ? (
-          <Route path={`${match.path}/:formAlias`}>
-            <Resource isFieldsPath={isFieldsPath} />
-          </Route>
-        ) : null}
+        <Route path={match.url}>
+          <ResourcesList loaded={loaded} loading={loading} />
+        </Route>
       </Switch>
     </Row>
   )

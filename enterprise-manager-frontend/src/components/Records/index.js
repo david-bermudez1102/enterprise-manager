@@ -15,22 +15,20 @@ const Records = props => {
   } = useRecords(props)
   return (
     <Col span={24} order={24}>
-      <Card>
-        <RecordsOptions resource={resource} />
-        {records.length > 0 ? (
-          <RecordsList
-            recordFields={recordFields[resource.id] || []}
-            resource={resource}
-            records={records}
-            sortedRecords={sortedRecords[resource.id] || []}
-            values={values}
-            deleted={props.deleted}
-            loadingInitialData={loadingInitialData}
-          />
-        ) : (
-          <Empty description={"This resource doesn't have any records yet."} />
-        )}
-      </Card>
+      <RecordsOptions resource={resource} />
+      {records.length > 0 ? (
+        <RecordsList
+          recordFields={recordFields[resource.id] || []}
+          resource={resource}
+          records={records}
+          sortedRecords={sortedRecords[resource.id] || []}
+          values={values}
+          deleted={props.deleted}
+          loadingInitialData={loadingInitialData}
+        />
+      ) : (
+        <Empty description={"This resource doesn't have any records yet."} />
+      )}
     </Col>
   )
 }

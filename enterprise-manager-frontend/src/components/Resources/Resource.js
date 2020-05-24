@@ -4,9 +4,20 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { fetchFields } from "../../actions/fieldActions"
 import { fetchRecordFields } from "../../actions/recordFieldActions"
 import RecordsContainer from "../../containers/Records/RecordsContainer"
-import { useRouteMatch, useLocation } from "react-router-dom"
+import { useRouteMatch, useLocation, Switch, Link } from "react-router-dom"
+import Route from "../../Router/Route"
+import ResourceSettings from "./ResourceSettings"
+import ResourceShow from "./ResourceShow/index"
+import { Col } from "antd"
+import PageTabs from "../PageTabs"
+import { singular, plural } from "pluralize"
+import {
+  AppstoreAddOutlined,
+  TableOutlined,
+  FundViewOutlined
+} from "@ant-design/icons"
 
-const Resource = ({ isFieldsPath }) => {
+const Resource = () => {
   const location = useLocation()
   const match = useRouteMatch()
 
@@ -27,16 +38,63 @@ const Resource = ({ isFieldsPath }) => {
     }
   }, [resource, dispatch])
 
+  const tabs = [
+    {
+      path: `${match.url}/new`,
+      tab: (
+        <span>
+          <AppstoreAddOutlined />
+          New {singular(resource.name)}
+        </span>
+      )
+    },
+    {
+      path: `${match.url}/records`,
+      tab: (
+        <span>
+          <TableOutlined />
+          View All {plural(resource.name)}
+        </span>
+      )
+    },
+    {
+      path: `${match.url}/statistics`,
+      tab: (
+        <span>
+          <FundViewOutlined />
+          View Statistics
+        </span>
+      )
+    }
+  ]
+
   return resource ? (
     <>
-      <FieldsContainer
-        match={match}
-        organizationId={resource.organizationId}
-        resource={resource}
-        fields={fields[resource.id] || []}
-        location={location}
-      />
-      <RecordsContainer match={match} resource={resource} />
+      <Col span={24}>
+        <PageTabs tabs={tabs} />
+      </Col>
+      <Switch>
+        <Route path={`${match.path}/settings`} name={"Settings"}>
+          <ResourceSettings resource={resource} />
+        </Route>
+        <Route
+          path={`${match.path}/new`}
+          name={`New ${singular(resource.name)}`}>
+          <FieldsContainer
+            match={match}
+            organizationId={resource.organizationId}
+            resource={resource}
+            fields={fields[resource.id] || []}
+            location={location}
+          />
+        </Route>
+        <Route path={`${match.path}/records`} name={"All Records"}>
+          <RecordsContainer match={match} resource={resource} />
+        </Route>
+        <Route path={match.path}>
+          <ResourceShow resource={resource} />
+        </Route>
+      </Switch>
     </>
   ) : null
 }

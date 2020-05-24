@@ -1,17 +1,17 @@
-import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { Menu, Button, Avatar } from "antd";
-import defaultAvatar from "../../../default_user.png";
-import "./styles.scss";
+import React from "react"
+import { NavLink, useLocation } from "react-router-dom"
+import { Menu, Button, Avatar } from "antd"
+import defaultAvatar from "../../../default_user.png"
+import "./styles.scss"
 
-const { SubMenu } = Menu;
+const { SubMenu } = Menu
 
 const SidebarLinks = ({ links, session, collapsed }) => {
-  const location = useLocation();
+  const location = useLocation()
   return (
     <Menu
-      theme="dark"
-      mode="inline"
+      theme='dark'
+      mode='inline'
       style={{ position: "sticky", top: 0 }}
       selectedKeys={[location.pathname]}>
       <Menu.Item
@@ -26,7 +26,7 @@ const SidebarLinks = ({ links, session, collapsed }) => {
               style={{
                 display: "inline",
                 marginLeft: 5,
-                verticalAlign: "middle",
+                verticalAlign: "middle"
               }}>
               {session.currentUser.name}
             </div>
@@ -38,7 +38,7 @@ const SidebarLinks = ({ links, session, collapsed }) => {
         style={{
           height: 1,
           backgroundColor: "rgba(255, 255, 255, 0.1)",
-          margin: 0,
+          margin: 0
         }}
       />
       {links.map(link =>
@@ -46,7 +46,7 @@ const SidebarLinks = ({ links, session, collapsed }) => {
           <Menu.Item key={link.path}>
             <NavLink exact={link.exact} to={link.path}>
               <Button
-                type="link"
+                type='link'
                 style={{ textAlign: "left", padding: 0 }}
                 icon={link.icon}
                 ghost
@@ -66,7 +66,7 @@ const SidebarLinks = ({ links, session, collapsed }) => {
             title={
               <NavLink exact={link.exact} to={link.path}>
                 <Button
-                  type="link"
+                  type='link'
                   style={{ textAlign: "left", padding: 0 }}
                   icon={link.icon}
                   ghost
@@ -81,7 +81,7 @@ const SidebarLinks = ({ links, session, collapsed }) => {
                   <Button
                     icon={subLink.icon}
                     style={{ textAlign: "left", padding: 0 }}
-                    type="link"
+                    type='link'
                     ghost
                     block>
                     {subLink.text}
@@ -93,7 +93,7 @@ const SidebarLinks = ({ links, session, collapsed }) => {
         )
       )}
     </Menu>
-  );
-};
+  )
+}
 
-export default React.memo(SidebarLinks);
+export default React.memo(SidebarLinks)

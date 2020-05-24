@@ -1,65 +1,66 @@
-import React, { useState, useCallback, useEffect } from "react";
-import Field from "./Field";
-import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import { addRecord } from "../../../actions/recordActions";
-import { Link, useLocation } from "react-router-dom";
-import { Empty, Card, Button, Divider, Form, Row, Col } from "antd";
-import zohoBooksIcon from "../../../containers/ZohoBooks/favicon.ico";
-import Title from "antd/lib/typography/Title";
+import React, { useState, useCallback, useEffect } from "react"
+import Field from "./Field"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { addRecord } from "../../../actions/recordActions"
+import { Link, useLocation } from "react-router-dom"
+import { Empty, Card, Button, Divider, Form, Row, Col } from "antd"
+import zohoBooksIcon from "../../../containers/ZohoBooks/favicon.ico"
+import Title from "antd/lib/typography/Title"
 
-const pluralize = require("pluralize");
+const pluralize = require("pluralize")
 
 const FieldsList = props => {
-  const location = useLocation();
-  const { match, resource, fields } = props;
-  const [state, setState] = useState([]);
-  const recordFields = useSelector(s => s.recordFields, shallowEqual);
-  const dispatch = useDispatch();
-  const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
+  const location = useLocation()
+  const { match, resource, fields } = props
+  const [state, setState] = useState([])
+  const recordFields = useSelector(s => s.recordFields, shallowEqual)
+  const dispatch = useDispatch()
+  const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setState([]);
-  }, [resource]);
+    setState([])
+  }, [resource])
 
   const handleChange = newState => {
     setState([
       ...state.filter(v => v.recordFieldId !== newState.recordFieldId),
-      newState,
-    ]);
-  };
+      newState
+    ])
+  }
 
   const handleSubmit = useCallback(
     data => {
-      form.resetFields();
-      setLoading(true);
+      form.resetFields()
+      setLoading(true)
       dispatch(
         addRecord(
           { valuesAttributes: state },
           resource.organizationId,
           resource.id
         )
-      ).then(() => setLoading(false));
+      ).then(() => setLoading(false))
     },
     // eslint-disable-next-line
     [state]
-  );
+  )
 
   return (
     <Row justify={"center"} align={"middle"} style={{ background: "#fff" }}>
       <Col xl={14} lg={16} md={24}>
         <Card
+          bordered={false}
           activeTabKey={location.pathname}
           tabList={[
             {
               key: `${match.url}/fields/new`,
               tab: (
-                <Link to={`${match.url}/fields/new`} title="Add new field">
+                <Link to={`${match.url}/fields/new`} title='Add new field'>
                   <i
-                    className="fad fa-plus-circle"
+                    className='fad fa-plus-circle'
                     style={{ fontSize: "24px" }}></i>
                 </Link>
-              ),
+              )
             },
             {
               key: `${match.url}/records`,
@@ -68,25 +69,25 @@ const FieldsList = props => {
                   to={`${match.url}/records`}
                   title={`View all ${resource.name}`}>
                   <i
-                    className="fad fa-th-list"
+                    className='fad fa-th-list'
                     style={{ fontSize: "24px" }}></i>
                 </Link>
-              ),
+              )
             },
             {
               key: `${match.url}/connections/zoho/edit`,
               tab: (
                 <Link
                   to={`${match.url}/connections/zoho/edit`}
-                  title="Connect to Zoho Books">
+                  title='Connect to Zoho Books'>
                   <img
                     src={zohoBooksIcon}
                     style={{ width: "24px", marginTop: -10 }}
-                    alt="Connect with ZohoBooks"
+                    alt='Connect with ZohoBooks'
                   />
                 </Link>
-              ),
-            },
+              )
+            }
           ]}>
           <Card.Meta
             title={
@@ -98,13 +99,13 @@ const FieldsList = props => {
               name={`new_${resource.formAlias}`}
               form={form}
               onFinish={handleSubmit}
-              layout="vertical">
+              layout='vertical'>
               {fields
                 .filter(f => f)
                 .map(field => {
                   const recordField = (recordFields[resource.id] || []).find(
                     f => f.fieldId === field.id
-                  );
+                  )
                   return recordField ? (
                     <Field
                       key={field.key}
@@ -123,10 +124,10 @@ const FieldsList = props => {
                       match={match}
                       handleChange={handleChange}
                     />
-                  ) : null;
+                  ) : null
                 })}
               <Divider />
-              <Button type="primary" htmlType="submit" loading={loading}>
+              <Button type='primary' htmlType='submit' loading={loading}>
                 Create {pluralize.singular(resource.name)}
               </Button>
             </Form>
@@ -139,7 +140,7 @@ const FieldsList = props => {
         </Card>
       </Col>
     </Row>
-  );
-};
+  )
+}
 
-export default FieldsList;
+export default FieldsList

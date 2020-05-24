@@ -1,49 +1,51 @@
-import React from "react";
-import { Switch, Redirect } from "react-router-dom";
-import SideBar from "../../components/Home/SideBar/SideBar";
-import Navbar from "../../components/Navbar/Navbar";
-import LoginContainer from "../LoginContainer";
-import OrganizationContainer from "../OrganizationContainer";
-import AdminContainer from "../AdminContainer";
-import LogoutContainer from "../LogoutContainer";
-import AccountsContainer from "../Accounts/AccountsContainer";
-import ZohoBooks from "../ZohoBooks/ZohoBooks";
-import ResetPassword from "../../components/Accounts/ResetPassword";
-import Home from "../../components/Home";
-import useSession from "./Hooks/useSession";
-import { useSelector, shallowEqual } from "react-redux";
-import Route from "../../Router/Route";
-import NoMatch from "../../components/NoMatch";
-import useMatchedRoute from "../../components/NoMatch/useMatchedRoute";
-import { Layout, BackTop } from "antd";
+import React from "react"
+import { Switch, Redirect } from "react-router-dom"
+import SideBar from "../../components/Home/SideBar/SideBar"
+import Navbar from "../../components/Navbar/Navbar"
+import LoginContainer from "../LoginContainer"
+import OrganizationContainer from "../OrganizationContainer"
+import AdminContainer from "../AdminContainer"
+import LogoutContainer from "../LogoutContainer"
+import AccountsContainer from "../Accounts/AccountsContainer"
+import ZohoBooks from "../ZohoBooks/ZohoBooks"
+import ResetPassword from "../../components/Accounts/ResetPassword"
+import Home from "../../components/Home"
+import useSession from "./Hooks/useSession"
+import { useSelector, shallowEqual } from "react-redux"
+import Route from "../../Router/Route"
+import NoMatch from "../../components/NoMatch"
+import useMatchedRoute from "../../components/NoMatch/useMatchedRoute"
+import { Layout, BackTop } from "antd"
+import MainPageHeader from "../../components/MainPageHeader"
+import "./styles.scss"
 
-const { Content, Footer } = Layout;
+const { Content, Footer } = Layout
 
 const HomeContainer = () => {
   const { organizations, admins } = useSelector(
     ({ organizations, admins }) => ({ organizations, admins }),
     shallowEqual
-  );
-  const session = useSession();
-  const matchedRoute = useMatchedRoute();
+  )
+  const session = useSession()
+  const matchedRoute = useMatchedRoute()
 
-  if (organizations.length === 0) return <Redirect to="/organizations/new" />;
-  if (admins.length === 0) return <Redirect to="/accounts/new" />;
+  if (organizations.length === 0) return <Redirect to='/organizations/new' />
+  if (admins.length === 0) return <Redirect to='/accounts/new' />
   return (
     <Layout style={{ minHeight: "100%" }}>
       {session.isLoggedIn ? (
         <SideBar session={session} organizations={organizations} />
       ) : null}
-      <Layout className="site-layout">
+      <Layout>
         {organizations.length > 0 ? (
           <Navbar session={session} organizations={organizations} />
         ) : null}
         <Content
           style={{
-            margin: "16px 16px",
-            padding: 5,
-            position: "relative",
+            padding: "24px 24px",
+            positionpx: "relative"
           }}>
+          <MainPageHeader />
           {!matchedRoute && session.isLoggedIn ? (
             <NoMatch />
           ) : (
@@ -51,8 +53,8 @@ const HomeContainer = () => {
               <Route
                 path={`/organizations`}
                 component={OrganizationContainer}
-                title="Organizations"
-                name="Organizations"
+                title='Organizations'
+                name='Organizations'
               />
               <Route path={`/reset_password`} component={ResetPassword} />
               <Route path={`/login`} component={LoginContainer} />
@@ -61,6 +63,8 @@ const HomeContainer = () => {
               <Route
                 path={`/accounts`}
                 render={props => <AccountsContainer {...props} />}
+                title='Accounts'
+                name='Accounts'
               />
               <Route
                 path={`/auth/zohobooks/callback`}
@@ -74,7 +78,7 @@ const HomeContainer = () => {
                 )}
               />
               )
-              <Route exact path="/" name={"Home"} component={Home} />
+              <Route exact path='/' name={"Home"} component={Home} />
             </Switch>
           )}
         </Content>
@@ -85,11 +89,11 @@ const HomeContainer = () => {
             height: "48px",
             lineHeight: "48px",
             paddingTop: 0,
-            paddingBottom: 0,
+            paddingBottom: 0
           }}>{`${organizations[0].name} © 2020`}</Footer>
       </Layout>
     </Layout>
-  );
-};
+  )
+}
 
-export default React.memo(HomeContainer);
+export default React.memo(HomeContainer)

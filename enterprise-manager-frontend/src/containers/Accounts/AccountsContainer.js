@@ -1,43 +1,43 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from "react"
+import { connect } from "react-redux"
 import {
   fetchEmployees,
   fetchManagers,
   addManager,
   addEmployee,
   updateAccount,
-  removeAccount,
-} from "../../actions/accountActions";
-import { Switch } from "react-router-dom";
-import AccountForm from "../../components/Accounts/AccountForm";
-import { addAdmin } from "../../actions/adminActions";
-import AccountDelete from "../../components/Accounts/AccountDelete";
-import AccountDisable from "../../components/Accounts/AccountDisable.js";
-import AccountUnlock from "../../components/Accounts/AccountUnlock";
-import Route from "../../Router/Route";
-import AccountsFeed from "../../components/Accounts";
-import { Row, Col, Card } from "antd";
-import Title from "antd/lib/typography/Title";
-import { UserAddOutlined } from "@ant-design/icons";
-import AccountsList from "../../components/Accounts/AccountsList";
+  removeAccount
+} from "../../actions/accountActions"
+import { Switch } from "react-router-dom"
+import AccountForm from "../../components/Accounts/AccountForm"
+import { addAdmin } from "../../actions/adminActions"
+import AccountDelete from "../../components/Accounts/AccountDelete"
+import AccountDisable from "../../components/Accounts/AccountDisable.js"
+import AccountUnlock from "../../components/Accounts/AccountUnlock"
+import Route from "../../Router/Route"
+import AccountsFeed from "../../components/Accounts"
+import { Row, Col, Card } from "antd"
+import Title from "antd/lib/typography/Title"
+import { UserAddOutlined } from "@ant-design/icons"
+import AccountsList from "../../components/Accounts/AccountsList"
 
 class AccountsContainer extends Component {
   componentDidMount() {
-    const { admins, fetchEmployees, fetchManagers } = this.props;
+    const { admins, fetchEmployees, fetchManagers } = this.props
 
     admins.map(admin => {
-      fetchEmployees(admin.id);
-      return fetchManagers(admin.id);
-    });
+      fetchEmployees(admin.id)
+      return fetchManagers(admin.id)
+    })
   }
 
   componentDidUpdate(prevProps) {
-    const { admins, fetchEmployees, fetchManagers } = this.props;
+    const { admins, fetchEmployees, fetchManagers } = this.props
     if (prevProps.admins !== admins) {
       admins.map(admin => {
-        fetchEmployees(admin.id);
-        return fetchManagers(admin.id);
-      });
+        fetchEmployees(admin.id)
+        return fetchManagers(admin.id)
+      })
     }
   }
 
@@ -50,10 +50,10 @@ class AccountsContainer extends Component {
       addAdmin,
       updateAccount,
       removeAccount,
-      session,
-    } = this.props;
+      session
+    } = this.props
 
-    if (!session.isLoggedIn) return null;
+    if (!session.isLoggedIn) return null
     return (
       <Row gutter={16}>
         <Col lg={10}>
@@ -75,10 +75,11 @@ class AccountsContainer extends Component {
             ) : null}
             <Route
               path={`${match.path}/:accountId/edit`}
+              name={"Edit Account"}
               render={props => {
                 const account = accounts.find(
                   acc => acc.id === parseInt(props.match.params.accountId)
-                );
+                )
                 return account ? (
                   <Card
                     title={
@@ -94,7 +95,7 @@ class AccountsContainer extends Component {
                       adminId={session.currentUser.id}
                     />
                   </Card>
-                ) : null;
+                ) : null
               }}
             />
             <Route
@@ -102,10 +103,10 @@ class AccountsContainer extends Component {
               render={props => {
                 const account = accounts.find(
                   acc => acc.id === parseInt(props.match.params.accountId)
-                );
+                )
                 return account ? (
                   <AccountDisable url={match.path} account={account} />
-                ) : null;
+                ) : null
               }}
             />
             <Route
@@ -113,14 +114,15 @@ class AccountsContainer extends Component {
               render={props => {
                 const account = accounts.find(
                   acc => acc.id === parseInt(props.match.params.accountId)
-                );
+                )
                 return account ? (
                   <AccountUnlock url={match.path} account={account} />
-                ) : null;
+                ) : null
               }}
             />
             <Route
               path={`${match.path}/add`}
+              name={"Add Account"}
               render={props => (
                 <Card
                   title={
@@ -143,13 +145,13 @@ class AccountsContainer extends Component {
           </Switch>
         </Col>
       </Row>
-    );
+    )
   }
 }
 
 const mapStateToProps = ({ accounts, admins, session }) => {
-  return { accounts, admins, session };
-};
+  return { accounts, admins, session }
+}
 
 export default connect(mapStateToProps, {
   fetchEmployees,
@@ -158,5 +160,5 @@ export default connect(mapStateToProps, {
   addEmployee,
   addAdmin,
   updateAccount,
-  removeAccount,
-})(AccountsContainer);
+  removeAccount
+})(AccountsContainer)

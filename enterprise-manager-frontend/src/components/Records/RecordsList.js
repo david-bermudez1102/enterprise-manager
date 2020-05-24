@@ -76,11 +76,6 @@ const RecordsList = props => {
   const allRecordsRef = useRef()
   const { showModal, ...deletionModal } = useModal()
 
-  useEffect(() => {
-    allRecordsRef.current.scrollIntoView()
-    // eslint-disable-next-line
-  }, [page, match])
-
   const onShowSizeChange = (current, pageSize) => {
     dispatch({
       type: "SET_LIMIT",

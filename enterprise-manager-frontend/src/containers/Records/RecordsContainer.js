@@ -1,15 +1,15 @@
-import React from "react";
-import { Switch, useRouteMatch } from "react-router-dom";
-import RecordFieldDelete from "../../components/Records/RecordFieldDelete";
-import { removeRecordField } from "../../actions/recordFieldActions";
-import Route from "../../Router/Route";
-import { useDispatch } from "react-redux";
-import Records from "../../components/Records";
+import React from "react"
+import { Switch, useRouteMatch } from "react-router-dom"
+import RecordFieldDelete from "../../components/Records/RecordFieldDelete"
+import { removeRecordField } from "../../actions/recordFieldActions"
+import Route from "../../Router/Route"
+import { useDispatch } from "react-redux"
+import Records from "../../components/Records"
 
 const RecordsContainer = props => {
-  const { resource } = props;
-  const match = useRouteMatch();
-  const dispatch = useDispatch();
+  const { resource } = props
+  const match = useRouteMatch()
+  const dispatch = useDispatch()
 
   return (
     <Switch>
@@ -25,11 +25,11 @@ const RecordsContainer = props => {
           />
         )}
       />
-      <Route path={`${match.path}/records`}>
+      <Route path={match.path} name={"Records"}>
         <Records resource={resource} />
       </Route>
     </Switch>
-  );
-};
+  )
+}
 
-export default React.memo(RecordsContainer);
+export default React.memo(RecordsContainer)

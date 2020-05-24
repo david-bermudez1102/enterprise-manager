@@ -52,92 +52,96 @@ const ResourcesList = ({ loaded, loading }) => {
       </Col>
     )
   return (
-    <Row gutter={[16, 16]}>
-      {resources.map(resource => {
-        return (
-          <Col
-            xl={8}
-            lg={12}
-            md={24}
-            span={24}
-            key={`resource_listed_${resource.id}`}>
-            <Card
-              hoverable
-              activeTabKey={location.pathname}
-              key={`resource_card_${resource.id}`}
-              style={{ width: "100%", height: "100%" }}
-              title={
-                <Title level={3} style={{ marginBottom: 0 }}>
-                  <i className='fas fa-layer-group'></i> {resource.name}
-                </Title>
-              }
-              actions={[
-                <NavLink to={`${match.url}/${resource.formAlias}/records`}>
-                  <Badge
-                    count={resource.recordsCount}
-                    overflowCount={999}
-                    offset={[10, -3]}>
-                    <GroupOutlined />
-                  </Badge>
-                </NavLink>,
-                <SettingOutlined key='setting' />,
-                <NavLink to={`${match.url}/${resource.formAlias}/edit`}>
-                  <EditOutlined
-                    key={`${match.url}/${resource.formAlias}/edit`}
-                  />
-                </NavLink>,
-                <Popover
-                  content={
-                    <Menu mode='vertical'>
-                      <Menu.Item key='1' title={"Delete resource"}>
-                        <Button
-                          type='link'
-                          icon={<DeleteOutlined />}
-                          onClick={() =>
-                            showModal({
-                              title: `Delete resource ${pluralize(
-                                resource.name
-                              )}`,
-                              text:
-                                "All of the associated content will be deleted!",
-                              action: removeResource(
-                                resource.organizationId,
-                                resource.id
-                              )
-                            })
-                          }
-                          block
-                          ghost
-                          danger>
-                          Delete Resource
-                        </Button>
-                      </Menu.Item>
-                    </Menu>
-                  }
-                  title='More Options'
-                  style={{ position: "relative", zIndex: 1 }}
-                  trigger={["click"]}>
-                  <EllipsisOutlined key='ellipsis' />
-                </Popover>
-              ]}
-              size={"small"}
-              extra={
-                <NavLink to={`${match.url}/${resource.formAlias}`}>
-                  <i
-                    className='fad fa-plus-circle'
-                    style={{ fontSize: "24px" }}></i>
-                </NavLink>
-              }>
-              <Card.Meta description={<Statistics resource={resource} />} />
-            </Card>
-          </Col>
-        )
-      })}
-      <Col flex={"auto"}>
-        <AddResourceButton />
-      </Col>
-      <DeletionModal {...deletionModal} />
-    </Row>
+    <Col span={24}>
+      <Row gutter={[16, 16]}>
+        {resources.map(resource => {
+          return (
+            <Col
+              xl={8}
+              lg={12}
+              md={24}
+              span={24}
+              key={`resource_listed_${resource.id}`}>
+              <Card
+                hoverable
+                activeTabKey={location.pathname}
+                key={`resource_card_${resource.id}`}
+                style={{ width: "100%", height: "100%" }}
+                title={
+                  <Title level={3} style={{ marginBottom: 0 }}>
+                    <i className='fas fa-layer-group'></i> {resource.name}
+                  </Title>
+                }
+                actions={[
+                  <NavLink to={`${match.url}/${resource.formAlias}/records`}>
+                    <Badge
+                      count={resource.recordsCount}
+                      overflowCount={999}
+                      offset={[10, -3]}>
+                      <GroupOutlined />
+                    </Badge>
+                  </NavLink>,
+                  <NavLink to={`${match.url}/${resource.formAlias}/settings`}>
+                    <SettingOutlined key='setting' />
+                  </NavLink>,
+                  <NavLink to={`${match.url}/${resource.formAlias}/edit`}>
+                    <EditOutlined
+                      key={`${match.url}/${resource.formAlias}/edit`}
+                    />
+                  </NavLink>,
+                  <Popover
+                    content={
+                      <Menu mode='vertical'>
+                        <Menu.Item key='1' title={"Delete resource"}>
+                          <Button
+                            type='link'
+                            icon={<DeleteOutlined />}
+                            onClick={() =>
+                              showModal({
+                                title: `Delete resource ${pluralize(
+                                  resource.name
+                                )}`,
+                                text:
+                                  "All of the associated content will be deleted!",
+                                action: removeResource(
+                                  resource.organizationId,
+                                  resource.id
+                                )
+                              })
+                            }
+                            block
+                            ghost
+                            danger>
+                            Delete Resource
+                          </Button>
+                        </Menu.Item>
+                      </Menu>
+                    }
+                    title='More Options'
+                    style={{ position: "relative", zIndex: 1 }}
+                    trigger={["click"]}>
+                    <EllipsisOutlined key='ellipsis' />
+                  </Popover>
+                ]}
+                size={"small"}
+                extra={
+                  <NavLink to={`${match.url}/${resource.formAlias}`}>
+                    <i
+                      className='fad fa-plus-circle'
+                      style={{ fontSize: "24px" }}></i>
+                  </NavLink>
+                }>
+                <Card.Meta description={<Statistics resource={resource} />} />
+              </Card>
+            </Col>
+          )
+        })}
+        <Col flex={"auto"}>
+          <AddResourceButton />
+        </Col>
+        <DeletionModal {...deletionModal} />
+      </Row>
+    </Col>
   )
 }
 

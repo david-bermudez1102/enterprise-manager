@@ -130,7 +130,6 @@ const RecordsList = props => {
         <DndProvider backend={HTML5Backend}>
           <Table
             style={{ overflowX: "auto" }}
-            tableLayout={"auto"}
             loading={loadingInitialData || loadingData || loadingFilteredData}
             components={components}
             rowSelection={rowSelection}

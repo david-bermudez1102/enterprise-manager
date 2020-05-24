@@ -1,25 +1,37 @@
-import React from "react";
-import { Route as ReactRoute } from "react-router-dom";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { useEffect } from "react";
+import React from "react"
+import { Route as ReactRoute } from "react-router-dom"
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
+import { useEffect } from "react"
 
 function Route(props) {
-  const { routes } = useSelector(({ routes }) => ({ routes }), shallowEqual);
-  const { name, title, ...newProps } = props;
-  const dispatch = useDispatch();
+  const { routes } = useSelector(({ routes }) => ({ routes }), shallowEqual)
+  const { name, title, ...newProps } = props
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!routes.some(route => route.path === props.path))
-      dispatch({ type: "ADD_ROUTE", path: props.path, name, title });
+      dispatch({
+        type: "ADD_ROUTE",
+        path: props.path,
+        name,
+        title,
+        exact: props.exact
+      })
     else if (
       routes.some(route => route.path === props.path && route.name !== name) &&
       name
     )
-      dispatch({ type: "UPDATE_ROUTE", path: props.path, name, title });
+      dispatch({
+        type: "UPDATE_ROUTE",
+        path: props.path,
+        name,
+        title,
+        exact: props.exact
+      })
     // eslint-disable-next-line
-  }, [props.path]);
+  }, [props.path])
 
-  return <ReactRoute {...newProps} />;
+  return <ReactRoute {...newProps} />
 }
 
-export default React.memo(Route);
+export default React.memo(Route)

@@ -74,6 +74,7 @@ const OrganizationContainer = () => {
         <>
           <Route
             path={`${match.path}/:organizationId/settings`}
+            name={"Settings"}
             render={props => (
               <Settings
                 {...props}
@@ -85,13 +86,7 @@ const OrganizationContainer = () => {
           <Route
             path={`${match.path}/:organizationId/resources`}
             name={"Resources"}
-            render={props => (
-              <ResourcesContainer
-                {...props}
-                resources={resources}
-                loaded={loaded}
-              />
-            )}
+            render={props => <ResourcesContainer {...props} loaded={loaded} />}
           />
           <Route
             path={`${match.path}/:organizationId/records`}
@@ -109,4 +104,4 @@ const OrganizationContainer = () => {
   )
 }
 
-export default React.memo(OrganizationContainer)
+export default OrganizationContainer

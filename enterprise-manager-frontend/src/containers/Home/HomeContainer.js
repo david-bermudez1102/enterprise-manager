@@ -43,44 +43,41 @@ const HomeContainer = () => {
         <Content
           style={{
             padding: "24px 24px",
-            positionpx: "relative"
+            position: "relative"
           }}>
+          {!matchedRoute ? <NoMatch /> : null}
           <MainPageHeader />
-          {!matchedRoute && session.isLoggedIn ? (
-            <NoMatch />
-          ) : (
-            <Switch>
-              <Route
-                path={`/organizations`}
-                component={OrganizationContainer}
-                title='Organizations'
-                name='Organizations'
-              />
-              <Route path={`/reset_password`} component={ResetPassword} />
-              <Route path={`/login`} component={LoginContainer} />
-              <Route path={`/logout`} component={LogoutContainer} />
-              <Route path={"/accounts/new"} component={AdminContainer} />
-              <Route
-                path={`/accounts`}
-                render={props => <AccountsContainer {...props} />}
-                title='Accounts'
-                name='Accounts'
-              />
-              <Route
-                path={`/auth/zohobooks/callback`}
-                render={props => (
-                  <ZohoBooks
-                    {...props}
-                    session={session}
-                    redirectTo={`/organizations/${organizations[0].id}/settings/integrations/zoho_books/edit`}
-                    organization={organizations[0]}
-                  />
-                )}
-              />
-              )
-              <Route exact path='/' name={"Home"} component={Home} />
-            </Switch>
-          )}
+          <Switch>
+            <Route
+              path={`/organizations`}
+              component={OrganizationContainer}
+              title='Organizations'
+              name='Organizations'
+            />
+            <Route path={`/reset_password`} component={ResetPassword} />
+            <Route path={`/login`} component={LoginContainer} />
+            <Route path={`/logout`} component={LogoutContainer} />
+            <Route path={"/accounts/new"} component={AdminContainer} />
+            <Route
+              path={`/accounts`}
+              render={props => <AccountsContainer {...props} />}
+              title='Accounts'
+              name='Accounts'
+            />
+            <Route
+              path={`/auth/zohobooks/callback`}
+              render={props => (
+                <ZohoBooks
+                  {...props}
+                  session={session}
+                  redirectTo={`/organizations/${organizations[0].id}/settings/integrations/zoho_books/edit`}
+                  organization={organizations[0]}
+                />
+              )}
+            />
+            )
+            <Route exact path='/' name={"Home"} component={Home} />
+          </Switch>
         </Content>
         <BackTop visibilityHeight={100} />
         <Footer

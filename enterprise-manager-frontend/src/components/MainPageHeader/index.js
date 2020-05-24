@@ -15,6 +15,7 @@ const MainPageHeader = () => {
       <Link to={route.path}>{route.breadcrumbName}</Link>
     )
 
+  console.log(crumbs)
   return (
     <PageHeader
       style={{ paddingLeft: 0, paddingRight: 0 }}

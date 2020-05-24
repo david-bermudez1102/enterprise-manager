@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React from "react"
 import { useChangePage } from "./hooks/useChangePage"
 import recordsSort from "./RecordsSort"
 import FilterOptions from "./RecordsFilter/FilterOptions/"
@@ -73,7 +73,6 @@ const RecordsList = props => {
       props.deleted
     )
 
-  const allRecordsRef = useRef()
   const { showModal, ...deletionModal } = useModal()
 
   const onShowSizeChange = (current, pageSize) => {
@@ -94,7 +93,7 @@ const RecordsList = props => {
 
   return (
     <>
-      <div ref={allRecordsRef} style={{ maxWidth: "100%" }}>
+      <div style={{ maxWidth: "100%" }}>
         <Row gutter={[16, 16]}>
           <FilterOptions {...filters} />
           <Col span='auto'>

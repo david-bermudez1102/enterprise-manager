@@ -21,7 +21,7 @@ const ResourcesContainer = props => {
   const { organizationId } = match.params
 
   const path = matchPath(location.pathname, {
-    path: [`${match.path}/:formAlias/edit`, `${match.path}/:formAlias`]
+    path: [`${match.url}/:formAlias/edit`, `${match.url}/:formAlias`]
   })
   const { params } = path || {}
   const { formAlias } = params || {}
@@ -33,7 +33,7 @@ const ResourcesContainer = props => {
   useEffect(() => {
     setResource(resources.find(resource => resource.formAlias === formAlias))
     // eslint-disable-next-line
-  }, [formAlias])
+  }, [formAlias, resources])
 
   return (
     <Row
@@ -73,7 +73,7 @@ const ResourcesContainer = props => {
             <Resource resource={resource} />
           </Route>
         ) : null}
-        <Route path={match.url}>
+        <Route path={match.path}>
           <ResourcesList loaded={loaded} loading={loading} />
         </Route>
       </Switch>
@@ -81,4 +81,4 @@ const ResourcesContainer = props => {
   )
 }
 
-export default React.memo(ResourcesContainer)
+export default ResourcesContainer

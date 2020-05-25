@@ -45,17 +45,11 @@ const useRecords = props => {
     if (resource && restOfParams.length === 0) {
       setLoadingInitialData(true)
       dispatch(
-        fetchRecords(
-          resource.organizationId,
-          resource.id,
-          deleted,
-          false,
-          restOfParams
-        )
+        fetchRecords(resource.organizationId, resource.id, deleted)
       ).then(() => setLoadingInitialData(false))
     }
     // eslint-disable-next-line
-  }, [location])
+  }, [location.pathname, restOfParams])
 
   return {
     loadingInitialData,

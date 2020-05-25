@@ -12,6 +12,15 @@ class Record < ApplicationRecord
 
   accepts_nested_attributes_for :values
 
+  scope :with_query, -> (query) {
+    values = Value.arel_table
+    joins(:values).where(values[:content].matches("%#{query}%"))
+  }
+
+  scope :with_column_id, -> (column_id) {
+    joins(:values).where(values: {record_field_id:column_id})
+  }
+
   def generate_combined_field_value
     values.each do |value|
       if value.record_field.field_type == "combined_field"

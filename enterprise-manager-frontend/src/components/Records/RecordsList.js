@@ -95,7 +95,7 @@ const RecordsList = props => {
     <>
       <div style={{ maxWidth: "100%" }}>
         <Row gutter={[16, 16]}>
-          <FilterOptions {...filters} />
+          <FilterOptions {...filters} resource={resource} />
           <Col span='auto'>
             <Pagination
               {...{
@@ -131,6 +131,7 @@ const RecordsList = props => {
               {
                 title: "Actions",
                 dataIndex: "",
+                width: "150px",
                 key: "x",
                 render: (text, record) => (
                   <>
@@ -163,14 +164,14 @@ const RecordsList = props => {
                 key: `record_field_head_listing_id_${resource.id}`,
                 title: "#",
                 dataIndex: "listingId",
-                sorter: true
+                sorter: true,
+                width: "100px"
               },
               ...columns
             ]}
             dataSource={chunkOfRecords[page - 1]}
             pagination={false}
             onChange={(pagination, filters, sorter) => {
-              console.log(filters)
               filterRecords(filters)
               sorter.column
                 ? handleSortBy(sorter.column.dataIndex, sorter.order)

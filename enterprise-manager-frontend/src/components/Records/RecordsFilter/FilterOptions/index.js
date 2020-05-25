@@ -3,6 +3,7 @@ import DateRange from "./DateRange"
 import { Col, Row } from "antd"
 import MonthYear from "./MonthYear"
 import DateSelector from "./DateSelector"
+import SearchRecords from "./SearchRecords"
 
 const FilterOptions = props => {
   return (
@@ -16,6 +17,9 @@ const FilterOptions = props => {
         </Col>
         <Col>
           <DateSelector {...props} />
+        </Col>
+        <Col>
+          <SearchRecords {...props} />
         </Col>
       </Row>
     </Col>

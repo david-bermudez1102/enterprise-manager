@@ -1,6 +1,7 @@
 import workerInstance from "../workers/workerActions"
 import { remove, update, add } from "./fetchActions"
 import { message } from "antd"
+import { handleErrors } from "./handleErrors"
 
 export const addRecord = (record, organizationId, formId) => dispatch =>
   add(
@@ -124,3 +125,14 @@ export const updateRecord = value => {
       { type: "UPDATE_VALUE", value }
     )
 }
+
+export const searchRecords = (organizationId, formId, query) => dispatch =>
+  fetch(
+    `/api/v1/organizations/${organizationId}/forms/${formId}/records?query=${query}`,
+    {
+      credentials: "include"
+    }
+  )
+    .then(handleErrors)
+    .then(resp => resp.json())
+    .catch(console.log)

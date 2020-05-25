@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect } from "react"
 import { filterByDateRange as filterByDateRangeProxy } from "../filterByDateRange"
 import { filterByMonth as filterByMonthProxy } from "../filterByMonth"
 import { filterByDate as filterByDateProxy } from "../filterByDate"
+import { searchResult as searchResultProxy } from "../searchResult"
 
 const useFilters = ({ action }) => {
   const location = useLocation()
@@ -10,7 +11,7 @@ const useFilters = ({ action }) => {
   const [filteredData, setFilteredData] = useState(null)
   const [loadingFilteredData, setLoadingFilteredData] = useState(false)
 
-  const filters = ["date_range", "month_year", "date"]
+  const filters = ["date_range", "month_year", "date", "query"]
   const filterByDateRange = useCallback(() => {
     if (queryParams.get("date_range")) {
       setLoadingFilteredData(true)
@@ -50,6 +51,19 @@ const useFilters = ({ action }) => {
     // eslint-disable-next-line
   }, [location])
 
+  const searchResult = useCallback(() => {
+    if (queryParams.get("query")) {
+      setLoadingFilteredData(true)
+      searchResultProxy(
+        queryParams,
+        location,
+        action,
+        setFilteredData
+      ).then(() => setLoadingFilteredData(false))
+    }
+    // eslint-disable-next-line
+  }, [location])
+
   useEffect(() => {
     if (!filters.some(f => queryParams.toString().includes(f)))
       setFilteredData(null)
@@ -60,7 +74,8 @@ const useFilters = ({ action }) => {
     filteredData,
     filterByDateRange,
     filterByMonth,
-    filterByDate
+    filterByDate,
+    searchResult
   }
 }
 

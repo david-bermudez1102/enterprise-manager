@@ -27,9 +27,9 @@ class RecordsController < ApplicationController
   end
 
   def index
-    records = @form.records.order(:created_at).with_filters(filterable_params).where(is_deleted:@is_deleted).includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record)
+    records = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record).order(:created_at).with_filters(filterable_params).where(is_deleted:@is_deleted)
     if stale?(records, public:true)
-      serialized_data = RecordSerializer.new(records).serializable_hash[:data]
+      serialized_data = RecordSerializer.new(records.group(:id)).serializable_hash[:data]
       serialized_data.each.with_index(1) do |data, i| 
         data[:links][:values]["listingId"] = i
       end
@@ -83,6 +83,6 @@ class RecordsController < ApplicationController
   end
 
   def filterable_params
-    params.slice(:month_year, :from_date, :date_range, :current_month, :date)
+    params.slice(:month_year, :from_date, :date_range, :current_month, :date, :query, :column_id)
   end
 end

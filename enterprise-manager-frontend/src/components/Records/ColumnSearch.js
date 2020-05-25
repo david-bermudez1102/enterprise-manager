@@ -5,9 +5,7 @@ import workerInstance from "../../workers/workerActions"
 
 const ColumnSearch = ({
   setSelectedKeys,
-  selectedKeys,
   confirm,
-  filters,
   clearFilters,
   dataIndex,
   values

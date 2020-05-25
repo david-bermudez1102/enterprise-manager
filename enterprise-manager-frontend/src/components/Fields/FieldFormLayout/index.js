@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { Col, Row, Divider } from "antd";
-import FieldForm from "../FieldForm";
-import Title from "antd/lib/typography/Title";
-import { addField, updateField } from "../../../actions/fieldActions";
+import React, { useState, useEffect } from "react"
+import { Col, Row, Divider } from "antd"
+import FieldForm from "../FieldForm"
+import Title from "antd/lib/typography/Title"
+import { addField, updateField } from "../../../actions/fieldActions"
 import {
   addRecordField,
-  updateRecordField,
-} from "../../../actions/recordFieldActions";
-import { plural } from "pluralize";
-import { useRouteMatch, useLocation } from "react-router-dom";
-import { useSelector, shallowEqual } from "react-redux";
+  updateRecordField
+} from "../../../actions/recordFieldActions"
+import { plural } from "pluralize"
+import { useRouteMatch, useLocation } from "react-router-dom"
+import { useSelector, shallowEqual } from "react-redux"
 
 const FieldFormLayout = ({ organizationId, resource }) => {
-  const location = useLocation();
-  const match = useRouteMatch();
-  const { fields } = useSelector(({ fields }) => ({ fields }), shallowEqual);
+  const location = useLocation()
+  const match = useRouteMatch()
+  const { fields } = useSelector(({ fields }) => ({ fields }), shallowEqual)
   const [field, setField] = useState(
     (fields[resource.id] || []).find(
       field => field.id === parseInt(match.params.fieldId)
     )
-  );
+  )
   useEffect(() => {
     setField(
       (fields[resource.id] || []).find(
         field => field.id === parseInt(match.params.fieldId)
       )
-    );
+    )
     // eslint-disable-next-line
-  }, [location]);
+  }, [location])
 
   return (
-    <Col span={24}>
+    <Col span={24} xxl={12} xl={14} lg={12}>
       <Row justify={"center"} align={"middle"} style={{ background: "#fff" }}>
-        <Col xl={14} lg={16} md={24} style={{ padding: "10px 5px" }}>
+        <Col xxl={20} xl={22} lg={24} span={18} style={{ padding: "10px 5px" }}>
           <Title level={2}>
             {field
               ? `Edit Field "${field.name}"`
@@ -52,7 +52,7 @@ const FieldFormLayout = ({ organizationId, resource }) => {
         </Col>
       </Row>
     </Col>
-  );
-};
+  )
+}
 
-export default FieldFormLayout;
+export default FieldFormLayout

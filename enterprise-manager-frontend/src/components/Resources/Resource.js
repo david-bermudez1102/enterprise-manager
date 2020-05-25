@@ -14,7 +14,9 @@ import { singular, plural } from "pluralize"
 import {
   AppstoreAddOutlined,
   TableOutlined,
-  FundViewOutlined
+  FundViewOutlined,
+  SettingOutlined,
+  FormOutlined
 } from "@ant-design/icons"
 
 const Resource = () => {
@@ -65,6 +67,24 @@ const Resource = () => {
           View Statistics
         </span>
       )
+    },
+    {
+      path: `${match.url}/new/fields/new`,
+      tab: (
+        <span>
+          <FormOutlined />
+          Add Field
+        </span>
+      )
+    },
+    {
+      path: `${match.url}/settings`,
+      tab: (
+        <span>
+          <SettingOutlined />
+          Settings
+        </span>
+      )
     }
   ]
 
@@ -77,9 +97,11 @@ const Resource = () => {
         <Route path={`${match.path}/settings`} name={"Settings"}>
           <ResourceSettings resource={resource} />
         </Route>
-        <Route
-          path={`${match.path}/new`}
-          name={`New ${singular(resource.name)}`}>
+
+        <Route path={`${match.path}/records`} name={"All Records"}>
+          <RecordsContainer match={match} resource={resource} />
+        </Route>
+        <Route path={`${match.path}`}>
           <FieldsContainer
             match={match}
             organizationId={resource.organizationId}
@@ -88,13 +110,10 @@ const Resource = () => {
             location={location}
           />
         </Route>
-        <Route path={`${match.path}/records`} name={"All Records"}>
-          <RecordsContainer match={match} resource={resource} />
-        </Route>
-        <Route path={match.path}>
-          <ResourceShow resource={resource} />
-        </Route>
       </Switch>
+      <Route exact path={match.path}>
+        <ResourceShow resource={resource} />
+      </Route>
     </>
   ) : null
 }

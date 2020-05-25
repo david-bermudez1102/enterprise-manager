@@ -29,6 +29,8 @@ const useMatchedRoute = () => {
     // eslint-disable-next-line
   }, [location])
 
+  console.log(routes)
+
   return matched
 }
 

@@ -47,15 +47,18 @@ const FieldsList = props => {
 
   return (
     <Row justify={"center"} align={"middle"} style={{ background: "#fff" }}>
-      <Col xl={14} lg={16} md={24}>
+      <Col
+        {...(location.pathname !== `${match.url}/new`
+          ? { xxl: 20, xl: 24, lg: 24, span: 18 }
+          : { span: 24, md: 18, lg: 14, xl: 13, xxl: 12 })}>
         <Card
           bordered={false}
           activeTabKey={location.pathname}
           tabList={[
             {
-              key: `${match.url}/fields/new`,
+              key: `${match.url}/new/fields/new`,
               tab: (
-                <Link to={`${match.url}/fields/new`} title='Add new field'>
+                <Link to={`${match.url}/new/fields/new`} title='Add new field'>
                   <i
                     className='fad fa-plus-circle'
                     style={{ fontSize: "24px" }}></i>

@@ -1,22 +1,25 @@
-import React from "react"
+import React, { useState } from "react"
 import { useChangePage } from "./hooks/useChangePage"
 import recordsSort from "./RecordsSort"
 import FilterOptions from "./RecordsFilter/FilterOptions/"
-import { Table, Pagination, Row, Col, Button, Empty } from "antd"
+import { Table, Pagination, Row, Col, Empty } from "antd"
 import useRecordsList from "./hooks/useRecordsList"
 import { DndProvider } from "react-dnd"
 import HTML5Backend from "react-dnd-html5-backend"
 import { useFilterRecords } from "./hooks/useFilterRecords"
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons"
-import { Link } from "react-router-dom"
-import DeletionModal from "../Modal/DeletionModal"
-import { removeRecord, fetchRecords } from "../../actions/recordActions"
-import { useSelector, shallowEqual, useDispatch } from "react-redux"
-import useModal from "../Modal/Hooks/useModal"
+import { fetchRecords } from "../../actions/recordActions"
+import { useDispatch } from "react-redux"
 import useFilters from "../Filters/Hooks/useFilters"
+import RecordOptions from "./RecordOptions"
+import DeletionModal from "../Modal/DeletionModal"
+import RecordPreview from "./RecordPreview"
+import useModal from "../Modal/Hooks/useModal"
 
 const RecordsList = props => {
   const dispatch = useDispatch()
+  const { showModal, ...deletionModal } = useModal()
+  const [record, setRecord] = useState()
+
   const {
     loadingInitialData,
     sortedRecords,
@@ -27,8 +30,6 @@ const RecordsList = props => {
   const { filteredRecords, filterRecords } = useFilterRecords({
     records: sortedRecords
   })
-
-  const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
 
   const { loadingFilteredData, filteredData, ...filters } = useFilters({
     action: queryParams =>
@@ -45,7 +46,6 @@ const RecordsList = props => {
 
   const {
     location,
-    match,
     history,
     chunkOfRecords,
     page,
@@ -72,8 +72,6 @@ const RecordsList = props => {
       dispatch,
       props.deleted
     )
-
-  const { showModal, ...deletionModal } = useModal()
 
   const onShowSizeChange = (current, pageSize) => {
     dispatch({
@@ -134,30 +132,11 @@ const RecordsList = props => {
                 width: "150px",
                 key: "x",
                 render: (text, record) => (
-                  <>
-                    <Link to={"edit"}>
-                      <Button type='link' style={{ padding: 0 }}>
-                        <EditOutlined />
-                      </Button>
-                    </Link>
-                    <Button
-                      type='link'
-                      style={{ padding: 0 }}
-                      onClick={() =>
-                        showModal({
-                          title: `Delete the selected record?`,
-                          text:
-                            "All of the associated content will be deleted!",
-                          action: removeRecord(
-                            session.currentUser.organizationId,
-                            record.formId,
-                            record.id
-                          )
-                        })
-                      }>
-                      <DeleteOutlined />
-                    </Button>
-                  </>
+                  <RecordOptions
+                    record={record}
+                    showModal={showModal}
+                    setRecord={setRecord}
+                  />
                 )
               },
               {
@@ -193,6 +172,12 @@ const RecordsList = props => {
         </DndProvider>
       </div>
       <DeletionModal {...deletionModal} />
+      <RecordPreview
+        resource={resource}
+        record={record}
+        recordFields={recordFields}
+        setRecord={setRecord}
+      />
     </>
   )
 }

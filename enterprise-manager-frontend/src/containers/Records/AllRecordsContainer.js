@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react"
-import {
-  Switch,
-  useLocation,
-  useRouteMatch,
-  matchPath,
-  useHistory,
-  Link
-} from "react-router-dom"
+import { Switch, useLocation, useRouteMatch, matchPath } from "react-router-dom"
 import RecordsResourcesList from "../../components/Records/RecordsPerResource/RecordsResourcesList"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { NoContent } from "../../components/NoContent"
@@ -15,14 +8,10 @@ import Records from "../../components/Records"
 import DeletedRecords from "../../components/Records/DeletedRecords.js"
 import { fetchFields } from "../../actions/fieldActions"
 import { fetchRecordFields } from "../../actions/recordFieldActions"
-import { PageHeader } from "antd"
-import useCrumbs from "../../components/Crumbs/hooks/useCrumbs"
-import MainPageHeader from "../../components/MainPageHeader"
 
 const AllRecordsContainer = () => {
   const location = useLocation()
   const match = useRouteMatch()
-  const history = useHistory()
   const dispatch = useDispatch()
   const path = matchPath(location.pathname, {
     path: `${match.path}/:formAlias`

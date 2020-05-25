@@ -2,7 +2,7 @@ import React from "react"
 import useRecords from "../../containers/Records/Hooks/useRecords"
 import RecordsOptions from "./RecordsOptions"
 import RecordsList from "./RecordsList"
-import { Empty, Col, Card } from "antd"
+import { Empty, Col } from "antd"
 
 const Records = props => {
   const { resource } = props

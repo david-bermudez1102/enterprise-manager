@@ -67,6 +67,7 @@ const useFilters = ({ action }) => {
   useEffect(() => {
     if (!filters.some(f => queryParams.toString().includes(f)))
       setFilteredData(null)
+    // eslint-disable-next-line
   }, [location])
 
   return {

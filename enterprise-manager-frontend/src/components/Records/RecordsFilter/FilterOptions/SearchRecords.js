@@ -88,6 +88,7 @@ const SearchRecords = ({ searchResult, resource }) => {
 
   useEffect(() => {
     handleSearch(value)
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {

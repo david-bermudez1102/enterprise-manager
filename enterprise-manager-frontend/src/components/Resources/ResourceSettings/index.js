@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Row, Col, List, Switch } from "antd"
-import { useRouteMatch, useLocation } from "react-router-dom"
 import { FieldTimeOutlined } from "@ant-design/icons"
 
 const ResourceSettings = ({ resource }) => {
-  const location = useLocation()
-  const match = useRouteMatch()
-
   return (
     <Col span={24}>
       <Row gutter={[16, 16]} justify={"center"} align={"middle"}>

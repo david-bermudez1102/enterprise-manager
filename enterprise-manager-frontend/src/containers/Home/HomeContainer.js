@@ -40,12 +40,13 @@ const HomeContainer = () => {
         {organizations.length > 0 ? (
           <Navbar session={session} organizations={organizations} />
         ) : null}
+        {!matchedRoute ? <NoMatch /> : null}
         <Content
           style={{
             padding: "24px 24px",
-            position: "relative"
+            position: "relative",
+            display: !matchedRoute ? "none" : undefined
           }}>
-          {!matchedRoute ? <NoMatch /> : null}
           <MainPageHeader />
           <Switch>
             <Route

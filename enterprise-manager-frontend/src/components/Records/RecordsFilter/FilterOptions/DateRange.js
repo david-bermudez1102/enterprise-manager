@@ -1,24 +1,29 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { DatePicker, Form } from "antd"
 import { useHistory, useLocation } from "react-router-dom"
 import moment from "moment"
 const { RangePicker } = DatePicker
 
-const dateFormat = "MM/DD/YYYY"
+const dateFormat = "MMMM Do YYYY"
 
-const DateRange = ({ filterByDateRange }) => {
+const DateRange = ({ filterByDateRange, resource, setCurrentFilteredBy }) => {
   const location = useLocation()
   const history = useHistory()
   const queryParams = new URLSearchParams(location.search)
   const [startDate, endDate] = (queryParams.get("date_range") || "").split("-")
 
+  const date = new Date()
+  const [value, setValue] = useState([
+    moment(startDate || new Date(date.getFullYear(), date.getMonth(), 1)),
+    moment(endDate || new Date(resource.lastRecordDate))
+  ])
+
   const onChange = (value, dateString) => {
-    history.push({
-      path: `${location.pathname}`,
-      search: `${location.search.split("&")[0]}&date_range=${dateString.join(
-        "-"
-      )}`
-    })
+    if (value)
+      history.push({
+        path: `${location.pathname}`,
+        search: `date_range=${value.map(d => d.format("MM/DD/YYYY")).join("-")}`
+      })
   }
 
   const onOk = value => {
@@ -30,19 +35,30 @@ const DateRange = ({ filterByDateRange }) => {
     // eslint-disable-next-line
   }, [startDate, endDate])
 
-  const date = new Date()
+  useEffect(() => {
+    setValue([
+      moment(startDate || new Date(date.getFullYear(), date.getMonth(), 1)),
+      moment(endDate || new Date(resource.lastRecordDate))
+    ])
+    // eslint-disable-next-line
+  }, [location])
+
+  useEffect(() => {
+    if (queryParams.get("date_range"))
+      setCurrentFilteredBy(
+        `from ${value[0].format(dateFormat)} to ${value[1].format(dateFormat)}`
+      )
+  }, [value])
 
   return (
     <Form layout='vertical'>
-      <Form.Item label='Filter by date range'>
+      <Form.Item help='Filter by date range'>
         <RangePicker
-          defaultValue={[
-            moment(
-              startDate || new Date(date.getFullYear(), date.getMonth(), 1),
-              dateFormat
-            ),
-            moment(endDate || new Date(), dateFormat)
-          ]}
+          style={{
+            border: startDate && endDate ? "1px solid #1890ff" : undefined
+          }}
+          allowClear={false}
+          value={value}
           format={dateFormat}
           onChange={onChange}
           onOk={onOk}

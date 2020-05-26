@@ -6,6 +6,7 @@ class Account < ApplicationRecord
   validates :password, presence: true, length: { in: 6..50 }, format: { without: /\s/ }, :on => :create
   has_one_attached :avatar
   has_one :activation, dependent: :destroy
+  has_many :records, dependent: :destroy
   has_secure_password
 
   def avatar_path

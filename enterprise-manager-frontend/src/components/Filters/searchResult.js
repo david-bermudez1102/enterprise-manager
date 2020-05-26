@@ -6,7 +6,7 @@ export const searchResult = async (
 ) => {
   const query = queryParams.get("query") || ""
   const columnId = queryParams.get("column_id")
-  console.log(columnId, query)
+
   return action(location.search.replace("?", "")).then(resp =>
     setFilteredData(
       columnId

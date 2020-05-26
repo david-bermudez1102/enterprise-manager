@@ -1,6 +1,7 @@
 class Record < ApplicationRecord
   include FilterableConcern
   belongs_to :form, counter_cache: true, touch: true
+  belongs_to :account
   has_many :values, dependent: :destroy
   has_one :zoho_integration_record, class_name:"IntegrationRecord", foreign_key: "zoho_integration_record_id", dependent: :delete
   has_one :quickbooks_integration_record, class_name:"IntegrationRecord", foreign_key: "quickbooks_integration_record_id", dependent: :delete

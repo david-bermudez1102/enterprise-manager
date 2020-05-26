@@ -5,7 +5,7 @@ import moment from "moment"
 
 const dateFormat = "MM/DD/YYYY"
 
-const DateSelector = ({ filterByDate }) => {
+const DateSelector = ({ filterByDate, setCurrentFilteredBy }) => {
   const location = useLocation()
   const history = useHistory()
   const queryParams = new URLSearchParams(location.search)
@@ -16,13 +16,9 @@ const DateSelector = ({ filterByDate }) => {
     if (dateString.length > 0)
       history.push({
         path: `${location.pathname}`,
-        search: `${location.search.split("&")[0]}&date=${dateString}`
+        search: `date=${dateString}`
       })
-    else
-      history.push({
-        path: `${location.pathname}`,
-        search: `${location.search.split("&")[0]}`
-      })
+    else history.push(location.pathname)
   }
 
   const onOk = value => {
@@ -40,13 +36,18 @@ const DateSelector = ({ filterByDate }) => {
   }, [date])
 
   useEffect(() => {
-    // eslint-disable-next-line
-  }, [location])
+    if (queryParams.get("date"))
+      setCurrentFilteredBy(`on ${value.format(dateFormat)}`)
+  }, [value])
 
   return (
     <Form layout='vertical'>
-      <Form.Item label='Filter by specific date'>
+      <Form.Item help='Filter by specific date'>
         <DatePicker
+          style={{
+            border: date ? "1px solid #1890ff" : undefined
+          }}
+          allowClear={false}
           value={value}
           format={dateFormat}
           onChange={onChange}

@@ -4,7 +4,7 @@ import { useHistory, useLocation } from "react-router-dom"
 import { searchRecords } from "../../../../actions/recordActions"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 
-const SearchRecords = ({ searchResult, resource }) => {
+const SearchRecords = ({ searchResult, resource, setCurrentFilteredBy }) => {
   const location = useLocation()
   const history = useHistory()
   const queryParams = new URLSearchParams(location.search)
@@ -96,19 +96,34 @@ const SearchRecords = ({ searchResult, resource }) => {
     // eslint-disable-next-line
   }, [query, columnId])
 
+  useEffect(() => {
+    if (query && !columnId) setCurrentFilteredBy(`results for "${query}"`)
+    else if (query && columnId) {
+      setCurrentFilteredBy(
+        `results for "${query}" and column "${
+          recordFields[resource.id].find(f => f.id === parseInt(columnId)).name
+        }"`
+      )
+      console.log(query, columnId)
+    }
+  }, [query, columnId])
+
   return (
     <Form layout='vertical'>
-      <Form.Item label='Search records'>
+      <Form.Item help='Search records'>
         <AutoComplete
-          dropdownMatchSelectWidth={252}
-          style={{ width: 300 }}
           options={options}
           value={value}
           defaultValue={query}
           onSelect={onSelect}
           onSearch={handleSearch}
           notFoundContent={value ? "No results found" : undefined}>
-          <Input.Search placeholder='Enter keywords...' />
+          <Input.Search
+            style={{
+              border: query ? "1px solid #1890ff" : undefined
+            }}
+            placeholder='Enter keywords...'
+          />
         </AutoComplete>
       </Form.Item>
     </Form>

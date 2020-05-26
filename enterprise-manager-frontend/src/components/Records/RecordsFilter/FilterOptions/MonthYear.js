@@ -5,11 +5,12 @@ import moment from "moment"
 
 const dateFormat = "MMMM YYYY"
 
-const MonthYear = ({ filterByMonth }) => {
+const MonthYear = ({ filterByMonth, setCurrentFilteredBy }) => {
   const location = useLocation()
   const history = useHistory()
   const queryParams = new URLSearchParams(location.search)
   const [month, year] = (queryParams.get("month_year") || "").split("/")
+
   const [value, setValue] = useState(
     moment(month && year ? new Date(year, month - 1) : new Date(), dateFormat)
   )
@@ -18,14 +19,11 @@ const MonthYear = ({ filterByMonth }) => {
     if (value)
       history.push({
         path: `${location.pathname}`,
-        search: `${location.search.split("&")[0]}&month_year=${
-          value.month() + 1
-        }/${value.year()}`
+        search: `month_year=${value.month() + 1}/${value.year()}`
       })
     else
       history.push({
-        path: `${location.pathname}`,
-        search: `${location.search.split("&")[0]}`
+        path: `${location.pathname}`
       })
   }
 
@@ -35,6 +33,7 @@ const MonthYear = ({ filterByMonth }) => {
 
   useEffect(() => {
     if (month && year) filterByMonth()
+
     // eslint-disable-next-line
   }, [month, year])
 
@@ -45,10 +44,24 @@ const MonthYear = ({ filterByMonth }) => {
     // eslint-disable-next-line
   }, [location])
 
+  useEffect(() => {
+    if (queryParams.get("month_year"))
+      setCurrentFilteredBy(`for ${value.format(dateFormat)}`)
+    // eslint-disable-next-line
+  }, [value])
+
   return (
-    <Form layout='vertical'>
-      <Form.Item label='Filter by month'>
+    <Form
+      layout='vertical'
+      style={{
+        color: month && year ? "#1890ff" : undefined
+      }}>
+      <Form.Item help={"Filter by month"}>
         <DatePicker
+          allowClear={false}
+          style={{
+            border: month && year ? "1px solid #1890ff" : undefined
+          }}
           value={value}
           format={dateFormat}
           onChange={onChange}

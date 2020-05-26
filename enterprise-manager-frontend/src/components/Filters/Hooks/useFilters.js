@@ -9,9 +9,11 @@ const useFilters = ({ action }) => {
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const [filteredData, setFilteredData] = useState(null)
+  const [filtersApplied, setFiltersApplied] = useState([])
   const [loadingFilteredData, setLoadingFilteredData] = useState(false)
 
   const filters = ["date_range", "month_year", "date", "query"]
+
   const filterByDateRange = useCallback(() => {
     if (queryParams.get("date_range")) {
       setLoadingFilteredData(true)
@@ -21,6 +23,7 @@ const useFilters = ({ action }) => {
         action,
         setFilteredData
       ).then(() => setLoadingFilteredData(false))
+      setFiltersApplied(["date_range"])
     }
     // eslint-disable-next-line
   }, [location])
@@ -34,6 +37,7 @@ const useFilters = ({ action }) => {
         action,
         setFilteredData
       ).then(() => setLoadingFilteredData(false))
+      setFiltersApplied(["month_year"])
     }
     // eslint-disable-next-line
   }, [location])
@@ -47,6 +51,7 @@ const useFilters = ({ action }) => {
         action,
         setFilteredData
       ).then(() => setLoadingFilteredData(false))
+      setFiltersApplied(["date"])
     }
     // eslint-disable-next-line
   }, [location])
@@ -60,13 +65,16 @@ const useFilters = ({ action }) => {
         action,
         setFilteredData
       ).then(() => setLoadingFilteredData(false))
+      setFiltersApplied(["query"])
     }
     // eslint-disable-next-line
   }, [location])
 
   useEffect(() => {
-    if (!filters.some(f => queryParams.toString().includes(f)))
+    if (!filters.some(f => queryParams.toString().includes(f))) {
       setFilteredData(null)
+      setFiltersApplied([])
+    }
     // eslint-disable-next-line
   }, [location])
 
@@ -76,7 +84,9 @@ const useFilters = ({ action }) => {
     filterByDateRange,
     filterByMonth,
     filterByDate,
-    searchResult
+    searchResult,
+    filtersApplied,
+    setFiltersApplied
   }
 }
 

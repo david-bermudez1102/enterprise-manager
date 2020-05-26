@@ -11,12 +11,16 @@ const RecordPreview = ({ resource, record, recordFields, setRecord }) => {
 
   return record ? (
     <Drawer
+      width={500}
       placement='right'
       closable={true}
       visible={visible}
       onClose={() => setVisible(false)}
       afterVisibleChange={visible => (!visible ? setRecord() : null)}>
       <Descriptions title={singular(resource.name)} column={1}>
+        <Descriptions.Item label={"Created by"} key={`created_by_${record.id}`}>
+          {record.createdBy}
+        </Descriptions.Item>
         {recordFields.map(f => (
           <Descriptions.Item label={f.name} key={`description_label_${f.id}`}>
             {record[f.id]}

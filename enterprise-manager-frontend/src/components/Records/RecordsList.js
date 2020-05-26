@@ -1,8 +1,8 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useChangePage } from "./hooks/useChangePage"
 import recordsSort from "./RecordsSort"
 import FilterOptions from "./RecordsFilter/FilterOptions/"
-import { Table, Pagination, Row, Col, Empty } from "antd"
+import { Table, Pagination, Row, Col, Empty, Divider } from "antd"
 import useRecordsList from "./hooks/useRecordsList"
 import { DndProvider } from "react-dnd"
 import HTML5Backend from "react-dnd-html5-backend"
@@ -14,11 +14,15 @@ import RecordOptions from "./RecordOptions"
 import DeletionModal from "../Modal/DeletionModal"
 import RecordPreview from "./RecordPreview"
 import useModal from "../Modal/Hooks/useModal"
+import { plural } from "pluralize"
+import Text from "antd/lib/typography/Text"
 
 const RecordsList = props => {
   const dispatch = useDispatch()
   const { showModal, ...deletionModal } = useModal()
   const [record, setRecord] = useState()
+  const [currentFilteredBy, setCurrentFilteredBy] = useState()
+  const mounted = useRef()
 
   const {
     loadingInitialData,
@@ -31,7 +35,13 @@ const RecordsList = props => {
     records: sortedRecords
   })
 
-  const { loadingFilteredData, filteredData, ...filters } = useFilters({
+  const {
+    loadingFilteredData,
+    filteredData,
+    filtersApplied,
+    setFiltersApplied,
+    ...filters
+  } = useFilters({
     action: queryParams =>
       dispatch(
         fetchRecords(
@@ -89,12 +99,30 @@ const RecordsList = props => {
     })
   }
 
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true
+    } else {
+      if (filtersApplied.length === 0) setCurrentFilteredBy("for current month")
+      console.log(filtersApplied)
+    }
+  }, [filtersApplied])
+
   return (
     <>
       <div style={{ maxWidth: "100%" }}>
-        <Row gutter={[16, 16]}>
-          <FilterOptions {...filters} resource={resource} />
-          <Col span='auto'>
+        <Row gutter={[16, 1]}>
+          <FilterOptions
+            {...filters}
+            filtersApplied={filtersApplied}
+            resource={resource}
+            setCurrentFilteredBy={setCurrentFilteredBy}
+          />
+        </Row>
+        <Divider />
+        <Row gutter={[16, 16]} justify={"space-between"}>
+          <Col>{totalSelected}</Col>
+          <Col span={"auto"}>
             <Pagination
               {...{
                 key: "pagination",
@@ -114,10 +142,10 @@ const RecordsList = props => {
                   `${range[0]}-${range[1]} of ${total} items`
               }}
             />
+            <Text type={"secondary"} style={{ float: "right" }}>
+              Showing {plural(resource.name)} {currentFilteredBy}
+            </Text>
           </Col>
-        </Row>
-        <Row>
-          <Col>{totalSelected}</Col>
         </Row>
         <DndProvider backend={HTML5Backend}>
           <Table

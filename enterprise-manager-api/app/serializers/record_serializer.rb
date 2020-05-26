@@ -3,7 +3,8 @@ class RecordSerializer
   cache_options enabled: true, cache_length: 12.hours
   
   set_key_transform :camel_lower
-    attributes :id, :form_id
+  attributes :id, :form_id
+
   attribute :zoho_record_id do |obj|
     if obj.zoho_integration_record
       obj.zoho_integration_record.external_id
@@ -34,6 +35,7 @@ class RecordSerializer
       new_hash[:id] = value[:attributes][:recordId]
       new_hash[:formId] = value[:attributes][:formId]
       new_hash[value[:attributes][:recordFieldId]] = value[:attributes][:content]
+      new_hash[:createdBy] = object.account.name if object.account 
       new_hash[:createdAt] = object.created_at
       new_hash[:updatedAt] = object.updated_at
       new_hash

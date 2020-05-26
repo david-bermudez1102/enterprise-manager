@@ -71,6 +71,10 @@ class Form < ApplicationRecord
     records.select(:id).where(:is_deleted => true).with_current_month(nil).size
   end
 
+  def last_record_date
+    records.order(:created_at).select(:created_at).last
+  end
+
   def cache_key
     "/forms/#{id}-#{records_count}-#{updated_at}"
   end

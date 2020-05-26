@@ -63,11 +63,11 @@ class RecordsController < ApplicationController
   def record_params
     params.require(:record).permit(:record_field_id, :content,
       values_attributes: [:record_field_id, :content, :option_id, :record_value_id, checkbox_options_attributes:[:option_id]],
-    )
+    ).merge(account_id:current_account.id)
   end
 
   def set_organization
-    @organization = Organization.find_by(id: params[:organization_id])
+    @organization = current_account.organization
   end
 
   def set_form

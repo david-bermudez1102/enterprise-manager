@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :options
     resources :organizations do
       resources :forms do
+        resources :statistics
         resources :fields
         resources :record_fields
         resources :records

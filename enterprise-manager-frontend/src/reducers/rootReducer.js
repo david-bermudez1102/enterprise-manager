@@ -1,39 +1,40 @@
-import { combineReducers } from "redux";
-import { organizationsReducer } from "./organizationsReducer";
-import { adminsReducer } from "./adminsReducer";
-import { resourcesReducer } from "./resourcesReducer";
-import { fieldsReducer } from "./fieldsReducer";
+import { combineReducers } from "redux"
+import { organizationsReducer } from "./organizationsReducer"
+import { adminsReducer } from "./adminsReducer"
+import { resourcesReducer } from "./resourcesReducer"
+import { fieldsReducer } from "./fieldsReducer"
 import {
   recordsReducer,
   recordsSortedBy,
-  sortedRecords,
-} from "./recordsReducer";
-import { valuesReducer, archivedValues } from "./valuesReducer";
-import { sessionReducer } from "./sessionReducer";
-import { recordFieldsReducer } from "./recordFieldsReducer";
-import { accountsReducer } from "./accountsReducer";
-import { zohoBooksReducer } from "./zohoBooksReducer";
-import { alerts } from "./alertsReducer";
-import { token } from "./tokenReducer";
-import { pagination } from "./paginationReducer";
-import { routes } from "./routesReducer";
-import { sidebar } from "./sidebarReducer";
+  sortedRecords
+} from "./recordsReducer"
+import { valuesReducer, archivedValues } from "./valuesReducer"
+import { sessionReducer } from "./sessionReducer"
+import { recordFieldsReducer } from "./recordFieldsReducer"
+import { accountsReducer } from "./accountsReducer"
+import { zohoBooksReducer } from "./zohoBooksReducer"
+import { alerts } from "./alertsReducer"
+import { token } from "./tokenReducer"
+import { pagination } from "./paginationReducer"
+import { routes } from "./routesReducer"
+import { sidebar } from "./sidebarReducer"
 import {
   archivedRecords,
   sortedArchivedRecords,
-  archivedRecordsSortedBy,
-} from "./archivedRecordsReducer";
+  archivedRecordsSortedBy
+} from "./archivedRecordsReducer"
+import { statistics } from "./statisticsReducer"
 
 const requesting = (state = false, action) => {
   switch (action.type) {
     case "REQUESTING_DATA":
-      return true;
+      return true
     case "FINISHED_REQUESTING":
-      return false;
+      return false
     default:
-      return state;
+      return state
   }
-};
+}
 
 export const rootReducer = combineReducers({
   session: sessionReducer,
@@ -58,4 +59,5 @@ export const rootReducer = combineReducers({
   archivedValues,
   sortedArchivedRecords,
   archivedRecordsSortedBy,
-});
+  statistics
+})

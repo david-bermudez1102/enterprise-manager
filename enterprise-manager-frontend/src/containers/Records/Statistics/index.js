@@ -1,0 +1,37 @@
+import React, { useState } from "react"
+import { Col, Row } from "antd"
+import { useStatistics } from "./Hooks/useStatistics"
+import Statistics from "../../../components/Statistics"
+import FilterOptions from "../../../components/Records/RecordsFilter/FilterOptions"
+
+const StatisticsContainer = ({ resource }) => {
+  const { filtersApplied, filterData, ...statisticsProps } = useStatistics({
+    resource
+  })
+
+  const [currentFilteredby, setCurrentFilteredBy] = useState()
+
+  console.log(statisticsProps.statistics)
+
+  return (
+    <Col span={24} style={{ position: "relative" }}>
+      <Row>
+        <Col span={24}>
+          <FilterOptions
+            filterByMonth={filterData}
+            filterByDate={filterData}
+            filterByDateRange={filterData}
+            filtersApplied={filtersApplied}
+            resource={resource}
+            setCurrentFilteredBy={setCurrentFilteredBy}
+          />
+        </Col>
+        <Col span={12}>
+          <Statistics statistics={statisticsProps} />
+        </Col>
+      </Row>
+    </Col>
+  )
+}
+
+export default React.memo(StatisticsContainer)

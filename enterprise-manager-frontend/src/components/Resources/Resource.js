@@ -18,6 +18,7 @@ import {
   SettingOutlined,
   FormOutlined
 } from "@ant-design/icons"
+import StatisticsContainer from "../../containers/Records/Statistics"
 
 const Resource = () => {
   const location = useLocation()
@@ -96,6 +97,9 @@ const Resource = () => {
       <Switch>
         <Route path={`${match.path}/settings`} name={"Settings"}>
           <ResourceSettings resource={resource} />
+        </Route>
+        <Route path={`${match.path}/statistics`} name={"Statistics"}>
+          <StatisticsContainer resource={resource} />
         </Route>
 
         <Route path={`${match.path}/records`} name={"All Records"}>

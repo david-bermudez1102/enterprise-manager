@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_25_233401) do
+ActiveRecord::Schema.define(version: 2020_05_26_234310) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -240,6 +240,13 @@ ActiveRecord::Schema.define(version: 2020_05_25_233401) do
     t.index ["form_id"], name: "index_selectable_resources_on_form_id"
     t.index ["record_field_id"], name: "index_selectable_resources_on_record_field_id"
     t.index ["resource_field_id"], name: "index_selectable_resources_on_resource_field_id"
+  end
+
+  create_table "statistics", force: :cascade do |t|
+    t.integer "form_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["form_id"], name: "index_statistics_on_form_id"
   end
 
   create_table "values", force: :cascade do |t|

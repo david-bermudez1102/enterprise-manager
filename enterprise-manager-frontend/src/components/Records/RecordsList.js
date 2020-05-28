@@ -104,7 +104,6 @@ const RecordsList = props => {
       mounted.current = true
     } else {
       if (filtersApplied.length === 0) setCurrentFilteredBy("for current month")
-      console.log(filtersApplied)
     }
   }, [filtersApplied])
 

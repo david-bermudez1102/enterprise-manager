@@ -13,20 +13,28 @@ const dateFormat = "MMM do"
 const useWithMonthYear = ({ statistics, colors }) => {
   const currentDate = new Date()
 
-  const getFirstDate = useCallback(() => new Date(Object.keys(statistics)[0]), [
-    statistics
-  ])
+  const getFirstDate = useCallback(
+    () =>
+      Object.keys(statistics).length > 0
+        ? new Date(Object.keys(statistics)[0])
+        : null,
+    [statistics]
+  )
 
   const [firstDate, setFirstDate] = useState(getFirstDate())
 
-  const getTotalDaysInMonth = useCallback(() => getDaysInMonth(firstDate), [
-    firstDate
-  ])
+  const getTotalDaysInMonth = useCallback(
+    () => (firstDate ? getDaysInMonth(firstDate) : null),
+    [firstDate]
+  )
 
   const [daysInMonth, setDaysInMonth] = useState(getTotalDaysInMonth())
 
   const getEndDate = useCallback(
-    () => new Date(getYear(firstDate), getMonth(firstDate), daysInMonth),
+    () =>
+      firstDate && daysInMonth
+        ? new Date(getYear(firstDate), getMonth(firstDate), daysInMonth)
+        : null,
     [firstDate, daysInMonth]
   )
 
@@ -34,15 +42,18 @@ const useWithMonthYear = ({ statistics, colors }) => {
 
   const getEachPeriod = useCallback(
     () =>
-      eachDayOfInterval({
-        start: new Date(firstDate.getFullYear(), firstDate.getMonth(), 1),
-        end:
-          firstDate.getMonth() === currentDate.getMonth() &&
-          firstDate.getFullYear() === currentDate.getFullYear()
-            ? currentDate
-            : endDate
-      }).map(d => format(new Date(d), dateFormat)),
-    [endDate]
+      firstDate && endDate && firstDate.getTime() < endDate.getTime()
+        ? eachDayOfInterval({
+            start: new Date(firstDate.getFullYear(), firstDate.getMonth(), 1),
+            end:
+              firstDate.getMonth() === currentDate.getMonth() &&
+              firstDate.getFullYear() === currentDate.getFullYear()
+                ? currentDate
+                : endDate
+          }).map(d => format(new Date(d), dateFormat))
+        : [],
+    // eslint-disable-next-line
+    [firstDate, endDate]
   )
 
   const [eachPeriod, setEachPeriod] = useState(getEachPeriod())

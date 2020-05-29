@@ -106,6 +106,7 @@ const SearchRecords = ({ searchResult, resource, setCurrentFilteredBy }) => {
       )
       console.log(query, columnId)
     }
+    // eslint-disable-next-line
   }, [query, columnId])
 
   return (

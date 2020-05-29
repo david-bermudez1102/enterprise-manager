@@ -48,6 +48,7 @@ const DateRange = ({ filterByDateRange, resource, setCurrentFilteredBy }) => {
       setCurrentFilteredBy(
         `from ${value[0].format(dateFormat)} to ${value[1].format(dateFormat)}`
       )
+    // eslint-disable-next-line
   }, [value])
 
   return (

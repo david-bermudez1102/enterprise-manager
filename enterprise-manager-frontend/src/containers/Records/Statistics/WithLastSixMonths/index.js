@@ -3,8 +3,12 @@ import WithType from "../WithType"
 import useLastSixMonths from "./Hooks/useLastSixMonths"
 
 const WithLastSixMonths = ({ statistics, colors, chartType }) => {
-  const data = useLastSixMonths({ statistics, colors })
-  return <WithType data={data} chartType={chartType} />
+  const data = useLastSixMonths({
+    statistics,
+    colors,
+    chartType
+  })
+  return <WithType data={data} chartType={chartType} xAxesLabel={"Month"} />
 }
 
-export default WithLastSixMonths
+export default React.memo(WithLastSixMonths)

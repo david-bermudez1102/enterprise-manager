@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Col, Row } from "antd"
+import { Col, Row, Divider } from "antd"
 import { useStatistics } from "./Hooks/useStatistics"
 import Statistics from "../../../components/Statistics"
 import FilterOptions from "../../../components/Records/RecordsFilter/FilterOptions"
@@ -9,9 +9,7 @@ const StatisticsContainer = ({ resource }) => {
     resource
   })
 
-  const [currentFilteredby, setCurrentFilteredBy] = useState()
-
-  console.log(statisticsProps.statistics)
+  const [, setCurrentFilteredBy] = useState()
 
   return (
     <Col span={24} style={{ position: "relative" }}>
@@ -26,7 +24,8 @@ const StatisticsContainer = ({ resource }) => {
             setCurrentFilteredBy={setCurrentFilteredBy}
           />
         </Col>
-        <Col span={12}>
+        <Divider />
+        <Col span={24}>
           <Statistics statistics={statisticsProps} />
         </Col>
       </Row>

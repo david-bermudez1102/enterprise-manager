@@ -1,52 +1,65 @@
 import { format, eachMonthOfInterval } from "date-fns"
 import useChartData from "../../Hooks/useChartData"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 const dateFormat = "MMMM"
 
 const useDateRange = ({
   statistics,
   colors,
+  chartType,
   startDate,
   endDate,
   customDateFormat
 }) => {
-  const getStart = () => new Date(startDate || Object.keys(statistics)[0])
-  const getEnd = () =>
-    new Date(
-      endDate || Object.keys(statistics)[Object.keys(statistics).length - 1]
-    )
+  const getStart = useCallback(
+    () => new Date(startDate || Object.keys(statistics)[0]),
+    // eslint-disable-next-line
+    [statistics]
+  )
 
-  const [end, setEnd] = useState(getEnd())
   const [start, setStart] = useState(getStart())
 
-  const getEachPeriod = () =>
-    eachMonthOfInterval({ start, end }).map(d =>
-      format(new Date(d), dateFormat)
-    )
+  const getEnd = useCallback(
+    () =>
+      new Date(
+        endDate || Object.keys(statistics)[Object.keys(statistics).length - 1]
+      ),
+    // eslint-disable-next-line
+    [start]
+  )
+
+  const [end, setEnd] = useState(getEnd())
+
+  const getEachPeriod = useCallback(
+    () =>
+      eachMonthOfInterval({ start, end }).map(d =>
+        format(new Date(d), dateFormat)
+      ),
+    [start, end]
+  )
 
   const [eachPeriod, setEachPeriod] = useState(getEachPeriod())
 
   useEffect(() => {
     setStart(getStart())
-  }, [statistics])
+  }, [getStart])
 
   useEffect(() => {
     setEnd(getEnd())
-  }, [start])
+  }, [getEnd])
 
   useEffect(() => {
     setEachPeriod(getEachPeriod())
-  }, [start, end])
+  }, [getEachPeriod])
 
   const data = useChartData({
     eachPeriod,
     dateFormat: customDateFormat || dateFormat,
     statistics,
-    colors
+    colors,
+    customChartType: chartType
   })
-
-  console.log(end)
 
   return data
 }

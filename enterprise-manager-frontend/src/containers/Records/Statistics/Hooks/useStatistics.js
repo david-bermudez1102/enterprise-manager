@@ -3,10 +3,10 @@ import { useLocation } from "react-router-dom"
 import { useState, useEffect, useCallback } from "react"
 import { fetchStatistics } from "../../../../actions/statisticActions"
 
-export const useStatistics = ({ resource }) => {
+export const useStatistics = ({ resource, customParams }) => {
   const dispatch = useDispatch()
   const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
+  const queryParams = new URLSearchParams(customParams || location.search)
   const chartType = queryParams.get("chart_type")
 
   const filters = ["date_range", "month_year", "date"]
@@ -36,43 +36,46 @@ export const useStatistics = ({ resource }) => {
     if (filters.some(f => queryParams.toString().includes(f)))
       setFiltersApplied([filters.find(q => queryParams.toString().includes(q))])
     else setFiltersApplied(["with_last_six_months"])
+    // eslint-disable-next-line
   }, [location])
 
   useEffect(() => {
     setFilteredBy(filtersApplied[0])
   }, [filtersApplied])
 
-  const generateColor = useCallback(
-    () => `${getRandomInt(256)}, ${getRandomInt(256)}, ${getRandomInt(256)}`,
-    []
-  )
-
   const getRandomInt = useCallback(
     max => Math.floor(Math.random() * Math.floor(max)),
     []
   )
+  const generateColor = useCallback(
+    () => `${getRandomInt(256)}, ${getRandomInt(256)}, ${getRandomInt(256)}`,
+    [getRandomInt]
+  )
 
-  const filterData = () =>
-    dispatch(fetchStatistics(resource, queryParams.toString()))
+  const filterData = useCallback(
+    () => dispatch(fetchStatistics(resource, queryParams.toString())),
+    [resource, queryParams, dispatch]
+  )
 
   useEffect(() => {
     setCurrentStatistics(statistics[resource.id] || {})
-  }, [statistics])
+  }, [statistics, resource])
 
   useEffect(() => {
-    if (currentStatistics)
+    if (currentStatistics[filteredBy])
       setColors(
         Object.values(currentStatistics[filteredBy] || {}).map(generateColor)
       )
-  }, [currentStatistics, statistics, filteredBy])
+    // eslint-disable-next-line
+  }, [currentStatistics])
 
-  console.log(filteredBy)
   return {
     chartType,
     statistics: currentStatistics[filteredBy] || {},
     colors,
     filteredBy,
     filtersApplied,
-    filterData
+    filterData,
+    resource
   }
 }

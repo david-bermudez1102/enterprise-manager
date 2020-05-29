@@ -1,21 +1,43 @@
 import React from "react"
-import WithLastSixMonths from "../../containers/Records/Statistics/WithLastSixMonths"
 import WithMonthYear from "../../containers/Records/Statistics/WithMonthYear"
 import WithDateRange from "../../containers/Records/Statistics/WithDateRange"
-import { Empty } from "antd"
+import { Empty, Row, Col } from "antd"
+import WithDate from "../../containers/Records/Statistics/WithDate"
+import DefaultStatistics from "./DefaultStatistics"
 
 const Statistics = ({ statistics }) => {
   const { filteredBy, ...restOfProps } = statistics
 
-  if (restOfProps.colors.length === 0) return <Empty />
+  if (restOfProps.colors.length === 0 || !restOfProps.statistics)
+    return <Empty />
 
   switch (filteredBy) {
     case "month_year":
-      return <WithMonthYear {...restOfProps} />
+      return (
+        <Row justify={"center"}>
+          <Col span={22}>
+            <WithMonthYear {...restOfProps} />
+          </Col>
+        </Row>
+      )
     case "date_range":
-      return <WithDateRange {...restOfProps} />
+      return (
+        <Row justify={"center"}>
+          <Col span={22}>
+            <WithDateRange {...restOfProps} />
+          </Col>
+        </Row>
+      )
+    case "date":
+      return (
+        <Row justify={"center"}>
+          <Col span={22}>
+            <WithDate {...restOfProps} />
+          </Col>
+        </Row>
+      )
     case "with_last_six_months":
-      return <WithLastSixMonths {...restOfProps} />
+      return <DefaultStatistics statistics={statistics} />
     default:
       return <Empty />
   }

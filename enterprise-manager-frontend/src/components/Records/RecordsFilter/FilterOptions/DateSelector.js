@@ -38,6 +38,7 @@ const DateSelector = ({ filterByDate, setCurrentFilteredBy }) => {
   useEffect(() => {
     if (queryParams.get("date"))
       setCurrentFilteredBy(`on ${value.format(dateFormat)}`)
+    // eslint-disable-next-line
   }, [value])
 
   return (

@@ -25,10 +25,8 @@ const DefaultStatistics = ({ statistics }) => {
     // eslint-disable-next-line
   }, [])
 
-  console.log(statisticsProps)
-
   return (
-    <Row>
+    <Row gutter={[16, 16]}>
       <Col span={12}>
         <WithLastSixMonths
           {...restOfProps}

@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react"
 import { Bar, Doughnut, Pie, Line } from "react-chartjs-2"
+import ChartOptions from "./ChartOptions"
 
 const WithType = ({ chartType, data, xAxesLabel, yAxesLabel }) => {
   const getOptions = useCallback(
@@ -32,15 +33,20 @@ const WithType = ({ chartType, data, xAxesLabel, yAxesLabel }) => {
     setOptions(getOptions())
   }, [getOptions])
 
+  let chart
+
   switch (chartType) {
     case "bar":
-      return <Bar data={data} redraw={true} options={options} />
+      chart = <Bar data={data} redraw={true} options={options} />
+      break
     case "doughnut":
-      return <Doughnut data={data} redraw={true} />
+      chart = <Doughnut data={data} redraw={true} />
+      break
     case "pie":
-      return <Pie data={data} redraw={true} />
+      chart = <Pie data={data} redraw={true} />
+      break
     default:
-      return (
+      chart = (
         <Line
           data={data}
           options={options}
@@ -50,6 +56,13 @@ const WithType = ({ chartType, data, xAxesLabel, yAxesLabel }) => {
         />
       )
   }
+
+  return (
+    <>
+      <ChartOptions />
+      {chart}
+    </>
+  )
 }
 
 export default React.memo(WithType)

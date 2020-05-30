@@ -67,7 +67,7 @@ export const useStatistics = ({ resource, customParams }) => {
         Object.values(currentStatistics[filteredBy] || {}).map(generateColor)
       )
     // eslint-disable-next-line
-  }, [currentStatistics])
+  }, [location])
 
   return {
     chartType,

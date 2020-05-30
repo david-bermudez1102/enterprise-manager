@@ -22,6 +22,7 @@ const StatisticsContainer = ({ resource }) => {
             filtersApplied={filtersApplied}
             resource={resource}
             setCurrentFilteredBy={setCurrentFilteredBy}
+            exclude={["searchRecords"]}
           />
         </Col>
         <Divider />

@@ -5,6 +5,7 @@ import RecordCell from "../RecordCell"
 import { useDispatch } from "react-redux"
 import { SearchOutlined } from "@ant-design/icons"
 import ColumnSearch from "../ColumnSearch"
+import { singular, plural } from "pluralize"
 
 const useRecordsList = ({ recordFields, values, resource }) => {
   const getColumnSearchProps = useCallback(
@@ -80,11 +81,17 @@ const useRecordsList = ({ recordFields, values, resource }) => {
     })
   }
 
+  const [selectedRows, setSelectedRows] = useState([])
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      if (selectedRows.length === 1) setTotalSelected(`1 record selected.`)
+      setSelectedRows(selectedRows)
+      if (selectedRows.length === 1)
+        setTotalSelected(`1 ${singular(resource.name)} selected`)
       else if (selectedRows.length > 1)
-        setTotalSelected(`${selectedRows.length} records selected.`)
+        setTotalSelected(
+          `${selectedRows.length} ${plural(resource.name)} selected`
+        )
       else setTotalSelected("")
     }
   }
@@ -112,7 +119,8 @@ const useRecordsList = ({ recordFields, values, resource }) => {
     components,
     columns,
     rowSelection,
-    totalSelected
+    totalSelected,
+    selectedRows
   }
 }
 

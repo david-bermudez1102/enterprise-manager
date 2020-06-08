@@ -1,15 +1,9 @@
 class RecordSerializer
   include FastJsonapi::ObjectSerializer
-  cache_options enabled: true, cache_length: 12.hours
+  #cache_options enabled: true, cache_length: 12.hours
   
   set_key_transform :camel_lower
   attributes :id, :form_id
-
-  attribute :zoho_record_id do |obj|
-    if obj.zoho_integration_record
-      obj.zoho_integration_record.external_id
-    end
-  end
 
   attribute :records_count, if: Proc.new { |record, params|
     params && !params[:records_count].nil?
@@ -23,12 +17,6 @@ class RecordSerializer
     record.form.current_month_records_count
   end
 
-  attribute :quickbooks_record_id do |obj|
-    if obj.quickbooks_integration_record
-      obj.quickbooks_integration_record.external_id
-    end
-  end
-  
   link :values do |object|
     ValueSerializer.new(object.values).serializable_hash[:data].map do |value|
       new_hash = {}
@@ -38,6 +26,8 @@ class RecordSerializer
       new_hash[:createdBy] = object.account.name if object.account 
       new_hash[:createdAt] = object.created_at
       new_hash[:updatedAt] = object.updated_at
+      new_hash[:zohoRecordId] = object.zoho_integration_record.external_id if object.zoho_integration_record
+      new_hash[:quickbooksRecordId] = object.quickbooks_integration_record.external_id if object.quickbooks_integration_record
       new_hash
     end.reduce({}, :merge)
   end

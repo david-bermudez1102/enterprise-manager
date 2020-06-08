@@ -1,8 +1,7 @@
 import React from "react"
 import useRecords from "../../containers/Records/Hooks/useRecords"
-import RecordsOptions from "./RecordsOptions"
 import RecordsList from "./RecordsList"
-import { Empty, Col } from "antd"
+import { Col } from "antd"
 
 const Records = props => {
   const { resource } = props
@@ -15,20 +14,15 @@ const Records = props => {
   } = useRecords(props)
   return (
     <Col span={24} order={24}>
-      <RecordsOptions resource={resource} />
-      {records.length > 0 ? (
-        <RecordsList
-          recordFields={recordFields[resource.id] || []}
-          resource={resource}
-          records={records}
-          sortedRecords={sortedRecords[resource.id] || []}
-          values={values}
-          deleted={props.deleted}
-          loadingInitialData={loadingInitialData}
-        />
-      ) : (
-        <Empty description={"This resource doesn't have any records yet."} />
-      )}
+      <RecordsList
+        recordFields={recordFields[resource.id] || []}
+        resource={resource}
+        records={records}
+        sortedRecords={sortedRecords[resource.id] || []}
+        values={values}
+        deleted={props.deleted}
+        loadingInitialData={loadingInitialData}
+      />
     </Col>
   )
 }

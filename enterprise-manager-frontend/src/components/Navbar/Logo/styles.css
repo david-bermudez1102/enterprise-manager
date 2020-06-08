@@ -1,6 +1,12 @@
 .logo {
   width: 120px;
   height: 100%;
-  background: rgba(255, 255, 255, 0.2);
+  background: transparent;
   float: left;
+  padding-left: 24px;
+  line-height: 50px;
+}
+
+.ant-layout-header .ant-menu {
+  line-height: 50px !important;
 }

@@ -85,6 +85,32 @@ export const sortedRecords = (state = {}, action) => {
             : value
         )
       }
+
+    case "UPDATE_OR_CREATE_RECORD":
+      return {
+        ...state,
+        [action.record.formId]: (state[action.record.formId] || []).some(
+          r => parseInt(r.id) === parseInt(action.record.id)
+        )
+          ? [...(state[action.record.formId] || [])].map(record =>
+              parseInt(record.id) === parseInt(action.record.id)
+                ? {
+                    listingId: record.listingId,
+                    key: record.key,
+                    ...action.record
+                  }
+                : record
+            )
+          : [
+              {
+                ...action.record,
+                listingId: (state[action.record.formId] || []).length + 1,
+                key: `recordValues${action.record.id}`
+              },
+              ...(state[action.record.formId] || [])
+            ]
+      }
+
     case "REMOVE_RECORD":
       return {
         ...state,

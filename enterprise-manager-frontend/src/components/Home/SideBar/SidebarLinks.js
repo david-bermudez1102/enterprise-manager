@@ -33,14 +33,6 @@ const SidebarLinks = ({ links, session, collapsed }) => {
           ) : null}
         </NavLink>
       </Menu.Item>
-      <Menu.Divider
-        key={"sidebar_divider_1"}
-        style={{
-          height: 1,
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
-          margin: 0
-        }}
-      />
       {links.map(link =>
         !link.dropdown ? (
           <Menu.Item key={link.path}>

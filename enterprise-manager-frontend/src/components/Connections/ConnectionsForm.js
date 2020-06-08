@@ -1,112 +1,61 @@
-import React, { Component } from 'react';
-import Alert from '../Alerts/Alert';
+import React, { useEffect } from "react"
+import { Form, Input, Button, Select } from "antd"
 
-const snakeCaseKeys = require('snakecase-keys');
+const ConnectionsForm = props => {
+  const {
+    updateResource,
+    resource,
+    organizationId,
+    integrationId,
+    type
+  } = props
+  const { zohoConnectionAttributes } = resource
 
-export default class ConnectionsForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      type: props.type,
-      resourceId: props.resourceId,
-      integrationId: props.integrationId,
-      organizationId: props.organizationId,
-      name: '',
-      connectionType: ''
-    };
-  }
+  const [form] = Form.useForm()
 
-  componentDidMount() {
-    const { connection } = this.props;
-    return connection ? this.updateState() : null;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.resource !== this.props.resource) {
-      const { connection } = this.props;
-      return connection ? this.updateState() : null;
-    }
-  }
-
-  updateState = () => {
-    const { connection, organizationId } = this.props;
-    this.setState({
-      resourceId: connection.form_id,
-      integrationId: connection.integration_id,
-      organizationId: organizationId,
-      name: connection.name,
-      connectionType: connection.connection_type
-    });
-  };
-
-  handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const {
-      integrationId,
-      type,
-      resourceId,
+  const handleSubmit = data => {
+    updateResource({
+      id: resource.id,
       organizationId,
-      name,
-      connectionType
-    } = this.state;
-    this.props.updateResource(
-      snakeCaseKeys({
-        [type]: {
-          integrationId,
-          name,
-          connectionType,
-          formId: resourceId
-        }
-      }),
-      organizationId,
-      resourceId
-    );
-  };
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <Alert />
-        <div className="form-group">
-          <label htmlFor="connection_name">
-            Enter a name for this connection:
-          </label>
-          <input
-            type="text"
-            name="name"
-            id="connection_name"
-            className="form-control"
-            onChange={this.handleChange}
-            value={this.state.name}
-            placeholder="Enter name..."
-          />
-          <label htmlFor="connection_connectionType">
-            Connect this resource to:
-          </label>
-          <select
-            name="connectionType"
-            id="connection_connectionType"
-            className="form-control"
-            onChange={this.handleChange}
-            value={this.state.connectionType}>
-            <option value="select">Select</option>
-            <option value="contacts">Contacts</option>
-            <option value="items">Items</option>
-            <option value="invoices">Invoices</option>
-          </select>
-        </div>
-        <input
-          type="submit"
-          className="btn btn-primary shadow"
-          value="Update Connection"
-        />
-      </form>
-    );
+      [type]: {
+        integrationId,
+        formId: resource.id,
+        ...data
+      }
+    })
   }
+
+  useEffect(() => {
+    form.setFieldsValue(zohoConnectionAttributes)
+    // eslint-disable-next-line
+  }, [zohoConnectionAttributes])
+
+  return (
+    <Form onFinish={handleSubmit} form={form}>
+      <Form.Item
+        name='name'
+        label={"Connection name"}
+        rules={[{ required: true, message: "Enter a valid connection name" }]}>
+        <Input placeholder='Enter a name for this connection...' />
+      </Form.Item>
+      <Form.Item
+        name='connectionType'
+        label={"Connection to"}
+        rules={[{ required: true, message: "Enter a valid connection type" }]}>
+        <Select placeholder='Select an option'>
+          <Select.Option value='select'>Select</Select.Option>
+          <Select.Option value='contacts'>Contacts</Select.Option>
+          <Select.Option value='items'>Items</Select.Option>
+          <Select.Option value='invoices'>Invoices</Select.Option>
+        </Select>
+      </Form.Item>
+      <Form.Item>
+        <Button type={"primary"} htmlType={"submit"}>
+          Update Connection
+        </Button>
+      </Form.Item>
+    </Form>
+  )
 }
+
+export default React.memo(ConnectionsForm)

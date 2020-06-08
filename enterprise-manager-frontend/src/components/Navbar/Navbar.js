@@ -59,10 +59,11 @@ const Navbar = props => {
       style={{
         zIndex: 2,
         width: "100%",
-        background: "#fff",
         position: "sticky",
-        padding: "0 24px",
-        top: 0
+        padding: 0,
+        left: 0,
+        top: 0,
+        height: 50
       }}>
       <Logo organization={organizations[0]} width={180} height={40} />
       <Menu
@@ -71,10 +72,11 @@ const Navbar = props => {
         style={{
           textAlign: "right",
           height: "100%",
-          border: 0
+          border: 0,
+          paddingRight: 24
         }}>
         {session.isLoggedIn ? (
-          <Menu.Item key='navbarLinkSearch'>
+          <Menu.Item key='navbarLinkSearch' style={{ lineHeight: "50px" }}>
             <Search
               placeholder='input search text'
               onSearch={value => console.log(value)}

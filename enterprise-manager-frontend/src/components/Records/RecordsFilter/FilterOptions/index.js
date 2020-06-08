@@ -1,6 +1,6 @@
 import React from "react"
 import DateRange from "./DateRange"
-import { Col, Row } from "antd"
+import { Col, Row, Card } from "antd"
 import MonthYear from "./MonthYear"
 import DateSelector from "./DateSelector"
 import SearchRecords from "./SearchRecords"
@@ -17,11 +17,15 @@ const FilterOptions = props => {
   }
   return (
     <Col span={24}>
-      <Row gutter={[16]} justify={"space-between"}>
-        {Object.entries(filters).map(([key, f]) =>
-          !(exclude || []).includes(key) ? <Col>{f}</Col> : null
-        )}
-      </Row>
+      <Card bordered={false}>
+        <Row justify={"space-between"}>
+          {Object.entries(filters).map(([key, f]) =>
+            !(exclude || []).includes(key) ? (
+              <Col key={`filterOptions${key}`}>{f}</Col>
+            ) : null
+          )}
+        </Row>
+      </Card>
     </Col>
   )
 }

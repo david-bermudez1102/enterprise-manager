@@ -1,6 +1,7 @@
 class ZohoBooks::ItemsController < ApplicationController
 require 'httparty'
 
+  before_action :authenticate_user
   before_action :set_organization
   before_action :set_zoho_organization_id
   before_action :set_root_url
@@ -8,54 +9,18 @@ require 'httparty'
   before_action :set_authorization
 
   def index
-    if params[:item_name_contains]
-      url = "#{@root_url}?item_name_contains=#{params[:item_name_contains]}&organization_id=#{@zoho_organization_id}"
-    else
-      url = "#{@root_url}/?organization_id=#{@zoho_organization_id}"
-    end
-    headers = {
-      "Authorization" => @authorization
-    }
+    
+  end
+
+  def sync
     form =  @organization.forms.find_by(id:params[:form_id])
-    response = HTTParty.get(url, headers: headers)
-    response = JSON.parse(response&.body || "{}")
-    response = response["items"].map do |item|
-     form.records.joins(:values => :record_field).where(values: { record_fields: {name: "Name"}, content:item["item_name"] }).map do |record|
-        record.update(zoho_integration_record_attributes:{external_id:item["item_id"],connection:record.form.zoho_connection, record_id: record.id})
-      end
-    end
-    render json:response
+    zoho_books = ZohoBooks::Item.sync_from_zoho(form, @authorization, @root_url, @zoho_organization_id, params[:item_name_contains], params[:merge_records], filterable_params, current_account, params[:item][:body])
+    render json: zoho_books
   end
 
   def create
-    headers = {
-      "Content-Type" => "application/x-www-form-urlencoded;charset=UTF-8",
-      "Authorization" => @authorization
-    }
-    url = "#{@root_url}?organization_id=#{@zoho_organization_id}"
-    records = Record.where("form_id = ? and id NOT IN (SELECT record_id FROM integration_records)", params[:form_id])
-    records = records.map do |record|
-      body = {}
-      record.values.map do |value|
-        if !value.record_field.nil?
-          field_name = value.record_field.name.downcase
-          if field_name == "name"
-            body["name"] = value.content
-          else
-            body[field_name] = value.content
-          end
-        end
-      end
-      response = HTTParty.post(url, headers: headers, body:{JSONString: body.to_json})
-      response = JSON.parse(response&.body || "{}")
-      if response["code"] == 0
-        record.update(zoho_integration_record_attributes:{external_id:response["item"]["item_id"],connection:record.form.zoho_connection, record_id: record.id})
-        RecordSerializer.new(record)
-      else
-        response
-      end
-    end
-    render json: records.compact
+    zoho_books = ZohoBooks::Item.create_in_zoho(@authorization, @root_url, @zoho_organization_id, params[:item][:body])
+    render json: zoho_books
   end
 
   def show
@@ -75,64 +40,16 @@ require 'httparty'
   end
 
   def update
-    form =  @organization.forms.find_by(id:params[:form_id])
-    record = form.records.find_by(id: items_params[:record_id])
-    url = "#{@root_url}/#{items_params[:zoho_record_id]}?organization_id=#{@zoho_organization_id}"
-    headers = {
-      "Authorization" => @authorization
-    }
-    body = {}
-    record.values.map do |value|
-      if value.record_field
-        field_name = value.record_field.name.downcase
-        if field_name == "name"
-          body["item_name"] = value.content
-        else
-          body[field_name] = value.content
-        end
-      end
-    end
-    response = HTTParty.put(url, headers: headers, body:{JSONString: body.to_json})
-    response = JSON.parse(response&.body || "{}")
-    if response["code"] == 0
-      record.update(zoho_integration_record_attributes:{external_id:response["item"]["item_id"],connection:record.form.zoho_connection, record_id: record.id})
-      RecordSerializer.new(record)
-    end
-    render json: response
   end
 
   def update_all
-    headers = {
-      "Content-Type" => "application/x-www-form-urlencoded;charset=UTF-8",
-      "Authorization" => @authorization
-    }
-    records = Record.where("form_id = ? and id IN (SELECT record_id FROM integration_records)", params[:form_id])
-    records = records.map do |record|
-      if record.zoho_integration_record
-          item_id = record.zoho_integration_record.external_id
-          url = "#{@root_url}/#{item_id}?organization_id=#{@zoho_organization_id}"
-          body = {}
-          record.values.map do |value|
-            if value.record_field
-              field_name = value.record_field.name.downcase
-              if field_name == "name"
-                body["item_name"] = value.content
-              else
-                body[field_name] = value.content
-              end
-            end
-          end
-          response = HTTParty.put(url, headers: headers, body:{JSONString: body.to_json})
-          response = JSON.parse(response&.body || "{}")
-          response
-      end
-    end
-    render json: records
+    zoho_books = ZohoBooks::Item.update_in_zoho(@authorization, @root_url, @zoho_organization_id, params[:item][:body])
+    render json: zoho_books
   end
 
   private
     def items_params
-      params.require(:item).permit(:record_id, :zoho_record_id, :form_id, :organization_id)
+      params.require(:item).permit(:record_id, :zoho_record_id, :form_id, :organization_id, :body)
     end
 
     def set_organization
@@ -168,5 +85,9 @@ require 'httparty'
 
     def set_authorization
       @authorization = "Bearer #{@token}"
+    end
+
+    def filterable_params
+      params.slice(:month_year, :from_date, :date_range, :current_month, :date, :query, :column_id)
     end
 end

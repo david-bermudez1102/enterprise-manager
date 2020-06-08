@@ -7,6 +7,27 @@ const UPDATED_MESSAGE_DEFAULT = "Content was saved with success"
 const SOFT_DELETED_MESSAGE_DEFAULT = "Content was sent to deleted folder"
 const DESTROYED_MESSAGE_DEFAULT = "Content was deleted with success"
 
+export const getAll = (dispatch, url, ...actions) => {
+  return fetch(url, {
+    cache: "no-cache",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then(response => {
+      if (!response.errors) {
+        actions.map(action => dispatch(action))
+        return response
+      } else {
+        throw new Error(response.errors.join(", "))
+      }
+    })
+    .catch(resp => message.error(resp.toString()), 15)
+}
+
 export const add = (dispatch, url, payload, ...actions) => {
   return fetch(url, {
     cache: "no-cache",
@@ -22,13 +43,13 @@ export const add = (dispatch, url, payload, ...actions) => {
     .then(response => {
       if (!response.errors) {
         actions.map(action => dispatch(action))
-        message.success(response.message || SUCCESS_MESSAGE_DEFAULT)
+        message.success(response.message || SUCCESS_MESSAGE_DEFAULT, 10)
         return response
       } else {
         throw new Error(response.errors.join(", "))
       }
     })
-    .catch(resp => message.error(resp.toString()))
+    .catch(resp => message.error(resp.toString()), 15)
 }
 
 export const update = (dispatch, url, payload, ...actions) => {

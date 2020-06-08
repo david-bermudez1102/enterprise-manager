@@ -55,6 +55,7 @@ class FieldsController < ApplicationController
       :default_value,
       :accepts_decimals,
       :field_format,
+      :zoho_field_name,
       {:combined_fields => []},
       selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
       options_attributes: [:value],

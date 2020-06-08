@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { useChangePage } from "./hooks/useChangePage"
 import recordsSort from "./RecordsSort"
 import FilterOptions from "./RecordsFilter/FilterOptions/"
-import { Table, Pagination, Row, Col, Empty, Divider } from "antd"
+import { Table, Pagination, Row, Col, Empty, Card } from "antd"
 import useRecordsList from "./hooks/useRecordsList"
 import { DndProvider } from "react-dnd"
 import HTML5Backend from "react-dnd-html5-backend"
@@ -16,6 +16,8 @@ import RecordPreview from "./RecordPreview"
 import useModal from "../Modal/Hooks/useModal"
 import { plural } from "pluralize"
 import Text from "antd/lib/typography/Text"
+import BulkActions from "./BulkActions"
+import ConnectionSettings from "../Connections/ConnectionSettings"
 
 const RecordsList = props => {
   const dispatch = useDispatch()
@@ -67,7 +69,13 @@ const RecordsList = props => {
     filteredRecords
   })
 
-  const { components, columns, rowSelection, totalSelected } = useRecordsList({
+  const {
+    components,
+    columns,
+    rowSelection,
+    totalSelected,
+    selectedRows
+  } = useRecordsList({
     recordFields,
     values: filteredRecords || sortedRecords,
     resource
@@ -118,34 +126,43 @@ const RecordsList = props => {
             setCurrentFilteredBy={setCurrentFilteredBy}
           />
         </Row>
-        <Divider />
-        <Row gutter={[16, 16]} justify={"space-between"}>
-          <Col>{totalSelected}</Col>
-          <Col span={"auto"}>
-            <Pagination
-              {...{
-                key: "pagination",
-                position: ["topRight"],
-                current: page,
-                pageSizeOptions: ["5", "10", "25", "50", "100"],
-                showSizeChanger: true,
-                showQuickJumper: true,
-                size: "small",
-                pageSize: paginationLimit,
-                onShowSizeChange: onShowSizeChange,
-                onChange: setPage,
-                total: filteredRecords
-                  ? filteredRecords.length
-                  : sortedRecords.length,
-                showTotal: (total, range) =>
-                  `${range[0]}-${range[1]} of ${total} items`
-              }}
-            />
-            <Text type={"secondary"} style={{ float: "right" }}>
-              Showing {plural(resource.name)} {currentFilteredBy}
-            </Text>
-          </Col>
-        </Row>
+        <Card bordered={false}>
+          <Row justify={"space-between"}>
+            <Col span={"auto"}>
+              <BulkActions
+                resource={resource}
+                values={sortedRecords}
+                selectedRows={selectedRows}
+                recordFields={recordFields}
+                totalSelected={totalSelected}
+              />
+            </Col>
+            <Col span={"auto"}>
+              <Pagination
+                {...{
+                  key: "pagination",
+                  position: ["topRight"],
+                  current: page,
+                  pageSizeOptions: ["5", "10", "25", "50", "100"],
+                  showSizeChanger: true,
+                  showQuickJumper: true,
+                  size: "small",
+                  pageSize: paginationLimit,
+                  onShowSizeChange: onShowSizeChange,
+                  onChange: setPage,
+                  total: filteredRecords
+                    ? filteredRecords.length
+                    : sortedRecords.length,
+                  showTotal: (total, range) =>
+                    `${range[0]}-${range[1]} of ${total} items`
+                }}
+              />
+              <Text type={"secondary"} style={{ float: "right" }}>
+                Showing {plural(resource.name)} {currentFilteredBy}
+              </Text>
+            </Col>
+          </Row>
+        </Card>
         <DndProvider backend={HTML5Backend}>
           <Table
             style={{ overflowX: "auto" }}
@@ -160,6 +177,7 @@ const RecordsList = props => {
                 key: "x",
                 render: (text, record) => (
                   <RecordOptions
+                    resource={resource}
                     record={record}
                     showModal={showModal}
                     setRecord={setRecord}
@@ -189,7 +207,7 @@ const RecordsList = props => {
               emptyText: (
                 <Empty
                   description={
-                    "There are no records with the selected filters. Please try again"
+                    <>There are no records for the current period of time.</>
                   }
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
                 />
@@ -199,6 +217,11 @@ const RecordsList = props => {
         </DndProvider>
       </div>
       <DeletionModal {...deletionModal} />
+      {/* <ConnectionSettings
+        connectionName={"ZohoBooks"}
+        recordFields={recordFields}
+        resource={resource}
+      />*/}
       <RecordPreview
         resource={resource}
         record={record}

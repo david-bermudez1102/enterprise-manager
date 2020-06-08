@@ -11,6 +11,8 @@ const Statistics = ({ statistics }) => {
   if (restOfProps.colors.length === 0 || !restOfProps.statistics)
     return <Empty />
 
+  console.log(filteredBy)
+
   switch (filteredBy) {
     case "month_year":
       return (

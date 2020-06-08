@@ -15,9 +15,10 @@ import { useSelector, shallowEqual } from "react-redux"
 import Route from "../../Router/Route"
 import NoMatch from "../../components/NoMatch"
 import useMatchedRoute from "../../components/NoMatch/useMatchedRoute"
-import { Layout, BackTop } from "antd"
+import { Layout, BackTop, Divider } from "antd"
 import MainPageHeader from "../../components/MainPageHeader"
 import "./styles.scss"
+import Text from "antd/lib/typography/Text"
 
 const { Content, Footer } = Layout
 
@@ -47,7 +48,7 @@ const HomeContainer = () => {
             position: "relative",
             display: !matchedRoute ? "none" : undefined
           }}>
-          <MainPageHeader />
+          <MainPageHeader except={["/"]} />
           <Switch>
             <Route
               path={`/organizations`}
@@ -81,14 +82,18 @@ const HomeContainer = () => {
           </Switch>
         </Content>
         <BackTop visibilityHeight={100} />
+        <Divider style={{ margin: 0 }} />
         <Footer
           style={{
-            borderTop: "1px solid #dee2e6",
-            height: "48px",
-            lineHeight: "48px",
+            textAlign: "center",
+            height: "80px",
+            lineHeight: "80px",
             paddingTop: 0,
-            paddingBottom: 0
-          }}>{`${organizations[0].name} © 2020`}</Footer>
+            paddingBottom: 0,
+            fontSize: 15
+          }}>
+          <Text type='secondary'>{`${organizations[0].name} © 2020`}</Text>
+        </Footer>
       </Layout>
     </Layout>
   )

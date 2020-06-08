@@ -3,7 +3,7 @@ import Field from "./Field"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { addRecord } from "../../../actions/recordActions"
 import { Link, useLocation } from "react-router-dom"
-import { Empty, Card, Button, Divider, Form, Row, Col } from "antd"
+import { Empty, Card, Button, Divider, Form, Col } from "antd"
 import zohoBooksIcon from "../../../containers/ZohoBooks/favicon.ico"
 import Title from "antd/lib/typography/Title"
 
@@ -46,7 +46,7 @@ const FieldsList = props => {
   )
 
   return (
-    <Row justify={"center"} align={"middle"} style={{ background: "#fff" }}>
+    <Card bordered={false}>
       <Col
         {...(location.pathname !== `${match.url}/new`
           ? { xxl: 20, xl: 24, lg: 24, span: 18 }
@@ -142,7 +142,7 @@ const FieldsList = props => {
           )}
         </Card>
       </Col>
-    </Row>
+    </Card>
   )
 }
 

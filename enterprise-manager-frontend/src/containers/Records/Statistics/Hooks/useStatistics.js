@@ -62,12 +62,17 @@ export const useStatistics = ({ resource, customParams }) => {
   }, [statistics, resource])
 
   useEffect(() => {
+    if (filteredBy === "with_last_six_months") filterData()
+    // eslint-disable-next-line
+  }, [filteredBy])
+
+  useEffect(() => {
     if (currentStatistics[filteredBy])
       setColors(
         Object.values(currentStatistics[filteredBy] || {}).map(generateColor)
       )
     // eslint-disable-next-line
-  }, [location])
+  }, [currentStatistics[filteredBy]])
 
   return {
     chartType,

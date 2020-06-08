@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_234310) do
+ActiveRecord::Schema.define(version: 2020_06_01_215516) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_234310) do
     t.boolean "accepts_decimals", default: false, null: false
     t.text "combined_fields", default: "--- []\n"
     t.integer "field_format"
+    t.string "zoho_field_name"
     t.index ["form_id"], name: "index_fields_on_form_id"
   end
 
@@ -206,6 +207,7 @@ ActiveRecord::Schema.define(version: 2020_05_26_234310) do
     t.boolean "accepts_decimals", default: false, null: false
     t.text "combined_fields", default: "--- []\n"
     t.integer "field_format"
+    t.string "zoho_field_name"
     t.index ["field_id"], name: "index_record_fields_on_field_id"
     t.index ["form_id"], name: "index_record_fields_on_form_id"
   end

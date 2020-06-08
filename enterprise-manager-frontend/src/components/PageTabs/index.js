@@ -8,7 +8,10 @@ const PageTabs = ({ tabs }) => {
   const history = useHistory()
 
   return (
-    <Tabs activeKey={location.pathname} onChange={key => history.push(key)}>
+    <Tabs
+      activeKey={location.pathname}
+      onChange={key => history.push(key)}
+      style={{ margin: 0 }}>
       {tabs.map(tab => (
         <TabPane tab={tab.tab} key={tab.path} />
       ))}

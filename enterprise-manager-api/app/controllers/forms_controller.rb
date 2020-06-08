@@ -29,7 +29,7 @@ class FormsController < ApplicationController
     form = @organization.forms.find_by(id: params[:id])
     if form.update(form_params)
       serialized_data = FormSerializer.new(form).serializable_hash
-      render json: serialized_data[:data][:attributes], messages: ["Changes were successfully saved"]
+      render json: serialized_data[:data][:attributes]
     else
       render json: { errors: form.errors.full_messages }
     end
@@ -47,7 +47,7 @@ class FormsController < ApplicationController
   private
 
   def form_params
-    params.require(:form).permit(:name, :organization_id, zoho_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], quickbooks_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id])
+    params.require(:form).permit(:name, :organization_id, zoho_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], quickbooks_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], fields_attributes:[:id, :name, :zoho_field_name], record_fields_attributes:[:id, :name, :zoho_field_name])
   end
 
   def set_organization

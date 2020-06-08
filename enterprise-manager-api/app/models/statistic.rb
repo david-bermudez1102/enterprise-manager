@@ -5,7 +5,7 @@ class Statistic < ApplicationRecord
   end
 
   def self.with_last_six_months(form)
-    serialized_data(:last_six_months) { records(form).group_monthly }
+    serialized_data(:with_last_six_months) { records(form).group_monthly }
   end
 
   def self.with_month_year(form, month_year)

@@ -15,7 +15,7 @@ export const recordFieldsReducer = (state = {}, action) => {
           state[action.recordField.formId] || []
         ).map(recordField =>
           recordField.id === action.recordField.id
-            ? action.recordField
+            ? { ...recordField, ...action.recordField }
             : recordField
         )
       }
@@ -23,7 +23,11 @@ export const recordFieldsReducer = (state = {}, action) => {
       return {
         ...state,
         [action.formId]: [
-          ...(state[action.formId] || []),
+          ...(state[action.formId] || []).map(recordField =>
+            action.recordFields.find(rF => rF.id === recordField.id)
+              ? { ...action.recordFields.find(rF => rF.id === recordField.id) }
+              : recordField
+          ),
           ...action.recordFields.filter(
             recordField =>
               !(state[action.formId] || []).some(f => recordField.id === f.id)

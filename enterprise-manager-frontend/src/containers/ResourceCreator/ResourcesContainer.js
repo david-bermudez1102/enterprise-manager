@@ -4,7 +4,6 @@ import { useSelector, shallowEqual } from "react-redux"
 import ResourcesList from "../../components/Resources/ResourcesList"
 import Resource from "../../components/Resources/Resource"
 import ResourceDelete from "../../components/Resources/ResourceDelete"
-import ConnectionsContainer from "../Connections/ConnectionsContainer"
 import Route from "../../Router/Route"
 import { Row } from "antd"
 import ResourceFormLayout from "../../components/Resources/ResourceFormLayout/index.js"
@@ -39,7 +38,6 @@ const ResourcesContainer = props => {
     <Row
       gutter={[16, 16]}
       style={{
-        background: "#fff",
         paddingLeft: "15px",
         paddingRight: "15px",
         margin: 0
@@ -52,14 +50,6 @@ const ResourcesContainer = props => {
           <Route path={`${match.path}/:formAlias/edit`} name={"Edit Resource"}>
             <ResourceFormLayout title={"Update Resource"} resource={resource} />
           </Route>
-        ) : null}
-        {resources.length > 0 ? (
-          <Route
-            path={`${match.path}/:formAlias/connections`}
-            render={props => (
-              <ConnectionsContainer {...props} resources={resources} />
-            )}
-          />
         ) : null}
         <Route path={`${match.path}/:resourceId/delete`}>
           <ResourceDelete

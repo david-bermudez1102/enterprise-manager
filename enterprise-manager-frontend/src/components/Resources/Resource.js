@@ -8,7 +8,7 @@ import { useRouteMatch, useLocation, Switch } from "react-router-dom"
 import Route from "../../Router/Route"
 import ResourceSettings from "./ResourceSettings"
 import ResourceShow from "./ResourceShow/index"
-import { Col } from "antd"
+import { Col, Card } from "antd"
 import PageTabs from "../PageTabs"
 import { singular, plural } from "pluralize"
 import {
@@ -19,6 +19,7 @@ import {
   FormOutlined
 } from "@ant-design/icons"
 import StatisticsContainer from "../../containers/Records/Statistics"
+import ConnectionsContainer from "../../containers/Connections/ConnectionsContainer"
 
 const Resource = () => {
   const location = useLocation()
@@ -91,8 +92,12 @@ const Resource = () => {
 
   return resource ? (
     <>
-      <Col span={24}>
-        <PageTabs tabs={tabs} />
+      <Col span={24} style={{ marginBottom: -24 }}>
+        <Card
+          bordered={false}
+          bodyStyle={{ paddingTop: 0, paddingBottom: 0, margin: 0 }}>
+          <PageTabs tabs={tabs} />
+        </Card>
       </Col>
       <Switch>
         <Route path={`${match.path}/settings`} name={"Settings"}>
@@ -105,6 +110,12 @@ const Resource = () => {
         <Route path={`${match.path}/records`} name={"All Records"}>
           <RecordsContainer match={match} resource={resource} />
         </Route>
+        <Route
+          path={`${match.path}/connections`}
+          render={props => (
+            <ConnectionsContainer {...props} resources={resources} />
+          )}
+        />
         <Route path={`${match.path}`}>
           <FieldsContainer
             match={match}

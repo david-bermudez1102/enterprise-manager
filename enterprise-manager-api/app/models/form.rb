@@ -12,6 +12,10 @@ class Form < ApplicationRecord
   after_save :nullify_form_alias, if: :saved_change_to_name?
 
   scope :this_month, -> { where(created_at: DateTime.now.beginning_of_month..DateTime.now.end_of_month) }
+
+  accepts_nested_attributes_for :fields, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
+
+  accepts_nested_attributes_for :record_fields, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
   
   accepts_nested_attributes_for :zoho_connection, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 

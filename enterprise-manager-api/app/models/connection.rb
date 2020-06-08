@@ -1,6 +1,6 @@
 class Connection < ApplicationRecord
   belongs_to :integration
-  belongs_to :form
+  belongs_to :form, touch:true
   attribute :connected_through
   enum connection_type: %w[contacts items invoices]
 

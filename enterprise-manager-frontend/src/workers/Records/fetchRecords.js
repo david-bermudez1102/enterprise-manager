@@ -15,7 +15,7 @@ export const fetchRecords = (
       queryParams || "current_month=true"
     }${deleted ? `&deleted=true` : ""}`,
     {
-      cache: "no-cache",
+      cache: "reload",
       credentials: "include"
     }
   )

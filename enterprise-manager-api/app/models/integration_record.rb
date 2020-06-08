@@ -1,4 +1,4 @@
 class IntegrationRecord < ApplicationRecord
-  belongs_to :connection
-  belongs_to :record
+  belongs_to :connection, touch: true
+  belongs_to :record, touch: true
 end

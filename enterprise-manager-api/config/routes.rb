@@ -15,8 +15,13 @@ Rails.application.routes.draw do
         resources :key_values
         resources :connections
         namespace :zoho_books do
+          match 'items/update_all', to: "items#update_all", via: [:post]
+          match 'items/sync', to: "items#sync", via: [:post]
+
           resources :items
           match 'contacts/update_all', to: "contacts#update_all", via: [:post]
+          match 'contacts/sync', to: "contacts#sync", via: [:post]
+
           resources :contacts
           resources :invoices
         end

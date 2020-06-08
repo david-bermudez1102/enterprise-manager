@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Drawer, Descriptions } from "antd"
 import { format, formatDistanceToNow } from "date-fns"
 import { singular } from "pluralize"
+
 const RecordPreview = ({ resource, record, recordFields, setRecord }) => {
   const [visible, setVisible] = useState(true)
 

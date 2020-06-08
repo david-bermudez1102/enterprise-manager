@@ -1,6 +1,7 @@
 class RecordFieldsController < ApplicationController
   before_action :authenticate_user
   before_action :set_form
+
   def create
     record_field = @form.record_fields.build(record_field_params)
     if record_field.save
@@ -36,23 +37,24 @@ class RecordFieldsController < ApplicationController
 
 
   private
-  def record_field_params
-    params.require(:record_field).permit(
-      :field_id,
-      :name,
-      :field_type,
-      :form_id,
-      :is_required,
-      :default_value,
-      :accepts_decimals,
-      :field_format,
-      {:combined_fields => []},
-      selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
-      options_attributes: [:value]
-    )
-  end
+    def record_field_params
+      params.require(:record_field).permit(
+        :field_id,
+        :name,
+        :field_type,
+        :form_id,
+        :is_required,
+        :default_value,
+        :accepts_decimals,
+        :field_format,
+        :zoho_field_name,
+        {:combined_fields => []},
+        selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
+        options_attributes: [:value]
+      )
+    end
 
-  def set_form
-    @form = Form.find(params[:form_id])
-  end
+    def set_form
+      @form = Form.find(params[:form_id])
+    end
 end

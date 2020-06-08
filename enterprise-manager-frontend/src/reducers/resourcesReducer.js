@@ -11,10 +11,9 @@ export const resourcesReducer = (state = [], action) => {
           .map(resource => {
             //checking if the fetch has any updates since state is being cached.
             const updatedResource = action.resources.find(
-              r => r.id === resource.id
+              r => parseInt(r.id) === parseInt(resource.id)
             )
-            if (resource !== updatedResource)
-              return { ...resource, ...updatedResource }
+            if (updatedResource) return { ...resource, ...updatedResource }
             return resource
           }),
         ...action.resources.filter(
@@ -23,7 +22,9 @@ export const resourcesReducer = (state = [], action) => {
       ]
     case "UPDATE_RESOURCE":
       return [
-        ...state.map(r => (r.id === action.resource.id ? action.resource : r))
+        ...state.map(r =>
+          r.id === action.resource.id ? { ...r, ...action.resource } : r
+        )
       ]
     case "UPDATE_RECORDS_COUNT":
       return [

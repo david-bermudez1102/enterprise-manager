@@ -2,9 +2,9 @@ class RecordFieldSerializer
   include FastJsonapi::ObjectSerializer
   set_key_transform :camel_lower
   
-  cache_options enabled: true, cache_length: 12.hours
+  #cache_options enabled: true, cache_length: 12.hours
 
-  attributes :id, :field_id, :name, :field_type, :form_id, :field_alias, :is_required, :default_value
+  attributes :id, :field_id, :name, :field_type, :form_id, :field_alias, :is_required, :default_value, :zoho_field_name
   
   attribute :accepts_decimals, if: Proc.new { |field| field.field_type == "numeric_field" }
   attribute :combined_fields, if: Proc.new { |field| field.field_type == "combined_field" }

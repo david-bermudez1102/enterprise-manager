@@ -18,17 +18,21 @@ class RecordSerializer
   end
 
   link :values do |object|
+    new_hash = {}
     ValueSerializer.new(object.values).serializable_hash[:data].map do |value|
-      new_hash = {}
+      
       new_hash[:id] = value[:attributes][:recordId]
       new_hash[:formId] = value[:attributes][:formId]
       new_hash[value[:attributes][:recordFieldId]] = value[:attributes][:content]
+      new_hash[value[:attributes][:recordFieldName]] = value[:attributes][:apiContent]
       new_hash[:createdBy] = object.account.name if object.account 
       new_hash[:createdAt] = object.created_at
       new_hash[:updatedAt] = object.updated_at
       new_hash[:zohoRecordId] = object.zoho_integration_record.external_id if object.zoho_integration_record
       new_hash[:quickbooksRecordId] = object.quickbooks_integration_record.external_id if object.quickbooks_integration_record
-      new_hash
-    end.reduce({}, :merge)
+    end
+    new_hash
   end
+
+
 end

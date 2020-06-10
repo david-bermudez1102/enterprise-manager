@@ -27,10 +27,11 @@ const CreateModal = props => {
       "",
       prepareRecords(
         selectedRows.length > 0 ? selectedRows : values,
-        recordFields
+        connectionType
       )
     )
 
+  console.log(connectionType)
   return (
     <WithModal
       {...useModalProps}

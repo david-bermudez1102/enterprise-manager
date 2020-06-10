@@ -9,7 +9,7 @@ module ZohoBooks::CreateConcern
         "Authorization" => authorization
       }
 
-      url = "#{root_url}?organization_id=#{zoho_organization_id}"
+      url = "#{root_url}?organization_id=#{zoho_organization_id}&ignore_auto_number_generation=true"
 
       model_name = self.model_name.to_s.split('::').last.downcase.pluralize
 
@@ -19,16 +19,22 @@ module ZohoBooks::CreateConcern
 
       if new_body.size > 0
         new_body.map do |r|
+          line_items = (r["line_items"] || []).map { |item| item["id"] }
           response = HTTParty.post(url, headers: headers, body:{ JSONString: r.to_json })
           response = JSON.parse(response&.body || "{}")
+
           if response["code"] == 0
-            record = Record.find_by(id:r["id"])
-            record.update(zoho_integration_record_attributes:{ external_id:response["#{model_name.singularize}"]["#{model_name.singularize}_id"],connection:record.form.zoho_connection, record_id: record.id })
-            RecordSerializer.new(record).serializable_hash[:data]
+            records = Record.includes(:zoho_integration_record).where("id = ? or id IN (?)", r["id"], line_items)
+            
+            records.map do |record|
+              record.update(zoho_integration_record_attributes:{ external_id:response["#{model_name.singularize}"]["#{model_name.singularize}_id"],connection:record.form.zoho_connection, record_id: record.id })
+              RecordSerializer.new(record).serializable_hash[:data]
+            end
+                     
           else
             { error: response["message"], recordId: r["id"]}
           end
-        end
+        end.flatten
       else 
         { errors: ["all #{model_name} for the selected period of time have already been sent to Zoho. If you'd like to update records, use the update options."]}
       end

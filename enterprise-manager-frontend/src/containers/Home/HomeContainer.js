@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Switch, Redirect } from "react-router-dom"
 import SideBar from "../../components/Home/SideBar/SideBar"
 import Navbar from "../../components/Navbar/Navbar"
@@ -15,10 +15,12 @@ import { useSelector, shallowEqual } from "react-redux"
 import Route from "../../Router/Route"
 import NoMatch from "../../components/NoMatch"
 import useMatchedRoute from "../../components/NoMatch/useMatchedRoute"
-import { Layout, BackTop, Divider } from "antd"
+import { Layout, BackTop, Divider, Affix, Button } from "antd"
 import MainPageHeader from "../../components/MainPageHeader"
 import "./styles.scss"
 import Text from "antd/lib/typography/Text"
+import { SettingOutlined } from "@ant-design/icons"
+import useSidebar from "../../components/Home/SideBar/useSidebar"
 
 const { Content, Footer } = Layout
 
@@ -30,25 +32,61 @@ const HomeContainer = () => {
   const session = useSession()
   const matchedRoute = useMatchedRoute()
 
+  const { sidebar, dispatch } = useSidebar({
+    organization: organizations[0]
+  })
+
+  const [isSiderCollapsed, setIsSiderCollapsed] = useState(sidebar.collapsed)
+
+  const handleCollapse = () => {
+    setIsSiderCollapsed(!isSiderCollapsed)
+    dispatch({ type: "SET-COLLAPSED", collapsed: !isSiderCollapsed })
+  }
+
   if (organizations.length === 0) return <Redirect to='/organizations/new' />
   if (admins.length === 0) return <Redirect to='/accounts/new' />
   return (
-    <Layout style={{ minHeight: "100%" }}>
+    <Layout style={{ minHeight: "100%", width: "100%" }}>
       {session.isLoggedIn ? (
-        <SideBar session={session} organizations={organizations} />
+        <SideBar
+          session={session}
+          organizations={organizations}
+          collapsed={isSiderCollapsed}
+          handleCollapse={handleCollapse}
+        />
       ) : null}
-      <Layout>
+      <Layout style={{ width: "100%", position: "relative" }}>
         {organizations.length > 0 ? (
-          <Navbar session={session} organizations={organizations} />
+          <Navbar
+            session={session}
+            organizations={organizations}
+            isSiderCollapsed={isSiderCollapsed}
+            trigger={handleCollapse}
+          />
         ) : null}
         {!matchedRoute ? <NoMatch /> : null}
         <Content
           style={{
             padding: "24px 24px",
             position: "relative",
+            width: "100%",
             display: !matchedRoute ? "none" : undefined
           }}>
           <MainPageHeader except={["/"]} />
+          <Affix style={{ position: "fixed", zIndex: 2000, right: 0, top: 70 }}>
+            <Button
+              type='primary'
+              size={"large"}
+              style={{
+                borderRadius: "4px 0 0 4px",
+                display: "flex",
+                alignItems: "center",
+                width: "48px",
+                height: "48px"
+              }}>
+              <SettingOutlined style={{ fontSize: "20px", margin: "auto" }} />
+            </Button>
+          </Affix>
           <Switch>
             <Route
               path={`/organizations`}

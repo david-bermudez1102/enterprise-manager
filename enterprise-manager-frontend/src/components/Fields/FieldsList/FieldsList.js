@@ -6,6 +6,7 @@ import { Link, useLocation } from "react-router-dom"
 import { Empty, Card, Button, Divider, Form, Col } from "antd"
 import zohoBooksIcon from "../../../containers/ZohoBooks/favicon.ico"
 import Title from "antd/lib/typography/Title"
+import { EyeTwoTone } from "@ant-design/icons"
 
 const pluralize = require("pluralize")
 
@@ -46,7 +47,7 @@ const FieldsList = props => {
   )
 
   return (
-    <Card bordered={false}>
+    <Card bordered={false} bodyStyle={{ padding: 0 }}>
       <Col
         {...(location.pathname !== `${match.url}/new`
           ? { xxl: 20, xl: 24, lg: 24, span: 18 }
@@ -54,6 +55,13 @@ const FieldsList = props => {
         <Card
           bordered={false}
           activeTabKey={location.pathname}
+          title={
+            location.pathname === `${match.url}/new/fields/new` ? (
+              <Title level={2}>
+                <EyeTwoTone /> Resource Preview
+              </Title>
+            ) : undefined
+          }
           tabList={[
             {
               key: `${match.url}/new/fields/new`,

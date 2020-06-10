@@ -27,7 +27,7 @@ const SyncModal = props => {
       `sync?merge_records=${merge}`,
       prepareRecords(
         selectedRows.length > 0 ? selectedRows : values,
-        recordFields
+        connectionType
       )
     )
 

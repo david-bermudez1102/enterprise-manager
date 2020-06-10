@@ -1,6 +1,4 @@
 import React from "react"
-import { useDispatch } from "react-redux"
-import { zohoApi } from "../../../actions/zohoBooksActions"
 import { Menu } from "antd"
 import {
   SyncOutlined,
@@ -8,16 +6,13 @@ import {
   EditOutlined
 } from "@ant-design/icons"
 import { singular, plural } from "pluralize"
-import { prepareRecords } from "../../../containers/ZohoBooks/prepareData"
 import useModal from "../../Modal/Hooks/useModal"
 import SyncModal from "../Modals/ZohoBooks/SyncModal"
 import UpdateAllModal from "../Modals/ZohoBooks/UpdateAllModal"
 import CreateModal from "../Modals/ZohoBooks/CreateModal"
 
 const RecordsActions = props => {
-  const { resource, recordFields, values, selectedRows } = props
-
-  const dispatch = useDispatch()
+  const { resource, selectedRows } = props
 
   const syncModal = useModal()
   const createModal = useModal()

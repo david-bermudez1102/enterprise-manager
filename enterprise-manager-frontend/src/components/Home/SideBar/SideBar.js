@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import SidebarLinks from "./SidebarLinks";
-import useSidebar from "./useSidebar";
-import { Layout } from "antd";
+import React, { useState } from "react"
+import SidebarLinks from "./SidebarLinks"
+import useSidebar from "./useSidebar"
+import { Layout } from "antd"
 
-const { Sider } = Layout;
+const { Sider } = Layout
 
-const SideBar = ({ session, organizations }) => {
-  const { links, sidebar, dispatch } = useSidebar({
-    organization: organizations[0],
-  });
+const SideBar = ({ session, organizations, collapsed, handleCollapse }) => {
+  const { links } = useSidebar({
+    organization: organizations[0]
+  })
 
-  const [collapsed, setCollapsed] = useState(sidebar.collapsed);
+  const [broken, setBroken] = useState(false)
 
-  const handleCollapse = collapsed => {
-    setCollapsed(collapsed);
-    dispatch({ type: "SET-COLLAPSED", collapsed });
-  };
-
+  console.log(collapsed)
   return (
     <Sider
+      onBreakpoint={setBroken}
+      breakpoint={"md"}
       collapsible
+      trigger={null}
       collapsed={collapsed}
+      collapsedWidth={broken ? 0 : undefined}
       onCollapse={handleCollapse}
-      className="shadow-sm">
+      className='shadow-sm'>
       <SidebarLinks links={links} session={session} collapsed={collapsed} />
     </Sider>
-  );
-};
+  )
+}
 
-export default React.memo(SideBar);
+export default React.memo(SideBar)

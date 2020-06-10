@@ -17,12 +17,25 @@ class RecordFieldSerializer
   attribute :selectable_resource_attributes, if: proc { |field|
                           field.field_type == "selectable"
                         } do |object|
-    if object.selectable_resource
-    { optionsAttributes: object.selectable_resource.form.fields.find_by(id: object.selectable_resource.resource_field_id).values.map do |value|
-      { id: value.id, value: value.content }
-    end || [] } 
+    form = object.field.selectable_resource.form
+    if object.field && object.field.selectable_resource
+    { optionsAttributes: form.fields.find_by(id: object.field.selectable_resource.resource_field_id).values.map do |value|
+      
+      if value.record.zoho_integration_record
+        { id: value.id, 
+          value: value.content, 
+          zohoRecordId: value.record.zoho_integration_record.external_id,
+        }
+      else
+        { id: value.id, value: value.content }
+      end
+    end || [],
+    resourceFieldId: object.field.selectable_resource.resource_field_id,
+    formId: object.field.selectable_resource.form_id,
+    zohoConnectedThrough: form.zoho_connection ? form.zoho_connection.connection_type : nil} 
   end
   end
+
   attribute :options_attributes, if: proc { |field|
               field.field_type == "selectable" || field.field_type == "radio" || field.field_type == "checkbox"
             } do |object|

@@ -64,12 +64,14 @@ export const update = (dispatch, url, payload, ...actions) => {
     .then(handleErrors)
     .then(response => response.json())
     .then(response => {
+      console.log(response.links.values)
       if (!response.errors) {
         actions.map(action => dispatch(action))
         message.success(response.message || UPDATED_MESSAGE_DEFAULT)
       } else {
         throw new Error(response.errors.join(", "))
       }
+      return response
     })
     .catch(resp => message.error(resp.toString()))
 }

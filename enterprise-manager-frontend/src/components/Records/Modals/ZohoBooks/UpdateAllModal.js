@@ -27,7 +27,7 @@ const UpdateAllModal = props => {
       "update_all",
       prepareRecords(
         selectedRows.length > 0 ? selectedRows : values,
-        recordFields
+        connectionType
       )
     )
 

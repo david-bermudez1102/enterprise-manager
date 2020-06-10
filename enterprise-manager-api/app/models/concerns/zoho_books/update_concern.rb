@@ -17,19 +17,24 @@ module ZohoBooks::UpdateConcern
         !Record.find_by(id:record["id"]).zoho_integration_record.nil?
       end
 
-      responses = body.map do |r|
-        zoho_id = r["zoho_books_id"]
-        url = "#{root_url}/#{zoho_id}?organization_id=#{zoho_organization_id}"
+      body.map do |r|
+        line_items = (r["line_items"] || []).map { |item| item["id"] }
+        zoho_id = r["zoho_record_id"]
+        url = "#{root_url}/#{zoho_id}?organization_id=#{zoho_organization_id}&ignore_auto_number_generation=true"
+        puts url
         response = HTTParty.put(url, headers: headers, body:{JSONString: r.to_json})
         response = JSON.parse(response&.body || "{}")
         if response["code"] == 0
-          record = Record.find_by(id:r["id"])
-          record.update(zoho_integration_record_attributes:{ external_id:response["#{model_name.singularize}"]["#{model_name.singularize}_id"],connection:record.form.zoho_connection, record_id: record.id })
-          RecordSerializer.new(record).serializable_hash[:data]
+          records = Record.includes(:zoho_integration_record).where("id = ? or id IN (?)", r["id"], line_items)
+            
+          records.map do |record|
+            record.update(zoho_integration_record_attributes:{ external_id:response["#{model_name.singularize}"]["#{model_name.singularize}_id"],connection:record.form.zoho_connection, record_id: record.id })
+            RecordSerializer.new(record).serializable_hash[:data]
+          end
         else
           { error: response["message"], recordId: r["id"]}
         end
-      end
+      end.flatten
     end
   end
   

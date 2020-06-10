@@ -23,10 +23,11 @@ export const valuesReducer = (state = {}, action) => {
       return {
         ...state,
         [action.value.formId]: (state[action.value.formId] || []).map(value =>
-          parseInt(value.id) === parseInt(action.value.recordId)
+          parseInt(value.id) === parseInt(action.value.id)
             ? {
-                ...value,
-                [action.value.recordFieldId]: action.value.content
+                listingId: value.listingId,
+                key: value.key,
+                ...action.value
               }
             : value
         )

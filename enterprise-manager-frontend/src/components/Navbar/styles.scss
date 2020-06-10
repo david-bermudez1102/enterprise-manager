@@ -1,0 +1,20 @@
+.barsMenu {
+  padding: 6px;
+  display: none;
+}
+
+.navbar-menu {
+}
+
+@media screen and (max-width: 1000px) {
+  .barsMenu {
+    display: inherit;
+  }
+  .navbar-menu {
+    display: none !important;
+  }
+
+  .ant-menu-item {
+    padding: 0 10px !important;
+  }
+}

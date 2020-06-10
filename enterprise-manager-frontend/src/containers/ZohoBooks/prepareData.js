@@ -1,19 +1,14 @@
-export const prepareRecords = (records, recordFields) =>
-  records
-    .map(value =>
-      Object.keys(value)
-        .map(k => {
-          const rF = recordFields.find(f => parseInt(f.id) === parseInt(k))
-          return rF
-            ? {
-                [(
-                  rF.zohoFieldName || rF.name.split(" ").join("_")
-                ).toLowerCase()]: value[k],
-                id: value.id,
-                zohoBooksId: value.zohoRecordId
-              }
-            : null
-        })
-        .filter(value => value)
-    )
-    .map(value => Object.assign({}, ...value))
+import { uniqBy } from "lodash"
+
+export const prepareRecords = (records, connectionType) => {
+  switch (connectionType) {
+    case "invoice":
+      return uniqBy(records, "invoice_number").map(x => ({
+        ...x,
+        lineItems: records.filter(i => i.invoice_number === x.invoice_number)
+      }))
+
+    default:
+      return records
+  }
+}

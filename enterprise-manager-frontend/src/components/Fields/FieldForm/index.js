@@ -71,6 +71,7 @@ const FieldForm = props => {
   const fieldProps = {
     field,
     fieldType: fieldState.fieldType || "",
+    resourceId,
     onChange
   }
 

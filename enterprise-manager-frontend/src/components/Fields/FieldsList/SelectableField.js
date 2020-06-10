@@ -1,6 +1,6 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { Select } from "antd";
-import FieldTypeWrapper from "../FieldTypeWrapper";
+import React, { useCallback, useState, useEffect } from "react"
+import { Select } from "antd"
+import FieldTypeWrapper from "../FieldTypeWrapper"
 
 const SelectableField = props => {
   const {
@@ -11,29 +11,29 @@ const SelectableField = props => {
     name,
     onChange,
     ...newProps
-  } = props;
+  } = props
 
-  const [state, setState] = useState(null);
+  const [state, setState] = useState(null)
   const handleChange = useCallback((value, option) => {
     if (field.selectableResourceAttributes)
       setState({
         recordFieldId: props.name,
         recordValueId: option ? option.id : undefined,
-        content: option ? option.value : undefined,
-      });
+        content: option ? option.value : undefined
+      })
     else
       setState({
         recordFieldId: props.name,
         recordOptionId: option ? option.id : undefined,
-        content: option ? option.value : undefined,
-      });
+        content: option ? option.value : undefined
+      })
     // eslint-disable-next-line
-  }, []);
+  }, [])
 
   useEffect(() => {
-    if (state) onChange(state);
+    if (state) onChange(state)
     // eslint-disable-next-line
-  }, [state]);
+  }, [state])
 
   return (
     <FieldTypeWrapper
@@ -41,7 +41,7 @@ const SelectableField = props => {
       name={name}
       label={React.cloneElement(suffix, {
         placement: "left",
-        children: field.name,
+        children: field.name
       })}
       field={field}>
       <Select
@@ -52,7 +52,13 @@ const SelectableField = props => {
         onChange={handleChange}
         {...newProps}>
         {field.selectableResourceAttributes
-          ? field.selectableResourceAttributes.optionsAttributes.map(option => (
+          ? [
+              ...new Map(
+                field.selectableResourceAttributes.optionsAttributes.map(
+                  item => [item.value, item]
+                )
+              ).values()
+            ].map(option => (
               <Select.Option
                 key={`selectable_option_${field.id}_${option.id}`}
                 id={option.id}
@@ -60,7 +66,13 @@ const SelectableField = props => {
                 {option.value}
               </Select.Option>
             ))
-          : field.optionsAttributes.map(option => (
+          : [
+              ...new Map(
+                field.selectableResourceAttributes.optionsAttributes.map(
+                  item => [item.value, item]
+                )
+              ).values()
+            ].map(option => (
               <Select.Option
                 key={`selectable_option_${field.id}_${option.id}`}
                 id={option.id}
@@ -70,7 +82,7 @@ const SelectableField = props => {
             ))}
       </Select>
     </FieldTypeWrapper>
-  );
-};
+  )
+}
 
-export default SelectableField;
+export default SelectableField

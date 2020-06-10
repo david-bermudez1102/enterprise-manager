@@ -20,6 +20,8 @@ export const zohoApi = (zohoResource, type, action, body) => {
     invoice: `${zoho_path}/invoices/${action}`
   }
 
+  console.log(body)
+
   return dispatch =>
     fetch(paths[type], {
       cache: "no-cache",

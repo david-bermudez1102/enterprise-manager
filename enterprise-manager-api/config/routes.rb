@@ -23,6 +23,9 @@ Rails.application.routes.draw do
           match 'contacts/sync', to: "contacts#sync", via: [:post]
 
           resources :contacts
+
+          match 'invoices/update_all', to: "invoices#update_all", via: [:post]
+          match 'invoices/sync', to: "invoices#sync", via: [:post]
           resources :invoices
         end
       end

@@ -1,23 +1,23 @@
-import React from "react";
-import SelectableChoice from "./SelectableChoice";
-import { mdiSelectPlace } from "@mdi/js";
-import { useHandleChange } from "../../Hooks/useHandleChange";
-import { Col } from "antd";
-import RadioWrapper from "../RadioWrapper";
+import React from "react"
+import SelectableChoice from "./SelectableChoice"
+import { mdiSelectPlace } from "@mdi/js"
+import { useHandleChange } from "../../Hooks/useHandleChange"
+import { Col } from "antd"
+import RadioWrapper from "../RadioWrapper"
 
 const SelectableField = props => {
-  const { field, fieldType, onChange } = props;
+  const { field, fieldType, resourceId, onChange } = props
   const { handleChange, handleSelectable } = useHandleChange({
     field,
-    onChange,
-  });
+    onChange
+  })
 
   return (
     <>
       <RadioWrapper
-        name="fieldType"
-        id="selectable_field"
-        value="selectable"
+        name='fieldType'
+        id='selectable_field'
+        value='selectable'
         onChange={handleChange}
         iconPath={mdiSelectPlace}
         iconTitle={"Selectable Field"}
@@ -27,6 +27,7 @@ const SelectableField = props => {
       {fieldType === "selectable" ? (
         <Col span={24} order={24}>
           <SelectableChoice
+            resourceId={resourceId}
             field={field}
             fieldType={fieldType}
             handleChange={handleChange}
@@ -35,6 +36,6 @@ const SelectableField = props => {
         </Col>
       ) : null}
     </>
-  );
-};
-export default SelectableField;
+  )
+}
+export default SelectableField

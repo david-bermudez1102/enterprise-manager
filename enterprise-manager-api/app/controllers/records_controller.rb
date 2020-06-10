@@ -19,8 +19,9 @@ class RecordsController < ApplicationController
   def update
     record = @form.records.find_by(id: params[:id])
     value = record.values.find_by(record_field_id: params[:record_field_id])
-    if value.update(content: params[:content])
-      render json: { id: params[:id], message: "Record saved with success" }
+    if value.update(record_params[:values_attributes])
+      serialized_data = RecordSerializer.new(record).serializable_hash[:data]
+      render json: serialized_data
     else
       render json: { errors: value.errors.full_messages }
     end

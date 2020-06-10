@@ -17,7 +17,6 @@ import useModal from "../Modal/Hooks/useModal"
 import { plural } from "pluralize"
 import Text from "antd/lib/typography/Text"
 import BulkActions from "./BulkActions"
-import ConnectionSettings from "../Connections/ConnectionSettings"
 
 const RecordsList = props => {
   const dispatch = useDispatch()
@@ -162,59 +161,67 @@ const RecordsList = props => {
               </Text>
             </Col>
           </Row>
-        </Card>
-        <DndProvider backend={HTML5Backend}>
-          <Table
-            style={{ overflowX: "auto" }}
-            loading={loadingInitialData || loadingData || loadingFilteredData}
-            components={components}
-            rowSelection={rowSelection}
-            columns={[
-              {
-                title: "Actions",
-                dataIndex: "",
-                width: "150px",
-                key: "x",
-                render: (text, record) => (
-                  <RecordOptions
-                    resource={resource}
-                    record={record}
-                    showModal={showModal}
-                    setRecord={setRecord}
-                  />
-                )
-              },
-              {
-                key: `record_field_head_listing_id_${resource.id}`,
-                title: "#",
-                dataIndex: "listingId",
-                sorter: true,
-                width: "100px"
-              },
-              ...columns
-            ]}
-            dataSource={chunkOfRecords[page - 1]}
-            pagination={false}
-            onChange={(pagination, filters, sorter) => {
-              filterRecords(filters)
-              sorter.column
-                ? handleSortBy(sorter.column.dataIndex, sorter.order)
-                : handleSortBy("listingId")
-            }}
-            locale={{
-              filterConfirm: "Ok",
-              filterReset: "Reset",
-              emptyText: (
-                <Empty
-                  description={
-                    <>There are no records for the current period of time.</>
+          <Row>
+            <Col span={24} style={{ width: "100%", overflowX: "auto" }}>
+              <DndProvider backend={HTML5Backend}>
+                <Table
+                  tableLayout={"auto"}
+                  loading={
+                    loadingInitialData || loadingData || loadingFilteredData
                   }
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  components={components}
+                  rowSelection={rowSelection}
+                  columns={[
+                    {
+                      title: "Actions",
+                      dataIndex: "",
+                      width: "150px",
+                      key: "x",
+                      render: (text, record) => (
+                        <RecordOptions
+                          resource={resource}
+                          record={record}
+                          showModal={showModal}
+                          setRecord={setRecord}
+                        />
+                      )
+                    },
+                    {
+                      key: `record_field_head_listing_id_${resource.id}`,
+                      title: "#",
+                      dataIndex: "listingId",
+                      sorter: true,
+                      width: "100px"
+                    },
+                    ...columns
+                  ]}
+                  dataSource={chunkOfRecords[page - 1]}
+                  pagination={false}
+                  onChange={(pagination, filters, sorter) => {
+                    filterRecords(filters)
+                    sorter.column
+                      ? handleSortBy(sorter.column.dataIndex, sorter.order)
+                      : handleSortBy("listingId")
+                  }}
+                  locale={{
+                    filterConfirm: "Ok",
+                    filterReset: "Reset",
+                    emptyText: (
+                      <Empty
+                        description={
+                          <>
+                            There are no records for the current period of time.
+                          </>
+                        }
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                      />
+                    )
+                  }}
                 />
-              )
-            }}
-          />
-        </DndProvider>
+              </DndProvider>
+            </Col>
+          </Row>
+        </Card>
       </div>
       <DeletionModal {...deletionModal} />
       {/* <ConnectionSettings

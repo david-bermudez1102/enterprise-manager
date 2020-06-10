@@ -1,43 +1,45 @@
-import React, { useState } from "react";
-import SelectableResources from "./SelectableResources";
-import SelectableOptions from "./SelectableOptions";
-import { Radio, Divider } from "antd";
+import React, { useState } from "react"
+import SelectableResources from "./SelectableResources"
+import SelectableOptions from "./SelectableOptions"
+import { Radio, Divider } from "antd"
 
 const SelectableChoice = props => {
-  const { field, fieldType, handleChange, handleSelectable } = props;
-  const { selectableResourceAttributes } = field;
+  const { field, fieldType, handleChange, handleSelectable, resourceId } = props
+  const { selectableResourceAttributes } = field
   const choice = selectableResourceAttributes
     ? selectableResourceAttributes.optionsAttributes.length > 0
       ? "connect"
       : "items"
-    : null;
-  const [state, setState] = useState({ choice: field ? choice : "" });
+    : null
+  const [state, setState] = useState({ choice: field ? choice : "" })
 
   return (
-    <Radio.Group style={{ width: "100%" }} name="choice">
+    <Radio.Group style={{ width: "100%" }} name='choice'>
       <Divider />
       <Radio
-        name="choice"
-        value="connect"
+        name='choice'
+        value='connect'
         onChange={e => setState({ choice: e.target.value })}
         checked={state.choice === "connect" ? true : false}>
         Connect to a Resource
       </Radio>
       <Radio
-        name="choice"
-        value="items"
+        name='choice'
+        value='items'
         onChange={e => setState({ choice: e.target.value })}
         defaultChecked={state.choice === "items" ? true : false}>
         Add Items Individually
       </Radio>
       {state.choice === "connect" ? (
         <SelectableResources
+          resourceId={resourceId}
           field={field}
           handleSelectable={handleSelectable}
         />
       ) : null}
       {state.choice === "items" ? (
         <SelectableOptions
+          resourceId={resourceId}
           field={field}
           fieldType={fieldType}
           handleChange={handleChange}
@@ -45,7 +47,7 @@ const SelectableChoice = props => {
         />
       ) : null}
     </Radio.Group>
-  );
-};
+  )
+}
 
-export default SelectableChoice;
+export default SelectableChoice

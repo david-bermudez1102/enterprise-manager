@@ -1,0 +1,53 @@
+@import "~antd/dist/antd.dark.css";
+@import url(https://pro.fontawesome.com/releases/v5.10.0/css/all.css);
+
+html,
+body {
+  height: 100% !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  height: 100% !important;
+}
+
+.min-h-100 {
+  min-height: 100% !important;
+}
+
+.react-resizable {
+  position: relative;
+  background-clip: padding-box !important;
+}
+
+.react-resizable-handle {
+  position: absolute;
+  width: 10px;
+  height: 100%;
+  bottom: 0;
+  right: -5px;
+  cursor: col-resize;
+  z-index: 1;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08) !important;
+}
+
+.circular--square {
+  border-radius: 50%;
+}
+
+.circular--landscape {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.circular--landscape img {
+  width: auto;
+  height: 100%;
+  top: 0px;
+  position: relative;
+}

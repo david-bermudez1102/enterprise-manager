@@ -15,12 +15,12 @@ import { useSelector, shallowEqual } from "react-redux"
 import Route from "../../Router/Route"
 import NoMatch from "../../components/NoMatch"
 import useMatchedRoute from "../../components/NoMatch/useMatchedRoute"
-import { Layout, BackTop, Divider, Affix, Button } from "antd"
+import { Layout, BackTop, Divider } from "antd"
 import MainPageHeader from "../../components/MainPageHeader"
 import "./styles.scss"
 import Text from "antd/lib/typography/Text"
-import { SettingOutlined } from "@ant-design/icons"
 import useSidebar from "../../components/Home/SideBar/useSidebar"
+import HomeSettings from "./HomeSettings"
 
 const { Content, Footer } = Layout
 
@@ -73,20 +73,7 @@ const HomeContainer = () => {
             display: !matchedRoute ? "none" : undefined
           }}>
           <MainPageHeader except={["/"]} />
-          <Affix style={{ position: "fixed", zIndex: 2000, right: 0, top: 70 }}>
-            <Button
-              type='primary'
-              size={"large"}
-              style={{
-                borderRadius: "4px 0 0 4px",
-                display: "flex",
-                alignItems: "center",
-                width: "48px",
-                height: "48px"
-              }}>
-              <SettingOutlined style={{ fontSize: "20px", margin: "auto" }} />
-            </Button>
-          </Affix>
+          <HomeSettings />
           <Switch>
             <Route
               path={`/organizations`}

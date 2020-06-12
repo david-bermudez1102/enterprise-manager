@@ -46,14 +46,14 @@ const ResourcesList = ({ loaded, loading }) => {
 
   if (resources.length === 0)
     return (
-      <Col span={24} style={{ background: "#fff" }}>
+      <Col span={24}>
         <Empty description={"There are no resources created yet."}>
           <AddResourceButton />
         </Empty>
       </Col>
     )
   return (
-    <Col span={24}>
+    <Col span={24} style={{ padding: 0, margin: 0 }}>
       <Row gutter={[16, 16]}>
         {resources.map(resource => {
           return (

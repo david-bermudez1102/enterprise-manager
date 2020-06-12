@@ -24,6 +24,8 @@ import {
   archivedRecordsSortedBy
 } from "./archivedRecordsReducer"
 import { statistics } from "./statisticsReducer"
+import { theme } from "./themeReducer"
+import { roles } from "./rolesReducer"
 
 const requesting = (state = false, action) => {
   switch (action.type) {
@@ -59,5 +61,7 @@ export const rootReducer = combineReducers({
   archivedValues,
   sortedArchivedRecords,
   archivedRecordsSortedBy,
-  statistics
+  statistics,
+  theme,
+  roles
 })

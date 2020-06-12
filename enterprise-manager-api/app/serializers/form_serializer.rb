@@ -11,6 +11,12 @@ class FormSerializer
     end
   end
 
+  attribute :permission_attributes do |obj|
+    if obj.permission
+      PermissionSerializer.new(obj.permission).serializable_hash[:data][:attributes]
+    end
+  end
+
   attribute :quickbooks_connection_attributes do |obj|
     if obj.quickbooks_connection
       ConnectionSerializer.new(obj.quickbooks_connection).serializable_hash[:data][:attributes]

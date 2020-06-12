@@ -42,7 +42,10 @@ const LoginContainer = () => {
       }}>
       <Row justify='center' align='middle' style={{ height: "100%" }}>
         <Col xl={7} lg={10} md={12} sm={18} xs={22}>
-          <Title type={"primary"}>Login</Title>
+          <Title type={"primary"} level={3}>
+            <i className='fal fa-sign-in-alt' style={{ marginRight: 5 }}></i>
+            Login
+          </Title>
           <LoginForm handleOnSubmit={handleOnSubmit} />
         </Col>
       </Row>

@@ -7,7 +7,7 @@ import { useRouteMatch } from "react-router-dom"
 
 const ResourceFormLayout = ({ title, resource }) => {
   const match = useRouteMatch()
-  return (
+  return resource ? (
     <Col span={24}>
       <Row
         justify={"center"}
@@ -27,7 +27,7 @@ const ResourceFormLayout = ({ title, resource }) => {
         </Col>
       </Row>
     </Col>
-  )
+  ) : null
 }
 
 export default React.memo(ResourceFormLayout)

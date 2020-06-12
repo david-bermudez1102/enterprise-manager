@@ -1,6 +1,6 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import React from "react"
+import { useLocation } from "react-router-dom"
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import {
   HomeOutlined,
   ApartmentOutlined,
@@ -11,24 +11,26 @@ import {
   FlagOutlined,
   SwitcherOutlined,
   TeamOutlined,
-} from "@ant-design/icons";
+  TagsOutlined,
+  PlusCircleOutlined
+} from "@ant-design/icons"
 
 const useSidebar = ({ organization }) => {
-  const location = useLocation();
-  const activePath = location.pathname;
+  const location = useLocation()
+  const activePath = location.pathname
   const links = [
     {
       path: "/",
       exact: true,
       text: "Home",
-      icon: <HomeOutlined />,
+      icon: <HomeOutlined />
     },
     {
       path: "/organizations",
       exact: true,
       text: "Organizations",
       icon: <ApartmentOutlined />,
-      levels: ["admin"],
+      levels: ["admin"]
     },
     {
       path: `/organizations/${organization.id}/records`,
@@ -40,14 +42,14 @@ const useSidebar = ({ organization }) => {
         {
           path: `/organizations/${organization.id}/records/deleted`,
           text: "Deleted",
-          icon: <SwitcherOutlined />,
+          icon: <SwitcherOutlined />
         },
         {
           path: `/organizations/${organization.id}/archived/deleted`,
           text: "Archived",
-          icon: <FlagOutlined />,
-        },
-      ],
+          icon: <FlagOutlined />
+        }
+      ]
     },
     {
       path: "/accounts",
@@ -60,9 +62,9 @@ const useSidebar = ({ organization }) => {
         {
           path: "/accounts/add",
           text: "Add account",
-          icon: <UserAddOutlined />,
-        },
-      ],
+          icon: <UserAddOutlined />
+        }
+      ]
     },
     {
       path: `/organizations/${organization.id}/resources`,
@@ -74,19 +76,33 @@ const useSidebar = ({ organization }) => {
         {
           path: `/organizations/${organization.id}/resources/new`,
           text: "New Resource",
-          icon: <AppstoreAddOutlined />,
-        },
-      ],
+          icon: <AppstoreAddOutlined />
+        }
+      ]
     },
-  ];
+    {
+      path: `/organizations/${organization.id}/roles`,
+      dropdown: true,
+      text: "Roles",
+      icon: <TagsOutlined />,
+      levels: ["admin"],
+      subLinks: [
+        {
+          path: `/organizations/${organization.id}/roles/new`,
+          text: "New Role",
+          icon: <PlusCircleOutlined />
+        }
+      ]
+    }
+  ]
 
-  const { sidebar } = useSelector(({ sidebar }) => ({ sidebar }), shallowEqual);
-  const dispatch = useDispatch();
+  const { sidebar } = useSelector(({ sidebar }) => ({ sidebar }), shallowEqual)
+  const dispatch = useDispatch()
   return {
     links,
     dispatch,
-    sidebar,
-  };
-};
+    sidebar
+  }
+}
 
-export default useSidebar;
+export default useSidebar

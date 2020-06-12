@@ -39,7 +39,7 @@ export const fetchResources = organizationId => {
   return dispatch => {
     return fetch(`/api/v1/organizations/${organizationId}/forms`, {
       credentials: "include",
-      cache: "no-cache"
+      cache: "reload"
     })
       .then(handleErrors)
       .then(response => response.json())

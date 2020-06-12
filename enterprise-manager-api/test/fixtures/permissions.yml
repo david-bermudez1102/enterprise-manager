@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  permissionable: one
+  permissionable_type: Permissionable
+
+two:
+  permissionable: two
+  permissionable_type: Permissionable

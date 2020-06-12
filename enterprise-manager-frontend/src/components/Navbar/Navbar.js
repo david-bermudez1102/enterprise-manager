@@ -14,42 +14,42 @@ const Navbar = props => {
     {
       path: "/login",
       text: "Login",
-      icon: "fas fa-sign-in-alt",
+      icon: "fal fa-sign-in-alt",
       loginRequired: false
     },
     {
       path: "/",
       text: "Home",
-      icon: "fas fa-home",
+      icon: "fal fa-home",
       loginRequired: true
     },
     {
       path: `/organizations/${organizations[0].id}/resources/new`,
       text: "Add Resource",
-      icon: "fas fa-plus",
+      icon: "fal fa-plus",
       loginRequired: true
     },
     {
       path: `/organizations/${organizations[0].id}/resources`,
       text: "Resources",
-      icon: "fas fa-layer-group",
+      icon: "fal fa-layer-group",
       loginRequired: true
     },
     {
       path: `/organizations/${organizations[0].id}/settings`,
       text: "Settings",
-      icon: "fas fa-cog",
+      icon: "fal fa-cog",
       loginRequired: true
     },
     {
       path: `/notifications`,
       text: "Notifications",
-      icon: "fas fa-bell",
+      icon: "fal fa-bell",
       loginRequired: true
     },
     {
       path: "/logout",
-      icon: "fas fa-sign-out-alt",
+      icon: "fal fa-sign-out-alt",
       text: "Logout",
       loginRequired: true
     }
@@ -68,13 +68,15 @@ const Navbar = props => {
         height: 50
       }}>
       <div className='logo'>
-        {React.createElement(
-          isSiderCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-          {
-            className: "trigger",
-            onClick: trigger
-          }
-        )}
+        {session.isLoggedIn
+          ? React.createElement(
+              isSiderCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: trigger
+              }
+            )
+          : null}
         <Logo organization={organizations[0]} width={105} height={40} />
       </div>
       <NavbarMenu {...{ location, session, links }} layout={"horizontal"} />

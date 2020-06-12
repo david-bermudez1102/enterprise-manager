@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :assignments
+  resources :permissions
+  
   resources :integration_records
   resources :integrations
   scope 'api/v1' do
@@ -6,6 +9,7 @@ Rails.application.routes.draw do
     resources :account_unlock, only: :update
     resources :options
     resources :organizations do
+      resources :roles
       resources :forms do
         resources :statistics
         resources :fields

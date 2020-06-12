@@ -13,7 +13,7 @@ export const resourcesReducer = (state = [], action) => {
             const updatedResource = action.resources.find(
               r => parseInt(r.id) === parseInt(resource.id)
             )
-            if (updatedResource) return { ...resource, ...updatedResource }
+            if (updatedResource) return updatedResource
             return resource
           }),
         ...action.resources.filter(

@@ -6,6 +6,8 @@ class Form < ApplicationRecord
   has_many :records, dependent: :destroy
   has_many :record_fields, dependent: :destroy
   has_many :values, through: :records
+  has_one :permission, as: :permissionable
+
   validates :name, length: { in: 2..20 }
   has_many :selectable_resources, dependent: :destroy
   before_create :generate_form_alias
@@ -20,6 +22,8 @@ class Form < ApplicationRecord
   accepts_nested_attributes_for :zoho_connection, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 
   accepts_nested_attributes_for :quickbooks_connection, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
+
+  accepts_nested_attributes_for :permission, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 
   def name
     self[:name].split.map(&:capitalize).join(' ')

@@ -3,7 +3,7 @@ import { Menu } from "antd"
 import { NavLink } from "react-router-dom"
 import Search from "antd/lib/input/Search"
 
-const NavbarMenu = ({ location, session, links, layout, className }) => {
+const NavbarMenu = ({ location, session, links, layout }) => {
   return (
     <Menu
       mode={layout}

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  create_privilege: false
+  update_privilege: false
+  delete_privilege: false
+  insert_privilege: false
+  read_privilege: false
+  role: one
+  permission: one
+
+two:
+  create_privilege: false
+  update_privilege: false
+  delete_privilege: false
+  insert_privilege: false
+  read_privilege: false
+  role: two
+  permission: two

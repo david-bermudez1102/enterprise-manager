@@ -10,6 +10,7 @@ import Settings from "./Settings/Settings"
 import AllRecordsContainer from "./Records/AllRecordsContainer"
 import { FormCard } from "../components/Cards/Cards"
 import Route from "../Router/Route"
+import RolesContainer from "./Roles/RolesContainer"
 
 const OrganizationContainer = () => {
   const { organizations, resources, session, admins } = useSelector(
@@ -92,6 +93,11 @@ const OrganizationContainer = () => {
             path={`${match.path}/:organizationId/records`}
             component={AllRecordsContainer}
             name={"All Records"}
+          />
+          <Route
+            path={`${match.path}/:organizationId/roles`}
+            component={RolesContainer}
+            name={"Roles"}
           />
           <Route
             path={`${match.path}/:organizationId`}

@@ -35,22 +35,14 @@ const ResourcesContainer = props => {
   }, [formAlias, resources])
 
   return (
-    <Row
-      gutter={[16, 16]}
-      style={{
-        paddingLeft: "15px",
-        paddingRight: "15px",
-        margin: 0
-      }}>
+    <Row gutter={[16, 16]}>
       <Switch>
         <Route path={`${match.path}/new`} name={"New Resource"}>
           <ResourceFormLayout title={"Create Resource"} />
         </Route>
-        {resource ? (
-          <Route path={`${match.path}/:formAlias/edit`} name={"Edit Resource"}>
-            <ResourceFormLayout title={"Update Resource"} resource={resource} />
-          </Route>
-        ) : null}
+        <Route path={`${match.path}/:formAlias/edit`} name={"Edit Resource"}>
+          <ResourceFormLayout title={"Update Resource"} resource={resource} />
+        </Route>
         <Route path={`${match.path}/:resourceId/delete`}>
           <ResourceDelete
             redirectTo={match.url}

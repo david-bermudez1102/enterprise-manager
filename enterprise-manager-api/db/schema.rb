@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_01_215516) do
+ActiveRecord::Schema.define(version: 2020_06_11_172620) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -64,6 +64,20 @@ ActiveRecord::Schema.define(version: 2020_06_01_215516) do
   create_table "admins", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "assignments", force: :cascade do |t|
+    t.boolean "create_privilege", default: false, null: false
+    t.boolean "update_privilege", default: false, null: false
+    t.boolean "delete_privilege", default: false, null: false
+    t.boolean "insert_privilege", default: false, null: false
+    t.boolean "read_privilege", default: false, null: false
+    t.integer "role_id"
+    t.integer "permission_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_id"], name: "index_assignments_on_permission_id"
+    t.index ["role_id"], name: "index_assignments_on_role_id"
   end
 
   create_table "checkbox_options", force: :cascade do |t|
@@ -194,6 +208,14 @@ ActiveRecord::Schema.define(version: 2020_06_01_215516) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "permissions", force: :cascade do |t|
+    t.string "permissionable_type"
+    t.integer "permissionable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permissionable_type", "permissionable_id"], name: "index_permissions_on_permissionable_type_and_permissionable_id"
+  end
+
   create_table "record_fields", force: :cascade do |t|
     t.integer "field_type"
     t.string "name"
@@ -229,6 +251,14 @@ ActiveRecord::Schema.define(version: 2020_06_01_215516) do
     t.integer "account_id"
     t.index ["account_id"], name: "index_records_on_account_id"
     t.index ["form_id"], name: "index_records_on_form_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.integer "organization_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_roles_on_organization_id"
   end
 
   create_table "selectable_resources", force: :cascade do |t|

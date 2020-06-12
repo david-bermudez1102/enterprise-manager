@@ -12,7 +12,6 @@ const SideBar = ({ session, organizations, collapsed, handleCollapse }) => {
 
   const [broken, setBroken] = useState(false)
 
-  console.log(collapsed)
   return (
     <Sider
       onBreakpoint={setBroken}

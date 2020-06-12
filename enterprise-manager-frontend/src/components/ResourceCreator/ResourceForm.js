@@ -1,66 +1,99 @@
-import React, { useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { useSelector, shallowEqual, useDispatch } from "react-redux";
-import { Form, Input, Button } from "antd";
+import React, { useEffect } from "react"
+import { useHistory, useLocation, useRouteMatch } from "react-router-dom"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { Form, Input, Button } from "antd"
+import Permissions from "../Permissions"
+import usePermissions from "../Permissions/Hooks/usePermissions"
 
 const ResourceForm = ({ addResource, updateResource, url, resource }) => {
-  const location = useLocation();
-  const history = useHistory();
-  const { session } = useSelector(({ session }) => ({ session }), shallowEqual);
-  const dispatch = useDispatch();
-  const { organizationId } = session.currentUser;
-  const [form] = Form.useForm();
+  const location = useLocation()
+  const history = useHistory()
+  const match = useRouteMatch()
+  const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
+  const { organizationId } = session.currentUser
+  const [form] = Form.useForm()
+  const { onPermissionsChange, permissionAttributes } = usePermissions({
+    permissionAttributes: resource.permissionAttributes
+  })
+
+  const { formAlias } = match.params
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    form.setFieldsValue({ name: resource ? resource.name : "" });
+    form.setFieldsValue({ name: resource ? resource.name : "" })
     // eslint-disable-next-line
-  }, [location]);
+  }, [location])
 
   const onFinish = data => {
     if (addResource)
-      dispatch(addResource({ ...data, organizationId })).then(resource =>
-        resource ? history.push(`${resource.formAlias}`) : null
-      );
+      dispatch(
+        addResource({ ...data, organizationId, permissionAttributes })
+      ).then(resource =>
+        resource
+          ? history.push(
+              `/organizations/${organizationId}/resource/${resource.formAlias}`
+            )
+          : null
+      )
     else if (updateResource)
       dispatch(
-        updateResource({ ...data, id: resource.id, organizationId })
+        updateResource({
+          ...data,
+          id: resource.id,
+          organizationId,
+          permissionAttributes
+        })
       ).then(resource =>
-        resource ? history.replace(`${url}/${resource.formAlias}/edit`) : null
-      );
-  };
+        resource
+          ? resource.formAlias !== formAlias
+            ? history.push(
+                `/organizations/${organizationId}/resources/${resource.formAlias}/edit`
+              )
+            : null
+          : null
+      )
+  }
 
   return (
     <Form
+      labelCol={{ span: 5 }}
       form={form}
       name={"resource_form"}
       onFinish={onFinish}
       layout={"horizontal"}>
       <Form.Item
-        name="name"
-        label="Name"
+        name='name'
+        label='Name'
         rules={[
           {
             required: true,
-            message: "Please enter a valid resource name!",
-          },
+            message: "Please enter a valid resource name!"
+          }
         ]}>
         <Input
-          size="large"
-          prefix={<i className="fas fa-layer-group"></i>}
-          placeholder="Enter resource name..."
+          size='large'
+          prefix={<i className='fas fa-layer-group'></i>}
+          placeholder='Enter resource name...'
         />
       </Form.Item>
-      <Form.Item>
+      <Form.Item label={"Permissions"} required>
+        <Permissions
+          onChange={onPermissionsChange}
+          permissionAttributes={resource.permissionAttributes}
+        />
+      </Form.Item>
+      <Form.Item wrapperCol={{ offset: 5 }}>
         <Button
           size={"large"}
-          type="primary"
-          htmlType="submit"
-          className="login-form-button">
-          {addResource ? "Create Resource" : "Update Resource"}
+          type='primary'
+          htmlType='submit'
+          className='login-form-button'>
+          {addResource ? <>Create Resource</> : <>Update Resource</>}
         </Button>
       </Form.Item>
     </Form>
-  );
-};
+  )
+}
 
-export default React.memo(ResourceForm);
+export default React.memo(ResourceForm)

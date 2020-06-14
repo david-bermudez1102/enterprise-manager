@@ -53,12 +53,11 @@ export const updateResource = resource => {
     update(
       dispatch,
       `/api/v1/organizations/${resource.organizationId}/forms/${resource.id}`,
-      { form: resource },
-      {
-        type: "UPDATE_RESOURCE",
-        resource
-      }
-    )
+      { form: resource }
+    ).then(resource => {
+      dispatch({ type: "UPDATE_RESOURCE", resource })
+      return resource
+    })
 }
 
 export const removeResource = (organizationId, id) => {

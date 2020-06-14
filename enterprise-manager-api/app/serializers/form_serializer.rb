@@ -12,9 +12,37 @@ class FormSerializer
   end
 
   attribute :permission_attributes do |obj|
+    data = { assignmentsAttributes: [], exclusionsAttributes: [] }
     if obj.permission
-      PermissionSerializer.new(obj.permission).serializable_hash[:data][:attributes]
+      permissions = obj.roles.map do |role|
+        permission = role.permissions.find_by(id:obj.permission.id)
+        if permission
+          permission
+        else
+         role.default_permission
+        end
+      end.uniq
+
+      permissions.each do |permission|
+        serialized_data = PermissionSerializer.new(permission).serializable_hash[:data][:attributes]
+        if permission.class.name == "DefaultPermission"
+          data[:assignmentsAttributes].concat(serialized_data[:assignmentsAttributes].each{ |assignment| assignment[:id] = nil})
+        else
+          data[:assignmentsAttributes].concat(serialized_data[:assignmentsAttributes])
+        end
+        data[:exclusionsAttributes].concat(serialized_data[:exclusionsAttributes])
+      end
+      data
+    else
+      { assignmentsAttributes: obj.roles.map do |role|
+          data = PermissionSerializer.new(role.default_permission).serializable_hash[:data][:attributes][:assignmentsAttributes]  
+          data.map{ |assignment| assignment[:id] = nil}
+          data
+        end.flatten,
+        exclusionsAttributes: []
+      }
     end
+    
   end
 
   attribute :quickbooks_connection_attributes do |obj|
@@ -28,7 +56,6 @@ class FormSerializer
       RecordFieldSerializer.new(obj.record_fields).serializable_hash[:data].map { |r_f| r_f[:attributes]}
     end
   end
-  
   
   attribute :last_record_date do |obj|
     if obj.last_record_date

@@ -47,7 +47,7 @@ class FormsController < ApplicationController
   private
 
   def form_params
-    params.require(:form).permit(:name, :organization_id, zoho_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], quickbooks_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], fields_attributes:[:id, :name, :zoho_field_name], record_fields_attributes:[:id, :name, :zoho_field_name], permission_attributes:[assignments_attributes:[:id, :role_id, :create_privilege, :update_privilege, :delete_privilege, :insert_privilege, :read_privilege]])
+    params.require(:form).permit(:name, :organization_id, zoho_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], quickbooks_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], fields_attributes:[:id, :name, :zoho_field_name], record_fields_attributes:[:id, :name, :zoho_field_name], permission_attributes:[assignments_attributes:[:id, :role_id, :create_privilege, :update_privilege, :delete_privilege, :insert_privilege, :read_privilege], exclusions_attributes:[:id, :_destroy, :permission_id, :account_id, :exclusion_type]])
   end
 
   def set_organization
@@ -55,6 +55,6 @@ class FormsController < ApplicationController
   end
 
   def set_forms
-    @forms = @organization.forms.includes({zoho_connection: :integration}, {quickbooks_connection: :integration}, {permission: :assignments}, {record_fields: [{field:[:record_key, :selectable_resource]}]}, {fields:[:record_key]})
+    @forms = @organization.forms.includes(:zoho_connection, :quickbooks_connection, { permission: [:assignments, :exclusions] }, { :roles => [{ :default_permission => [ {:permission => [:assignments, :exclusions] }] }] }, :records, { record_fields: [{ field:[:record_key, {:selectable_resource => [{ :form => [ { :fields => [{ :values => [{ :record => [:zoho_integration_record, :quickbooks_integration_record] }] }] }] }] }] }, :options] })
   end
 end

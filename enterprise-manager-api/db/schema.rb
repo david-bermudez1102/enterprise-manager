@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_11_172620) do
+ActiveRecord::Schema.define(version: 2020_06_13_162513) do
+
+  create_table "account_roles", force: :cascade do |t|
+    t.integer "account_id"
+    t.integer "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_roles_on_account_id"
+    t.index ["role_id"], name: "index_account_roles_on_role_id"
+  end
 
   create_table "accounts", force: :cascade do |t|
     t.string "name"
@@ -104,11 +113,28 @@ ActiveRecord::Schema.define(version: 2020_06_11_172620) do
     t.index ["zoho_connection_id"], name: "index_connections_on_zoho_connection_id"
   end
 
+  create_table "default_permissions", force: :cascade do |t|
+    t.integer "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_default_permissions_on_role_id"
+  end
+
   create_table "employees", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "admin_id"
     t.index ["admin_id"], name: "index_employees_on_admin_id"
+  end
+
+  create_table "exclusions", force: :cascade do |t|
+    t.integer "account_id"
+    t.integer "permission_id"
+    t.integer "exclusion_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_exclusions_on_account_id"
+    t.index ["permission_id"], name: "index_exclusions_on_permission_id"
   end
 
   create_table "fields", force: :cascade do |t|

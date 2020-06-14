@@ -13,4 +13,8 @@ class AccountSerializer
       only_path: true,
     ),margin_left: object.avatar_margin_left, margin_top: object.avatar_margin_top }
   end
+
+  attribute :roles do |obj|
+    RoleSerializer.new(obj.roles).serializable_hash[:data].map{ |role| role[:attributes]}
+  end
 end

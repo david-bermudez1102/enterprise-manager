@@ -11,6 +11,7 @@ import AllRecordsContainer from "./Records/AllRecordsContainer"
 import { FormCard } from "../components/Cards/Cards"
 import Route from "../Router/Route"
 import RolesContainer from "./Roles/RolesContainer"
+import { fetchRoles } from "../actions/rolesActions"
 
 const OrganizationContainer = () => {
   const { organizations, resources, session, admins } = useSelector(
@@ -37,8 +38,10 @@ const OrganizationContainer = () => {
         dispatch(fetchResources(organizations[0].id))
     } else {
       setLoaded(false)
+      dispatch(fetchRoles(session.currentUser.organizationId))
       if (organizations.length > 0 && session.isLoggedIn)
         dispatch(fetchResources(organizations[0].id))
+
       if (organizations.length > 0 && admins.length === 0 && session.isLoggedIn)
         history.push("/accounts/new")
     }

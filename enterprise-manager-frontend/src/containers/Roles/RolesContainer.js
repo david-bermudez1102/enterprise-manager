@@ -1,24 +1,14 @@
-import React, { useEffect } from "react"
-import { Switch, useRouteMatch, useLocation } from "react-router-dom"
+import React from "react"
+import { Switch, useRouteMatch } from "react-router-dom"
 import Route from "../../Router/Route"
 import RolesFormLayout from "../../components/Roles/Form/RolesFormLayout"
 import { Card, Row, Col } from "antd"
 import Roles from "../../components/Roles"
-import { useDispatch, useSelector, shallowEqual } from "react-redux"
-import { fetchRoles } from "../../actions/rolesActions"
 import PageTabs from "../../components/PageTabs"
 import { PlusCircleOutlined, TagsOutlined } from "@ant-design/icons"
 
 const RolesContainer = props => {
-  const location = useLocation()
   const match = useRouteMatch()
-  const dispatch = useDispatch()
-
-  const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
-
-  useEffect(() => {
-    dispatch(fetchRoles(session.currentUser.organizationId))
-  }, [location, dispatch, session])
 
   const tabs = [
     {

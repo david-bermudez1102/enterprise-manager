@@ -7,6 +7,10 @@ class Account < ApplicationRecord
   has_one_attached :avatar
   has_one :activation, dependent: :destroy
   has_many :records, dependent: :destroy
+  has_many :account_roles, dependent: :delete_all
+  has_many :roles, through: :account_roles
+  has_many :exclusions, dependent: :delete_all
+
   has_secure_password
 
   def avatar_path

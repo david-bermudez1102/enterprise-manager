@@ -11,7 +11,9 @@ const RolesFormLayout = props => {
   const match = useRouteMatch()
   const { roles } = useSelector(({ roles }) => ({ roles }), shallowEqual)
   const { roleId } = match.params
-  const [role, setRole] = useState(roleId)
+  const [role, setRole] = useState(
+    roles.find(role => parseInt(role.id) === parseInt(roleId))
+  )
 
   useEffect(() => {
     setRole(roles.find(role => parseInt(role.id) === parseInt(roleId)))

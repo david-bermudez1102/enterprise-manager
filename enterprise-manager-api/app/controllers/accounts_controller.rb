@@ -5,6 +5,18 @@ class AccountsController < ApplicationController
   before_action :set_employee
   before_action :set_manager
 
+  def show
+    accounts = @organization.accounts.find_by(id:params[:id])
+    serialized_data = AccountSerializer.new(accounts).serializable_hash[:data][:attributes]
+    render json: serialized_data
+  end
+
+  def index
+    accounts = @organization.accounts
+    serialized_data = AccountSerializer.new(accounts).serializable_hash[:data]
+    render json: serialized_data.map { |data| data[:attributes] }
+  end
+
   def update
     if @employee && @employee.account.update(account_params)
       render json:EmployeeSerializer.new(@employee)

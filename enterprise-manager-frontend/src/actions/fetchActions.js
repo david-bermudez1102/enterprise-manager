@@ -36,7 +36,7 @@ export const add = (dispatch, url, payload, ...actions) => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(snakecaseKeys(payload))
+    body: JSON.stringify(snakecaseKeys(payload, { exclude: ["_destroy"] }))
   })
     .then(handleErrors)
     .then(response => response.json())
@@ -44,7 +44,6 @@ export const add = (dispatch, url, payload, ...actions) => {
       if (!response.errors) {
         actions.map(action => dispatch(action))
         message.success(response.message || SUCCESS_MESSAGE_DEFAULT, 10)
-        console.log(response)
         return response
       } else {
         throw new Error(response.errors.join(", "))
@@ -60,7 +59,7 @@ export const update = (dispatch, url, payload, ...actions) => {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(snakecaseKeys(payload))
+    body: JSON.stringify(snakecaseKeys(payload, { exclude: ["_destroy"] }))
   })
     .then(handleErrors)
     .then(response => response.json())

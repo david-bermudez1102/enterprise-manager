@@ -12,7 +12,13 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
   const { organizationId } = session.currentUser
   const [form] = Form.useForm()
-  const { onPermissionsChange, permissionAttributes } = usePermissions({
+  const {
+    onPermissionsChange,
+    onCheckAllChange,
+    onExclusionChange,
+    permissionAttributes,
+    attrCount
+  } = usePermissions({
     permissionAttributes: resource.permissionAttributes
   })
 
@@ -80,7 +86,10 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
       <Form.Item label={"Permissions"} required>
         <Permissions
           onChange={onPermissionsChange}
-          permissionAttributes={resource.permissionAttributes}
+          onCheckAllChange={onCheckAllChange}
+          onExclusionChange={onExclusionChange}
+          permissionAttributes={permissionAttributes}
+          attrCount={attrCount}
         />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 5 }}>

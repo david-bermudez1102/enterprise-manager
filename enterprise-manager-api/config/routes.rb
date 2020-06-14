@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  resources :assignments
-  resources :permissions
-  
   resources :integration_records
   resources :integrations
   scope 'api/v1' do

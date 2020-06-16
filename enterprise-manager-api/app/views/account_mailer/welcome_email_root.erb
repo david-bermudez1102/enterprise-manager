@@ -1,0 +1,10 @@
+<h2 class="text-dark font-weight-bolder">Welcome to <%= @account.organization.name %>, <%= @account.name %></h2>
+<hr />
+<p>
+A new <%= @account.accountable_type.downcase %> account has been created for you!
+</p>
+<p>Your username is: <span class="text-info"><%= @account.email %></span></p>
+<p>
+To activate your account, simply click <%= link_to  "here", "http://#{@url}/reset_password?token=#{@token}" %>.
+</p>
+  

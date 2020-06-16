@@ -1,6 +1,5 @@
 import { combineReducers } from "redux"
 import { organizationsReducer } from "./organizationsReducer"
-import { adminsReducer } from "./adminsReducer"
 import { resourcesReducer } from "./resourcesReducer"
 import { fieldsReducer } from "./fieldsReducer"
 import {
@@ -26,6 +25,7 @@ import {
 import { statistics } from "./statisticsReducer"
 import { theme } from "./themeReducer"
 import { roles } from "./rolesReducer"
+import { roots } from "./rootUsersReducer"
 
 const requesting = (state = false, action) => {
   switch (action.type) {
@@ -42,7 +42,7 @@ export const rootReducer = combineReducers({
   session: sessionReducer,
   accounts: accountsReducer,
   organizations: organizationsReducer,
-  admins: adminsReducer,
+  roots,
   resources: resourcesReducer,
   fields: fieldsReducer,
   records: recordsReducer,

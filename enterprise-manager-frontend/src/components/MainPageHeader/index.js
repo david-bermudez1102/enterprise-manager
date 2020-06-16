@@ -20,6 +20,7 @@ const MainPageHeader = ({ except }) => {
     <PageHeader
       ghost={false}
       style={{
+        zIndex: 1,
         marginBottom: 24,
         marginTop: -24,
         marginLeft: -24,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_13_162513) do
+ActiveRecord::Schema.define(version: 2020_06_14_215148) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2020_06_13_162513) do
     t.string "username"
     t.string "email"
     t.string "password_digest"
+    t.integer "root_id"
     t.string "accountable_type"
     t.integer "accountable_id"
     t.datetime "created_at", null: false
@@ -39,6 +40,7 @@ ActiveRecord::Schema.define(version: 2020_06_13_162513) do
     t.boolean "locked", default: false, null: false
     t.index ["accountable_type", "accountable_id"], name: "index_accounts_on_accountable_type_and_accountable_id"
     t.index ["organization_id"], name: "index_accounts_on_organization_id"
+    t.index ["root_id"], name: "index_accounts_on_root_id"
   end
 
   create_table "activations", force: :cascade do |t|
@@ -68,11 +70,6 @@ ActiveRecord::Schema.define(version: 2020_06_13_162513) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "admins", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "assignments", force: :cascade do |t|
@@ -118,13 +115,6 @@ ActiveRecord::Schema.define(version: 2020_06_13_162513) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["role_id"], name: "index_default_permissions_on_role_id"
-  end
-
-  create_table "employees", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "admin_id"
-    t.index ["admin_id"], name: "index_employees_on_admin_id"
   end
 
   create_table "exclusions", force: :cascade do |t|
@@ -208,13 +198,6 @@ ActiveRecord::Schema.define(version: 2020_06_13_162513) do
     t.index ["record_value_id"], name: "index_key_values_on_record_value_id"
   end
 
-  create_table "managers", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "admin_id"
-    t.index ["admin_id"], name: "index_managers_on_admin_id"
-  end
-
   create_table "options", force: :cascade do |t|
     t.integer "field_id"
     t.integer "record_field_id"
@@ -223,6 +206,15 @@ ActiveRecord::Schema.define(version: 2020_06_13_162513) do
     t.datetime "updated_at", null: false
     t.index ["field_id"], name: "index_options_on_field_id"
     t.index ["record_field_id"], name: "index_options_on_record_field_id"
+  end
+
+  create_table "organization_roots", force: :cascade do |t|
+    t.integer "organization_id"
+    t.integer "root_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_organization_roots_on_organization_id"
+    t.index ["root_id"], name: "index_organization_roots_on_root_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -285,6 +277,11 @@ ActiveRecord::Schema.define(version: 2020_06_13_162513) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_roles_on_organization_id"
+  end
+
+  create_table "roots", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "selectable_resources", force: :cascade do |t|

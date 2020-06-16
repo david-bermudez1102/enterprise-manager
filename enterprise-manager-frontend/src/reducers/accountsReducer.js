@@ -11,6 +11,8 @@ export const accountsReducer = (state = [], action) => {
           employee => !state.some(e => employee.id === e.id)
         )
       ]
+    case "ADD_ACCOUNT":
+      return [...state, action.account]
     case "UPDATE_ACCOUNT":
       return [
         ...state.map(e =>

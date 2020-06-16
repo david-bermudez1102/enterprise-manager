@@ -15,7 +15,6 @@ export const addResource = resource => {
       body: JSON.stringify({ form: resource })
     })
       .catch(handleErrors)
-      .then(response => response.json())
       .then(resource => {
         if (!resource.errors) {
           dispatch({
@@ -42,7 +41,6 @@ export const fetchResources = organizationId => {
       cache: "reload"
     })
       .then(handleErrors)
-      .then(response => response.json())
       .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }))
       .catch(console.log)
   }

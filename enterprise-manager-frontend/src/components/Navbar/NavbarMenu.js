@@ -37,7 +37,7 @@ const NavbarMenu = ({ location, session, links, layout }) => {
             ) : null
           )
         : links.map((link, i) =>
-            !link.loginRequired ? (
+            !link.loginRequired && !link.hidden ? (
               <Menu.Item key={link.path}>
                 <NavLink to={link.path} exact>
                   <i className={link.icon}></i> {link.text}

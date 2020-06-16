@@ -1,87 +1,38 @@
-import React, { PureComponent } from "react";
-import FileUploader from "../Uploader/FileUploader";
-import LogoUploader from "../Uploader/LogoUploader";
-import "./styles.css";
-import snakecaseKeys from "snakecase-keys";
+import React, { useState } from "react"
+import LogoUploader from "../Uploader/LogoUploader"
+import "./styles.css"
 
-export default class OrganizationForm extends PureComponent {
-  state = {
-    logo: "",
-    name: "",
-    logoMarginLeft: 0,
-    logoMarginTop: 0,
-    logoWidthRatio: 0,
-  };
+import snakecaseKeys from "snakecase-keys"
+import { Button, Form, Input } from "antd"
 
-  handleOnChange = event => {
-    event.persist();
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  };
+const OrganizationForm = props => {
+  const [logo, setLogo] = useState()
 
-  handleLogoChange = file => {
-    this.setState({
-      logo: file,
-    });
-  };
-
-  handleCoordinates = (x, y) => {
-    this.setState({
-      logoMarginLeft: x,
-      logoMarginTop: y,
-    });
-  };
-
-  handleLogoRatio = logoWidthRatio => {
-    this.setState({ logoWidthRatio });
-  };
-
-  handleOnSubmit = event => {
-    event.preventDefault();
-    const { logo, name, logoMarginLeft, logoMarginTop } = this.state;
-    this.props.addOrganization({
+  const handleOnSubmit = data => {
+    props.addOrganization({
       logo,
-      ...snakecaseKeys({ name, logoMarginLeft, logoMarginTop }),
-    });
-  };
-
-  render() {
-    const { logoMarginLeft, logoMarginTop } = this.state;
-    return (
-      <form onSubmit={this.handleOnSubmit}>
-        <div className="form-group">
-          <FileUploader
-            className="logo-uploader bg-transparent text-center"
-            size="200px"
-            handleChange={this.handleLogoChange}>
-            <LogoUploader
-              handleCoordinates={this.handleCoordinates}
-              x={logoMarginLeft}
-              y={logoMarginTop}
-            />
-          </FileUploader>
-        </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="name"
-            id="organization_name"
-            className="form-control"
-            onChange={this.handleOnChange}
-            value={this.state.name}
-            placeholder={"Enter the name of your organization"}
-            required
-          />
-          <label
-            className="form-control-placeholder"
-            htmlFor="organization_name">
-            Organization Name
-          </label>
-        </div>
-        <hr />
-        <input type="submit" className="btn btn-primary" value="Create" />
-      </form>
-    );
+      ...snakecaseKeys(data)
+    })
   }
+
+  return (
+    <Form size={"large"} onFinish={handleOnSubmit} layout={"vertical"}>
+      <Form.Item
+        name='name'
+        label={"Organization Name"}
+        rules={[{ required: true }]}>
+        <Input placeholder={"Enter the name of your organization"} />
+      </Form.Item>
+      <Form.Item label={"Organization Logo"} rules={[{ required: true }]}>
+        <LogoUploader handleLogoChange={setLogo} />
+      </Form.Item>
+      <Form.Item>
+        <Button type={"primary"} htmlType='submit' block>
+          Create
+        </Button>
+      </Form.Item>
+    </Form>
+  )
 }
+
+export default OrganizationForm

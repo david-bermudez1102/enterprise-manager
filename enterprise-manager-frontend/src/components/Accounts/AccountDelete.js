@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 
 const AccountDelete = ({ match, accounts, removeAccount, history }) => {
+  const dispatch = useDispatch()
   useEffect(() => {
-    removeAccount(match.params.accountId).then(() => history.replace("/accounts"));
-  }, [match, removeAccount, accounts, history]);
+    dispatch(removeAccount(match.params.accountId)).then(() =>
+      history.replace("/accounts")
+    )
+  }, [match, removeAccount, accounts, history])
 
-  return null;
-};
+  return null
+}
 
-export default AccountDelete;
+export default AccountDelete

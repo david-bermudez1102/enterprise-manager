@@ -1,9 +1,5 @@
-.logo-uploader {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
+.logo-uploader > .ant-upload {
   width: 100% !important;
-  border: 2px dashed #ccc;
 }
 
 .logo-uploader img {

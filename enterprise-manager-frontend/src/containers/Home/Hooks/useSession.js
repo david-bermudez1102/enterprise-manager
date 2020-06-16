@@ -1,41 +1,48 @@
-import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import { fetchSession } from "../../../actions/sessionActions";
-import { useEffect } from "react";
-import { message } from "antd";
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
+import { useHistory, useLocation } from "react-router-dom"
+import { fetchSession } from "../../../actions/sessionActions"
+import { useEffect, useRef } from "react"
+import { message } from "antd"
 
 const useSession = () => {
-  const routes = ["/", "/login", "/reset_password"];
-  const { session, organizations } = useSelector(
-    ({ session, organizations }) => ({ session, organizations }),
+  const routes = ["/", "/login", "/reset_password", "/accounts/new"]
+  const { session, organizations, roots } = useSelector(
+    ({ session, organizations, roots }) => ({ session, organizations, roots }),
     shallowEqual
-  );
-  const location = useLocation();
-  const history = useHistory();
-  const dispatch = useDispatch();
+  )
+  const location = useLocation()
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const mounted = useRef()
 
   useEffect(() => {
-    dispatch(fetchSession());
-  }, [dispatch, location]);
+    dispatch(fetchSession())
+  }, [dispatch, location])
 
   useEffect(() => {
     if (location.state)
-      if (location.state.loginFailed)
-        message.error("You need to login to view the page requested.");
+      if (location.state.loginFailed) {
+        message.error("You need to login to view the page requested.")
+      }
     // eslint-disable-next-line
-  }, [location]);
+  }, [location])
 
   useEffect(() => {
-    if (
-      !session.isLoggedIn &&
-      organizations.length > 0 &&
-      !routes.includes(location.pathname)
-    ) {
-      history.push("/login", { loginFailed: true });
+    if (!mounted.current) {
+      mounted.current = true
+    } else {
+      if (
+        !session.isLoggedIn &&
+        organizations.length &&
+        roots.length &&
+        !routes.includes(location.pathname)
+      ) {
+        history.push("/login", { loginFailed: true })
+      }
     }
-  }, [session, routes, location, history, organizations.length]);
+  }, [dispatch, session, routes, roots, location, history, organizations])
 
-  return session;
-};
+  return session
+}
 
-export default useSession;
+export default useSession

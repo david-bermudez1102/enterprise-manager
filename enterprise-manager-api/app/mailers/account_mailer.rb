@@ -7,6 +7,13 @@ class AccountMailer < ApplicationMailer
     mail(to: @account.email, subject: "Welcome to #{@account.organization.name}")
   end
 
+  def welcome_email_root
+    @account = params[:account];
+    @url  = params[:url];
+    @token = params[:token];
+    mail(to: @account.email, subject: "Welcome to #{@account.organization.name}")
+  end
+
   def reset_password_email
     @account = params[:account];
     @url  = params[:url];

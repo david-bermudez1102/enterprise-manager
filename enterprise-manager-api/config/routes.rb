@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     resources :account_unlock, only: :update
     resources :options
     resources :organizations do
+      resources :roots
+      resources :accounts
       resources :roles
       resources :forms do
         resources :statistics
@@ -34,11 +36,7 @@ Rails.application.routes.draw do
         resources :zoho_token
       end
     end
-    resources :accounts
-    resources :admins do
-      resources :employees
-      resources :managers
-    end
+    
     resources :sessions, only: %i[create]
     get '/current_user', to: 'sessions#show'
     delete '/delete_session', to: 'sessions#destroy'

@@ -1,105 +1,42 @@
 import snakecaseKeys from "snakecase-keys"
 import { handleErrors } from "./handleErrors"
 import { message } from "antd"
-import { getAll } from "./fetchActions"
+import { getAll, add } from "./fetchActions"
+import jsonToFormData from "json-form-data"
 
-export const addEmployee = (adminId, employee) => {
-  return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" })
-    fetch(`/api/v1/admins/${adminId}/employees`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "include",
-      body: JSON.stringify(employee)
-    })
-      .then(response => response.json())
-      .then(employee => {
-        if (!employee.errors) {
-          dispatch({
-            type: "ADD_EMPLOYEE",
-            employee: employee.data.attributes
-          })
-          message.success("Employee was added with success.", 5)
-        } else {
-          employee.errors.map(err => message.error(err), 5)
-        }
-      })
-      .catch(console.log)
-  }
-}
+export const addAccount = account => dispatch =>
+  add(
+    dispatch,
+    `/api/v1/organizations/${account.organizationId}/accounts`,
+    { account },
+    account => dispatch({ type: "ADD_ACCOUNT", account })
+  )
 
-export const fetchEmployees = adminId => {
-  return dispatch => {
-    fetch(`/api/v1/admins/${adminId}/employees`)
-      .then(response => response.json())
-      .then(employees => employees.data.map(employee => employee.attributes))
-      .then(employees => dispatch({ type: "FETCH_EMPLOYEES", employees }))
-  }
-}
-
-export const addManager = (adminId, manager) => {
-  return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" })
-    fetch(`/api/v1/admins/${adminId}/managers`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(manager)
-    })
-      .then(response => response.json())
-      .then(manager => {
-        if (!manager.errors) {
-          dispatch({ type: "ADD_MANAGER", manager: manager.data.attributes })
-          message.success("Manager was added with success.", 5)
-        } else {
-          manager.errors.map(err => message.error(err), 5)
-        }
-      })
-      .catch(console.log)
-  }
-}
-
-export const updateAccount = account => {
-  return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" })
-    return fetch(`/api/v1/accounts/${account.id}`, {
+export const updateAccount = account => dispatch =>
+  fetch(
+    `/api/v1/organizations/${account.organizationId}/accounts/${account.id}`,
+    {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ account })
-    })
-      .then(response => response.json())
-      .then(account => {
-        if (!account.errors) {
-          dispatch({
-            type: "UPDATE_ACCOUNT",
-            account: account.data.attributes
-          })
-          message.success("Account saved with success.", 5)
-        } else {
-          account.errors.map(err => message.error(err), 5)
-        }
+      body: jsonToFormData(
+        snakecaseKeys({ account }, { exclude: ["avatar", "_destroy"] })
+      )
+    }
+  )
+    .then(handleErrors)
+    .then(account => {
+      dispatch({
+        type: "UPDATE_ACCOUNT",
+        account
       })
-      .catch(console.log)
-  }
-}
+      message.success("Information saved with success.", 10)
+    })
+    .catch(resp => message.error(resp.toString(), 15))
 
-export const fetchManagers = adminId => {
-  return dispatch => {
-    fetch(`/api/v1/admins/${adminId}/managers`)
-      .then(response => response.json())
-      .then(managers => managers.data.map(manager => manager.attributes))
-      .then(managers => dispatch({ type: "FETCH_MANAGERS", managers }))
-  }
-}
-
-export const fetchAccounts = () => dispatch =>
-  getAll(dispatch, "/api/v1/accounts").then(accounts =>
-    dispatch({ type: "SET-ACCOUNTS", accounts })
+export const fetchAccounts = organizationId => dispatch =>
+  getAll(
+    dispatch,
+    `/api/v1/organizations/${organizationId}/accounts/`,
+    accounts => dispatch({ type: "SET-ACCOUNTS", accounts })
   )
 
 export const removeAccount = accountId => {

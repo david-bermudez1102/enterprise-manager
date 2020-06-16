@@ -1,7 +1,7 @@
 <h2 class="text-dark font-weight-bolder">Welcome to <%= @account.organization.name %>, <%= @account.name %></h2>
 <hr />
 <p>
-A new <%= @account.accountable_type.downcase %> account has been created for you!
+  A new account with the <%= @account.roles.size > 1 ? "role" : "roles" %> of <%= @account.roles.select(:name).join(", ") %> has been created for you!
 </p>
 <p>Your username is: <span class="text-info"><%= @account.email %></span></p>
 <p>Your temporary password is: <span class="text-info"><%= @one_time_password %></span></p>

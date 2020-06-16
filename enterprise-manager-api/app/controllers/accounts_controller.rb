@@ -1,9 +1,23 @@
 class AccountsController < ApplicationController
   before_action :authenticate_user
   before_action :set_organization
-  before_action :set_admin
-  before_action :set_employee
-  before_action :set_manager
+  before_action :set_root
+  before_action :set_account, only: %i[show update destroy]
+  before_action :set_token
+
+  def create
+    one_time_password = SecureRandom.hex 
+    account = @root.accounts.build(account_params.merge(password:one_time_password))
+    activation = Activation.new(account: account,token:@token )
+    Account.transaction do
+      account.save!
+      account.save!
+      activation.save!
+      serialized_data = AccountSerializer.new(account).serializable_hash[:data][:attributes] 
+      render json: serialized_data
+      AccountMailer.with(account: account, one_time_password: one_time_password, url:request.host(), token:@token).welcome_email.deliver_later
+    end
+  end
 
   def show
     accounts = @organization.accounts.find_by(id:params[:id])
@@ -18,8 +32,8 @@ class AccountsController < ApplicationController
   end
 
   def update
-    if @employee && @employee.account.update(account_params)
-      render json:EmployeeSerializer.new(@employee)
+    if @account && @account.update(account_params)
+      render json:EmployeeSerializer.new(@account)
     elsif @manager && @manager.account.update(account_params)
       render json:ManagerSerializer.new(@manager)
     else
@@ -28,7 +42,7 @@ class AccountsController < ApplicationController
   end
 
   def destroy
-    if @employee && @employee.destroy
+    if @account && @account.destroy
       render json:{messages:["Account deleted with success."]}
     elsif @manager && @manager.destroy
       render json:{messages:["Account deleted with success."]}
@@ -39,22 +53,22 @@ class AccountsController < ApplicationController
 
   private
     def account_params
-      params.require(:account).permit(:name, :email, :disabled)
+      params.require(:account).permit(:organization_id, :name, :email, :password, :avatar, :avatar_margin_left, :avatar_margin_top, :role_ids => [])
     end
 
     def set_organization
-      @organization = current_account.organization
+      @organization = Organization.all.size > 1 ? current_account.organization : Organization.find_by(id:params[:organization_id])
     end
 
-    def set_admin
-      @admin = Admin.joins(:account).find_by(accounts:{id:current_account.id, organization_id:@organization.id}) 
+    def set_root
+      @root = Root.joins(:account).find_by(accounts:{id:current_account.id, organization_id:@organization.id}) 
     end
 
-    def set_employee
-      @employee = Employee.joins(:account).find_by(accounts:{id:params[:id]},admin_id:@admin.id)
+    def set_account
+      @account = current_account.is_root ? @root.accounts.find_by(account_id:params[:account_id]) :current_account
     end
 
-     def set_manager
-      @manager = Manager.joins(:account).find_by(accounts:{id:params[:id]},admin_id:@admin.id)
+    def set_token
+      @token = SecureRandom.hex(64)
     end
 end

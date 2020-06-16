@@ -1,40 +1,34 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
+import { Form, Button, Input } from "antd"
 
 class ResetForm extends Component {
-  state = { email: "" };
+  state = { email: "" }
 
   handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+    this.setState({ [e.target.name]: e.target.value })
+  }
 
   handleSubmit = e => {
-    e.preventDefault();
-  };
+    e.preventDefault()
+  }
 
   render() {
-    const { email } = this.state;
+    const { email } = this.state
     return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="account_email">Your Email:</label>
-          <input
-            type="email"
-            name="email"
-            id="account_email"
-            className="form-control"
-            onChange={this.handleChange}
+      <Form onSubmit={this.handleSubmit}>
+        <Form.Item name='email' label={"Email"}>
+          <Input
+            type='email'
             value={email}
-            placeholder="Enter your email registered..."
+            placeholder='Enter your email registered...'
           />
-        </div>
-        <input
-          type="submit"
-          className="btn btn-primary shadow"
-          value="Reset Password"
-        />
-      </form>
-    );
+        </Form.Item>
+        <Button htmlType={"submit"} type='primary' block>
+          Reset Password
+        </Button>
+      </Form>
+    )
   }
 }
 
-export default ResetForm;
+export default ResetForm

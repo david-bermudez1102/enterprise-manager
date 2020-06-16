@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   include ::ActionController::Cookies
+  rescue_from Exception, with: :exception_handler
 
   def auth_header
     request.headers['Authorization']
@@ -32,5 +33,16 @@ class ApplicationController < ActionController::API
     if current_account.nil?
       render json: { errors: ['Not Authorized'] }
     end
+  end
+
+  def exception_handler(exception)
+    case exception
+      when ActiveRecord::RecordNotFound
+        render json: exception, status: :not_found
+      when ActiveRecord::RecordInvalid, ActiveRecord::Rollback
+        render json: exception, status: :unprocessable_entity
+      else
+        render json: exception, status: :internal_server_error
+      end
   end
 end

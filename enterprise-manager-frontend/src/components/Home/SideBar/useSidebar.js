@@ -18,6 +18,10 @@ import {
 const useSidebar = ({ organization }) => {
   const location = useLocation()
   const activePath = location.pathname
+  const { sidebar } = useSelector(({ sidebar }) => ({ sidebar }), shallowEqual)
+  const dispatch = useDispatch()
+
+  if (!organization) return { sidebar }
   const links = [
     {
       path: "/",
@@ -96,8 +100,6 @@ const useSidebar = ({ organization }) => {
     }
   ]
 
-  const { sidebar } = useSelector(({ sidebar }) => ({ sidebar }), shallowEqual)
-  const dispatch = useDispatch()
   return {
     links,
     dispatch,

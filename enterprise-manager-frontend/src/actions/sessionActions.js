@@ -1,73 +1,69 @@
-import { handleErrors } from "./handleErrors";
-import { message } from "antd";
+import { handleErrors } from "./handleErrors"
+import { message } from "antd"
 
 export const addSession = data => {
   return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" });
+    dispatch({ type: "CLEAR_ALERTS" })
     const configObj = {
       method: "POST",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        Accept: "application/json",
+        Accept: "application/json"
       },
-      body: JSON.stringify(data),
-    };
+      body: JSON.stringify(data)
+    }
     return fetch("/api/v1/sessions", configObj)
       .then(handleErrors)
-      .then(response => response.json())
       .then(account => {
-        if (account.token) return account;
+        if (account.token) return account
         else if (!account.errors) {
           dispatch({
             type: "ADD_SESSION",
             isLoggedIn: true,
-            currentUser: account.data.attributes,
-          });
-          return account;
+            currentUser: account.data.attributes
+          })
+          return account
         } else {
-          account.errors.map(err => message.error(err));
-          return account;
+          account.errors.map(err => message.error(err))
+          return account
         }
       })
-      .catch(console.log);
-  };
-};
+      .catch(console.log)
+  }
+}
 
 export const fetchSession = () => {
   return (dispatch, getState) => {
-    dispatch({ type: "CLEAR_ALERTS" });
     return fetch("/api/v1/current_user", {
-      credentials: "include",
+      credentials: "include"
     })
       .then(handleErrors)
-      .then(response => response.json())
       .then(account =>
         !account.errors
           ? dispatch({
               type: "ADD_SESSION",
               isLoggedIn: true,
-              currentUser: account.data.attributes,
+              currentUser: account.data.attributes
             })
           : getState().session.isLoggedIn
           ? dispatch({
-              type: "REMOVE_SESSION",
+              type: "REMOVE_SESSION"
             })
           : null
       )
-      .catch(console.log);
-  };
-};
+      .catch(console.log)
+  }
+}
 
 export const removeSession = () => {
   return dispatch => {
     return fetch("api/v1/delete_session", {
       method: "DELETE",
-      credentials: "include",
+      credentials: "include"
     })
       .then(handleErrors)
-      .then(response => response.json())
       .then(data => data)
-      .catch(console.log);
-  };
-};
+      .catch(console.log)
+  }
+}

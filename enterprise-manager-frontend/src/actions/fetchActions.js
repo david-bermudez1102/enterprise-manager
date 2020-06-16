@@ -7,8 +7,8 @@ const UPDATED_MESSAGE_DEFAULT = "Content was saved with success"
 const SOFT_DELETED_MESSAGE_DEFAULT = "Content was sent to deleted folder"
 const DESTROYED_MESSAGE_DEFAULT = "Content was deleted with success"
 
-export const getAll = (dispatch, url, ...actions) => {
-  return fetch(url, {
+export const getAll = (dispatch, url, ...actions) =>
+  fetch(url, {
     cache: "no-cache",
     credentials: "include",
     headers: {
@@ -16,17 +16,15 @@ export const getAll = (dispatch, url, ...actions) => {
     }
   })
     .then(handleErrors)
-    .then(response => response.json())
     .then(response => {
       if (!response.errors) {
-        actions.map(action => dispatch(action))
+        actions.map(action => action(response))
         return response
       } else {
         throw new Error(response.errors.join(", "))
       }
     })
     .catch(resp => message.error(resp.toString()), 15)
-}
 
 export const add = (dispatch, url, payload, ...actions) => {
   return fetch(url, {
@@ -39,17 +37,16 @@ export const add = (dispatch, url, payload, ...actions) => {
     body: JSON.stringify(snakecaseKeys(payload, { exclude: ["_destroy"] }))
   })
     .then(handleErrors)
-    .then(response => response.json())
     .then(response => {
       if (!response.errors) {
-        actions.map(action => dispatch(action))
+        actions.map(action => dispatch(action(response)))
         message.success(response.message || SUCCESS_MESSAGE_DEFAULT, 10)
         return response
       } else {
         throw new Error(response.errors.join(", "))
       }
     })
-    .catch(resp => message.error(resp.toString()), 15)
+    .catch(resp => message.error(resp.toString(), 15))
 }
 
 export const update = (dispatch, url, payload, ...actions) => {
@@ -62,11 +59,10 @@ export const update = (dispatch, url, payload, ...actions) => {
     body: JSON.stringify(snakecaseKeys(payload, { exclude: ["_destroy"] }))
   })
     .then(handleErrors)
-    .then(response => response.json())
     .then(response => {
       console.log(response)
       if (!response.errors) {
-        actions.map(action => dispatch(action))
+        actions.map(action => dispatch(action(response)))
         message.success(response.message || UPDATED_MESSAGE_DEFAULT)
       } else {
         throw new Error(response.errors.join(", "))
@@ -81,10 +77,9 @@ export const remove = (dispatch, url, id, type, ...actions) => {
     method: "DELETE"
   })
     .then(handleErrors)
-    .then(response => response.json())
     .then(response => {
       if (response.destroyed) {
-        actions.forEach(act => dispatch(act))
+        actions.forEach(act => dispatch(act(response)))
         message.success(response.message || DESTROYED_MESSAGE_DEFAULT)
         return response
       } else if (response.archived) {

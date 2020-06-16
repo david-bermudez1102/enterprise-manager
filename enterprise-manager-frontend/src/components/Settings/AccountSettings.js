@@ -1,19 +1,19 @@
 import React from "react"
 import ProfileForm from "../Accounts/ProfileForm"
 import { connect } from "react-redux"
-import { updateAdmin } from "../../actions/adminActions"
+import { updateRoot } from "../../actions/rootActions"
 import { Card } from "antd"
 
 const AccountSettings = props => {
-  const { session, updateAdmin } = props
+  const { session, updateRoot } = props
   const { currentUser } = session
   return (
     <Card bordered={false}>
-      <ProfileForm currentUser={currentUser} updateAdmin={updateAdmin} />
+      <ProfileForm currentUser={currentUser} updateRoot={updateRoot} />
     </Card>
   )
 }
 
 const mapStateToProps = ({ session }) => ({ session })
 
-export default connect(mapStateToProps, { updateAdmin })(AccountSettings)
+export default connect(mapStateToProps, { updateRoot })(AccountSettings)

@@ -5,17 +5,20 @@ import { Layout } from "antd"
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons"
 import "./styles.scss"
 import NavbarMenu from "./NavbarMenu"
+import { useSelector, shallowEqual } from "react-redux"
 const { Header } = Layout
 
 const Navbar = props => {
   const { session, organizations, isSiderCollapsed, trigger } = props
+  const { roots } = useSelector(({ roots }) => ({ roots }), shallowEqual)
   const location = useLocation()
   const links = [
     {
       path: "/login",
       text: "Login",
       icon: "fal fa-sign-in-alt",
-      loginRequired: false
+      loginRequired: false,
+      hidden: !roots.length && true
     },
     {
       path: "/",

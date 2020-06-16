@@ -1,12 +1,12 @@
-import React from "react";
-import { FormCard } from "../../Cards/Cards";
+import React from "react"
+import { Card } from "antd"
 
 const ResetContainer = () => {
   return (
-    <FormCard header={<span className="display-4">Reset Password</span>}>
+    <Card header={<span className='display-4'>Reset Password</span>}>
       <ResetForm />
-    </FormCard>
-  );
-};
+    </Card>
+  )
+}
 
-export default ResetContainer;
+export default ResetContainer

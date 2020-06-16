@@ -1,10 +1,9 @@
 import React, { useState } from "react"
-import { Switch, Redirect } from "react-router-dom"
+import { Switch, Redirect, useLocation } from "react-router-dom"
 import SideBar from "../../components/Home/SideBar/SideBar"
 import Navbar from "../../components/Navbar/Navbar"
 import LoginContainer from "../LoginContainer"
 import OrganizationContainer from "../OrganizationContainer"
-import AdminContainer from "../AdminContainer"
 import LogoutContainer from "../LogoutContainer"
 import AccountsContainer from "../Accounts/AccountsContainer"
 import ZohoBooks from "../ZohoBooks/ZohoBooks"
@@ -21,19 +20,21 @@ import "./styles.scss"
 import Text from "antd/lib/typography/Text"
 import useSidebar from "../../components/Home/SideBar/useSidebar"
 import HomeSettings from "./HomeSettings"
+import RootContainer from "../RootContainer"
 
 const { Content, Footer } = Layout
 
-const HomeContainer = () => {
-  const { organizations, admins } = useSelector(
-    ({ organizations, admins }) => ({ organizations, admins }),
+const HomeContainer = ({ organization }) => {
+  const location = useLocation()
+  const { organizations, roots } = useSelector(
+    ({ organizations, roots }) => ({ organizations, roots }),
     shallowEqual
   )
   const session = useSession()
   const matchedRoute = useMatchedRoute()
 
   const { sidebar, dispatch } = useSidebar({
-    organization: organizations[0]
+    organization: organization
   })
 
   const [isSiderCollapsed, setIsSiderCollapsed] = useState(sidebar.collapsed)
@@ -43,8 +44,14 @@ const HomeContainer = () => {
     dispatch({ type: "SET-COLLAPSED", collapsed: !isSiderCollapsed })
   }
 
-  if (organizations.length === 0) return <Redirect to='/organizations/new' />
-  if (admins.length === 0) return <Redirect to='/accounts/new' />
+  if (organizations.length === 0 && location.pathname !== "/organizations/new")
+    return <Redirect to='/organizations/new' />
+  if (
+    organizations.length &&
+    roots.length === 0 &&
+    location.pathname !== "/accounts/new"
+  )
+    return <Redirect to='/accounts/new' />
   return (
     <Layout style={{ minHeight: "100%", width: "100%" }}>
       {session.isLoggedIn ? (
@@ -72,7 +79,7 @@ const HomeContainer = () => {
             width: "100%",
             display: !matchedRoute ? "none" : undefined
           }}>
-          <MainPageHeader except={["/"]} />
+          <MainPageHeader except={["/", "/accounts/new", "/login"]} />
           <HomeSettings />
           <Switch>
             <Route
@@ -81,10 +88,15 @@ const HomeContainer = () => {
               title='Organizations'
               name='Organizations'
             />
-            <Route path={`/reset_password`} component={ResetPassword} />
+            <Route
+              path={`/reset_password`}
+              title='Reset Password'
+              name='Reset Password'
+              component={ResetPassword}
+            />
             <Route path={`/login`} component={LoginContainer} />
             <Route path={`/logout`} component={LogoutContainer} />
-            <Route path={"/accounts/new"} component={AdminContainer} />
+            <Route path={"/accounts/new"} component={RootContainer} />
             <Route
               path={`/accounts`}
               render={props => <AccountsContainer {...props} />}
@@ -97,8 +109,8 @@ const HomeContainer = () => {
                 <ZohoBooks
                   {...props}
                   session={session}
-                  redirectTo={`/organizations/${organizations[0].id}/settings/integrations/zoho_books/edit`}
-                  organization={organizations[0]}
+                  redirectTo={`/organizations/${organization.id}/settings/integrations/zoho_books/edit`}
+                  organization={organization}
                 />
               )}
             />
@@ -108,17 +120,19 @@ const HomeContainer = () => {
         </Content>
         <BackTop visibilityHeight={100} />
         <Divider style={{ margin: 0 }} />
-        <Footer
-          style={{
-            textAlign: "center",
-            height: "80px",
-            lineHeight: "80px",
-            paddingTop: 0,
-            paddingBottom: 0,
-            fontSize: 15
-          }}>
-          <Text type='secondary'>{`${organizations[0].name} © 2020`}</Text>
-        </Footer>
+        {organization ? (
+          <Footer
+            style={{
+              textAlign: "center",
+              height: "80px",
+              lineHeight: "80px",
+              paddingTop: 0,
+              paddingBottom: 0,
+              fontSize: 15
+            }}>
+            <Text type='secondary'>{`${organization.name} © 2020`}</Text>
+          </Footer>
+        ) : null}
       </Layout>
     </Layout>
   )

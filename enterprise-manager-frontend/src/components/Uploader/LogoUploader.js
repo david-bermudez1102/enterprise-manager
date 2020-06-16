@@ -1,22 +1,46 @@
-import React from "react";
-import Draggable from "./Draggable";
+import React, { useState } from "react"
+import ImgCrop from "antd-img-crop"
+import { Upload, Button } from "antd"
+import { UploadOutlined } from "@ant-design/icons"
 
-const LogoUploader = ({ title, filePreview, handleCoordinates, x, y }) =>
-  filePreview !== "" ? (
-    <Draggable
-      x={x}
-      y={y}
-      handleCoordinates={handleCoordinates}
-      className="d-flex align-items-center justify-content-center">
-      <img src={filePreview} title={title} alt={title} />
-    </Draggable>
-  ) : (
-    <div
-      className="w-100 h-100 d-flex align-items-center justify-content-center flex-wrap"
-      style={{ cursor: "pointer", color: "#ccc" }}>
-      <i className="fas fa-upload" style={{ fontSize: "100px" }}></i>
-      <span className="w-100">Drag your company logo</span>
-    </div>
-  );
+const LogoUploader = ({ handleLogoChange }) => {
+  const [fileList, setFileList] = useState([])
+  const [filePreview, setfilePreview] = useState()
+  const onLogoChange = ({ fileList: newFileList }) => {
+    setFileList(newFileList.map(f => ({ ...f, status: "done" })))
+  }
 
-export default LogoUploader;
+  const uploadFile = ({ file }) => {
+    URL.revokeObjectURL(filePreview)
+    const newPreview = URL.createObjectURL(file)
+    setfilePreview(newPreview)
+    handleLogoChange(file)
+  }
+
+  const onPreview = file => {
+    window.open(filePreview)
+  }
+
+  console.log(fileList)
+
+  return (
+    <ImgCrop aspect={3} rotate>
+      <Upload
+        className={"logo-uploader"}
+        fileList={fileList}
+        onChange={onLogoChange}
+        onPreview={onPreview}
+        onRemove={() => URL.revokeObjectURL(filePreview)}
+        listType='picture'
+        customRequest={uploadFile}>
+        {fileList.length < 1 && (
+          <Button type={"dashed"} block>
+            <UploadOutlined /> Click to Upload Company Logo
+          </Button>
+        )}
+      </Upload>
+    </ImgCrop>
+  )
+}
+
+export default LogoUploader

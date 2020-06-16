@@ -19,7 +19,7 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
     permissionAttributes,
     attrCount
   } = usePermissions({
-    permissionAttributes: resource.permissionAttributes
+    permissionAttributes: resource ? resource.permissionAttributes : null
   })
 
   const { formAlias } = match.params

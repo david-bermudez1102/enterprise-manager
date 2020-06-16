@@ -42,7 +42,6 @@ export const updateValue = value => {
       }
     )
       .then(handleErrors)
-      .then(response => response.json())
       .then(value => {
         if (!value.errors) {
           dispatch({

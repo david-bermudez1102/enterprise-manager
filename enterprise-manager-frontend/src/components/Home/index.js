@@ -9,6 +9,7 @@ import QuickLinks from "./QuickLinks"
 import Text from "antd/lib/typography/Text"
 import Title from "antd/lib/typography/Title"
 import MainStatistics from "./MainStatistics"
+import Wallpaper from "../Wallpaper"
 
 const titles = [
   "Alipay",
@@ -96,8 +97,9 @@ const projectNotice = [
 ]
 
 const Home = () => {
-  const { currentUser } = useSelector(state => state.session, shallowEqual)
-  return (
+  const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
+  const { currentUser } = session
+  return session.isLoggedIn ? (
     <>
       <PageHeader
         title={"Home"}
@@ -164,6 +166,8 @@ const Home = () => {
         </Col>
       </Row>
     </>
+  ) : (
+    <Wallpaper />
   )
 }
 

@@ -6,13 +6,14 @@ import { useHistory } from "react-router-dom"
 import { addSession } from "../actions/sessionActions"
 import { Row, Col, Layout } from "antd"
 import Title from "antd/lib/typography/Title"
+import Wallpaper from "../components/Wallpaper"
 
 const LoginContainer = () => {
-  const { session, organizations, admins } = useSelector(
-    ({ session, organizations, admins }) => ({
+  const { session, organizations, roots } = useSelector(
+    ({ session, organizations, roots }) => ({
       session,
       organizations,
-      admins
+      roots
     }),
     shallowEqual
   )
@@ -22,8 +23,8 @@ const LoginContainer = () => {
   useEffect(() => {
     if (session.isLoggedIn) history.push("/")
     else if (organizations.length === 0) history.push("/organizations/new")
-    else if (admins.length === 0) history.push("/accounts/new")
-  }, [session, admins, organizations, history])
+    else if (roots.length === 0) history.push("/accounts/new")
+  }, [session, roots, organizations, history])
 
   const handleOnSubmit = data => {
     dispatch(addSession(data)).then(acc =>
@@ -40,6 +41,7 @@ const LoginContainer = () => {
         left: 0,
         top: 0
       }}>
+      <Wallpaper />
       <Row justify='center' align='middle' style={{ height: "100%" }}>
         <Col xl={7} lg={10} md={12} sm={18} xs={22}>
           <Title type={"primary"} level={3}>

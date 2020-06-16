@@ -8,18 +8,21 @@ import Organization from "../components/Organizations/Organization"
 import { fetchResources } from "../actions/resourceActions"
 import Settings from "./Settings/Settings"
 import AllRecordsContainer from "./Records/AllRecordsContainer"
-import { FormCard } from "../components/Cards/Cards"
 import Route from "../Router/Route"
 import RolesContainer from "./Roles/RolesContainer"
 import { fetchRoles } from "../actions/rolesActions"
+import { Row, Col, Layout, Card } from "antd"
+import Title from "antd/lib/typography/Title"
+import Wallpaper from "../components/Wallpaper"
+import { fetchAccounts } from "../actions/accountActions"
 
 const OrganizationContainer = () => {
-  const { organizations, resources, session, admins } = useSelector(
-    ({ organizations, resources, session, admins }) => ({
+  const { organizations, resources, session, roots } = useSelector(
+    ({ organizations, resources, session, roots }) => ({
       organizations,
       resources,
       session,
-      admins
+      roots
     }),
     shallowEqual
   )
@@ -34,44 +37,58 @@ const OrganizationContainer = () => {
     if (!mounted.current) {
       mounted.current = true
       setLoaded(false)
-      if (organizations.length > 0 && session.isLoggedIn)
+      if (organizations.length && session.isLoggedIn)
         dispatch(fetchResources(organizations[0].id))
     } else {
       setLoaded(false)
       dispatch(fetchRoles(session.currentUser.organizationId))
-      if (organizations.length > 0 && session.isLoggedIn)
+      if (organizations.length && session.isLoggedIn) {
         dispatch(fetchResources(organizations[0].id))
-
-      if (organizations.length > 0 && admins.length === 0 && session.isLoggedIn)
+        dispatch(fetchAccounts(organizations[0].id))
+      }
+      if (organizations.length > 0 && !roots.length)
         history.push("/accounts/new")
     }
-  }, [admins, organizations, dispatch, history, session])
+  }, [roots, organizations, dispatch, history, session])
 
   return (
     <Switch>
       <Route
         path={`${match.path}/new`}
         render={props => (
-          <div className='row d-flex h-100 align-items-center justify-content-center'>
-            <div className='col-xl-5 col-lg-6 col-md-6 px-0'>
-              <FormCard
-                header={
-                  <span className='card-title mb-0 text-white w-100'>
-                    <h2>
-                      <i className='fas fa-plus-square mr-2'></i>Create new
-                      organization
-                    </h2>
-                  </span>
-                }>
-                <OrganizationForm
-                  {...props}
-                  addOrganization={organization =>
-                    dispatch(addOrganization(organization))
-                  }
-                />
-              </FormCard>
-            </div>
-          </div>
+          <Layout
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              left: 0,
+              top: 0,
+              zIndex: 0
+            }}>
+            <Wallpaper />
+            <Row justify='center' align='middle' style={{ height: "100%" }}>
+              <Col span={24} sm={20} md={18} lg={16} xl={8} xxl={7}>
+                <Card
+                  bordered={false}
+                  style={{ background: "transparent" }}
+                  title={
+                    <Title level={3}>
+                      <i
+                        className='fal fa-briefcase'
+                        style={{ marginRight: "16px" }}></i>
+                      Create new organization
+                    </Title>
+                  }>
+                  <OrganizationForm
+                    {...props}
+                    addOrganization={organization =>
+                      dispatch(addOrganization(organization))
+                    }
+                  />
+                </Card>
+              </Col>
+            </Row>
+          </Layout>
         )}
       />
       {session.isLoggedIn ? (

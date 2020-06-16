@@ -1,15 +1,20 @@
 class Account < ApplicationRecord
-  belongs_to :accountable, polymorphic: true
+  belongs_to :accountable, optional: true, polymorphic: true
+  belongs_to :root, optional: true
   belongs_to :organization
   validates :name, presence: :true
   validates :email, format: {:with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}, uniqueness: {message:"already belongs to an existing account"}
   validates :password, presence: true, length: { in: 6..50 }, format: { without: /\s/ }, :on => :create
+  validates :root, presence: :true, unless: Proc.new { |obj| obj.accountable_type =="Root" }
+
   has_one_attached :avatar
   has_one :activation, dependent: :destroy
   has_many :records, dependent: :destroy
   has_many :account_roles, dependent: :delete_all
   has_many :roles, through: :account_roles
   has_many :exclusions, dependent: :delete_all
+
+  validates :roles, :length => { :minimum => 1 }
 
   has_secure_password
 
@@ -30,5 +35,9 @@ class Account < ApplicationRecord
       end
       account.save
       return errors
+  end
+
+  def is_root
+    !!userable_type == "Root"
   end
 end

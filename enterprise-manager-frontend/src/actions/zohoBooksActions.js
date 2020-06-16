@@ -33,7 +33,6 @@ export const zohoApi = (zohoResource, type, action, body) => {
       body: JSON.stringify(snakecaseKeys({ [type]: { body } }))
     })
       .then(handleErrors)
-      .then(response => response.json())
       .then(records => {
         if (!records.errors) {
           let successCount = 0

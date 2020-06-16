@@ -5,6 +5,7 @@ class CreateAccounts < ActiveRecord::Migration[5.2]
       t.string :username
       t.string :email
       t.string :password_digest
+      t.references :root, foreign_key: true
       t.references :accountable, polymorphic: true
 
       t.timestamps

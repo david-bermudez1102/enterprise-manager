@@ -6,7 +6,6 @@ export const fetchStatistics = (resource, queryParams) => dispatch =>
     { credentials: "include" }
   )
     .then(handleErrors)
-    .then(resp => resp.json())
     .then(payload =>
       dispatch({ type: "SET-STATISTICS", payload, formId: resource.id })
     )

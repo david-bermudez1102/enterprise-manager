@@ -9,7 +9,6 @@ class Form < ApplicationRecord
   has_one :permission, as: :permissionable
   has_many :exclusions, through: :permission
   has_many :roles, through: :organization
-  has_one :default_permission, through: :role
 
   validates :name, length: { in: 2..20 }
   has_many :selectable_resources, dependent: :destroy

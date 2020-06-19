@@ -6,7 +6,14 @@ const usePermissions = props => {
   const { roles } = useSelector(({ roles }) => ({ roles }), shallowEqual)
 
   const [assignmentsAttributes, setAssignmentsAttributes] = useState(
-    permissionAttributes ? permissionAttributes.assignmentsAttributes : []
+    permissionAttributes
+      ? permissionAttributes.assignmentsAttributes
+      : roles.map(
+          role =>
+            role.defaultPermissionAttributes.permissionAttributes.assignmentsAttributes.map(
+              a => ({ ...a, id: undefined })
+            )[0]
+        )
   )
 
   const [exclusionsAttributes, setExclusionsAttributes] = useState(
@@ -94,12 +101,19 @@ const usePermissions = props => {
 
   useEffect(() => {
     setAssignmentsAttributes(
-      permissionAttributes ? permissionAttributes.assignmentsAttributes : []
+      permissionAttributes
+        ? permissionAttributes.assignmentsAttributes
+        : roles.map(
+            role =>
+              role.defaultPermissionAttributes.permissionAttributes.assignmentsAttributes.map(
+                a => ({ ...a, id: undefined })
+              )[0]
+          )
     )
     setExclusionsAttributes(
       permissionAttributes ? permissionAttributes.exclusionsAttributes : []
     )
-  }, [permissionAttributes])
+  }, [permissionAttributes, roles])
 
   return {
     permissionAttributes: {

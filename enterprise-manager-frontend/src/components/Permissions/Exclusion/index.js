@@ -10,8 +10,8 @@ const Exclusion = props => {
   const [searching, setSearching] = useState(false)
 
   const dispatch = useDispatch()
-  const { accounts } = useSelector(
-    ({ accounts }) => ({ accounts }),
+  const { accounts, session } = useSelector(
+    ({ accounts, session }) => ({ accounts, session }),
     shallowEqual
   )
 
@@ -25,7 +25,7 @@ const Exclusion = props => {
   )
 
   useEffect(() => {
-    dispatch(fetchAccounts())
+    dispatch(fetchAccounts(session.currentUser.organizationId))
   }, [dispatch])
 
   useEffect(() => {

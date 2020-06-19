@@ -15,6 +15,7 @@ import { Row, Col, Layout, Card } from "antd"
 import Title from "antd/lib/typography/Title"
 import Wallpaper from "../components/Wallpaper"
 import { fetchAccounts } from "../actions/accountActions"
+import { fetchPagePermissions } from "../actions/pagePermissionsActions"
 
 const OrganizationContainer = () => {
   const { organizations, resources, session, roots } = useSelector(
@@ -45,11 +46,13 @@ const OrganizationContainer = () => {
       if (organizations.length && session.isLoggedIn) {
         dispatch(fetchResources(organizations[0].id))
         dispatch(fetchAccounts(organizations[0].id))
+        dispatch(fetchPagePermissions(organizations[0].id))
       }
       if (organizations.length > 0 && !roots.length)
         history.push("/accounts/new")
     }
-  }, [roots, organizations, dispatch, history, session])
+    // eslint-disable-next-line
+  }, [roots, organizations, session])
 
   return (
     <Switch>

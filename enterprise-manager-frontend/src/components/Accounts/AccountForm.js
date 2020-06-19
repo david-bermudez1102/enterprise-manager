@@ -20,7 +20,7 @@ const AccountForm = props => {
     if (updateAccount)
       dispatch(
         updateAccount({
-          organizationId: session.currentUser.organizationId,
+          ...account,
           ...data
         })
       )

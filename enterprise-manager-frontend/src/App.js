@@ -19,7 +19,6 @@ const App = () => {
   useEffect(() => {
     dispatch(fetchOrganizations()).then(organizations => {
       if (organizations.length) {
-        console.log(organizations)
         dispatch(fetchRoots(4)).then(() =>
           dispatch(fetchSession()).then(() => setLoaded(true))
         )

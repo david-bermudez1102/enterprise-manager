@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  role: one
+  page_name: 1
+  organization: one
+
+two:
+  role: two
+  page_name: 1
+  organization: two

@@ -15,6 +15,7 @@ class OrganizationsController < ApplicationController
 
   def index
     organizations = Organization.all
+    
     if stale?(organizations)
       serialized_data = OrganizationSerializer.new(organizations).serializable_hash[:data]
       render json: serialized_data.map { |data| data[:attributes] }

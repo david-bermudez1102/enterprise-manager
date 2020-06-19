@@ -16,7 +16,7 @@ const assignments = [
 
 const Permissions = props => {
   const {
-    onChange,
+    onPermissionsChange,
     onCheckAllChange,
     onExclusionChange,
     permissionAttributes,
@@ -80,7 +80,7 @@ const Permissions = props => {
                 options={roles.map(role => ({
                   label: role.name,
                   value: role.id,
-                  onChange
+                  onChange: onPermissionsChange
                 }))}
               />
               <Popover
@@ -103,6 +103,10 @@ const Permissions = props => {
                 }
                 title={<>"{item.description}" privilege exclusions</>}
                 trigger='click'>
+                {"  "}
+                <Button type={"default"} size={"small"}>
+                  <PlusCircleOutlined /> Add/Edit Exclusion
+                </Button>
                 {privilegeExclusions.length ? (
                   <Text
                     ellipsis
@@ -142,10 +146,6 @@ const Permissions = props => {
                     </Tooltip>
                   </Text>
                 ) : null}
-                {"  "}
-                <Button type={"default"} size={"small"}>
-                  <PlusCircleOutlined /> Add/Edit Exclusion
-                </Button>
               </Popover>
             </Form.Item>
           </List.Item>

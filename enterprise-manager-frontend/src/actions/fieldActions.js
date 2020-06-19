@@ -1,92 +1,87 @@
-import snakecaseKeys from "snakecase-keys";
-import cuid from "cuid";
-import { handleErrors } from "./handleErrors";
-import { add } from "./fetchActions";
+import snakecaseKeys from "snakecase-keys"
+import cuid from "cuid"
+import { handleErrors } from "./handleErrors"
+import { add } from "./fetchActions"
 
-export const addField = (field, organizationId) => {
-  return dispatch => {
-    return add(
-      dispatch,
-      `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields`,
-      { field }
-    ).then(resp => {
+export const addField = (field, organizationId) => dispatch =>
+  add(
+    dispatch,
+    `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields`,
+    { field },
+    resp =>
       dispatch({
         type: "ADD_FIELD",
-        field: { key: `resource_field_${resp.field.id}`, ...resp.field },
-      });
-      return dispatch({
+        field: { key: `resource_field_${resp.field.id}`, ...resp.field }
+      }),
+    resp =>
+      dispatch({
         type: "ADD_RECORD_FIELD",
-        recordField: resp.recordField,
-      });
-    });
-  };
-};
+        recordField: resp.recordField
+      })
+  )
 
 export const fetchFields = (organizationId, formId) => {
   return dispatch => {
     fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/fields`, {
-      cache: "no-cache",
+      cache: "no-cache"
     })
       .then(handleErrors)
-      .then(response => response.json())
       .then(fields =>
         dispatch({
           type: "FETCH_FIELDS",
           fields: fields.map(field => ({
             key: `resource_field_${field.id}`,
-            ...field,
+            ...field
           })),
-          formId,
+          formId
         })
-      );
-  };
-};
+      )
+  }
+}
 
 export const updateField = (field, organizationId, fieldId) => {
   return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" });
+    dispatch({ type: "CLEAR_ALERTS" })
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields/${fieldId}`,
       {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(snakecaseKeys({ field })),
+        body: JSON.stringify(snakecaseKeys({ field }))
       }
     )
       .then(handleErrors)
-      .then(response => response.json())
       .then(field => {
         if (!field.errors) {
           dispatch({
             type: "UPDATE_FIELD",
             fieldId,
-            field: { key: cuid(), ...field },
-          });
-          return { ...field, fieldId };
+            field: { key: cuid(), ...field }
+          })
+          return { ...field, fieldId }
         } else {
-          dispatch({ type: "ADD_ERRORS", errors: field.errors });
+          dispatch({ type: "ADD_ERRORS", errors: field.errors })
         }
       })
-      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }));
-  };
-};
+      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }))
+  }
+}
 
 export const removeField = (organizationId, formId, fieldId) => {
   return dispatch => {
     return fetch(
       `/api/v1/organizations/${organizationId}/forms/${formId}/fields/${fieldId}`,
       {
-        method: "DELETE",
+        method: "DELETE"
       }
     )
       .then(handleErrors)
-      .then(response => response.json())
       .then(field =>
         field.message
           ? dispatch({ type: "REMOVE_FIELD", fieldId, status: "deleted" })
           : null
-      );
-  };
-};
+      )
+  }
+}

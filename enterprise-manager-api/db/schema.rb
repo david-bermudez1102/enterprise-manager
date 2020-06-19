@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_14_215148) do
+ActiveRecord::Schema.define(version: 2020_06_18_151836) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -224,6 +224,14 @@ ActiveRecord::Schema.define(version: 2020_06_14_215148) do
     t.float "logo_width_ratio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "page_permissions", force: :cascade do |t|
+    t.integer "page_name"
+    t.integer "organization_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_page_permissions_on_organization_id"
   end
 
   create_table "permissions", force: :cascade do |t|

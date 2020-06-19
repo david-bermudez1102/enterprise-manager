@@ -5,6 +5,7 @@ import { useSelector, shallowEqual } from "react-redux"
 import { NoContent } from "../../NoContent"
 import Records from ".."
 import RecordsResourcesList from "../RecordsPerResource/RecordsResourcesList"
+import { Empty } from "antd"
 
 const DeletedRecords = () => {
   const location = useLocation()
@@ -27,7 +28,7 @@ const DeletedRecords = () => {
   }, [resources, formAlias, location])
 
   if (resources.length === 0)
-    return <NoContent>There are no resources created yet!</NoContent>
+    return <Empty>There are no resources created yet!</Empty>
 
   return (
     <Switch>

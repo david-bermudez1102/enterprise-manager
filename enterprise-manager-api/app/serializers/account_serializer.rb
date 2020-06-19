@@ -1,7 +1,7 @@
 class AccountSerializer
   include FastJsonapi::ObjectSerializer
   set_key_transform :camel_lower
-  attribute :id, :name, :email, :organization_id, :activated, :disabled, :locked
+  attribute :id, :name, :email, :organization_id, :activated, :disabled, :locked, :role_ids
   
   attribute :avatar, if: Proc.new { |object|
     !object.avatar.attachment.nil?
@@ -12,7 +12,4 @@ class AccountSerializer
     ),margin_left: object.avatar_margin_left, margin_top: object.avatar_margin_top }
   end
 
-  attribute :roles do |obj|
-    RoleSerializer.new(obj.roles).serializable_hash[:data].map{ |role| role[:attributes]}
-  end
 end

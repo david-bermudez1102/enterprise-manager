@@ -12,6 +12,7 @@ const ResourcesContainer = props => {
   const { loaded, loading } = props
   const location = useLocation()
   const match = useRouteMatch()
+
   const { resources } = useSelector(
     ({ resources }) => ({ resources }),
     shallowEqual

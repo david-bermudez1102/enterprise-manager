@@ -1,0 +1,3 @@
+class FormPolicy < ApplicationPolicy
+  
+end

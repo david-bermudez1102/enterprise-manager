@@ -21,23 +21,23 @@ class AccountsController < ApplicationController
 
   def show
     accounts = @organization.accounts.find_by(id:params[:id])
-    serialized_data = AccountSerializer.new(accounts).serializable_hash[:data][:attributes]
+    serialized_data = AccountSerializer.new(accounts).serializable_hash[:data]
     render json: serialized_data
   end
 
   def index
-    accounts = @organization.accounts
+    accounts = @organization.accounts.where.not(id:current_account.id)
+    authorize accounts
     serialized_data = AccountSerializer.new(accounts).serializable_hash[:data]
     render json: serialized_data.map { |data| data[:attributes] }
   end
 
   def update
-    if @account && @account.update(account_params)
-      render json:EmployeeSerializer.new(@account)
-    elsif @manager && @manager.account.update(account_params)
-      render json:ManagerSerializer.new(@manager)
-    else
-      render json:{errors:["Unable to update this account."]}
+    Account.transaction do
+      @account
+      @account.update!(account_params)
+      serialized_data = AccountSerializer.new(@account).serializable_hash[:data][:attributes]
+      render json: serialized_data
     end
   end
 
@@ -61,11 +61,11 @@ class AccountsController < ApplicationController
     end
 
     def set_root
-      @root = Root.joins(:account).find_by(accounts:{id:current_account.id, organization_id:@organization.id}) 
+      @root = current_account.is_root ? Root.joins(:account).find_by!(accounts:{id:current_account.id, organization_id:@organization.id}) : nil
     end
 
     def set_account
-      @account = current_account.is_root ? @root.accounts.find_by(account_id:params[:account_id]) :current_account
+      @account = @root ? @root.accounts.find_by!(account_id:params[:account_id]) : current_account
     end
 
     def set_token

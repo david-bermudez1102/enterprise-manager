@@ -5,6 +5,7 @@ class FormsController < ApplicationController
 
   def create
     form = @forms.build(form_params)
+    authorize form
     if form.save
       serialized_data = FormSerializer.new(form).serializable_hash
       render json: serialized_data[:data][:attributes]
@@ -14,6 +15,8 @@ class FormsController < ApplicationController
   end
 
   def index
+    @forms = policy_scope(@forms)
+    authorize @forms
     if stale?(@forms, public:true)
       serialized_data = FormSerializer.new(@forms).serializable_hash
       render json: serialized_data[:data].map { |form| form[:attributes] }
@@ -21,18 +24,17 @@ class FormsController < ApplicationController
   end
 
   def show
-    form = @forms.find_by(id: params[:id])
-    render json: FormSerializer.new(form)
+    form = @forms.find_by!(id: params[:id])
+    authorize form, policy_class: FormPolicy
+    serialized_data = FormSerializer.new(form).serializable_hash[:data][:attributes]
+    render json: serialized_data
   end
 
   def update
-    form = @forms.find_by(id: params[:id])
-    if form.update(form_params)
-      serialized_data = FormSerializer.new(form).serializable_hash
-      render json: serialized_data[:data][:attributes]
-    else
-      render json: { errors: form.errors.full_messages }
-    end
+    form = @forms.find(params[:id])
+    form.update!(form_params)
+    serialized_data = FormSerializer.new(form).serializable_hash
+    render json: serialized_data[:data][:attributes]
   end
 
   def destroy

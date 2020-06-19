@@ -38,6 +38,6 @@ class Account < ApplicationRecord
   end
 
   def is_root
-    !!userable_type == "Root"
+    accountable_type == "Root"
   end
 end

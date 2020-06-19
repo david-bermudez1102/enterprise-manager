@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Switch, NavLink } from "react-router-dom"
-import Privileges from "../../components/Settings/Privileges"
+import Privileges from "../../components/Settings/Privileges/Privileges"
 import Integrations from "../../components/Settings/Integrations"
 import AccountSettings from "../../components/Settings/AccountSettings"
 import Route from "../../Router/Route"

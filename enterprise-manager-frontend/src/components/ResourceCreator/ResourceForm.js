@@ -29,16 +29,16 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
   useEffect(() => {
     form.setFieldsValue({ name: resource ? resource.name : "" })
     // eslint-disable-next-line
-  }, [location])
+  }, [resource])
 
   const onFinish = data => {
     if (addResource)
       dispatch(
         addResource({ ...data, organizationId, permissionAttributes })
       ).then(resource =>
-        resource
+        resource.formAlias
           ? history.push(
-              `/organizations/${organizationId}/resource/${resource.formAlias}`
+              `/organizations/${organizationId}/resources/${resource.formAlias}`
             )
           : null
       )
@@ -61,6 +61,7 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
       )
   }
 
+  console.log(permissionAttributes)
   return (
     <Form
       labelCol={{ span: 5 }}
@@ -85,7 +86,7 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
       </Form.Item>
       <Form.Item label={"Permissions"} required>
         <Permissions
-          onChange={onPermissionsChange}
+          onPermissionsChange={onPermissionsChange}
           onCheckAllChange={onCheckAllChange}
           onExclusionChange={onExclusionChange}
           permissionAttributes={permissionAttributes}

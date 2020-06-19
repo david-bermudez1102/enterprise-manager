@@ -34,7 +34,7 @@ const HomeContainer = ({ organization }) => {
   const matchedRoute = useMatchedRoute()
 
   const { sidebar, dispatch } = useSidebar({
-    organization: organization
+    organization
   })
 
   const [isSiderCollapsed, setIsSiderCollapsed] = useState(sidebar.collapsed)

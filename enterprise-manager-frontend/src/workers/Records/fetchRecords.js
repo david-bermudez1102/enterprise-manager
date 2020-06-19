@@ -20,7 +20,6 @@ export const fetchRecords = (
     }
   )
     .then(handleErrors)
-    .then(response => response.json())
     .then(response => {
       const records = transform(
         state.records,

@@ -7,8 +7,6 @@ import Records from "../../components/Records"
 import DeletedRecords from "../../components/Records/DeletedRecords.js"
 import { fetchFields } from "../../actions/fieldActions"
 import { fetchRecordFields } from "../../actions/recordFieldActions"
-import { Empty, Col } from "antd"
-import AddResourceButton from "../../components/Resources/AddResourceButton"
 
 const AllRecordsContainer = () => {
   const location = useLocation()
@@ -38,20 +36,11 @@ const AllRecordsContainer = () => {
     }
   }, [resource, dispatch])
 
-  if (resources.length === 0)
-    return (
-      <Col span={24}>
-        <Empty description={"There are no resources created yet."}>
-          <AddResourceButton />
-        </Empty>
-      </Col>
-    )
-
   return (
     <>
       <Switch>
         <Route
-          path={`${match.url}/deleted`}
+          path={`${match.path}/deleted`}
           name={"Deleted Records"}
           component={DeletedRecords}
         />

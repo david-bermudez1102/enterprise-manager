@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :account_unlock, only: :update
     resources :options
     resources :organizations do
+      resources :page_permissions
       resources :roots
       resources :accounts
       resources :roles

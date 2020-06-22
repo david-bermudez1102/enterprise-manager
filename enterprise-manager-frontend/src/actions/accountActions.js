@@ -18,7 +18,8 @@ export const updateAccount = account => dispatch =>
     {
       method: "PATCH",
       body: jsonToFormData(
-        snakecaseKeys({ account }, { exclude: ["avatar", "_destroy"] })
+        snakecaseKeys({ account }, { exclude: ["avatar", "_destroy"] }),
+        { showLeafArrayIndexes: false }
       )
     }
   )

@@ -5,14 +5,7 @@ import Exclusion from "./Exclusion"
 import Text from "antd/lib/typography/Text"
 import { PlusCircleOutlined } from "@ant-design/icons"
 import Paragraph from "antd/lib/typography/Paragraph"
-
-const assignments = [
-  { name: "createPrivilege", description: "Create" },
-  { name: "readPrivilege", description: "Read" },
-  { name: "updatePrivilege", description: "Update" },
-  { name: "insertPrivilege", description: "Insert" },
-  { name: "deletePrivilege", description: "Delete" }
-]
+import IconWrapper from "../Icons/IconWrapper"
 
 const Permissions = props => {
   const {
@@ -20,8 +13,38 @@ const Permissions = props => {
     onCheckAllChange,
     onExclusionChange,
     permissionAttributes,
-    attrCount
+    attrCount,
+    exclude
   } = props
+
+  const assignments = [
+    {
+      name: "createPrivilege",
+      icon: "fal fa-plus-square",
+      description: props.createLabel || "Create"
+    },
+    {
+      name: "readPrivilege",
+      icon: "fal fa-eye",
+      description: props.readLabel || "Read"
+    },
+    {
+      name: "updatePrivilege",
+      icon: "fal fa-edit",
+      description: props.updateLabel || "Update"
+    },
+    {
+      name: "insertPrivilege",
+      icon: "fal fa-layer-plus",
+      description: props.insertLabel || "Insert"
+    },
+    {
+      name: "deletePrivilege",
+      icon: "fal fa-trash-alt",
+      description: props.deleteLabel || "Delete"
+    }
+  ]
+
   const {
     assignmentsAttributes,
     exclusionsAttributes
@@ -45,8 +68,13 @@ const Permissions = props => {
     <List
       size={"small"}
       split={false}
-      style={{ padding: 0 }}
-      dataSource={assignments}
+      style={{
+        padding: 0,
+        display: "flex",
+        flexWrap: "nowrap",
+        justifyContent: "center"
+      }}
+      dataSource={assignments.filter(a => !(exclude || []).includes(a.name))}
       renderItem={item => {
         const privilegeExclusions = exclusionsAttributes.filter(
           e => e.exclusionType === item.name && !e._destroy
@@ -54,11 +82,26 @@ const Permissions = props => {
         return (
           <List.Item style={{ padding: 0 }}>
             <Form.Item
-              label={item.description}
-              labelCol={{ span: 3 }}
-              wrapperCol={{ span: 21 }}
+              label={
+                <Button
+                  style={{ padding: 0, width: "100%" }}
+                  block
+                  type={"text"}
+                  icon={<IconWrapper className={item.icon} />}>
+                  {item.description}
+                </Button>
+              }
+              labelCol={{
+                span: 24,
+                style: { marginBottom: 0, padding: 0, width: "inherit" }
+              }}
               colon={false}
-              style={{ width: "100%", minHeight: 55 }}>
+              style={{
+                width: "auto",
+                maxWidth: "100%",
+                minHeight: 55,
+                marginBottom: 10
+              }}>
               <Checkbox
                 id={item.name}
                 onChange={onCheckAllChange}
@@ -104,9 +147,14 @@ const Permissions = props => {
                 title={<>"{item.description}" privilege exclusions</>}
                 trigger='click'>
                 {"  "}
-                <Button type={"default"} size={"small"}>
-                  <PlusCircleOutlined /> Add/Edit Exclusion
+                <Button
+                  type={"dashed"}
+                  size={"small"}
+                  icon={<PlusCircleOutlined />}
+                  style={{ background: "transparent" }}>
+                  Add/Edit Exclusion
                 </Button>
+                <br />
                 {privilegeExclusions.length ? (
                   <Text
                     ellipsis

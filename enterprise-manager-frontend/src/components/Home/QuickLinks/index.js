@@ -46,7 +46,7 @@ const QuickLinks = () => {
             <List.Item.Meta
               description={
                 <Button block style={{ border: 0, textAlign: "left" }}>
-                  <Link to={link.to} style={{ color: "inherit" }}>
+                  <Link to={link.href} style={{ color: "inherit" }}>
                     {link.title}
                   </Link>
                 </Button>

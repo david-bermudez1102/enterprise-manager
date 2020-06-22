@@ -12,11 +12,13 @@ const AccountForm = props => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    form.setFieldsValue(account)
-  }, [account])
+    if (account) form.setFieldsValue(account)
+    else form.resetFields()
+  }, [account, form])
 
   const handleSubmit = data => {
     const { addAccount, updateAccount } = props
+    console.log({ ...account, ...data })
     if (updateAccount)
       dispatch(
         updateAccount({
@@ -35,7 +37,6 @@ const AccountForm = props => {
 
   return (
     <Form
-      onValuesChange={console.log}
       form={form}
       name='account_form'
       onFinish={handleSubmit}
@@ -60,7 +61,7 @@ const AccountForm = props => {
             message: "Please enter a valid Email!"
           }
         ]}>
-        <Input id='account_email' placeholder='Enter email...' />
+        <Input placeholder='Enter email...' />
       </Form.Item>
       <Form.Item
         name='roleIds'

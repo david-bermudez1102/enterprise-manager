@@ -1,5 +1,4 @@
-import { handleErrors } from "./handleErrors"
-import { remove, update, add } from "./fetchActions"
+import { remove, update, add, getAll } from "./fetchActions"
 
 export const addResource = resource => dispatch =>
   add(
@@ -13,17 +12,10 @@ export const addResource = resource => dispatch =>
       })
   )
 
-export const fetchResources = organizationId => {
-  return dispatch => {
-    return fetch(`/api/v1/organizations/${organizationId}/forms`, {
-      credentials: "include",
-      cache: "reload"
-    })
-      .then(handleErrors)
-      .then(resources => dispatch({ type: "FETCH_RESOURCES", resources }))
-      .catch(console.log)
-  }
-}
+export const fetchResources = organizationId => dispatch =>
+  getAll(dispatch, `/api/v1/organizations/${organizationId}/forms`, resources =>
+    dispatch({ type: "FETCH_RESOURCES", resources })
+  )
 
 export const updateResource = resource => {
   return dispatch =>

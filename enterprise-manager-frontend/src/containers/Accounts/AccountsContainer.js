@@ -1,26 +1,21 @@
 import React, { useEffect } from "react"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
-import {
-  updateAccount,
-  removeAccount,
-  addAccount,
-  fetchAccounts
-} from "../../actions/accountActions"
+import { removeAccount, fetchAccounts } from "../../actions/accountActions"
 import { Switch, useRouteMatch, useLocation } from "react-router-dom"
-import AccountForm from "../../components/Accounts/AccountForm"
 import AccountDelete from "../../components/Accounts/AccountDelete"
 import AccountDisable from "../../components/Accounts/AccountDisable.js"
 import AccountUnlock from "../../components/Accounts/AccountUnlock"
 import Route from "../../Router/Route"
 import AccountsFeed from "../../components/Accounts"
 import { Row, Col, Card } from "antd"
-import Title from "antd/lib/typography/Title"
-import { UserAddOutlined } from "@ant-design/icons"
 import AccountsList from "../../components/Accounts/AccountsList"
+import AccountFormLayout from "../../components/Accounts/FormLayout/AccountFormLayout"
+import PageTabs from "../../components/PageTabs"
+import { EyeOutlined, PlusCircleOutlined } from "@ant-design/icons"
 
 const AccountsContainer = props => {
-  const { accounts, roots, session } = useSelector(
-    ({ accounts, roots, session }) => ({ accounts, roots, session }),
+  const { accounts, session } = useSelector(
+    ({ accounts, session }) => ({ accounts, session }),
     shallowEqual
   )
   const dispatch = useDispatch()
@@ -28,99 +23,92 @@ const AccountsContainer = props => {
 
   const match = useRouteMatch()
 
+  const tabs = [
+    {
+      tab: (
+        <span>
+          <EyeOutlined />
+          View All Accounts
+        </span>
+      ),
+      path: match.url
+    },
+    {
+      tab: (
+        <span>
+          <PlusCircleOutlined />
+          Add Account
+        </span>
+      ),
+      path: `${match.url}/add`
+    }
+  ]
+
   useEffect(() => {
     dispatch(fetchAccounts(session.currentUser.organizationId))
-  }, [location])
+  }, [dispatch, location, session])
 
   return (
-    <Row gutter={16}>
-      <Col lg={10}>
-        <AccountsList accounts={accounts} />
-      </Col>
-      <Col lg={14}>
-        <Switch>
-          {accounts.length > 0 ? (
-            <Route
-              path={`${match.path}/:accountId/delete`}
-              render={props => (
-                <AccountDelete
-                  {...props}
-                  removeAccount={removeAccount}
-                  accounts={accounts}
-                />
-              )}
-            />
-          ) : null}
-          <Route
-            path={`${match.path}/:accountId/edit`}
-            name={"Edit Account"}
-            render={props => {
-              const account = accounts.find(
-                acc => acc.id === parseInt(props.match.params.accountId)
-              )
-              return account ? (
-                <Card
-                  title={
-                    <Title level={3}>
-                      <UserAddOutlined />
-                      Add Account
-                    </Title>
-                  }>
-                  <AccountForm
+    <Card bordered={false} bodyStyle={{ padding: 0 }}>
+      <Row gutter={[16, 16]} justify={"center"}>
+        <Col span={23}>
+          <PageTabs tabs={tabs} />
+        </Col>
+        <Col span={24}>
+          <Switch>
+            {accounts.length > 0 ? (
+              <Route
+                path={`${match.path}/:accountId/delete`}
+                render={props => (
+                  <AccountDelete
                     {...props}
-                    account={account}
-                    updateAccount={updateAccount}
-                    rootId={session.currentUser.id}
+                    removeAccount={removeAccount}
+                    accounts={accounts}
                   />
-                </Card>
-              ) : null
-            }}
-          />
-          <Route
-            path={`${match.path}/:accountId/disable`}
-            render={props => {
-              const account = accounts.find(
-                acc => acc.id === parseInt(props.match.params.accountId)
-              )
-              return account ? (
-                <AccountDisable url={match.path} account={account} />
-              ) : null
-            }}
-          />
-          <Route
-            path={`${match.path}/:accountId/unlock`}
-            render={props => {
-              const account = accounts.find(
-                acc => acc.id === parseInt(props.match.params.accountId)
-              )
-              return account ? (
-                <AccountUnlock url={match.path} account={account} />
-              ) : null
-            }}
-          />
-          <Route
-            path={`${match.path}/add`}
-            name={"Add Account"}
-            render={props => (
-              <Card
-                title={
-                  <Title level={3}>
-                    <UserAddOutlined />
-                    Add Account
-                  </Title>
-                }>
-                <AccountForm
-                  {...props}
-                  addAccount={addAccount}
-                  rootId={session.currentUser.id}
-                />
+                )}
+              />
+            ) : null}
+            <Route
+              path={`${match.path}/:accountId/edit`}
+              name={"Edit Account"}
+              component={AccountFormLayout}
+            />
+            <Route
+              path={`${match.path}/:accountId/disable`}
+              render={props => {
+                const account = accounts.find(
+                  acc => acc.id === parseInt(props.match.params.accountId)
+                )
+                return account ? (
+                  <AccountDisable url={match.path} account={account} />
+                ) : null
+              }}
+            />
+            <Route
+              path={`${match.path}/:accountId/unlock`}
+              render={props => {
+                const account = accounts.find(
+                  acc => acc.id === parseInt(props.match.params.accountId)
+                )
+                return account ? (
+                  <AccountUnlock url={match.path} account={account} />
+                ) : null
+              }}
+            />
+            <Route
+              path={`${match.path}/add`}
+              name={"Add Account"}
+              component={AccountFormLayout}
+            />
+            <Route path={match.path}>
+              <Card bordered={false}>
+                <AccountsList accounts={accounts} />
               </Card>
-            )}
-          />
-          <Route path={`${match.path}`} component={AccountsFeed} />
-        </Switch>
-      </Col>
-    </Row>
+            </Route>
+          </Switch>
+        </Col>
+      </Row>
+    </Card>
   )
 }
 

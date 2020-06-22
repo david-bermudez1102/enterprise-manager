@@ -7,7 +7,7 @@ const AccountsList = ({ accounts }) => {
     <List
       itemLayout='horizontal'
       size={"large"}
-      dataSource={[...accounts]}
+      dataSource={accounts}
       renderItem={item => <Account account={item} />}></List>
   )
 }

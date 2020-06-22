@@ -7,6 +7,7 @@ const AccountDelete = ({ match, accounts, removeAccount, history }) => {
     dispatch(removeAccount(match.params.accountId)).then(() =>
       history.replace("/accounts")
     )
+    // eslint-disable-next-line
   }, [match, removeAccount, accounts, history])
 
   return null

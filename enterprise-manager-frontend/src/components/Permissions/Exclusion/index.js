@@ -26,7 +26,7 @@ const Exclusion = props => {
 
   useEffect(() => {
     dispatch(fetchAccounts(session.currentUser.organizationId))
-  }, [dispatch])
+  }, [dispatch, session])
 
   useEffect(() => {
     setSelected(

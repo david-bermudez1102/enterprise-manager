@@ -9,7 +9,7 @@ import {
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { Form, Button } from "antd"
 
-const PagesPermissions = ({ pageName }) => {
+const PagesPermissions = ({ pageName, exclude }) => {
   const { session, pagePermissions } = useSelector(
     ({ session, pagePermissions }) => ({ session, pagePermissions }),
     shallowEqual
@@ -42,6 +42,7 @@ const PagesPermissions = ({ pageName }) => {
 
   useEffect(() => {
     dispatch(fetchPagePermissions(currentUser.organizationId))
+    // eslint-disable-next-line
   }, [])
 
   return (
@@ -50,10 +51,10 @@ const PagesPermissions = ({ pageName }) => {
       name={"resource_form"}
       onFinish={onFinish}
       layout={"horizontal"}>
-      <Form.Item>
-        <Permissions {...permissions} />
+      <Form.Item style={{ marginBottom: 0 }}>
+        <Permissions {...permissions} exclude={exclude} />
       </Form.Item>
-      <Form.Item>
+      <Form.Item style={{ margin: 0 }}>
         <Button type={"primary"} htmlType={"submit"}>
           Save
         </Button>

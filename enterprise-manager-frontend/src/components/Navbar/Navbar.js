@@ -6,57 +6,23 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons"
 import "./styles.scss"
 import NavbarMenu from "./NavbarMenu"
 import { useSelector, shallowEqual } from "react-redux"
+import useLinks from "../../Router/Hooks/useLinks"
 const { Header } = Layout
 
 const Navbar = props => {
-  const { session, organizations, isSiderCollapsed, trigger } = props
+  const {
+    session,
+    organizations,
+    isSiderCollapsed,
+    trigger,
+    organization
+  } = props
   const { roots } = useSelector(({ roots }) => ({ roots }), shallowEqual)
   const location = useLocation()
-  const links = [
-    {
-      path: "/login",
-      text: "Login",
-      icon: "fal fa-sign-in-alt",
-      loginRequired: false,
-      hidden: !roots.length && true
-    },
-    {
-      path: "/",
-      text: "Home",
-      icon: "fal fa-home",
-      loginRequired: true
-    },
-    {
-      path: `/organizations/${organizations[0].id}/resources/new`,
-      text: "Add Resource",
-      icon: "fal fa-plus",
-      loginRequired: true
-    },
-    {
-      path: `/organizations/${organizations[0].id}/resources`,
-      text: "Resources",
-      icon: "fal fa-layer-group",
-      loginRequired: true
-    },
-    {
-      path: `/organizations/${organizations[0].id}/settings`,
-      text: "Settings",
-      icon: "fal fa-cog",
-      loginRequired: true
-    },
-    {
-      path: `/notifications`,
-      text: "Notifications",
-      icon: "fal fa-bell",
-      loginRequired: true
-    },
-    {
-      path: "/logout",
-      icon: "fal fa-sign-out-alt",
-      text: "Logout",
-      loginRequired: true
-    }
-  ]
+  const { links } = useLinks({
+    organization,
+    exclude: ["Organization", "Record", "Account", "Role"]
+  })
 
   return (
     <Header

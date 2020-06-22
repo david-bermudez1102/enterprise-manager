@@ -3,23 +3,7 @@ export const resourcesReducer = (state = [], action) => {
     case "ADD_RESOURCE":
       return [...state, action.resource]
     case "FETCH_RESOURCES":
-      return [
-        ...state
-          .filter(
-            resource => action.resources.some(res => resource.id === res.id) // Remove the resources that don't exist from the fetch request)
-          )
-          .map(resource => {
-            //checking if the fetch has any updates since state is being cached.
-            const updatedResource = action.resources.find(
-              r => parseInt(r.id) === parseInt(resource.id)
-            )
-            if (updatedResource) return updatedResource
-            return resource
-          }),
-        ...action.resources.filter(
-          resource => !state.some(res => resource.id === res.id)
-        )
-      ]
+      return action.resources
     case "UPDATE_RESOURCE":
       return [
         ...state.map(r =>

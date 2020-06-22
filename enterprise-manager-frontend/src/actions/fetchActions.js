@@ -24,7 +24,10 @@ export const getAll = (dispatch, url, ...actions) =>
         throw new Error(response.errors.join(", "))
       }
     })
-    .catch(resp => message.error(resp.toString()), 15)
+    .catch(resp => {
+      actions.map(action => action([]))
+      message.error(resp.toString(), 8)
+    })
 
 export const add = (dispatch, url, payload, ...actions) => {
   return fetch(url, {

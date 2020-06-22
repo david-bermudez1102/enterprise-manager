@@ -1,7 +1,7 @@
 import React, { useCallback } from "react"
 import { useSelector, shallowEqual } from "react-redux"
 import { matchPath, useLocation } from "react-router-dom"
-import { HomeOutlined } from "@ant-design/icons"
+import Icon from "@ant-design/icons"
 
 const useCrumbs = () => {
   const { routes } = useSelector(({ routes }) => ({ routes }), shallowEqual)
@@ -30,7 +30,15 @@ const useCrumbs = () => {
     .map(route =>
       matchPath(location.pathname, { path: route.path })
         ? route.path === "/"
-          ? { breadcrumbName: <HomeOutlined />, path: "/" }
+          ? {
+              breadcrumbName: (
+                <Icon
+                  style={{ verticalAlign: 0 }}
+                  component={() => <i className='far fa-home'></i>}
+                />
+              ),
+              path: "/"
+            }
           : {
               breadcrumbName: route.name,
               path: matchPath(location.pathname, {

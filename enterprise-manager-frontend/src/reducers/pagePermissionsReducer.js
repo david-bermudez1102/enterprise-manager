@@ -12,10 +12,10 @@ export const pagePermissions = (state = {}, action) => {
       }
     case "SET_PAGE_PERMISSIONS":
       return {
-        ...action.pagePermissions.reduce(
-          (p, memo) => ({ [p.pageName]: p, [memo.pageName]: memo }),
-          {}
-        )
+        ...action.pagePermissions.reduce((p, obj) => {
+          p[obj.pageName] = obj
+          return p
+        }, {})
       }
     default:
       return state

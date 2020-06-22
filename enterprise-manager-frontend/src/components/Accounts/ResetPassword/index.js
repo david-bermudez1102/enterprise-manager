@@ -24,7 +24,6 @@ const ResetPassword = ({ verifyToken }) => {
   useEffect(() => {
     if (tokenParam) {
       verifyToken(tokenParam).then(resp => {
-        console.log(resp)
         if (resp.message === "success") {
           setToken({ token: tokenParam, ...resp })
           setValidToken(true)
@@ -41,8 +40,7 @@ const ResetPassword = ({ verifyToken }) => {
     if (!isLoggedIn && session.isLoggedIn) {
       dispatch(fetchSession()).then(() => setIsLoggedIn(session.isLoggedIn))
     }
-    console.log(isLoggedIn)
-  }, [isLoggedIn])
+  }, [isLoggedIn, session, dispatch])
 
   if (isLoggedIn || session.isLoggedIn) return null
 

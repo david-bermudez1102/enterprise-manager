@@ -22,7 +22,7 @@ const RolesFormLayout = props => {
   if (location.pathname.includes("edit") && !role) return <NoMatch />
 
   return (
-    <Col span={8} xl={10} lg={14} md={18} sm={24} xs={24}>
+    <Col span={8} xl={14} lg={16} md={18} sm={24} xs={24}>
       <Card
         bordered={false}
         title={

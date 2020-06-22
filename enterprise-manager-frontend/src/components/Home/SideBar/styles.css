@@ -1,9 +1,19 @@
 .sidebar-header-expanded {
-  padding-left: 17.5px !important;
+  padding-left: 11px !important;
   padding-right: 0 !important;
-  height: 50px !important;
+  height: 48px !important;
   margin: 0 !important;
-  line-height: 50px !important;
+  line-height: 48px !important;
+}
+
+@media screen and (max-width: 1000px) {
+  .ant-menu-submenu-title {
+    padding: 0 10px !important;
+  }
+
+  .sidebar-header-expanded {
+    margin-left: -4px !important;
+  }
 }
 
 .sidebar-header-collapsed {

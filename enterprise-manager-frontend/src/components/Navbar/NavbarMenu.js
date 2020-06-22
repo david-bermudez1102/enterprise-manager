@@ -1,9 +1,10 @@
 import React from "react"
-import { Menu } from "antd"
-import { NavLink } from "react-router-dom"
+import { Menu, Button } from "antd"
+import { Link } from "react-router-dom"
 import Search from "antd/lib/input/Search"
 
 const NavbarMenu = ({ location, session, links, layout }) => {
+  const { currentUser } = session
   return (
     <Menu
       mode={layout}
@@ -29,19 +30,117 @@ const NavbarMenu = ({ location, session, links, layout }) => {
       {session.isLoggedIn
         ? links.map((link, i) =>
             link.loginRequired ? (
-              <Menu.Item key={link.path}>
-                <NavLink to={link.path} exact title={link.text}>
-                  <i className={link.icon}></i>
-                </NavLink>
-              </Menu.Item>
+              !link.dropdown ? (
+                link.everyone ||
+                currentUser.isRoot ||
+                link.levels.some(l => l.readPrivilege) ? (
+                  <Menu.Item key={link.path}>
+                    <Link to={link.path} title={link.text}>
+                      <Button
+                        type='link'
+                        icon={React.cloneElement(link.icon, {
+                          ...link.icon.props,
+                          style: { ...link.icon.props.style, margin: 0 }
+                        })}
+                        style={{
+                          padding: 0,
+                          color: "inherit"
+                        }}
+                        block
+                      />
+                    </Link>
+                  </Menu.Item>
+                ) : null
+              ) : link.everyone ||
+                currentUser.isRoot ||
+                link.levels.some(
+                  l =>
+                    l.createPrivilege ||
+                    l.updatePrivilege ||
+                    l.readPrivilege ||
+                    l.deletePrivilege ||
+                    l.insertPrivilege
+                ) ? (
+                <Menu.SubMenu
+                  key={link.path}
+                  className={
+                    location.pathname.includes(link.path)
+                      ? "ant-menu-item-selected"
+                      : undefined
+                  }
+                  title={
+                    link.levels.some(l => l.readPrivilege) ||
+                    link.everyone ||
+                    currentUser.isRoot ? (
+                      <Link to={link.path} style={{ color: "inherit" }}>
+                        <Button
+                          type='link'
+                          icon={React.cloneElement(link.icon, {
+                            ...link.icon.props,
+                            style: { ...link.icon.props.style, margin: 0 }
+                          })}
+                          style={{
+                            padding: 0,
+                            color: "inherit"
+                          }}
+                          style={{
+                            padding: 0,
+                            color: "inherit"
+                          }}
+                          block
+                        />
+                      </Link>
+                    ) : (
+                      <Button
+                        icon={React.cloneElement(link.icon, {
+                          ...link.icon.props,
+                          style: { ...link.icon.props.style, margin: 0 }
+                        })}
+                        style={{
+                          padding: 0,
+                          color: "inherit"
+                        }}
+                        block
+                      />
+                    )
+                  }>
+                  {link.subLinks.map(subLink => (
+                    <Menu.Item key={subLink.path}>
+                      <Link to={subLink.path} style={{ color: "inherit" }}>
+                        <Button
+                          type={"link"}
+                          icon={subLink.icon}
+                          style={{
+                            padding: 0,
+                            color: "inherit"
+                          }}
+                          block>
+                          {link.text}
+                        </Button>
+                      </Link>
+                    </Menu.Item>
+                  ))}
+                </Menu.SubMenu>
+              ) : null
             ) : null
           )
         : links.map((link, i) =>
             !link.loginRequired && !link.hidden ? (
               <Menu.Item key={link.path}>
-                <NavLink to={link.path} exact>
-                  <i className={link.icon}></i> {link.text}
-                </NavLink>
+                <Link to={link.path}>
+                  <Button
+                    type={"link"}
+                    icon={React.cloneElement(link.icon, {
+                      ...link.icon.props,
+                      style: { ...link.icon.props.style, margin: 0 }
+                    })}
+                    style={{
+                      padding: 0,
+                      color: "inherit"
+                    }}
+                    block
+                  />
+                </Link>
               </Menu.Item>
             ) : null
           )}

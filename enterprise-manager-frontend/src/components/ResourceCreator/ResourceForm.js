@@ -1,24 +1,18 @@
 import React, { useEffect } from "react"
-import { useHistory, useLocation, useRouteMatch } from "react-router-dom"
+import { useHistory, useRouteMatch } from "react-router-dom"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { Form, Input, Button } from "antd"
 import Permissions from "../Permissions"
 import usePermissions from "../Permissions/Hooks/usePermissions"
+import IconWrapper from "../Icons/IconWrapper"
 
 const ResourceForm = ({ addResource, updateResource, url, resource }) => {
-  const location = useLocation()
   const history = useHistory()
   const match = useRouteMatch()
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
   const { organizationId } = session.currentUser
   const [form] = Form.useForm()
-  const {
-    onPermissionsChange,
-    onCheckAllChange,
-    onExclusionChange,
-    permissionAttributes,
-    attrCount
-  } = usePermissions({
+  const permissions = usePermissions({
     permissionAttributes: resource ? resource.permissionAttributes : null
   })
 
@@ -34,7 +28,11 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
   const onFinish = data => {
     if (addResource)
       dispatch(
-        addResource({ ...data, organizationId, permissionAttributes })
+        addResource({
+          ...data,
+          organizationId,
+          permissionAttributes: permissions.permissionAttributes
+        })
       ).then(resource =>
         resource.formAlias
           ? history.push(
@@ -48,7 +46,7 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
           ...data,
           id: resource.id,
           organizationId,
-          permissionAttributes
+          permissionAttributes: permissions.permissionAttributes
         })
       ).then(resource =>
         resource
@@ -61,14 +59,12 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
       )
   }
 
-  console.log(permissionAttributes)
   return (
     <Form
-      labelCol={{ span: 5 }}
       form={form}
       name={"resource_form"}
       onFinish={onFinish}
-      layout={"horizontal"}>
+      layout={"vertical"}>
       <Form.Item
         name='name'
         label='Name'
@@ -79,21 +75,26 @@ const ResourceForm = ({ addResource, updateResource, url, resource }) => {
           }
         ]}>
         <Input
-          size='large'
-          prefix={<i className='fas fa-layer-group'></i>}
+          prefix={
+            <IconWrapper
+              className='fal fa-layer-group'
+              style={{ fontSize: 13 }}
+            />
+          }
           placeholder='Enter resource name...'
         />
       </Form.Item>
-      <Form.Item label={"Permissions"} required>
+      <Form.Item label={"Permissions"} labelCol={{ span: 24 }} required>
         <Permissions
-          onPermissionsChange={onPermissionsChange}
-          onCheckAllChange={onCheckAllChange}
-          onExclusionChange={onExclusionChange}
-          permissionAttributes={permissionAttributes}
-          attrCount={attrCount}
+          {...permissions}
+          readLabel={"View Resource"}
+          createLabel={"Add Field"}
+          updateLabel={"Update Resource"}
+          deleteLabel={"Delete Resource"}
+          exclude={["insertPrivilege"]}
         />
       </Form.Item>
-      <Form.Item wrapperCol={{ offset: 5 }}>
+      <Form.Item>
         <Button
           size={"large"}
           type='primary'

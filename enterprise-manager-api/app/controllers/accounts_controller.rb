@@ -26,7 +26,7 @@ class AccountsController < ApplicationController
   end
 
   def index
-    accounts = @organization.accounts.where.not(id:current_account.id)
+    accounts = @organization.accounts
     authorize accounts
     serialized_data = AccountSerializer.new(accounts).serializable_hash[:data]
     render json: serialized_data.map { |data| data[:attributes] }

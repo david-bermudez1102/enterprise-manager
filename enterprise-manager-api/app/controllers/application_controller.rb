@@ -20,7 +20,7 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    Account.last
+    current_account
   end
 
   def encode_token(payload, exp = 24.hours.from_now)
@@ -51,7 +51,7 @@ class ApplicationController < ActionController::API
       when ActiveRecord::RecordInvalid, ActiveRecord::Rollback
         render json: exception, status: :unprocessable_entity
       when Pundit::NotAuthorizedError
-        render json: "You are not authorized to see this resource.", status: :unauthorized
+        render json: "You are not authorized to see this page.", status: :unauthorized
       else
         render json: exception, status: :internal_server_error
       end

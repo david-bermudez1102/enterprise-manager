@@ -50,7 +50,6 @@ const ResourcesContainer = props => {
             organizationId={organizationId}
           />
         </Route>
-        )} />
         {resource ? (
           <Route path={`${match.path}/:formAlias`} name={resource.name}>
             <Resource resource={resource} />

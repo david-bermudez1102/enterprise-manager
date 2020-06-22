@@ -1,25 +1,35 @@
-import React from "react"
-import { NavLink, useLocation } from "react-router-dom"
+import React, { useState } from "react"
+import { useLocation, Link } from "react-router-dom"
 import { Menu, Button, Avatar } from "antd"
 import defaultAvatar from "../../../default_user.png"
-import "./styles.scss"
+import "./styles.css"
 
 const { SubMenu } = Menu
 
 const SidebarLinks = ({ links, session, collapsed }) => {
   const location = useLocation()
+  const { currentUser } = session
+
+  const [openKeys, setOpenKeys] = useState()
+
+  const onOpenChange = openKeys => {
+    setOpenKeys([openKeys[openKeys.length - 1]])
+  }
   return (
     <Menu
+      openKeys={openKeys}
+      onOpenChange={onOpenChange}
       theme='dark'
       mode='inline'
       style={{ position: "sticky", top: 0 }}
-      selectedKeys={[location.pathname]}>
+      selectedKeys={[location.pathname]}
+      inlineIndent={16}>
       <Menu.Item
         key={"sidebar_header"}
         className={
           collapsed ? "sidebar-header-collapsed" : "sidebar-header-expanded"
         }>
-        <NavLink to={"/"} style={{ color: "#fff" }}>
+        <Link to={"/"} style={{ color: "inherit" }}>
           <Avatar src={defaultAvatar} />
           {!collapsed ? (
             <div
@@ -28,26 +38,38 @@ const SidebarLinks = ({ links, session, collapsed }) => {
                 marginLeft: 5,
                 verticalAlign: "middle"
               }}>
-              {session.currentUser.name}
+              {currentUser.name}
             </div>
           ) : null}
-        </NavLink>
+        </Link>
       </Menu.Item>
       {links.map(link =>
         !link.dropdown ? (
-          <Menu.Item key={link.path}>
-            <NavLink exact={link.exact} to={link.path}>
-              <Button
-                type='link'
-                style={{ textAlign: "left", padding: 0 }}
-                icon={link.icon}
-                ghost
-                block>
-                {link.text}
-              </Button>
-            </NavLink>
-          </Menu.Item>
-        ) : (
+          link.everyone ||
+          currentUser.isRoot ||
+          link.levels.some(l => l.readPrivilege) ? (
+            <Menu.Item key={link.path}>
+              <Link to={link.path} style={{ color: "inherit" }}>
+                <Button
+                  type='link'
+                  style={{ textAlign: "left", padding: 0, color: "inherit" }}
+                  icon={link.icon}
+                  block>
+                  {link.text}
+                </Button>
+              </Link>
+            </Menu.Item>
+          ) : null
+        ) : link.everyone ||
+          currentUser.isRoot ||
+          link.levels.some(
+            l =>
+              l.createPrivilege ||
+              l.updatePrivilege ||
+              l.readPrivilege ||
+              l.deletePrivilege ||
+              l.insertPrivilege
+          ) ? (
           <SubMenu
             key={link.path}
             className={
@@ -56,33 +78,42 @@ const SidebarLinks = ({ links, session, collapsed }) => {
                 : undefined
             }
             title={
-              <NavLink exact={link.exact} to={link.path}>
+              link.levels.some(l => l.readPrivilege) ||
+              link.everyone ||
+              currentUser.isRoot ? (
+                <Link to={link.path} style={{ color: "inherit" }}>
+                  <Button
+                    type='link'
+                    style={{ textAlign: "left", padding: 0, color: "inherit" }}
+                    icon={link.icon}
+                    block>
+                    {link.text}
+                  </Button>
+                </Link>
+              ) : (
                 <Button
-                  type='link'
-                  style={{ textAlign: "left", padding: 0 }}
+                  style={{ textAlign: "left", padding: 0, color: "inherit" }}
                   icon={link.icon}
-                  ghost
                   block>
                   {link.text}
                 </Button>
-              </NavLink>
+              )
             }>
             {link.subLinks.map(subLink => (
               <Menu.Item key={subLink.path}>
-                <NavLink to={subLink.path}>
+                <Link to={subLink.path} style={{ color: "inherit" }}>
                   <Button
+                    type={"link"}
                     icon={subLink.icon}
-                    style={{ textAlign: "left", padding: 0 }}
-                    type='link'
-                    ghost
+                    style={{ textAlign: "left", padding: 0, color: "inherit" }}
                     block>
                     {subLink.text}
                   </Button>
-                </NavLink>
+                </Link>
               </Menu.Item>
             ))}
           </SubMenu>
-        )
+        ) : null
       )}
     </Menu>
   )

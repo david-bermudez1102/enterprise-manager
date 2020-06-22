@@ -5,7 +5,6 @@ import { addOrganization } from "../actions/organizationAction"
 import { Switch, useHistory, useRouteMatch } from "react-router-dom"
 import ResourcesContainer from "./ResourceCreator/ResourcesContainer"
 import Organization from "../components/Organizations/Organization"
-import { fetchResources } from "../actions/resourceActions"
 import Settings from "./Settings/Settings"
 import AllRecordsContainer from "./Records/AllRecordsContainer"
 import Route from "../Router/Route"
@@ -15,7 +14,7 @@ import { Row, Col, Layout, Card } from "antd"
 import Title from "antd/lib/typography/Title"
 import Wallpaper from "../components/Wallpaper"
 import { fetchAccounts } from "../actions/accountActions"
-import { fetchPagePermissions } from "../actions/pagePermissionsActions"
+import AccountsContainer from "./Accounts/AccountsContainer"
 
 const OrganizationContainer = () => {
   const { organizations, resources, session, roots } = useSelector(
@@ -38,15 +37,11 @@ const OrganizationContainer = () => {
     if (!mounted.current) {
       mounted.current = true
       setLoaded(false)
-      if (organizations.length && session.isLoggedIn)
-        dispatch(fetchResources(organizations[0].id))
     } else {
       setLoaded(false)
       dispatch(fetchRoles(session.currentUser.organizationId))
       if (organizations.length && session.isLoggedIn) {
-        dispatch(fetchResources(organizations[0].id))
         dispatch(fetchAccounts(organizations[0].id))
-        dispatch(fetchPagePermissions(organizations[0].id))
       }
       if (organizations.length > 0 && !roots.length)
         history.push("/accounts/new")
@@ -116,6 +111,12 @@ const OrganizationContainer = () => {
             path={`${match.path}/:organizationId/records`}
             component={AllRecordsContainer}
             name={"All Records"}
+          />
+          <Route
+            path={`${match.path}/:organizationId/accounts`}
+            render={props => <AccountsContainer {...props} />}
+            title='Accounts'
+            name='Accounts'
           />
           <Route
             path={`${match.path}/:organizationId/roles`}

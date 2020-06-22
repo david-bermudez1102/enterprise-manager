@@ -1,13 +1,14 @@
 import React, { useState } from "react"
 import SidebarLinks from "./SidebarLinks"
-import useSidebar from "./useSidebar"
 import { Layout } from "antd"
+import useLinks from "../../../Router/Hooks/useLinks"
 
 const { Sider } = Layout
 
 const SideBar = ({ session, organizations, collapsed, handleCollapse }) => {
-  const { links } = useSidebar({
-    organization: organizations[0]
+  const { links } = useLinks({
+    organization: organizations[0],
+    exclude: ["Notification", "Login", "Logout"]
   })
 
   const [broken, setBroken] = useState(false)

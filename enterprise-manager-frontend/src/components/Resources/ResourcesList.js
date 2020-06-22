@@ -6,10 +6,10 @@ import {
   useHistory,
   Link
 } from "react-router-dom"
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import pluralize from "pluralize"
 import { Card, Badge, Row, Col, Popover, Menu, Button, Empty } from "antd"
-import {
+import Icon, {
   EditOutlined,
   EllipsisOutlined,
   SettingOutlined,
@@ -19,30 +19,28 @@ import {
 import Title from "antd/lib/typography/Title"
 import useModal from "../Modal/Hooks/useModal"
 import DeletionModal from "../Modal/DeletionModal"
-import { removeResource } from "../../actions/resourceActions"
+import { removeResource, fetchResources } from "../../actions/resourceActions"
 import AddResourceButton from "./AddResourceButton"
 import Statistics from "./Statistics"
+import IconWrapper from "../Icons/IconWrapper"
 
-const ResourcesList = ({ loaded, loading }) => {
+const ResourcesList = ({ loaded }) => {
   const location = useLocation()
   const match = useRouteMatch()
   const history = useHistory()
+  const dispatch = useDispatch()
+
   const { showModal, ...deletionModal } = useModal()
   const { resources } = useSelector(
     ({ resources }) => ({ resources }),
     shallowEqual
   )
+  const { organizationId } = match.params
 
   useEffect(() => {
-    if (
-      resources.length === 0 &&
-      location.pathname !== `${match.url}/new` &&
-      loaded
-    ) {
-      history.push(`${match.url}/new`)
-    }
+    dispatch(fetchResources(organizationId))
     // eslint-disable-next-line
-  }, [resources, location, loaded])
+  }, [organizationId, location, loaded])
 
   if (resources.length === 0)
     return (
@@ -70,7 +68,11 @@ const ResourcesList = ({ loaded, loading }) => {
                 style={{ width: "100%", height: "100%" }}
                 title={
                   <Title level={3} style={{ marginBottom: 0 }}>
-                    <i className='fas fa-layer-group'></i> {resource.name}
+                    <Icon
+                      style={{ verticalAlign: 1, fontSize: "18px" }}
+                      component={() => <i className='fal fa-layer-group'></i>}
+                    />{" "}
+                    {resource.name}
                   </Title>
                 }
                 actions={[
@@ -127,9 +129,10 @@ const ResourcesList = ({ loaded, loading }) => {
                 size={"small"}
                 extra={
                   <NavLink to={`${match.url}/${resource.formAlias}/new`}>
-                    <i
-                      className='fad fa-plus-circle'
-                      style={{ fontSize: "24px" }}></i>
+                    <IconWrapper
+                      className='fal fa-plus-circle'
+                      style={{ fontSize: "24px" }}
+                    />
                   </NavLink>
                 }>
                 <Card.Meta

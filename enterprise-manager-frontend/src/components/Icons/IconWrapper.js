@@ -1,21 +1,13 @@
-import React from "react";
-import "./styles.css";
-const IconWrapper = ({ title, size, style, children, onClick }) => {
-  const className = "icon-wrapper rounded-circle shadow text-light d-flex align-items-center justify-content-center";
-  return (
-    <div
-      onClick={onClick}
-      title={title}
-      className={className}
-      style={{
-        width: size,
-        height: size,
-        fontSize: "12px",
-        ...style
-      }}>
-      {children}
-    </div>
-  );
-};
+import React from "react"
+import Icon from "@ant-design/icons"
 
-export default IconWrapper;
+const IconWrapper = ({ className, style }) => {
+  return (
+    <Icon
+      style={{ verticalAlign: 0, ...style }}
+      component={() => <i className={className}></i>}
+    />
+  )
+}
+
+export default IconWrapper

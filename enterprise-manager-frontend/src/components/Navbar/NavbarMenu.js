@@ -92,6 +92,7 @@ const NavbarMenu = ({ location, session, links, layout }) => {
                       </Link>
                     ) : (
                       <Button
+                        type={"link"}
                         icon={React.cloneElement(link.icon, {
                           ...link.icon.props,
                           style: { ...link.icon.props.style, margin: 0 }

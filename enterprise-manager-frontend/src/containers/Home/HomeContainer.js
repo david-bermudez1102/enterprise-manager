@@ -22,6 +22,7 @@ import RootContainer from "../RootContainer"
 import useForbidden from "../../components/Forbidden/Hooks/useForbidden"
 import Forbidden from "../../components/Forbidden"
 import { fetchPagePermissions } from "../../actions/pagePermissionsActions"
+import OrganizationWebSocket from "../../components/WebSockets/OrganizationWebSocket"
 
 const { Content, Footer } = Layout
 
@@ -59,6 +60,7 @@ const HomeContainer = ({ organization }) => {
 
   return (
     <Layout style={{ minHeight: "100%", width: "100%" }}>
+      {session.isLoggedIn ? <OrganizationWebSocket /> : null}
       {session.isLoggedIn ? (
         <SideBar
           session={session}

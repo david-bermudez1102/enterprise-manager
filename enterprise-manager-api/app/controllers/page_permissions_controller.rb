@@ -19,6 +19,7 @@ class PagePermissionsController < ApplicationController
     @page_permission = @organization.page_permissions.new(page_permission_params)
     @page_permission.save!
     serialized_data = PagePermissionSerializer.new(@page_permission).serializable_hash[:data][:attributes]
+    OrganizationChannel.broadcast_to(@organization, {pagePermissions: PagePermissionSerializer.new(@organization.page_permissions).serializable_hash[:data].map { |data| data[:attributes] } })
     render json: serialized_data
   end
 
@@ -26,6 +27,7 @@ class PagePermissionsController < ApplicationController
   def update
     @page_permission.update!(page_permission_params)
     serialized_data = PagePermissionSerializer.new(@page_permission).serializable_hash[:data][:attributes]
+    OrganizationChannel.broadcast_to(@organization, {pagePermissions: PagePermissionSerializer.new(@organization.page_permissions).serializable_hash[:data].map { |data| data[:attributes] } })
     render json: serialized_data
   end
 

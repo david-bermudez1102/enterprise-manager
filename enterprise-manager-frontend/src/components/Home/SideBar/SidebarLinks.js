@@ -92,6 +92,7 @@ const SidebarLinks = ({ links, session, collapsed }) => {
                 </Link>
               ) : (
                 <Button
+                  type={"link"}
                   style={{ textAlign: "left", padding: 0, color: "inherit" }}
                   icon={link.icon}
                   block>

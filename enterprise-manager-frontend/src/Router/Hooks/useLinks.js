@@ -25,7 +25,7 @@ const useLinks = ({ organization, exclude }) => {
   const dispatch = useDispatch()
   const { currentUser } = session
 
-  const [links, setLinks] = useState([
+  const initialState = [
     {
       name: "Login",
       path: "/login",
@@ -206,12 +206,14 @@ const useLinks = ({ organization, exclude }) => {
       loginRequired: true,
       subLinks: []
     }
-  ])
+  ]
+
+  const [links, setLinks] = useState(initialState)
 
   useEffect(() => {
     if (session.isLoggedIn)
       setLinks(
-        links
+        initialState
           .filter(link => !(exclude || []).includes(link.name))
           .map(link => ({
             ...link,
@@ -251,7 +253,8 @@ const useLinks = ({ organization, exclude }) => {
     // eslint-disable-next-line
   }, [session, pagePermissions, roles, currentUser])
 
-  if (!organization || !session.isLoggedIn) return { sidebar }
+  if (!organization || !session.isLoggedIn)
+    return { links: links.filter(link => !link.loginRequired) }
 
   return {
     links,

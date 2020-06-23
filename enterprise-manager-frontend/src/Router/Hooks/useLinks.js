@@ -30,7 +30,7 @@ const useLinks = ({ organization, exclude }) => {
       name: "Login",
       path: "/login",
       text: "Login",
-      icon: <i className='fal fa-sign-in'></i>,
+      icon: <IconWrapper className='fal fa-sign-in' />,
       levels: [],
       subLinks: [],
       loginRequired: false,

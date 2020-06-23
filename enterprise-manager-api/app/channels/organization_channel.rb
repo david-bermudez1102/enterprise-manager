@@ -7,7 +7,7 @@ class OrganizationChannel < ApplicationCable::Channel
   def received(data)
     serialized_data = PagePermissionSerializer.new(@page_permissions).serializable_hash[:data]
     serialized_data = serialized_data.map{ |data| data[:attributes] }
-    PagePermissionChannel.broadcast_to(@organization, {pagePermissions: serialized_data})
+    OrganizationChannel.broadcast_to(@organization, {pagePermissions: serialized_data})
   end
 
   def unsubscribed

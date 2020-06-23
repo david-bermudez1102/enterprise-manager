@@ -38,6 +38,7 @@ class ApplicationController < ActionController::API
 
   def authenticate_user
     if current_account.nil?
+      SessionChannel.broadcast_to(current_account, { errors: ["Not logged in"]})
       render json: { errors: ['Not Authorized'] }
     else 
       current_account

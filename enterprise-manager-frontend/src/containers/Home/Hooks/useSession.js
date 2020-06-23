@@ -1,6 +1,5 @@
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { useHistory, useLocation } from "react-router-dom"
-import { fetchSession } from "../../../actions/sessionActions"
 import { useEffect, useRef } from "react"
 import { message } from "antd"
 
@@ -14,10 +13,6 @@ const useSession = () => {
   const history = useHistory()
   const dispatch = useDispatch()
   const mounted = useRef()
-
-  useEffect(() => {
-    dispatch(fetchSession())
-  }, [dispatch, location])
 
   useEffect(() => {
     if (location.state)

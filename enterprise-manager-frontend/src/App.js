@@ -7,6 +7,7 @@ import HomeContainer from "./containers/Home/HomeContainer"
 import Route from "./Router/Route"
 import "./App.scss"
 import { fetchRoots } from "./actions/rootActions"
+import SessionWebSocket from "./components/WebSockets/SessionWebSocket"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -31,6 +32,7 @@ const App = () => {
     <Router>
       {loaded ? (
         <Route path='/' name={"Home"}>
+          <SessionWebSocket />
           <HomeContainer organization={organizations[0]} />
         </Route>
       ) : null}

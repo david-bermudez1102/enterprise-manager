@@ -7,16 +7,16 @@ export const sessionReducer = (
       return {
         isLoggedIn: action.isLoggedIn,
         currentUser: action.currentUser
-      };
+      }
     case "UPDATE_SESSION":
-      return { currentUser: action.currentUser };
+      return { ...state, currentUser: action.currentUser }
     case "REMOVE_SESSION": //Logout
       return {
         isLoggedIn: false,
         currentUser: {}
-      };
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}

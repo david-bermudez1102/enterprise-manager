@@ -139,8 +139,9 @@ const NavbarMenu = ({ location, session, links, layout }) => {
                       padding: 0,
                       color: "inherit"
                     }}
-                    block
-                  />
+                    block>
+                    {link.text}
+                  </Button>
                 </Link>
               </Menu.Item>
             ) : null

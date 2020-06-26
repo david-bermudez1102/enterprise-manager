@@ -23,6 +23,8 @@ import useForbidden from "../../components/Forbidden/Hooks/useForbidden"
 import Forbidden from "../../components/Forbidden"
 import { fetchPagePermissions } from "../../actions/pagePermissionsActions"
 import OrganizationWebSocket from "../../components/WebSockets/OrganizationWebSocket"
+import Chat from "../../components/Chat"
+import ConversationWebSocket from "../../components/WebSockets/ConversationWebSocket"
 
 const { Content, Footer } = Layout
 
@@ -61,6 +63,7 @@ const HomeContainer = ({ organization }) => {
   return (
     <Layout style={{ minHeight: "100%", width: "100%" }}>
       {session.isLoggedIn ? <OrganizationWebSocket /> : null}
+      {session.isLoggedIn ? <ConversationWebSocket /> : null}
       {session.isLoggedIn ? (
         <SideBar
           session={session}
@@ -125,6 +128,7 @@ const HomeContainer = ({ organization }) => {
           )}
         </Content>
         <BackTop visibilityHeight={100} />
+        <Chat />
         <Divider style={{ margin: 0 }} />
         {organization ? (
           <Footer

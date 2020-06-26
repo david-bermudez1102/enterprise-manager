@@ -27,6 +27,7 @@ import { theme } from "./themeReducer"
 import { roles } from "./rolesReducer"
 import { roots } from "./rootUsersReducer"
 import { pagePermissions } from "./pagePermissionsReducer"
+import { conversations } from "./conversationsReducer"
 
 const requesting = (state = false, action) => {
   switch (action.type) {
@@ -65,5 +66,6 @@ export const rootReducer = combineReducers({
   statistics,
   theme,
   roles,
-  pagePermissions
+  pagePermissions,
+  conversations
 })

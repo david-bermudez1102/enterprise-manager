@@ -13,13 +13,23 @@ class Account < ApplicationRecord
   has_many :account_roles, dependent: :delete_all
   has_many :roles, through: :account_roles
   has_many :exclusions, dependent: :delete_all
+  has_many :messages
+  has_many :open_conversations
+  has_many :conversations, through: :open_conversations, dependent: :nullify
 
   validates :roles, :length => { :minimum => 1 }
 
   has_secure_password
 
-  def avatar_path
-    ActiveStorage::Blob.service.path_for(avatar.key)
+  def avatar_src
+    if avatar.attached?
+      Rails.application.routes.url_helpers.rails_blob_path(
+        avatar,
+        only_path: true,
+      ) 
+    else
+      nil
+    end
   end
 
   def self.lock_account(account,url)

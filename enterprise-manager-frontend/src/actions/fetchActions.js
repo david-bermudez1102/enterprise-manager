@@ -42,7 +42,7 @@ export const add = (dispatch, url, payload, ...actions) => {
     .then(handleErrors)
     .then(response => {
       if (!response.errors) {
-        actions.map(action => dispatch(action(response)))
+        actions.map(action => action(response))
         message.success(response.message || SUCCESS_MESSAGE_DEFAULT, 10)
         return response
       } else {
@@ -65,7 +65,7 @@ export const update = (dispatch, url, payload, ...actions) => {
     .then(response => {
       console.log(response)
       if (!response.errors) {
-        actions.map(action => dispatch(action(response)))
+        actions.map(action => action(response))
         message.success(response.message || UPDATED_MESSAGE_DEFAULT)
       } else {
         throw new Error(response.errors.join(", "))
@@ -82,11 +82,11 @@ export const remove = (dispatch, url, id, type, ...actions) => {
     .then(handleErrors)
     .then(response => {
       if (response.destroyed) {
-        actions.forEach(act => dispatch(act(response)))
+        actions.forEach(act => act(response))
         message.success(response.message || DESTROYED_MESSAGE_DEFAULT)
         return response
       } else if (response.archived) {
-        actions.forEach(act => dispatch(act))
+        actions.forEach(act => act(response))
         message.success(response.message || SOFT_DELETED_MESSAGE_DEFAULT)
         return response
       } else {

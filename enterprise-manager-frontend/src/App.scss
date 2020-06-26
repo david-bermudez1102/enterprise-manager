@@ -30,6 +30,29 @@ body {
   z-index: 1;
 }
 
+.scroller::-webkit-scrollbar {
+  width: 8px;
+  height: 12px;
+}
+
+.scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 10px;
+  visibility: hidden;
+}
+
+.scroller:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+
+.scroller {
+  overflow-y: auto;
+}
+
 .shadow-sm {
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08) !important;
 }

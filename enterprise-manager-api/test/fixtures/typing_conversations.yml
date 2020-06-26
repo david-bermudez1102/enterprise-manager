@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  conversation: one
+  account: one
+  is_typing: false
+
+two:
+  conversation: two
+  account: two
+  is_typing: false

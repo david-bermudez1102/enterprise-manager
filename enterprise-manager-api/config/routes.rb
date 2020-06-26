@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
+  resources :minimized_conversations
   resources :integration_records
   resources :integrations
   scope 'api/v1' do
+    resources :conversations
+    resources :open_conversations
     resources :activations
     resources :account_unlock, only: :update
     resources :options

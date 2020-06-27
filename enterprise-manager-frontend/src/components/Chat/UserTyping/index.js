@@ -1,5 +1,4 @@
 import React from "react"
-import { MessageOutlined } from "@ant-design/icons"
 import { Button, Avatar, Tooltip } from "antd"
 import { parseFullName } from "parse-full-name"
 import SyncLoader from "react-spinners/SyncLoader"
@@ -51,4 +50,4 @@ const UserTyping = ({ conversation, session }) => {
   ) : null
 }
 
-export default UserTyping
+export default React.memo(UserTyping)

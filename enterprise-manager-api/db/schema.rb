@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_18_151836) do
+ActiveRecord::Schema.define(version: 2020_06_24_004609) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -110,6 +110,12 @@ ActiveRecord::Schema.define(version: 2020_06_18_151836) do
     t.index ["zoho_connection_id"], name: "index_connections_on_zoho_connection_id"
   end
 
+  create_table "conversations", force: :cascade do |t|
+    t.text "render_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "default_permissions", force: :cascade do |t|
     t.integer "role_id"
     t.datetime "created_at", null: false
@@ -196,6 +202,38 @@ ActiveRecord::Schema.define(version: 2020_06_18_151836) do
     t.index ["option_id"], name: "index_key_values_on_option_id"
     t.index ["record_key_id"], name: "index_key_values_on_record_key_id"
     t.index ["record_value_id"], name: "index_key_values_on_record_value_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "conversation_id"
+    t.integer "account_id"
+    t.text "content"
+    t.boolean "is_read", default: false, null: false
+    t.text "render_key"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_messages_on_account_id"
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+  end
+
+  create_table "minimized_conversations", force: :cascade do |t|
+    t.integer "conversation_id"
+    t.integer "account_id"
+    t.boolean "is_minimized", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_minimized_conversations_on_account_id"
+    t.index ["conversation_id"], name: "index_minimized_conversations_on_conversation_id"
+  end
+
+  create_table "open_conversations", force: :cascade do |t|
+    t.integer "conversation_id"
+    t.integer "account_id"
+    t.boolean "is_open", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_open_conversations_on_account_id"
+    t.index ["conversation_id"], name: "index_open_conversations_on_conversation_id"
   end
 
   create_table "options", force: :cascade do |t|
@@ -310,6 +348,16 @@ ActiveRecord::Schema.define(version: 2020_06_18_151836) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_id"], name: "index_statistics_on_form_id"
+  end
+
+  create_table "typing_conversations", force: :cascade do |t|
+    t.integer "conversation_id"
+    t.integer "account_id"
+    t.boolean "is_typing", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_typing_conversations_on_account_id"
+    t.index ["conversation_id"], name: "index_typing_conversations_on_conversation_id"
   end
 
   create_table "values", force: :cascade do |t|

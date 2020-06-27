@@ -1,6 +1,12 @@
 .chat-window,
 .chat-button {
-  box-shadow: 0 7px 40px 2px hsla(210, 1%, 58%, 0.3);
+  box-shadow: 0 7px 40px 2px hsla(210, 1%, 58%, 0.3) !important;
+}
+
+.conversations-list {
+  box-shadow: 0 7px 40px 2px hsla(210, 1%, 58%, 0.3) !important;
+  max-width: 100%;
+  border-radius: 5px;
 }
 
 .chat-window > .ant-card-head > .ant-card-head-wrapper {
@@ -21,10 +27,12 @@
 
 .message-sent > .ant-comment-inner {
   padding: 8px 0 !important;
+  min-height: 55px;
 }
 
 .message-received > .ant-comment-inner {
   padding: 8px 0 !important;
+  min-height: 55px;
 }
 
 .chat-window
@@ -47,7 +55,8 @@
   position: relative;
 }
 
-.speech-bubble-sent {
+.speech-bubble-sent,
+.speech-bubble-undelivered {
   position: relative;
 }
 
@@ -60,6 +69,21 @@
   height: 0;
   border: 6px solid transparent;
   border-left-color: rgb(64, 169, 255);
+  border-right: 0;
+  border-top: 0;
+  margin-top: -3px;
+  margin-right: -5px;
+}
+
+.speech-bubble-undelivered:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 20px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-left-color: rgb(145, 213, 255);
   border-right: 0;
   border-top: 0;
   margin-top: -3px;

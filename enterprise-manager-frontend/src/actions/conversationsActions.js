@@ -17,10 +17,12 @@ export const addConversation = conversation => dispatch =>
       })
   )
 
-export const fetchConversations = () => dispatch =>
-  getAll(dispatch, `/api/v1/conversations`, conversations =>
+export const fetchConversations = () => dispatch => {
+  dispatch({ type: "REQUESTING_DATA" })
+  return getAll(dispatch, `/api/v1/conversations`, conversations =>
     dispatch({ type: "SET-CONVERSATIONS", conversations })
-  )
+  ).then(() => dispatch({ type: "FINISHED_REQUESTING" }))
+}
 
 export const removeConversation = conversation => dispatch =>
   remove(
@@ -53,4 +55,10 @@ export const updateConversation = conversation => dispatch =>
       }
       return conversation
     })
-    .catch(resp => message.error(resp.toString()))
+    .catch(resp => {
+      console.log(resp.toString())
+      return false
+    })
+
+export const messagePreview = conversation => async dispatch =>
+  await dispatch({ type: "UPDATE-CONVERSATION-BY-KEY", conversation })

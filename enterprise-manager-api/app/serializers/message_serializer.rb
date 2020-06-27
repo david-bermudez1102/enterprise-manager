@@ -11,4 +11,16 @@ class MessageSerializer
   attribute :avatar_src do |obj|
     obj.account.avatar_src
   end
+
+  attribute :key do |obj|
+    obj.render_key
+  end
+
+  attribute :sent do
+    true
+  end
+
+  attribute :status do
+    1
+  end
 end

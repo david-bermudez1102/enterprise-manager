@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { Avatar, Card, Divider, Button, Alert } from "antd"
+import React, { useState, useLayoutEffect } from "react"
+import { Avatar, Card, Divider, Button, Badge } from "antd"
 import { blue } from "@ant-design/colors"
 import { MinusOutlined, CloseOutlined } from "@ant-design/icons"
 import MessageSent from "../Messages/Sent"
@@ -10,11 +10,11 @@ import { useSelector, shallowEqual } from "react-redux"
 import defaultUser from "../../../default_user.png"
 import cuid from "cuid"
 import InfiniteScroll from "react-infinite-scroller"
-import throttle from "lodash"
 import UserTyping from "../UserTyping"
 import NewMessage from "../Notifications/NewMessage"
+import { debounce } from "lodash"
+import HashLoader from "react-spinners/HashLoader"
 
-console.log(blue)
 const Conversation = ({ conversation }) => {
   const { handleMinimized, minimized, isOpen, handleIsOpen } = useChat({
     isMinimized: conversation.isMinimized,
@@ -26,6 +26,7 @@ const Conversation = ({ conversation }) => {
     ({ accounts, session }) => ({ accounts, session }),
     shallowEqual
   )
+
   const [isAtBottom, setIsAtBottom] = useState(true)
   const [messages, setMessages] = useState(conversation.messages)
   const [virtualizedMessages, setVirtualizedMessages] = useState([])
@@ -35,17 +36,19 @@ const Conversation = ({ conversation }) => {
 
   const [conversationFlashing, setConversationFlashing] = useState(false)
 
-  useEffect(() => {
-    setVirtualizedMessages(conversation.messages.slice(-20))
+  useLayoutEffect(() => {
+    setVirtualizedMessages(
+      conversation.messages.slice(-virtualizedMessages.length)
+    )
   }, [conversation.messages])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isAtBottom && messagesEndRef) {
       messagesEndRef.scrollIntoView({ block: "end" })
     }
   }, [isAtBottom, virtualizedMessages])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (inputRef)
       setConversationFlashing(
         conversation.messages.filter(
@@ -54,7 +57,7 @@ const Conversation = ({ conversation }) => {
       )
   }, [conversation.messages])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (
       !isAtBottom &&
       conversation.messages.filter(m => m.account.id !== session.currentUser.id)
@@ -68,45 +71,42 @@ const Conversation = ({ conversation }) => {
   }, [isAtBottom, conversation.messages])
 
   const onScroll = event => {
-    onScrollThrottled(event.target)
+    onScrollDebounced(event.target)
   }
 
-  const onScrollThrottled = throttle(target => {
+  const onScrollDebounced = debounce(target => {
     let { scrollHeight, scrollTop, offsetHeight } = target
-    if (Math.ceil(scrollHeight - scrollTop - 40) <= offsetHeight) {
+    if (Math.ceil(scrollHeight - scrollTop - 50) <= offsetHeight) {
       setIsAtBottom(true)
       setNewMessages(false)
       if (virtualizedMessages.length !== 20)
         setVirtualizedMessages(conversation.messages.slice(-20))
-    } else if (isAtBottom) setIsAtBottom(false)
-  }, 300)
-
-  console.log(isAtBottom)
+    } else setIsAtBottom(false)
+  }, 100)
 
   return isOpen ? (
     <Card
       bordered={false}
       className={"chat-window"}
-      size={"small"}
       headStyle={{
-        boxShadow: "0 -1px 5px rgba(0,0,0,.2)",
+        boxShadow: "0 0px 5px rgba(0,0,0,.2)",
         animation: conversationFlashing ? "blinking 2s infinite" : undefined,
-        height: "49px",
-        background: blue[5],
+        height: "55px",
+        background: "#4e8cff",
         borderRadius: "5px 5px 0 0",
         color: "#fff",
         fontWeight: "normal"
       }}
       style={{
         pointerEvents: "auto",
-        height: minimized ? "auto" : 400,
-        borderRadius: "5px 5px 0 0"
+        height: minimized ? "auto" : 430,
+        borderRadius: "8px 8px 0 0"
       }}
       bodyStyle={{
         padding: 0,
         display: minimized ? "none" : "flex",
         flexDirection: "column",
-        height: "calc(100% - 49px)"
+        height: "calc(100% - 55px)"
       }}
       extra={[
         <Button
@@ -133,14 +133,16 @@ const Conversation = ({ conversation }) => {
             display: "flex",
             alignItems: "center"
           }}>
-          <Avatar
-            style={{ marginRight: 12 }}
-            src={conversation.avatarSrc || defaultUser}
-          />
+          <Badge dot status={"success"} offset={[-15, 24]}>
+            <Avatar
+              style={{ marginRight: 12 }}
+              src={conversation.avatarSrc || defaultUser}
+            />
+          </Badge>
           {conversation.recipients
             .filter(r => r.id !== session.currentUser.id)
             .map(r => r.name)
-            .join(", ")}
+            .join(", ")}{" "}
         </div>
       }>
       {!minimized ? (
@@ -152,8 +154,8 @@ const Conversation = ({ conversation }) => {
               flex: 1,
               margin: 0,
               overflowY: "auto",
-              paddingLeft: 14,
-              paddingRight: 14,
+              paddingLeft: 23,
+              paddingRight: 23,
               position: "relative"
             }}>
             <InfiniteScroll
@@ -168,10 +170,20 @@ const Conversation = ({ conversation }) => {
                         -20 - virtualizedMessages.length
                       )
                     ),
-                  500
+                  600
                 )
               }
-              loader={<span>Loading</span>}
+              loader={
+                <span
+                  key={0}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center"
+                  }}>
+                  <HashLoader color={blue[3]} size={25} />
+                </span>
+              }
               hasMore={
                 virtualizedMessages.length < conversation.messages.length
               }
@@ -182,20 +194,17 @@ const Conversation = ({ conversation }) => {
               />
               {virtualizedMessages.map(message =>
                 message.account.id === session.currentUser.id ? (
-                  <MessageSent key={`message_${message.id}`} {...message} />
+                  <MessageSent {...message} />
                 ) : (
-                  <MessageReceived key={`message_${message.id}`} {...message} />
+                  <MessageReceived {...message} />
                 )
               )}
-
-              <div
-                ref={setMessagesEndRef}
-                style={{ float: "left", clear: "both" }}>
-                <UserTyping conversation={conversation} session={session} />
-              </div>
             </InfiniteScroll>
+            <div ref={setMessagesEndRef} style={{ minHeight: 10 }}>
+              <UserTyping conversation={conversation} session={session} />
+            </div>
           </div>
-          <div style={{ background: "#f4f7f9" }}>
+          <div>
             <Divider style={{ margin: 0 }} />
             <MessageForm
               conversationFlashing={conversationFlashing}

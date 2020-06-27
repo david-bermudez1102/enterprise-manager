@@ -1,5 +1,5 @@
 class OpenConversation < ApplicationRecord
-  belongs_to :conversation
+  belongs_to :conversation, touch: true
   belongs_to :account
   validate :account_is_own, on: [:update, :destroy]
 

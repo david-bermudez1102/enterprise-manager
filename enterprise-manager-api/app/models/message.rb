@@ -1,10 +1,10 @@
 class Message < ApplicationRecord
-  belongs_to :conversation
+  belongs_to :conversation, touch: true
   belongs_to :account
   validate :only_is_read_is_changed
   validate :account_is_own
   validates :content, presence: true
-
+  
   after_save :user_not_typing_anymore
   after_save :mark_rest_as_read
 
@@ -25,8 +25,8 @@ class Message < ApplicationRecord
   private
 
   def only_is_read_is_changed
-    if (conversation_id_changed? || account_id_changed? || content_changed?) && self.persisted?
-      errors.add(:conversation, "Change of this message not allowed!")
+    if (conversation_id_changed? || account_id_changed? || content_changed?  || render_key_changed?) && self.persisted?
+      errors.add(:conversation, "Changes to this message are not allowed!")
     end
   end
 end

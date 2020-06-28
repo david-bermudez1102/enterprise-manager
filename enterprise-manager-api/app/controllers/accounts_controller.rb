@@ -35,8 +35,10 @@ class AccountsController < ApplicationController
   def update
     Account.transaction do
       @account
+      @account.avatar.attachment.purge_later if account_params[:avatar] && @account.avatar.attachment
       @account.update!(account_params)
       serialized_data = AccountSerializer.new(@account).serializable_hash[:data][:attributes]
+      SessionChannel.broadcast_to(@account, AccountSerializer.new(@account))
       render json: serialized_data
     end
   end
@@ -53,7 +55,7 @@ class AccountsController < ApplicationController
 
   private
     def account_params
-      params.require(:account).permit(:organization_id, :name, :email, :password, :avatar, :avatar_margin_left, :avatar_margin_top, :role_ids => [])
+      params.require(:account).permit(:organization_id, :name, :email, :password, :avatar, :role_ids => [])
     end
 
     def set_organization

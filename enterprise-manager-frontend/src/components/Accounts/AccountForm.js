@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { Form, Input, Select, Button } from "antd"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import snakecaseKeys from "snakecase-keys"
 
 const AccountForm = props => {
   const { account } = props
@@ -21,17 +22,21 @@ const AccountForm = props => {
     console.log({ ...account, ...data })
     if (updateAccount)
       dispatch(
-        updateAccount({
-          ...account,
-          ...data
-        })
+        updateAccount(
+          snakecaseKeys({
+            ...account,
+            ...data
+          })
+        )
       )
     else
       dispatch(
-        addAccount({
-          organizationId: session.currentUser.organizationId,
-          ...data
-        })
+        addAccount(
+          snakecaseKeys({
+            organizationId: session.currentUser.organizationId,
+            ...data
+          })
+        )
       )
   }
 

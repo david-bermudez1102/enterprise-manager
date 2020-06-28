@@ -23,7 +23,14 @@ const store = createStore(
 
 store.subscribe(
   throttle(() => {
-    const { routes, token, alerts, ...newState } = store.getState()
+    const {
+      session,
+      routes,
+      token,
+      alerts,
+      conversations,
+      ...newState
+    } = store.getState()
     saveState(newState)
   }, 1000)
 )

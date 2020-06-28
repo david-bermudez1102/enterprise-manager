@@ -12,15 +12,12 @@ export const addAccount = account => dispatch =>
     account => dispatch({ type: "ADD_ACCOUNT", account })
   )
 
-export const updateAccount = account => dispatch =>
-  fetch(
+export const updateAccount = account => dispatch => {
+  return fetch(
     `/api/v1/organizations/${account.organizationId}/accounts/${account.id}`,
     {
       method: "PATCH",
-      body: jsonToFormData(
-        snakecaseKeys({ account }, { exclude: ["avatar", "_destroy"] }),
-        { showLeafArrayIndexes: false }
-      )
+      body: jsonToFormData({ account })
     }
   )
     .then(handleErrors)
@@ -31,7 +28,11 @@ export const updateAccount = account => dispatch =>
       })
       message.success("Information saved with success.", 10)
     })
-    .catch(resp => message.error(resp.toString(), 15))
+    .catch(resp => {
+      message.error(resp.toString(), 15)
+      return false
+    })
+}
 
 export const fetchAccounts = organizationId => dispatch =>
   getAll(

@@ -30,7 +30,7 @@ const SidebarLinks = ({ links, session, collapsed }) => {
           collapsed ? "sidebar-header-collapsed" : "sidebar-header-expanded"
         }>
         <Link to={"/"} style={{ color: "inherit" }}>
-          <Avatar src={defaultAvatar} />
+          <Avatar src={currentUser.avatarSrc || defaultAvatar} />
           {!collapsed ? (
             <div
               style={{

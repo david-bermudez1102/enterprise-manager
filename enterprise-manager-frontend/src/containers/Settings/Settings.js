@@ -14,6 +14,16 @@ const Settings = props => {
   const { location, match, organization } = props
   const links = [
     {
+      text: "Account Settings",
+      url: `${match.url}/account`,
+      icon: (
+        <Icon
+          style={{ verticalAlign: 0, fontSize: "12px" }}
+          component={() => <i className={`fal fa-user-cog`} />}
+        />
+      )
+    },
+    {
       text: "Privileges",
       url: `${match.url}/privileges`,
       icon: (
@@ -29,16 +39,6 @@ const Settings = props => {
       text: "Integrations",
       url: `${match.url}/integrations`,
       icon: <ApiOutlined />
-    },
-    {
-      text: "Account Settings",
-      url: `${match.url}/account`,
-      icon: (
-        <Icon
-          style={{ verticalAlign: 0, fontSize: "12px" }}
-          component={() => <i className={`fal fa-user-cog`} />}
-        />
-      )
     }
   ]
   return (

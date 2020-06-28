@@ -23,10 +23,10 @@ class Account < ApplicationRecord
 
   def avatar_src
     if avatar.attached?
-      Rails.application.routes.url_helpers.rails_blob_path(
+      "http://localhost:3001#{Rails.application.routes.url_helpers.rails_blob_path(
         avatar,
         only_path: true,
-      ) 
+      ) }"
     else
       nil
     end

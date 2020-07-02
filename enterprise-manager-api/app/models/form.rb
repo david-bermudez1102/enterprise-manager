@@ -1,4 +1,5 @@
 class Form < ApplicationRecord
+  include ::StoryConcern
   belongs_to :organization, touch: true
   has_one :zoho_connection, class_name:"Connection", foreign_key: "zoho_connection_id", dependent: :destroy
   has_one :quickbooks_connection, class_name:"Connection", foreign_key: "quickbooks_connection_id", dependent: :destroy
@@ -26,7 +27,6 @@ class Form < ApplicationRecord
   accepts_nested_attributes_for :quickbooks_connection, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 
   accepts_nested_attributes_for :permission, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
-  
 
   def name
     self[:name].split.map(&:capitalize).join(' ')

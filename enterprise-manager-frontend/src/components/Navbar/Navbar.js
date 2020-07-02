@@ -5,7 +5,6 @@ import { Layout } from "antd"
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons"
 import "./styles.scss"
 import NavbarMenu from "./NavbarMenu"
-import { useSelector, shallowEqual } from "react-redux"
 import useLinks from "../../Router/Hooks/useLinks"
 const { Header } = Layout
 
@@ -17,7 +16,6 @@ const Navbar = props => {
     trigger,
     organization
   } = props
-  const { roots } = useSelector(({ roots }) => ({ roots }), shallowEqual)
   const location = useLocation()
   const { links } = useLinks({
     organization,
@@ -46,7 +44,9 @@ const Navbar = props => {
               }
             )
           : null}
-        <Logo organization={organizations[0]} width={105} height={40} />
+        {organization.logo && (
+          <Logo organization={organization} width={105} height={40} />
+        )}
       </div>
       <NavbarMenu {...{ location, session, links }} layout={"horizontal"} />
     </Header>

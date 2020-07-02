@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  storiable: one
+  storiable_type: Storiable
+  account: one
+  action: 1
+
+two:
+  storiable: two
+  storiable_type: Storiable
+  account: two
+  action: 1

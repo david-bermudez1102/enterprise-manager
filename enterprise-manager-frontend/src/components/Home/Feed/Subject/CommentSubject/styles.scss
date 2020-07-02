@@ -1,0 +1,19 @@
+.comment {
+  width: 100%;
+}
+.comment > .ant-comment-inner {
+  background-color: rgba(155, 155, 155, 0.1);
+  padding: 16px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+
+.comment .ant-comment-actions {
+  position: absolute !important;
+  right: 0;
+  top: -15px;
+}
+
+.comment .ant-comment-content-detail {
+  width: 80% !important;
+}

@@ -62,5 +62,5 @@ class FormSerializer
       obj.last_record_date.created_at
     end
   end
-
+  
 end

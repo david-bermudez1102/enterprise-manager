@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
       cookies.signed[:jwt] = {
         value: token, httponly: true, expires: 24.hour.from_now,
       }
+      account.organization.touch
       SessionChannel.broadcast_to(account, AccountSerializer.new(account))
       render json: AccountSerializer.new(account)
     elsif account && account.authenticate(params[:password]) && !account.activated && !account.locked
@@ -35,6 +36,7 @@ class SessionsController < ApplicationController
 
   def destroy
     if current_account
+      current_account.organization.touch
       SessionChannel.broadcast_to(current_account, { errors: ["Not logged In"] })
       cookies.delete(:jwt)
       render json: { message: "success" }

@@ -2,6 +2,7 @@ import React from "react"
 import { Card, Button, List } from "antd"
 import { Link } from "react-router-dom"
 import { PlusOutlined } from "@ant-design/icons"
+import IconWrapper from "../../Icons/IconWrapper"
 
 const links = [
   {
@@ -36,7 +37,12 @@ const QuickLinks = () => {
       style={{
         marginBottom: 24
       }}
-      title='Quick Links'
+      title={
+        <>
+          <IconWrapper className='fal fa-link' style={{ marginRight: 10 }} />
+          Quick Links
+        </>
+      }
       bordered={false}>
       <List
         dataSource={links}

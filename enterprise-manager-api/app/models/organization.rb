@@ -7,6 +7,7 @@ class Organization < ApplicationRecord
   has_many :organization_roots, dependent: :delete_all
   has_many :roots, through: :organization_roots
   has_many :page_permissions, dependent: :delete_all
+  has_many :stories
 
   has_one :zoho_integration, class_name: "Integration", foreign_key: "zoho_integration_id", primary_key: "id"
   has_one :quickbooks_integration, class_name: "Integration", foreign_key: "quickbooks_integration_id", primary_key: "id"

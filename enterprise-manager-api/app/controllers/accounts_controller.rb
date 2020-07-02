@@ -11,7 +11,6 @@ class AccountsController < ApplicationController
     activation = Activation.new(account: account,token:@token )
     Account.transaction do
       account.save!
-      account.save!
       activation.save!
       serialized_data = AccountSerializer.new(account).serializable_hash[:data][:attributes] 
       render json: serialized_data

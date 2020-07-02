@@ -15,6 +15,9 @@ import Title from "antd/lib/typography/Title"
 import Wallpaper from "../components/Wallpaper"
 import { fetchAccounts } from "../actions/accountActions"
 import AccountsContainer from "./Accounts/AccountsContainer"
+import OrganizationsList from "../components/Organizations/OrganizationsList"
+import { TagsOutlined, PlusCircleOutlined } from "@ant-design/icons"
+import PageTabs from "../components/PageTabs"
 
 const OrganizationContainer = () => {
   const { organizations, resources, session, roots } = useSelector(
@@ -48,6 +51,27 @@ const OrganizationContainer = () => {
     }
     // eslint-disable-next-line
   }, [roots, organizations, session])
+
+  const tabs = [
+    {
+      tab: (
+        <span>
+          <TagsOutlined />
+          All Roles
+        </span>
+      ),
+      path: match.url
+    },
+    {
+      tab: (
+        <span>
+          <PlusCircleOutlined />
+          New Role
+        </span>
+      ),
+      path: `${match.url}/new`
+    }
+  ]
 
   return (
     <Switch>
@@ -124,10 +148,15 @@ const OrganizationContainer = () => {
             name={"Roles"}
           />
           <Route
+            exact
             path={`${match.path}/:organizationId`}
             name={`${organizations[0].name}`}
             render={props => <Organization {...props} />}
           />
+          <Route exact path={match.url}>
+            <PageTabs tabs={tabs} />
+            <OrganizationsList />
+          </Route>
         </>
       ) : null}
     </Switch>

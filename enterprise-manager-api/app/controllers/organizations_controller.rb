@@ -17,7 +17,7 @@ class OrganizationsController < ApplicationController
     organizations = Organization.all
     
     if stale?(organizations)
-      serialized_data = OrganizationSerializer.new(organizations).serializable_hash[:data]
+      serialized_data = OrganizationSerializer.new(organizations, { params: { current_account: @current_account }}).serializable_hash[:data]
       render json: serialized_data.map { |data| data[:attributes] }
     end
   end

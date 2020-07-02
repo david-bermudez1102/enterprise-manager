@@ -2,6 +2,8 @@ import React from "react"
 import { Card, Avatar } from "antd"
 import { Link } from "react-router-dom"
 import { format } from "date-fns"
+import { MoreOutlined, ApiTwoTone, ApiFilled } from "@ant-design/icons"
+import IconWrapper from "../../Icons/IconWrapper"
 
 const titles = [
   "Alipay",
@@ -28,61 +30,49 @@ const avatars = [
 const projectNotice = [
   {
     id: "xxx1",
-    title: titles[0],
-    logo: avatars[0],
-    description: "那是一种内在的东西，他们到达不了，也无法触及的",
+    title: "Integrations",
+    icon: "fal fa-plug",
     updatedAt: new Date(),
-    member: "科学搬砖组",
     href: "",
     memberLink: ""
   },
   {
     id: "xxx2",
-    title: titles[1],
-    logo: avatars[1],
-    description: "希望是一个好东西，也许是最好的，好东西是不会消亡的",
+    title: "Accounts",
+    icon: "fal fa-users",
     updatedAt: new Date("2017-07-24"),
-    member: "全组都是吴彦祖",
     href: "",
     memberLink: ""
   },
   {
     id: "xxx3",
-    title: titles[2],
-    logo: avatars[2],
-    description: "城镇中有那么多的酒馆，她却偏偏走进了我的酒馆",
+    title: "Messages",
+    icon: "fal fa-comments-alt",
     updatedAt: new Date(),
-    member: "中二少女团",
     href: "",
     memberLink: ""
   },
   {
     id: "xxx4",
-    title: titles[3],
-    logo: avatars[3],
-    description: "那时候我只会想自己想要什么，从不想自己拥有什么",
+    title: "Roles",
+    icon: "fal fa-tags",
     updatedAt: new Date("2017-07-23"),
-    member: "程序员日常",
     href: "",
     memberLink: ""
   },
   {
     id: "xxx5",
-    title: titles[4],
-    logo: avatars[4],
-    description: "凛冬将至",
+    title: "Permissions",
+    icon: "fal fa-shield-check",
     updatedAt: new Date("2017-07-23"),
-    member: "高逼格设计天团",
     href: "",
     memberLink: ""
   },
   {
     id: "xxx6",
-    title: titles[5],
-    logo: avatars[5],
-    description: "生命就像一盒巧克力，结果往往出人意料",
+    title: "Tasks",
+    icon: "fal fa-tasks",
     updatedAt: new Date("2017-07-23"),
-    member: "骗你来学计算机",
     href: "",
     memberLink: ""
   }
@@ -96,7 +86,7 @@ const MainMenu = () => {
       }}
       title='Home'
       bordered={false}
-      extra={<Link to='/'>全部项目</Link>}
+      extra={<MoreOutlined />}
       bodyStyle={{
         padding: 0
       }}>
@@ -108,27 +98,26 @@ const MainMenu = () => {
             flex: 1
           }}>
           <Card
+            style={{
+              width: "100%"
+            }}
             bodyStyle={{
-              padding: 0
+              padding: 0,
+              width: "100%"
             }}
             bordered={false}>
             <Card.Meta
-              title={
-                <div>
-                  <Avatar size='small' src={item.logo} />
-                  <Link to={item.href}>{item.title}</Link>
-                </div>
+              avatar={
+                <IconWrapper className={item.icon} style={{ fontSize: 22 }} />
               }
-              description={item.description}
+              description={item.title}
+              style={{
+                display: "flex",
+                width: "100%",
+                justifyContent: "center",
+                fontSize: 18
+              }}
             />
-            <div>
-              <Link to={item.memberLink}>{item.member || ""}</Link>
-              {item.updatedAt && (
-                <span title={format(item.updatedAt, "PPP")}>
-                  {format(item.updatedAt, "PPP")}
-                </span>
-              )}
-            </div>
           </Card>
         </Card.Grid>
       ))}

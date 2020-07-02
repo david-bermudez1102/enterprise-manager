@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_24_004609) do
+ActiveRecord::Schema.define(version: 2020_06_29_223102) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -93,6 +93,17 @@ ActiveRecord::Schema.define(version: 2020_06_24_004609) do
     t.datetime "updated_at", null: false
     t.index ["option_id"], name: "index_checkbox_options_on_option_id"
     t.index ["value_id"], name: "index_checkbox_options_on_value_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "commentable_type"
+    t.integer "commentable_id"
+    t.text "content"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_comments_on_account_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
   end
 
   create_table "connections", force: :cascade do |t|
@@ -202,6 +213,16 @@ ActiveRecord::Schema.define(version: 2020_06_24_004609) do
     t.index ["option_id"], name: "index_key_values_on_option_id"
     t.index ["record_key_id"], name: "index_key_values_on_record_key_id"
     t.index ["record_value_id"], name: "index_key_values_on_record_value_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.string "likeable_type"
+    t.integer "likeable_id"
+    t.integer "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_likes_on_account_id"
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -348,6 +369,19 @@ ActiveRecord::Schema.define(version: 2020_06_24_004609) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["form_id"], name: "index_statistics_on_form_id"
+  end
+
+  create_table "stories", force: :cascade do |t|
+    t.string "storiable_type"
+    t.integer "storiable_id"
+    t.integer "account_id"
+    t.integer "organization_id"
+    t.integer "action"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_stories_on_account_id"
+    t.index ["organization_id"], name: "index_stories_on_organization_id"
+    t.index ["storiable_type", "storiable_id"], name: "index_stories_on_storiable_type_and_storiable_id"
   end
 
   create_table "typing_conversations", force: :cascade do |t|

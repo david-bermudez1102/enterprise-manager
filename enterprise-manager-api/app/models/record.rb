@@ -1,7 +1,7 @@
 class Record < ApplicationRecord
   include FilterableConcern
   include ::StatisticConcern
-
+  include ::StoryConcern
   belongs_to :form, counter_cache: true, touch: true
   belongs_to :account, touch: true
   has_many :values, dependent: :destroy

@@ -23,7 +23,7 @@ class ApplicationPolicy
   end
 
   def create?
-    user.is_root || page_permission(record.class.name, "create_privilege", "createPrivilege")
+    user.is_root || page_permission?(record.class.name, "create_privilege", "createPrivilege")
   end
 
   def edit?

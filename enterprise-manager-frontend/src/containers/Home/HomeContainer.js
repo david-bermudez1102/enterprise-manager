@@ -128,7 +128,7 @@ const HomeContainer = ({ organization }) => {
           )}
         </Content>
         <BackTop visibilityHeight={100} />
-        <Chat />
+        {session.isLoggedIn && <Chat />}
         <Divider style={{ margin: 0 }} />
         {organization ? (
           <Footer

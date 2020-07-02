@@ -8,10 +8,6 @@ import thunk from "redux-thunk"
 import { rootReducer } from "./reducers/rootReducer"
 import { loadState, saveState } from "./localStorage/loadState"
 import throttle from "lodash/throttle"
-import actioncable from "actioncable"
-
-const CableApp = {}
-CableApp.cable = actioncable.createConsumer("ws://localhost:3000/api/v1/cable")
 
 const persistedState = loadState()
 
@@ -37,7 +33,7 @@ store.subscribe(
 
 ReactDOM.render(
   <Provider store={store}>
-    <App cableApp={CableApp} />
+    <App />
   </Provider>,
   document.getElementById("root")
 )

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_223102) do
+ActiveRecord::Schema.define(version: 2020_07_03_230939) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_223102) do
     t.text "combined_fields", default: "--- []\n"
     t.integer "field_format"
     t.string "zoho_field_name"
+    t.boolean "is_uniq", default: false, null: false
     t.index ["form_id"], name: "index_fields_on_form_id"
   end
 
@@ -315,6 +316,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_223102) do
     t.text "combined_fields", default: "--- []\n"
     t.integer "field_format"
     t.string "zoho_field_name"
+    t.boolean "is_uniq", default: false, null: false
     t.index ["field_id"], name: "index_record_fields_on_field_id"
     t.index ["form_id"], name: "index_record_fields_on_form_id"
   end

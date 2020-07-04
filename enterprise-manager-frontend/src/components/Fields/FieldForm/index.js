@@ -17,7 +17,15 @@ import capitalize from "capitalize"
 
 const FieldForm = props => {
   const { organizationId, action, resourceId, resource } = props
-  const { key, fieldAlias, name, formId, isRequired, ...field } = props.field
+  const {
+    key,
+    fieldAlias,
+    name,
+    formId,
+    isRequired,
+    isUniq,
+    ...field
+  } = props.field
   const [fieldState, setFieldState] = useState(field || {})
   const mounted = useRef()
   const match = useRouteMatch()
@@ -25,7 +33,8 @@ const FieldForm = props => {
   const initalState = {
     name: name || "",
     formId: formId || resourceId,
-    isRequired: isRequired || true
+    isRequired: isRequired,
+    isUniq: isUniq
   }
 
   const [form] = Form.useForm()
@@ -56,7 +65,7 @@ const FieldForm = props => {
     }
     if (updateField)
       dispatch(
-        updateField({ ...state, ...fieldState }, organizationId, field.id)
+        updateField({ ...state, ...fieldState, id: field.id }, organizationId)
       ).then(field =>
         field
           ? dispatch(
@@ -65,8 +74,6 @@ const FieldForm = props => {
           : null
       )
   }
-
-  console.log({ ...state, ...fieldState })
 
   const fieldProps = {
     field,
@@ -91,7 +98,6 @@ const FieldForm = props => {
           }
         ]}>
         <Input
-          size='large'
           id='field_name'
           onChange={e =>
             setState({
@@ -160,6 +166,7 @@ const FieldForm = props => {
       <Form.Item>
         <Form.Item label='Required'>
           <Switch
+            size={"small"}
             name='isRequired'
             checked={state.isRequired}
             onChange={checked => setState({ ...state, isRequired: checked })}
@@ -167,6 +174,7 @@ const FieldForm = props => {
         </Form.Item>
         <Form.Item label='Uniq?'>
           <Switch
+            size={"small"}
             name='isUniq'
             checked={state.isUniq}
             onChange={checked => setState({ ...state, isUniq: checked })}

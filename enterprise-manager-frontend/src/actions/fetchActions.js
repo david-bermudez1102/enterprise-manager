@@ -49,7 +49,10 @@ export const add = (dispatch, url, payload, ...actions) => {
         throw new Error(response.errors.join(", "))
       }
     })
-    .catch(resp => message.error(resp.toString(), 15))
+    .catch(resp => {
+      message.error(resp.toString(), 15)
+      return false
+    })
 }
 
 export const update = (dispatch, url, payload, ...actions) => {

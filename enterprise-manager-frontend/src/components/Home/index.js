@@ -12,6 +12,7 @@ import Wallpaper from "../Wallpaper"
 import MainTimeLine from "./MainTimeLine"
 import UserStatistics from "./UserStatistics"
 import AccountInfo from "./AccountInfo"
+import IconWrapper from "../Icons/IconWrapper"
 
 const Home = () => {
   const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
@@ -19,7 +20,12 @@ const Home = () => {
   return session.isLoggedIn ? (
     <>
       <PageHeader
-        title={"Home"}
+        title={
+          <>
+            <IconWrapper className='fal fa-home' style={{ marginRight: 10 }} />
+            Home
+          </>
+        }
         ghost={false}
         style={{
           marginBottom: 24,

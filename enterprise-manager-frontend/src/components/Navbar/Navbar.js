@@ -9,13 +9,7 @@ import useLinks from "../../Router/Hooks/useLinks"
 const { Header } = Layout
 
 const Navbar = props => {
-  const {
-    session,
-    organizations,
-    isSiderCollapsed,
-    trigger,
-    organization
-  } = props
+  const { session, isSiderCollapsed, trigger, organization } = props
   const location = useLocation()
   const { links } = useLinks({
     organization,

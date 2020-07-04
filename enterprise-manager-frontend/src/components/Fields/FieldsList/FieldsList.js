@@ -51,7 +51,7 @@ const FieldsList = props => {
       <Col
         {...(location.pathname !== `${match.url}/new`
           ? { xxl: 20, xl: 24, lg: 24, span: 18 }
-          : { span: 24, md: 18, lg: 14, xl: 13, xxl: 12 })}>
+          : { span: 24 })}>
         <Card
           bordered={false}
           activeTabKey={location.pathname}

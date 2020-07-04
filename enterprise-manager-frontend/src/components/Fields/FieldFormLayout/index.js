@@ -8,26 +8,15 @@ import {
   updateRecordField
 } from "../../../actions/recordFieldActions"
 import { plural } from "pluralize"
-import { useRouteMatch, useLocation } from "react-router-dom"
+import { useRouteMatch } from "react-router-dom"
 import { useSelector, shallowEqual } from "react-redux"
 
 const FieldFormLayout = ({ organizationId, resource }) => {
-  const location = useLocation()
   const match = useRouteMatch()
   const { fields } = useSelector(({ fields }) => ({ fields }), shallowEqual)
-  const [field, setField] = useState(
-    (fields[resource.id] || []).find(
-      field => field.id === parseInt(match.params.fieldId)
-    )
+  const field = (fields[resource.id] || []).find(
+    field => field.id === parseInt(match.params.fieldId)
   )
-  useEffect(() => {
-    setField(
-      (fields[resource.id] || []).find(
-        field => field.id === parseInt(match.params.fieldId)
-      )
-    )
-    // eslint-disable-next-line
-  }, [location])
 
   const currentlyConnectedTo = []
   if (resource.zohoConnectionAttributes)
@@ -47,7 +36,7 @@ const FieldFormLayout = ({ organizationId, resource }) => {
         <Row justify={"center"} align={"middle"}>
           <Col
             xxl={20}
-            xl={22}
+            xl={20}
             lg={24}
             span={18}
             style={{ padding: "10px 5px" }}>

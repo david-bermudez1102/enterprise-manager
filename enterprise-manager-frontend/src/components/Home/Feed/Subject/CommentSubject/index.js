@@ -12,7 +12,6 @@ import { updateStory } from "../../../../../actions/storiesActions"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import ReplyEditor from "./ReplyEditor"
 import "./styles.scss"
-import Paragraph from "antd/lib/typography/Paragraph"
 import Text from "antd/lib/typography/Text"
 
 const CommentSubject = props => {

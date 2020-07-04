@@ -7,28 +7,30 @@ export const addRecord = (record, organizationId, formId) => dispatch =>
   add(
     dispatch,
     `/api/v1/organizations/${organizationId}/forms/${formId}/records`,
-    { record }
-  ).then(resp => {
-    dispatch({
-      type: "ADD_RECORD",
-      record: resp.attributes,
-      formId
-    })
-    dispatch({
-      type: "ADD_VALUES",
-      values: {
-        ...resp.links.values,
-        listingId: resp.attributes.currentMonthRecordsCount,
-        key: `recordValues${resp.id}`
-      },
-      formId
-    })
-    dispatch({
-      type: "UPDATE_RECORDS_COUNT",
-      formId,
-      recordsCount: resp.attributes.recordsCount
-    })
-  })
+    { record },
+    resp => {
+      dispatch({
+        type: "ADD_RECORD",
+        record: resp.attributes,
+        formId
+      })
+      dispatch({
+        type: "ADD_VALUES",
+        values: {
+          ...resp.links.values,
+          listingId: resp.attributes.currentMonthRecordsCount,
+          key: `recordValues${resp.id}`
+        },
+        formId
+      })
+      dispatch({
+        type: "UPDATE_RECORDS_COUNT",
+        formId,
+        recordsCount: resp.attributes.recordsCount
+      })
+      return true
+    }
+  )
 
 export const fetchRecords = (
   organizationId,

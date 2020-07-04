@@ -49,7 +49,7 @@ const FieldsContainer = props => {
               span={24}
               {...(location.pathname !== `${match.url}/new`
                 ? { xxl: 12, xl: 10, lg: 12 }
-                : {})}>
+                : { xxl: 8, xl: 10, lg: 14, md: 16 })}>
               <FieldsList
                 fields={fields}
                 match={match}

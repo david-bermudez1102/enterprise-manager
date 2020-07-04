@@ -52,6 +52,7 @@ class FieldsController < ApplicationController
       :field_type,
       :form_id,
       :is_required,
+      :is_uniq,
       :default_value,
       :accepts_decimals,
       :field_format,

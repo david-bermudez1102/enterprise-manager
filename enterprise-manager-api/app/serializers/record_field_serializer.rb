@@ -4,7 +4,7 @@ class RecordFieldSerializer
   
   #cache_options enabled: true, cache_length: 12.hours
 
-  attributes :id, :field_id, :name, :field_type, :form_id, :field_alias, :is_required, :default_value, :zoho_field_name
+  attributes :id, :field_id, :name, :field_type, :form_id, :field_alias, :is_required, :is_uniq,:default_value, :zoho_field_name
   
   attribute :accepts_decimals, if: Proc.new { |field| field.field_type == "numeric_field" }
   attribute :combined_fields, if: Proc.new { |field| field.field_type == "combined_field" }

@@ -31,12 +31,7 @@ const UserStatistics = () => {
         </Col>
         <Col>
           <Statistic
-            prefix={
-              <IconWrapper
-                className={"fal fa-tasks"}
-                style={{ color: gold.primary }}
-              />
-            }
+            prefix={<IconWrapper className={"fal fa-tasks"} />}
             value={10}
           />
         </Col>

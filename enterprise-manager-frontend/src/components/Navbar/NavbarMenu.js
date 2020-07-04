@@ -1,7 +1,7 @@
 import React from "react"
-import { Menu, Button } from "antd"
+import { Menu, Button, Input } from "antd"
 import { Link } from "react-router-dom"
-import Search from "antd/lib/input/Search"
+import { SearchOutlined } from "@ant-design/icons"
 
 const NavbarMenu = ({ location, session, links, layout }) => {
   const { currentUser } = session
@@ -20,11 +20,7 @@ const NavbarMenu = ({ location, session, links, layout }) => {
           className={"navbar-menu"}
           key='navbarLinkSearch'
           style={{ lineHeight: "50px" }}>
-          <Search
-            placeholder='input search text'
-            onSearch={value => console.log(value)}
-            style={{ width: 200 }}
-          />
+          <Input placeholder='Search...' suffix={<SearchOutlined />} />
         </Menu.Item>
       ) : null}
       {session.isLoggedIn

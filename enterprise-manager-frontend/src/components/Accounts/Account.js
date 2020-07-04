@@ -1,6 +1,5 @@
 import React from "react"
-import Avatar from "../Home/SideBar/Avatar"
-import { List } from "antd"
+import { List, Avatar } from "antd"
 import {
   UserDeleteOutlined,
   PoweroffOutlined,
@@ -11,6 +10,7 @@ import {
 import { Link, useRouteMatch } from "react-router-dom"
 import capitalize from "capitalize"
 import IconWrapper from "../Icons/IconWrapper"
+import defaultAvatar from "../../default_user.png"
 
 const Account = ({ account }) => {
   const match = useRouteMatch()
@@ -30,7 +30,7 @@ const Account = ({ account }) => {
       ]}>
       <List.Item.Meta
         avatar={
-          <Avatar currentUser={account} style={{ zIndex: 1 }} size={50} />
+          <Avatar src={account.avatarSrc || defaultAvatar} size={"large"} />
         }
         title={capitalize.words(account.name)}
         description={

@@ -32,10 +32,11 @@ export const updateRecordField = recordField => dispatch =>
     dispatch,
     `/api/v1/organizations/${recordField.organizationId}/forms/${recordField.formId}/record_fields/${recordField.id}`,
     { recordField },
-    {
-      type: "UPDATE_RECORD_FIELD",
-      recordField
-    }
+    recordField =>
+      dispatch({
+        type: "UPDATE_RECORD_FIELD",
+        recordField
+      })
   )
 
 export const fetchRecordFields = (organizationId, formId) => {

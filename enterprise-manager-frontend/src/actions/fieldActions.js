@@ -1,7 +1,7 @@
 import snakecaseKeys from "snakecase-keys"
 import cuid from "cuid"
 import { handleErrors } from "./handleErrors"
-import { add } from "./fetchActions"
+import { add, update } from "./fetchActions"
 
 export const addField = (field, organizationId) => dispatch =>
   add(
@@ -17,6 +17,19 @@ export const addField = (field, organizationId) => dispatch =>
       dispatch({
         type: "ADD_RECORD_FIELD",
         recordField: resp.recordField
+      })
+  )
+
+export const updateField = (field, organizationId) => dispatch =>
+  update(
+    dispatch,
+    `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields/${field.id}`,
+    { field },
+    field =>
+      dispatch({
+        type: "UPDATE_FIELD",
+        fieldId: field.id,
+        field
       })
   )
 
@@ -36,36 +49,6 @@ export const fetchFields = (organizationId, formId) => {
           formId
         })
       )
-  }
-}
-
-export const updateField = (field, organizationId, fieldId) => {
-  return dispatch => {
-    dispatch({ type: "CLEAR_ALERTS" })
-    return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields/${fieldId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(snakecaseKeys({ field }))
-      }
-    )
-      .then(handleErrors)
-      .then(field => {
-        if (!field.errors) {
-          dispatch({
-            type: "UPDATE_FIELD",
-            fieldId,
-            field: { key: cuid(), ...field }
-          })
-          return { ...field, fieldId }
-        } else {
-          dispatch({ type: "ADD_ERRORS", errors: field.errors })
-        }
-      })
-      .catch(resp => dispatch({ type: "ADD_ERRORS", errors: resp }))
   }
 }
 

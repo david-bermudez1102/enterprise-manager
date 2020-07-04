@@ -3,6 +3,7 @@ class Record < ApplicationRecord
   include ::StatisticConcern
   include ::StoryConcern
   belongs_to :form, counter_cache: true, touch: true
+  has_one :organization, through: :form
   belongs_to :account, touch: true
   has_many :values, dependent: :destroy
   has_one :zoho_integration_record, class_name:"IntegrationRecord", foreign_key: "zoho_integration_record_id", dependent: :delete

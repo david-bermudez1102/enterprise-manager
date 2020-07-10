@@ -16,6 +16,7 @@ class Account < ApplicationRecord
   has_many :messages
   has_many :open_conversations
   has_many :conversations, through: :open_conversations, dependent: :nullify
+  has_many :values, dependent: :nullify
 
   validates :roles, :length => { :minimum => 1 }
 

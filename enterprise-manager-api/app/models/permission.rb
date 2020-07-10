@@ -1,5 +1,5 @@
 class Permission < ApplicationRecord
-  belongs_to :permissionable, polymorphic: true
+  belongs_to :permissionable, polymorphic: true, touch:true
   has_many :assignments, dependent: :delete_all
   has_many :roles, through: :assignments, dependent: :delete_all
   has_many :exclusions, dependent: :delete_all

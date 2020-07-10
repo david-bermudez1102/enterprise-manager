@@ -1,0 +1,18 @@
+.custom-form-item .ant-form-item-control-input-content {
+  flex: 1 !important;
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-form-item .ant-form-item-control .ant-form-item-label {
+  padding: 0 !important;
+}
+.custom-form-item .ant-form-item-control .ant-form-item-label > label {
+  font-size: 12px !important;
+}
+
+.custom-form-item .ant-form-item-control .ant-row {
+  margin-bottom: 2px !important;
+  flex: auto;
+}

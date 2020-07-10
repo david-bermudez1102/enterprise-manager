@@ -1,25 +1,24 @@
-import React from "react";
-import FieldValueGenerator from "../FieldValueGenerator";
+import React from "react"
+import FieldValueGenerator from "../FieldValueGenerator"
 
 const CombinedField = props => {
-  const { field, editingMode, onChange, ...newProps } = props;
+  const { field, editingMode, onChange, ...newProps } = props
 
-  const handleChange = e => {
+  const handleChange = content => {
     onChange({
       recordFieldId: props.name,
-      content: e.target.value,
-    });
-  };
+      content
+    })
+  }
 
   return field.combinedFields.length > 1 ? (
     <FieldValueGenerator
       {...newProps}
       onChange={handleChange}
-      combinedFields={field.combinedFields}
-      fieldFormat={field.fieldFormat}
+      field={field}
       required
     />
-  ) : null;
-};
+  ) : null
+}
 
-export default CombinedField;
+export default CombinedField

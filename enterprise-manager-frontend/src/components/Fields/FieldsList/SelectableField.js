@@ -10,11 +10,12 @@ const SelectableField = props => {
     editingMode,
     name,
     onChange,
+    form,
     ...newProps
   } = props
 
   const [state, setState] = useState(null)
-  const handleChange = useCallback((value, option) => {
+  const handleChange = (value, option) => {
     if (field.selectableResourceAttributes)
       setState({
         recordFieldId: props.name,
@@ -27,8 +28,8 @@ const SelectableField = props => {
         recordOptionId: option ? option.id : undefined,
         content: option ? option.value : undefined
       })
-    // eslint-disable-next-line
-  }, [])
+    form.setFieldsValue({ [name]: value })
+  }
 
   useEffect(() => {
     if (state) onChange(state)
@@ -39,11 +40,9 @@ const SelectableField = props => {
     <FieldTypeWrapper
       editingMode={editingMode}
       name={name}
-      label={React.cloneElement(suffix, {
-        placement: "left",
-        children: field.name
-      })}
-      field={field}>
+      label={field.name}
+      field={field}
+      suffix={suffix}>
       <Select
         name={name}
         showSearch

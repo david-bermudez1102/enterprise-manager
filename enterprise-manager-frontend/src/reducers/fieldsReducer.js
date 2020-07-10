@@ -9,27 +9,16 @@ export const fieldsReducer = (state = {}, action) => {
         ]
       }
     case "FETCH_FIELDS":
-      return {
-        ...state,
-        [action.formId]: [
-          ...(state[action.formId] || [])
-            .filter(field => action.fields.some(f => f.id === field.id))
-            .map(field => {
-              const updatedField = action.fields.find(f => f.id === field.id)
-              if (updatedField && field !== updatedField) return updatedField
-              return field
-            }),
-          ...action.fields.filter(
-            field => !(state[action.formId] || []).some(f => field.id === f.id)
-          )
-        ]
-      }
+      return action.fields.reduce((r, a) => {
+        r[a.formId] = [...(r[a.formId] || []), a]
+        return r
+      }, {})
 
     case "UPDATE_FIELD":
       return {
         ...state,
         [action.field.formId]: (state[action.field.formId] || []).map(field =>
-          field.id === action.field.id ? { ...field, ...action.field } : field
+          field.id === action.field.id ? action.field : field
         )
       }
     case "REMOVE_FIELD":

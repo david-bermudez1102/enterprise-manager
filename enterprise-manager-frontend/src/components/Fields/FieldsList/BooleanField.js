@@ -1,13 +1,14 @@
 import React from "react"
 import FieldTypeWrapper from "../FieldTypeWrapper"
-import TextArea from "antd/lib/input/TextArea"
+import { Switch } from "antd"
 
-const TextAreaField = props => {
+const BooleanField = props => {
   const { field, name, editingMode, onChange, suffix, ...newProps } = props
-  const handleChange = e => {
+
+  const handleChange = checked => {
     onChange({
       recordFieldId: props.name,
-      content: e.target.value
+      content: checked ? "Yes" : ""
     })
   }
 
@@ -17,9 +18,9 @@ const TextAreaField = props => {
       name={name}
       field={field}
       suffix={suffix}>
-      <TextArea onChange={handleChange} allowClear autoSize {...newProps} />
+      <Switch {...newProps} onChange={handleChange} />
     </FieldTypeWrapper>
   )
 }
 
-export default TextAreaField
+export default BooleanField

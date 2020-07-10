@@ -34,12 +34,7 @@ const FieldFormLayout = ({ organizationId, resource }) => {
         bordered={false}
         bodyStyle={{ paddingTop: 0, paddingBottom: 0, margin: 0 }}>
         <Row justify={"center"} align={"middle"}>
-          <Col
-            xxl={20}
-            xl={20}
-            lg={24}
-            span={18}
-            style={{ padding: "10px 5px" }}>
+          <Col xxl={20} xl={20} lg={24} span={18}>
             <Title level={2}>
               {field
                 ? `Edit Field "${field.name}"`

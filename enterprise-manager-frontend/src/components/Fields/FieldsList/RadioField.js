@@ -1,45 +1,40 @@
-import React, { useState } from "react";
-import cuid from "cuid";
+import React, { useState } from "react"
+import FieldTypeWrapper from "../FieldTypeWrapper"
+import { Radio } from "antd"
 
 const RadioField = props => {
-  const { field, onChange, editingMode, ...newProps } = props;
+  const { field, onChange, editingMode, name, suffix, ...newProps } = props
   const [state, setState] = useState({
     recordFieldId: props.name,
-    content: "",
-  });
+    content: ""
+  })
   const handleChange = e => {
     const newState = {
       ...state,
-      content: e.target.value,
-      optionValueId: e.target.dataset.optionValueId,
-    };
-    setState(newState);
-    onChange(newState);
-  };
+      content: (
+        field.optionsAttributes.find(o => o.id === e.target.value) || {}
+      ).value,
+      optionValueId: e.target.value
+    }
+    setState(newState)
+    onChange(newState)
+  }
 
   return (
-    <fieldset className="form-control border-0 mt-4">
-      {field.optionsAttributes.map(option => (
-        <div className="form-check form-check-inline" key={cuid()}>
-          <input
-            {...newProps}
-            className="form-check-input"
-            id={`radio_field_${option.id}`}
-            value={option.value}
-            checked={state.content === option.value}
-            onChange={handleChange}
-            data-option-value-id={option.id}
-            required={false}
-          />
-          <label
-            htmlFor={`radio_field_${option.id}`}
-            className="form-check-label">
-            {option.value}
-          </label>
-        </div>
-      ))}
-    </fieldset>
-  );
-};
+    <FieldTypeWrapper
+      editingMode={editingMode}
+      name={name}
+      field={field}
+      suffix={suffix}>
+      <Radio.Group
+        options={field.optionsAttributes.map(o => ({
+          label: o.value,
+          value: o.id
+        }))}
+        onChange={handleChange}
+      />
+    </FieldTypeWrapper>
+  )
+}
 
-export default RadioField;
+export default RadioField

@@ -15,25 +15,15 @@ export const recordFieldsReducer = (state = {}, action) => {
           state[action.recordField.formId] || []
         ).map(recordField =>
           recordField.id === action.recordField.id
-            ? { ...recordField, ...action.recordField }
+            ? action.recordField
             : recordField
         )
       }
     case "FETCH_RECORD_FIELDS":
-      return {
-        ...state,
-        [action.formId]: [
-          ...(state[action.formId] || []).map(recordField =>
-            action.recordFields.find(rF => rF.id === recordField.id)
-              ? { ...action.recordFields.find(rF => rF.id === recordField.id) }
-              : recordField
-          ),
-          ...action.recordFields.filter(
-            recordField =>
-              !(state[action.formId] || []).some(f => recordField.id === f.id)
-          )
-        ]
-      }
+      return action.recordFields.reduce((r, a) => {
+        r[a.formId] = [...(r[a.formId] || []), a]
+        return r
+      }, {})
 
     case "SORT_RECORD_FIELDS":
       return {

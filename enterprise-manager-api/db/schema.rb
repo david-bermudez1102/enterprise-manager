@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_03_230939) do
+ActiveRecord::Schema.define(version: 2020_07_07_170232) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -158,6 +158,12 @@ ActiveRecord::Schema.define(version: 2020_07_03_230939) do
     t.integer "field_format"
     t.string "zoho_field_name"
     t.boolean "is_uniq", default: false, null: false
+    t.boolean "hidden_in_form", default: false, null: false
+    t.boolean "hidden_in_records", default: false, null: false
+    t.boolean "allow_updates", default: true, null: false
+    t.boolean "read_only", default: false, null: false
+    t.integer "min_length", default: 0
+    t.integer "max_length", default: 140
     t.index ["form_id"], name: "index_fields_on_form_id"
   end
 
@@ -407,6 +413,8 @@ ActiveRecord::Schema.define(version: 2020_07_03_230939) do
     t.integer "record_value_id"
     t.integer "option_id"
     t.integer "key_value_id"
+    t.integer "account_id"
+    t.index ["account_id"], name: "index_values_on_account_id"
     t.index ["field_id"], name: "index_values_on_field_id"
     t.index ["key_value_id"], name: "index_values_on_key_value_id"
     t.index ["option_id"], name: "index_values_on_option_id"

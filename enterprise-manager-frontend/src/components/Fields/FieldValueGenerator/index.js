@@ -1,26 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { formatValues } from "./formatValues";
+import React, { useState, useEffect } from "react"
+import { formatValues } from "./formatValues"
+import { Input } from "antd"
+import FieldTypeWrapper from "../FieldTypeWrapper"
+import { format } from "date-fns"
 
 const FieldValueGenerator = props => {
-  const { children, combinedFields, fieldFormat, state, ...newProps } = props;
-  const [value, setValue] = useState("");
+  const { children, state, field, suffix, name, onChange, ...newProps } = props
+  const { combinedFields, fieldFormat, editingMode, readOnly } = field
+  const [value, setValue] = useState("")
 
   useEffect(() => {
-    setValue(
-      formatValues(
-        fieldFormat,
-        state
-          .filter(v =>
-            combinedFields.some(
-              recordFieldId => recordFieldId === v.recordFieldId
-            )
-          )
-          .map(val => val.content)
-      )
-    );
-  }, [state, combinedFields, fieldFormat]);
+    const newValue = formatValues(
+      fieldFormat,
+      (combinedFields || [])
+        .map(c =>
+          c === "createdAt" || c === "updatedAt"
+            ? { fieldType: "date", content: format(new Date(), "MM/dd/yyyy") }
+            : (state || []).find(f => f.recordFieldId === c)
+        )
+        .filter(c => c)
+        .map(c => {
+          if (c.fieldType === "numeric_field") return `${c.content} ${c.name}`
+          else if (c.fieldType === "boolean_field")
+            return c.content === "Yes" ? c.name : undefined
+          return c.content
+        })
+        .filter(c => c)
+    )
+    setValue(newValue)
+  }, [state, combinedFields, fieldFormat])
 
-  return <input {...newProps} type="text" value={value} />;
-};
+  useEffect(() => {
+    onChange(value)
+  }, [value])
 
-export default FieldValueGenerator;
+  return (
+    <FieldTypeWrapper
+      editingMode={editingMode}
+      name={name}
+      field={field}
+      suffix={suffix}>
+      <Input {...newProps} value={value} readOnly={readOnly} />
+    </FieldTypeWrapper>
+  )
+}
+
+export default FieldValueGenerator

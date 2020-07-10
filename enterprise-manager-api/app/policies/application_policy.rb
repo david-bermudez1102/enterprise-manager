@@ -46,7 +46,7 @@ class ApplicationPolicy
       if user.is_root
         scope
       else
-        scope.left_outer_joins(:permission => [:assignments, :exclusions]).where(permissions:{ assignments:{ role: user.roles, read_privilege: true } }).where.not(permissions:{ exclusions: user.exclusions.where(exclusion_type:"readPrivilege") } )
+        scope.left_outer_joins(:permission => [:assignments, :exclusions]).where(permissions:{ assignments:{ role: user.roles, read_privilege: true } }).where.not(permissions:{ exclusions: user.exclusions.where(exclusion_type:"readPrivilege") } ).distinct
       end
     end
   end

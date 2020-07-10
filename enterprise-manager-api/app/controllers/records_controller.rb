@@ -5,14 +5,12 @@ class RecordsController < ApplicationController
   before_action :set_is_deleted, only: %i[show index]
   
   def create
-    record = @form.records.create(record_params)
-    params[:id] = record.id
-    params[:records_count] = @form.records_count
-    params[:current_month_records_count] = @form.current_month_records_count
-    if record.persisted?
+    Record.transaction do
+      record = @form.records.create!(record_params)
+      params[:id] = record.id
+      params[:records_count] = @form.records_count
+      params[:current_month_records_count] = @form.current_month_records_count
       show
-    else
-      render json: {errors: record.errors.full_messages}
     end
   end
 
@@ -63,7 +61,7 @@ class RecordsController < ApplicationController
 
   def record_params
     params.require(:record).permit(:record_field_id, :content,
-      values_attributes: [:record_field_id, :content, :option_id, :record_value_id, checkbox_options_attributes:[:option_id]],
+      values_attributes: [:record_field_id, :content, :option_id, :record_value_id, :account_id,checkbox_options_attributes:[:option_id]],
     ).merge(account_id:current_account.id)
   end
 

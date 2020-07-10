@@ -28,6 +28,7 @@ const OrganizationWebSocket = props => {
         }
       }
     )
+    // eslint-disable-next-line
   }, [])
   return <></>
 }

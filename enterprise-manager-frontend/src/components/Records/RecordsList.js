@@ -24,7 +24,7 @@ const RecordsList = props => {
   const [record, setRecord] = useState()
   const [currentFilteredBy, setCurrentFilteredBy] = useState()
   const mounted = useRef()
-
+  const [recordsRef, setRecordsRef] = useState({})
   const {
     loadingInitialData,
     sortedRecords,
@@ -116,7 +116,7 @@ const RecordsList = props => {
 
   return (
     <>
-      <div style={{ maxWidth: "100%" }}>
+      <div>
         <Row gutter={[16, 1]}>
           <FilterOptions
             {...filters}
@@ -125,103 +125,126 @@ const RecordsList = props => {
             setCurrentFilteredBy={setCurrentFilteredBy}
           />
         </Row>
-        <Card bordered={false}>
-          <Row justify={"space-between"}>
-            <Col span={"auto"}>
-              <BulkActions
-                resource={resource}
-                values={sortedRecords}
-                selectedRows={selectedRows}
-                recordFields={recordFields}
-                totalSelected={totalSelected}
-              />
-            </Col>
-            <Col span={"auto"}>
-              <Pagination
-                {...{
-                  key: "pagination",
-                  position: ["topRight"],
-                  current: page,
-                  pageSizeOptions: ["5", "10", "25", "50", "100"],
-                  showSizeChanger: true,
-                  showQuickJumper: true,
-                  size: "small",
-                  pageSize: paginationLimit,
-                  onShowSizeChange: onShowSizeChange,
-                  onChange: setPage,
-                  total: filteredRecords
-                    ? filteredRecords.length
-                    : sortedRecords.length,
-                  showTotal: (total, range) =>
-                    `${range[0]}-${range[1]} of ${total} items`
-                }}
-              />
-              <Text type={"secondary"} style={{ float: "right" }}>
-                Showing {plural(resource.name)} {currentFilteredBy}
-              </Text>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={24} style={{ width: "100%", overflowX: "auto" }}>
-              <DndProvider backend={HTML5Backend}>
-                <Table
-                  tableLayout={"auto"}
-                  loading={
-                    loadingInitialData || loadingData || loadingFilteredData
-                  }
-                  components={components}
-                  rowSelection={rowSelection}
-                  columns={[
-                    {
-                      title: "Actions",
-                      dataIndex: "",
-                      width: "150px",
-                      key: "x",
-                      render: (text, record) => (
-                        <RecordOptions
-                          resource={resource}
-                          record={record}
-                          showModal={showModal}
-                          setRecord={setRecord}
-                        />
-                      )
-                    },
-                    {
-                      key: `record_field_head_listing_id_${resource.id}`,
-                      title: "#",
-                      dataIndex: "listingId",
-                      sorter: true,
-                      width: "100px"
-                    },
-                    ...columns
-                  ]}
-                  dataSource={chunkOfRecords[page - 1]}
-                  pagination={false}
-                  onChange={(pagination, filters, sorter) => {
-                    filterRecords(filters)
-                    sorter.column
-                      ? handleSortBy(sorter.column.dataIndex, sorter.order)
-                      : handleSortBy("listingId")
-                  }}
-                  locale={{
-                    filterConfirm: "Ok",
-                    filterReset: "Reset",
-                    emptyText: (
-                      <Empty
-                        description={
-                          <>
-                            There are no records for the current period of time.
-                          </>
+        <Row>
+          <Col
+            span={24}
+            style={{
+              height: recordsRef.offsetHeight,
+              position: "relative"
+            }}>
+            <Card
+              bordered={false}
+              style={{ width: "100%", position: "absolute" }}
+              bodyStyle={{ paddingBottom: 0 }}>
+              <div ref={setRecordsRef}>
+                <Row justify={"space-between"}>
+                  <Col span={"auto"}>
+                    <BulkActions
+                      resource={resource}
+                      values={sortedRecords}
+                      selectedRows={selectedRows}
+                      recordFields={recordFields}
+                      totalSelected={totalSelected}
+                    />
+                  </Col>
+                  <Col span={"auto"}>
+                    <Pagination
+                      {...{
+                        key: "pagination",
+                        position: ["topRight"],
+                        current: page,
+                        pageSizeOptions: ["5", "10", "25", "50", "100"],
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        size: "small",
+                        pageSize: paginationLimit,
+                        onShowSizeChange: onShowSizeChange,
+                        onChange: setPage,
+                        total: filteredRecords
+                          ? filteredRecords.length
+                          : sortedRecords.length,
+                        showTotal: (total, range) =>
+                          `${range[0]}-${range[1]} of ${total} items`
+                      }}
+                    />
+                    <Text type={"secondary"} style={{ float: "right" }}>
+                      Showing {plural(resource.name)} {currentFilteredBy}
+                    </Text>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    span={24}
+                    style={{ width: "100%", overflowX: "auto" }}
+                    className={"scroller"}>
+                    <DndProvider backend={HTML5Backend}>
+                      <Table
+                        tableLayout={"auto"}
+                        loading={
+                          loadingInitialData ||
+                          loadingData ||
+                          loadingFilteredData
                         }
-                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                        components={components}
+                        rowSelection={rowSelection}
+                        columns={[
+                          {
+                            title: "Actions",
+                            dataIndex: "",
+                            width: "150px",
+                            key: "x",
+                            render: (text, record) => (
+                              <RecordOptions
+                                resource={resource}
+                                record={record}
+                                showModal={showModal}
+                                setRecord={setRecord}
+                              />
+                            )
+                          },
+                          {
+                            key: `record_field_head_listing_id_${resource.id}`,
+                            title: "#",
+                            dataIndex: "listingId",
+                            sorter: true,
+                            width: "100px"
+                          },
+                          ...columns
+                        ]}
+                        dataSource={chunkOfRecords[page - 1]}
+                        pagination={false}
+                        onChange={(pagination, filters, sorter) => {
+                          filterRecords(filters)
+                          sorter.column
+                            ? handleSortBy(
+                                sorter.column.dataIndex,
+                                sorter.order
+                              )
+                            : handleSortBy("listingId")
+                        }}
+                        locale={{
+                          filterConfirm: "Ok",
+                          filterReset: "Reset",
+                          emptyText: (
+                            <Empty
+                              description={
+                                <>
+                                  There are no records for the current period of
+                                  time.
+                                </>
+                              }
+                              image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            />
+                          )
+                        }}
                       />
-                    )
-                  }}
-                />
-              </DndProvider>
-            </Col>
-          </Row>
-        </Card>
+                    </DndProvider>
+                  </Col>
+                </Row>
+              </div>
+            </Card>
+          </Col>
+        </Row>
       </div>
       <DeletionModal {...deletionModal} />
       {/* <ConnectionSettings

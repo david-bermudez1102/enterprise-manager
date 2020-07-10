@@ -1,26 +1,24 @@
-import React from "react";
-import { InputNumber } from "antd";
-import FieldTypeWrapper from "../FieldTypeWrapper";
+import React from "react"
+import { InputNumber } from "antd"
+import FieldTypeWrapper from "../FieldTypeWrapper"
 
 const NumericField = props => {
-  const { field, onChange, name, editingMode, suffix, ...newProps } = props;
+  const { field, onChange, name, editingMode, suffix, ...newProps } = props
 
   const handleChange = value => {
     onChange({
       recordFieldId: props.name,
-      content: value,
-    });
-  };
+      content: value
+    })
+  }
 
   return (
     <FieldTypeWrapper
       name={name}
       editingMode={editingMode}
-      label={React.cloneElement(suffix, {
-        placement: "left",
-        children: field.name,
-      })}
-      field={field}>
+      label={field.name}
+      field={field}
+      suffix={suffix}>
       <InputNumber
         {...newProps}
         step={field.acceptsDecimals ? 0.1 : 1}
@@ -28,7 +26,7 @@ const NumericField = props => {
         onChange={handleChange}
       />
     </FieldTypeWrapper>
-  );
-};
+  )
+}
 
-export default NumericField;
+export default NumericField

@@ -5,7 +5,6 @@ import IconWrapper from "../../Icons/IconWrapper"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import {
   updateConversation,
-  updateTyping,
   addConversation,
   messagePreview
 } from "../../../actions/conversationsActions"

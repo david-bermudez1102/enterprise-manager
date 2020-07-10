@@ -1,4 +1,4 @@
-import { getAll, update } from "./fetchActions"
+import { getAll } from "./fetchActions"
 import snakecaseKeys from "snakecase-keys"
 import { message } from "antd"
 import { handleErrors } from "./handleErrors"

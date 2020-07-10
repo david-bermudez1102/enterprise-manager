@@ -7,14 +7,20 @@ import { Empty, Card, Button, Divider, Form, Col } from "antd"
 import zohoBooksIcon from "../../../containers/ZohoBooks/favicon.ico"
 import Title from "antd/lib/typography/Title"
 import { EyeTwoTone } from "@ant-design/icons"
-
+import useUserPermission from "../../Accounts/UserPermission/useUserPermission"
+import "./styles.scss"
 const pluralize = require("pluralize")
 
 const FieldsList = props => {
   const location = useLocation()
   const { match, resource, fields } = props
   const [state, setState] = useState([])
-  const recordFields = useSelector(s => s.recordFields, shallowEqual)
+  const { recordFields } = useSelector(
+    ({ recordFields }) => ({ recordFields }),
+    shallowEqual
+  )
+
+  const userPermission = useUserPermission({ payload: resource })
   const dispatch = useDispatch()
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
@@ -26,13 +32,17 @@ const FieldsList = props => {
   const handleChange = newState => {
     setState([
       ...state.filter(v => v.recordFieldId !== newState.recordFieldId),
-      newState
+      {
+        ...recordFields[resource.id].find(
+          rF => rF.id === newState.recordFieldId
+        ),
+        ...newState
+      }
     ])
   }
 
   const handleSubmit = useCallback(
     data => {
-      form.resetFields()
       setLoading(true)
       dispatch(
         addRecord(
@@ -40,18 +50,57 @@ const FieldsList = props => {
           resource.organizationId,
           resource.id
         )
-      ).then(() => setLoading(false))
+      )
+        .then(() => setLoading(false))
+        .then(() => form.resetFields())
+        .then(() => setState([]))
     },
     // eslint-disable-next-line
     [state]
   )
 
+  const tabList = [
+    userPermission.canCreate && {
+      key: `${match.url}/new/fields/new`,
+      tab: (
+        <Link to={`${match.url}/new/fields/new`} title='Add new field'>
+          <i className='fad fa-plus-circle' style={{ fontSize: "24px" }}></i>
+        </Link>
+      )
+    },
+    {
+      key: `${match.url}/records`,
+      tab: (
+        <Link to={`${match.url}/records`} title={`View all ${resource.name}`}>
+          <i className='fad fa-th-list' style={{ fontSize: "24px" }}></i>
+        </Link>
+      )
+    },
+    userPermission.canUpdate && {
+      key: `${match.url}/connections/zoho/edit`,
+      tab: (
+        <Link
+          to={`${match.url}/connections/zoho/edit`}
+          title='Connect to Zoho Books'>
+          <img
+            src={zohoBooksIcon}
+            style={{ width: "24px", marginTop: -10 }}
+            alt='Connect with ZohoBooks'
+          />
+        </Link>
+      )
+    }
+  ].filter(tab => tab)
+
   return (
-    <Card bordered={false} bodyStyle={{ padding: 0 }}>
+    <Card
+      bordered={false}
+      bodyStyle={{ padding: 0, display: "flex", justifyContent: "center" }}>
       <Col
         {...(location.pathname !== `${match.url}/new`
           ? { xxl: 20, xl: 24, lg: 24, span: 18 }
-          : { span: 24 })}>
+          : { span: 24 })}
+        flex={"auto"}>
         <Card
           bordered={false}
           activeTabKey={location.pathname}
@@ -62,44 +111,7 @@ const FieldsList = props => {
               </Title>
             ) : undefined
           }
-          tabList={[
-            {
-              key: `${match.url}/new/fields/new`,
-              tab: (
-                <Link to={`${match.url}/new/fields/new`} title='Add new field'>
-                  <i
-                    className='fad fa-plus-circle'
-                    style={{ fontSize: "24px" }}></i>
-                </Link>
-              )
-            },
-            {
-              key: `${match.url}/records`,
-              tab: (
-                <Link
-                  to={`${match.url}/records`}
-                  title={`View all ${resource.name}`}>
-                  <i
-                    className='fad fa-th-list'
-                    style={{ fontSize: "24px" }}></i>
-                </Link>
-              )
-            },
-            {
-              key: `${match.url}/connections/zoho/edit`,
-              tab: (
-                <Link
-                  to={`${match.url}/connections/zoho/edit`}
-                  title='Connect to Zoho Books'>
-                  <img
-                    src={zohoBooksIcon}
-                    style={{ width: "24px", marginTop: -10 }}
-                    alt='Connect with ZohoBooks'
-                  />
-                </Link>
-              )
-            }
-          ]}>
+          tabList={tabList}>
           <Card.Meta
             title={
               <Title level={3}>Add {pluralize.singular(resource.name)}</Title>
@@ -107,6 +119,7 @@ const FieldsList = props => {
           />
           {fields.length > 0 ? (
             <Form
+              className={"field-custom-form-item"}
               name={`new_${resource.formAlias}`}
               form={form}
               onFinish={handleSubmit}
@@ -119,6 +132,7 @@ const FieldsList = props => {
                   )
                   return recordField ? (
                     <Field
+                      userPermission={userPermission}
                       key={field.key}
                       field={field}
                       recordField={recordField}
@@ -138,9 +152,18 @@ const FieldsList = props => {
                   ) : null
                 })}
               <Divider />
-              <Button type='primary' htmlType='submit' loading={loading}>
-                Create {pluralize.singular(resource.name)}
-              </Button>
+              <Form.Item className={"custom-form-item"}>
+                <Button
+                  type='primary'
+                  htmlType='submit'
+                  loading={loading}
+                  style={{ flex: 1, marginRight: 5 }}>
+                  Create {pluralize.singular(resource.name)}
+                </Button>
+                <Button style={{ flex: 1 }} onClick={() => form.resetFields()}>
+                  Reset
+                </Button>
+              </Form.Item>
             </Form>
           ) : (
             <Empty

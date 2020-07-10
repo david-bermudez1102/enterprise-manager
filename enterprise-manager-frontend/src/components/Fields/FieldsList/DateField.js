@@ -1,22 +1,26 @@
-import React from "react";
-import { DatePicker } from "antd";
-import FieldTypeWrapper from "../FieldTypeWrapper";
-import moment from "moment";
+import React from "react"
+import { DatePicker } from "antd"
+import FieldTypeWrapper from "../FieldTypeWrapper"
+import moment from "moment"
 
-const dateFormat = "YYYY/MM/DD";
+const dateFormat = "YYYY/MM/DD"
 
 const DateField = props => {
-  const { field, name, editingMode, onChange, suffix, ...newProps } = props;
+  const { field, name, editingMode, onChange, suffix, ...newProps } = props
 
   const handleChange = (date, dateString) => {
     onChange({
       recordFieldId: props.name,
-      content: dateString,
-    });
-  };
+      content: dateString
+    })
+  }
 
   return (
-    <FieldTypeWrapper editingMode={editingMode} name={name} field={field}>
+    <FieldTypeWrapper
+      editingMode={editingMode}
+      name={name}
+      field={field}
+      suffix={suffix}>
       <DatePicker
         {...newProps}
         dropdownAlign={"left"}
@@ -28,7 +32,7 @@ const DateField = props => {
         picker={"date"}
       />
     </FieldTypeWrapper>
-  );
-};
+  )
+}
 
-export default DateField;
+export default DateField

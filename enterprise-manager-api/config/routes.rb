@@ -11,13 +11,15 @@ Rails.application.routes.draw do
     resources :stories
     resources :organizations do
       resources :page_permissions
+      resources :fields, only: %i[index]
+      resources :record_fields, only: %i[index]
       resources :roots
       resources :accounts
       resources :roles
       resources :forms do
         resources :statistics
-        resources :fields
-        resources :record_fields
+        resources :fields, except: %i[index]
+        resources :record_fields, except: %i[index]
         resources :records
         resources :values
         resources :key_values

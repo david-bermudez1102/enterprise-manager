@@ -3,7 +3,7 @@ class RecordField < ApplicationRecord
   belongs_to :form, touch: true
   belongs_to :field, touch: true, optional: true, dependent: :destroy
   has_many :values, dependent: :destroy
-  enum field_type: %w[text password selectable checkbox radio textarea date_field numeric_field combined_field key_field]
+  enum field_type: %w[text password selectable checkbox radio textarea date_field numeric_field combined_field key_field accounts_field boolean_field]
   enum field_format: %w[all_underscored all_dashed dashed_upper underscored_upper dashed_lower underscored_lower all_spaced_upper all_spaced_lower no_format] # Only required when field is combined
 
   has_one :selectable_resource, dependent: :destroy
@@ -11,13 +11,17 @@ class RecordField < ApplicationRecord
   serialize :combined_fields, Array
   before_create :generate_field_alias
 
-  
-
   validates :field_id, presence: true, uniqueness: true, on: [:create, :update]
+  validates :name, presence: true
+  validates :name, uniqueness: { scope: :form }
 
   accepts_nested_attributes_for :selectable_resource, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == '_destroy' || value.blank? } }
 
   accepts_nested_attributes_for :options, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == '_destroy' || value.blank? } }
+
+  def name
+    self[:name].capitalize
+  end
 
   def field_alias
     self.update_attribute(:field_alias, generate_field_alias) if self[:field_alias].nil? || self.name_changed?

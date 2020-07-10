@@ -1,7 +1,5 @@
-import snakecaseKeys from "snakecase-keys"
-import cuid from "cuid"
 import { handleErrors } from "./handleErrors"
-import { add, update } from "./fetchActions"
+import { add, update, getAll } from "./fetchActions"
 
 export const addField = (field, organizationId) => dispatch =>
   add(
@@ -25,32 +23,32 @@ export const updateField = (field, organizationId) => dispatch =>
     dispatch,
     `/api/v1/organizations/${organizationId}/forms/${field.formId}/fields/${field.id}`,
     { field },
-    field =>
+    resp =>
       dispatch({
         type: "UPDATE_FIELD",
-        fieldId: field.id,
-        field
+        field: { key: `resource_field_${resp.field.id}`, ...resp.field }
+      }),
+    resp =>
+      dispatch({
+        type: "UPDATE_RECORD_FIELD",
+        recordField: {
+          key: `resource_field_${resp.recordField.id}`,
+          ...resp.recordField
+        }
       })
   )
 
-export const fetchFields = (organizationId, formId) => {
-  return dispatch => {
-    fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/fields`, {
-      cache: "no-cache"
+export const fetchFields = (organizationId, formId) => dispatch =>
+  getAll(dispatch, `/api/v1/organizations/${organizationId}/fields`, fields =>
+    dispatch({
+      type: "FETCH_FIELDS",
+      fields: fields.map(field => ({
+        key: `resource_field_${field.id}`,
+        ...field
+      })),
+      formId
     })
-      .then(handleErrors)
-      .then(fields =>
-        dispatch({
-          type: "FETCH_FIELDS",
-          fields: fields.map(field => ({
-            key: `resource_field_${field.id}`,
-            ...field
-          })),
-          formId
-        })
-      )
-  }
-}
+  )
 
 export const removeField = (organizationId, formId, fieldId) => {
   return dispatch => {

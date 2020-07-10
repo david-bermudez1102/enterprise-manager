@@ -5,7 +5,7 @@ import ResourcesList from "../../components/Resources/ResourcesList"
 import Resource from "../../components/Resources/Resource"
 import ResourceDelete from "../../components/Resources/ResourceDelete"
 import Route from "../../Router/Route"
-import { Row } from "antd"
+import { Row, Card } from "antd"
 import ResourceFormLayout from "../../components/Resources/ResourceFormLayout/index.js"
 
 const ResourcesContainer = props => {

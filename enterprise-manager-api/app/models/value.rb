@@ -4,6 +4,7 @@ class Value < ApplicationRecord
   belongs_to :record_field, touch: true, optional: true
   belongs_to :record, touch: true
   has_one :form, through: :record
+  belongs_to :account, optional: true #If field is accounts_type
   belongs_to :option, optional: true, touch: true
   belongs_to :record_value, touch: true, class_name:"Value", optional: true
   belongs_to :key_value, optional: true, touch: true
@@ -15,7 +16,7 @@ class Value < ApplicationRecord
 
   scope :this_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
 
-  validates :content, presence: true, if: -> { record_field.is_required }
+  validates :content, presence: true, if: -> { record_field.field.is_required }
   validate :should_content_be_uniq
   validates :content, numericality: true, if: -> {record_field.field.field_type == "numeric_field"}
   validates :content, numericality: {only_integer: true}, if: -> {record_field.field.field_type == "numeric_field" && !record_field.field.accepts_decimals}

@@ -22,10 +22,7 @@ const Conversation = ({ conversation }) => {
     conversation
   })
 
-  const { accounts, session } = useSelector(
-    ({ accounts, session }) => ({ accounts, session }),
-    shallowEqual
-  )
+  const { session } = useSelector(({ session }) => ({ session }), shallowEqual)
 
   const [isAtBottom, setIsAtBottom] = useState(true)
   const [messages, setMessages] = useState(conversation.messages)

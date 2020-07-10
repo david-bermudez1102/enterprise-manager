@@ -2,7 +2,7 @@ module StoryConcern
   extend ActiveSupport::Concern
 
   included do
-    has_many :stories, as: :storiable, dependent: :delete_all
+    has_many :stories, as: :storiable, dependent: :destroy
     before_create :story_created
     before_commit :story_updated, on: %i[update]
     after_create :stream_stories
@@ -11,11 +11,11 @@ module StoryConcern
 
   private
     def story_created
-      stories.build(action:"createSubject", account:Current.account, organization:Current.account.organization)
+      stories.build(action:"createSubject", account:Current.account, organization:organization)
     end
 
     def story_updated
-      stories.build(action:"updateSubject", account:Current.account, organization:Current.account.organization)
+      stories.build(action:"updateSubject", account:Current.account, organization:organization)
     end
 
     def stream_stories

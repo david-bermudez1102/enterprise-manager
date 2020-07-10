@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
-import cuid from "cuid";
-import OptionBadge from "../OptionBadge";
-import { useSelector, shallowEqual } from "react-redux";
-import FieldFormat from "./FieldFormat";
-import DraggableOption from "../OptionBadge/DraggableOption";
-import { Col, Divider, Select, Form, Row } from "antd";
+import React, { useEffect, useState, useRef } from "react"
+import cuid from "cuid"
+import OptionBadge from "../OptionBadge"
+import { useSelector, shallowEqual } from "react-redux"
+import FieldFormat from "./FieldFormat"
+import DraggableOption from "../OptionBadge/DraggableOption"
+import { Col, Divider, Select, Form, Row } from "antd"
 
 const CombineWith = ({
   resourceId,
@@ -12,42 +12,51 @@ const CombineWith = ({
   fieldType,
   initialState,
   fieldFormat,
+  fieldState
 }) => {
-  const mounted = useRef();
+  const mounted = useRef()
 
-  const [items, setItems] = useState(initialState || []);
-  const [key, setKey] = useState(cuid());
-
-  const availableFields = useSelector(
-    state =>
-      (state.recordFields[resourceId] || [])
-        .filter(field => !items.some(item => item.id === field.id))
-        .map(field => ({ id: field.id, value: field.name })),
+  const [items, setItems] = useState(initialState || [])
+  const [key, setKey] = useState(cuid())
+  const { recordFields } = useSelector(
+    ({ recordFields }) => ({ recordFields }),
     shallowEqual
-  );
+  )
+
+  const availableFields = [
+    ...(
+      [
+        ...(recordFields[resourceId] || []),
+        { id: "createdAt", name: "Date Created" },
+        { id: "updatedAt", name: "Date Updated" }
+      ] || []
+    )
+      .filter(field => !items.some(item => item.id === field.id))
+      .map(field => ({ id: field.id, value: field.name }))
+  ]
 
   const handleFieldChange = (value, item) => {
     if (!items.some(i => i.id === item.id) && item !== "")
-      setItems([...items, item]);
-  };
+      setItems([...items, item])
+  }
 
   const removeItem = id => {
-    setItems(items.filter(item => item.id !== id));
-  };
+    setItems(items.filter(item => item.id !== id))
+  }
 
   useEffect(() => {
     if (!mounted.current) {
-      mounted.current = true;
+      mounted.current = true
     } else {
-      setKey(cuid());
+      setKey(cuid())
       if (fieldType === "combined_field" && items.length > 0)
-        handleChange({ combinedFields: items.map(i => i.id) });
+        handleChange({ combinedFields: items.map(i => i.id) })
     }
-  }, [items, fieldType, handleChange]);
+  }, [items, fieldType, handleChange])
 
   const handleSwapOptions = options => {
-    setItems(options.map(option => items[option]));
-  };
+    setItems(options.map(option => items[option]))
+  }
 
   return fieldType === "combined_field" ? (
     <Col span={24} order={24}>
@@ -61,7 +70,7 @@ const CombineWith = ({
             <DraggableOption items={items} onDragEnd={handleSwapOptions}>
               {items.map(item => (
                 <OptionBadge
-                  color="cyan"
+                  color='cyan'
                   key={`combined_field_option_${item.id}`}
                   value={item.value}
                   handleClose={() => removeItem(item.id)}
@@ -70,7 +79,7 @@ const CombineWith = ({
             </DraggableOption>
           </Col>
           <Col style={{ marginTop: "8px" }}>
-            <small className="form-text text-muted">
+            <small className='form-text text-muted'>
               You can rearrange the order in which the fields will be combined
               by dragging them to the desired position.
             </small>
@@ -80,26 +89,27 @@ const CombineWith = ({
       {availableFields.length > 0 ? (
         <>
           <Divider />
-          <Form.Item label="Select fields">
+          <Form.Item label='Select fields'>
             <Select
               showSearch
-              name="combineWith"
-              id="combine_with"
+              name='combineWith'
+              id='combine_with'
               key={key}
               options={availableFields}
               onChange={handleFieldChange}
-              placeholder="Select fields to combine"
+              placeholder='Select fields to combine'
               autoFocus
               required
             />
           </Form.Item>
-          <small className="form-text text-muted">
+          <small className='form-text text-muted'>
             Combined fields require at least 2 fields
           </small>
         </>
       ) : null}
       {items.length > 1 ? (
         <FieldFormat
+          fieldState={fieldState}
           fieldFormat={fieldFormat}
           items={items}
           handleChange={handleChange}
@@ -107,6 +117,6 @@ const CombineWith = ({
         />
       ) : null}
     </Col>
-  ) : null;
-};
-export default CombineWith;
+  ) : null
+}
+export default CombineWith

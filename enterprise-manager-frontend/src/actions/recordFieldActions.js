@@ -1,6 +1,6 @@
 import snakecaseKeys from "snakecase-keys"
 import { handleErrors } from "./handleErrors"
-import { update } from "./fetchActions"
+import { update, getAll } from "./fetchActions"
 
 export const addRecordField = (recordField, organizationId) => {
   return dispatch => {
@@ -39,18 +39,12 @@ export const updateRecordField = recordField => dispatch =>
       })
   )
 
-export const fetchRecordFields = (organizationId, formId) => {
-  return dispatch => {
-    fetch(
-      `/api/v1/organizations/${organizationId}/forms/${formId}/record_fields`,
-      { cache: "no-cache" }
-    )
-      .then(response => response.json())
-      .then(recordFields =>
-        dispatch({ type: "FETCH_RECORD_FIELDS", recordFields, formId })
-      )
-  }
-}
+export const fetchRecordFields = organizationId => dispatch =>
+  getAll(
+    dispatch,
+    `/api/v1/organizations/${organizationId}/record_fields`,
+    recordFields => dispatch({ type: "FETCH_RECORD_FIELDS", recordFields })
+  )
 
 export const removeRecordField = (organizationId, formId, recordFieldId) => {
   return dispatch => {

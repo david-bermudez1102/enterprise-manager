@@ -30,14 +30,14 @@ const SelectableChoice = props => {
         defaultChecked={state.choice === "items" ? true : false}>
         Add Items Individually
       </Radio>
-      {state.choice === "connect" ? (
+      {state.choice === "connect" && (
         <SelectableResources
           resourceId={resourceId}
           field={field}
           handleSelectable={handleSelectable}
         />
-      ) : null}
-      {state.choice === "items" ? (
+      )}
+      {state.choice === "items" && (
         <SelectableOptions
           resourceId={resourceId}
           field={field}
@@ -45,7 +45,7 @@ const SelectableChoice = props => {
           handleChange={handleChange}
           handleSelectable={handleSelectable}
         />
-      ) : null}
+      )}
     </Radio.Group>
   )
 }

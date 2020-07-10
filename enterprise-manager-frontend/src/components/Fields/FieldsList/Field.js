@@ -9,11 +9,13 @@ import CheckboxField from "./CheckboxField"
 import CombinedField from "./CombinedField"
 import TextField from "./TextField"
 import KeyField from "./KeyField"
-import { Popover } from "antd"
+import { Popover, Button } from "antd"
 import { SettingOutlined } from "@ant-design/icons"
+import AccountsField from "./AccountsField"
+import BooleanField from "./BooleanField"
 
 const Field = props => {
-  const { editingMode, match, field, recordField } = props
+  const { editingMode, match, field, recordField, userPermission } = props
 
   const fieldName = field.name
     .split("_")
@@ -30,24 +32,43 @@ const Field = props => {
     onBlur: props.onBlur,
     autoFocus: props.autoFocus,
     style: props.style,
-    suffix: props.suffix || (
-      <Popover
-        content={
-          <Options
-            url={`${match.url}/new/fields`}
-            content={field}
-            deletionMessage='The field will be deleted from the resource.'
-          />
-        }>
-        <SettingOutlined style={{ color: "rgba(0,0,0,.45)" }} />
-      </Popover>
-    ),
-    field
+    suffix:
+      props.suffix ||
+      ((userPermission.canDelete || userPermission.canUpdate) && (
+        <Popover
+          color={"lime"}
+          placement={"top"}
+          content={
+            <Options
+              permission={userPermission}
+              url={`${match.url}/new/fields`}
+              content={field}
+              deletionMessage='The field will be deleted from the resource.'
+            />
+          }>
+          <Button
+            type={"link"}
+            style={{ padding: 0, margin: 0, color: "inherit" }}>
+            <SettingOutlined />
+          </Button>
+        </Popover>
+      )),
+    field: {
+      ...field,
+      style: {
+        display:
+          field.hiddenInForm && !userPermission.canUpdate ? "none" : undefined
+      }
+    }
   }
   switch (field.fieldType) {
     case "selectable":
       inputField = (
-        <SelectableField {...inputAttributes} fieldName={fieldName} />
+        <SelectableField
+          {...inputAttributes}
+          fieldName={fieldName}
+          form={props.form}
+        />
       )
       break
     case "textarea":
@@ -86,6 +107,18 @@ const Field = props => {
       break
     case "combined_field":
       inputField = <CombinedField {...inputAttributes} state={props.state} />
+      break
+    case "accounts_field":
+      inputField = (
+        <AccountsField
+          {...inputAttributes}
+          state={props.state}
+          form={props.form}
+        />
+      )
+      break
+    case "boolean_field":
+      inputField = <BooleanField {...inputAttributes} state={props.state} />
       break
     default:
       inputField = <TextField {...inputAttributes} />

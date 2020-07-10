@@ -10,10 +10,13 @@ import RadioField from "./RadioField"
 import CheckBoxField from "./CheckBoxField"
 import DateField from "./DateField"
 import CombinedField from "./CombinedField"
-import { Form, Input, Button, Row, Divider, Switch, Tooltip } from "antd"
+import { Form, Input, Button, Row, Divider, Switch, Tooltip, Col } from "antd"
 import { AppstoreTwoTone, QuestionCircleTwoTone } from "@ant-design/icons"
 import { useRouteMatch } from "react-router-dom"
 import capitalize from "capitalize"
+import AccountsField from "./AccountsField"
+import "./styles.scss"
+import BooleanField from "./BooleanField"
 
 const FieldForm = props => {
   const { organizationId, action, resourceId, resource } = props
@@ -24,6 +27,10 @@ const FieldForm = props => {
     formId,
     isRequired,
     isUniq,
+    hiddenInForm,
+    hiddenInRecords,
+    readOnly,
+    allowUpdates,
     ...field
   } = props.field
   const [fieldState, setFieldState] = useState(field || {})
@@ -34,7 +41,11 @@ const FieldForm = props => {
     name: name || "",
     formId: formId || resourceId,
     isRequired: isRequired,
-    isUniq: isUniq
+    isUniq: isUniq,
+    hiddenInForm,
+    hiddenInRecords,
+    readOnly,
+    allowUpdates: field.id ? allowUpdates : true
   }
 
   const [form] = Form.useForm()
@@ -57,7 +68,7 @@ const FieldForm = props => {
   }
 
   const handleSubmit = e => {
-    const { addField, updateField, updateRecordField } = props
+    const { addField, updateField } = props
     if (addField) {
       dispatch(addField({ ...state, ...fieldState }, organizationId)).then(() =>
         form.resetFields()
@@ -66,12 +77,6 @@ const FieldForm = props => {
     if (updateField)
       dispatch(
         updateField({ ...state, ...fieldState, id: field.id }, organizationId)
-      ).then(field =>
-        field
-          ? dispatch(
-              updateRecordField(field, organizationId, field.recordFieldId)
-            )
-          : null
       )
   }
 
@@ -82,6 +87,28 @@ const FieldForm = props => {
     onChange
   }
 
+  const additionalOptions = [
+    !["boolean_field"].includes(fieldState.fieldType) && {
+      name: "isRequired",
+      label: "Required?"
+    },
+    ["text"].includes(fieldState.fieldType) && {
+      name: "isUniq",
+      label: "Uniq?"
+    },
+    ["key_field", "combined_field"].includes(fieldState.fieldType) && {
+      name: "hiddenInForm",
+      label: "Hidden in form?"
+    },
+    { name: "hiddenInRecords", label: "Hidden in records?" },
+    fieldState.fieldType === "combined_field" && {
+      name: "readOnly",
+      label: "Read only?"
+    },
+    { name: "allowUpdates", label: "Allow updates?" }
+  ].filter(o => o)
+
+  console.log(fieldState)
   return (
     <Form
       form={form}
@@ -110,7 +137,7 @@ const FieldForm = props => {
         />
       </Form.Item>
       <Divider />
-      <Form.Item label='Field Type:' required>
+      <Form.Item label='Field Type:' required style={{ marginBottom: 0 }}>
         <Row gutter={[16, 16]}>
           <RecordKeyField resourceId={resourceId} {...fieldProps} />
           <TextField {...fieldProps} />
@@ -121,10 +148,16 @@ const FieldForm = props => {
           <RadioField {...fieldProps} />
           <CheckBoxField {...fieldProps} />
           <DateField {...fieldProps} />
-          <CombinedField {...fieldProps} resourceId={resourceId} />
+          <AccountsField {...fieldProps} />
+          <CombinedField
+            {...fieldProps}
+            fieldState={fieldState}
+            resourceId={resourceId}
+          />
+          <BooleanField {...fieldProps} resourceId={resourceId} />
         </Row>
       </Form.Item>
-      <Divider />
+      <Divider style={{ marginTop: 0 }} />
       {resource.zohoConnectionAttributes ? (
         <Form.Item name={"zohoFieldName"} label='ZohoBooks Field Name'>
           <Input
@@ -163,27 +196,38 @@ const FieldForm = props => {
           />
         </Form.Item>
       ) : null}
-      <Form.Item>
-        <Form.Item label='Required'>
-          <Switch
-            size={"small"}
-            name='isRequired'
-            checked={state.isRequired}
-            onChange={checked => setState({ ...state, isRequired: checked })}
-          />
-        </Form.Item>
-        <Form.Item label='Uniq?'>
-          <Switch
-            size={"small"}
-            name='isUniq'
-            checked={state.isUniq}
-            onChange={checked => setState({ ...state, isUniq: checked })}
-          />
-        </Form.Item>
+      <Form.Item
+        label={"Additional Options"}
+        style={{ margin: 0 }}
+        className={"custom-form-item"}>
+        <Row gutter={[4, 10]}>
+          {additionalOptions.map((option, index) => (
+            <Col
+              style={{ fontSize: 13 }}
+              key={`additional_option_${index}_${resourceId}`}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={8}
+              xl={6}
+              xxl={6}>
+              {option.label}
+              <br />
+              <Switch
+                size={"small"}
+                name={option.name}
+                checked={state[option.name]}
+                onChange={checked =>
+                  setState({ ...state, [option.name]: checked })
+                }
+              />
+            </Col>
+          ))}
+        </Row>
       </Form.Item>
-      <Divider />
+      <Divider style={{ marginTop: 0 }} />
       <Form.Item>
-        <Button type='primary' htmlType='submit'>
+        <Button type='primary' htmlType='submit' block>
           {action}
         </Button>
       </Form.Item>

@@ -1,6 +1,6 @@
 class RecordFieldsController < ApplicationController
   before_action :authenticate_user
-  before_action :set_form
+  before_action :set_form, only: %i[create show update]
 
   def create
     record_field = @form.record_fields.build(record_field_params)
@@ -13,7 +13,7 @@ class RecordFieldsController < ApplicationController
   end
 
   def index
-    record_fields = @form.record_fields.includes({:field => :record_key}, :options)
+    record_fields = current_account.organization.record_fields.includes({:field => :record_key}, :options)
     if stale?(record_fields, public:true)
       serialized_data = RecordFieldSerializer.new(record_fields).serializable_hash
       render json: serialized_data[:data].map { |data| data[:attributes] }
@@ -51,7 +51,7 @@ class RecordFieldsController < ApplicationController
         :zoho_field_name,
         {:combined_fields => []},
         selectable_resource_attributes: [:form_id, :resource_field_id, :_destroy],
-        options_attributes: [:value]
+        options_attributes: [:id, :value, :_destroy]
       )
     end
 

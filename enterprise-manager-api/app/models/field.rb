@@ -1,6 +1,6 @@
 class Field < ApplicationRecord
   belongs_to :form, touch: true
-  enum field_type: %w[text password selectable checkbox radio textarea date_field numeric_field combined_field key_field]
+  enum field_type: %w[text password selectable checkbox radio textarea date_field numeric_field combined_field key_field accounts_field boolean_field]
   enum field_format: %w[all_underscored all_dashed dashed_upper underscored_upper dashed_lower underscored_lower all_spaced_upper all_spaced_lower no_format] # Only required when field is combined
   
   has_one :selectable_resource, dependent: :destroy
@@ -12,16 +12,22 @@ class Field < ApplicationRecord
   serialize :combined_fields, Array
   
   before_create :generate_field_alias
-  before_save :generate_record_field
   after_save :nullify_form_alias, if: :saved_change_to_name?
   
   validates :name, presence: true
+  validates :name, uniqueness: { scope: :form }
   validates :field_type, presence: true
+  validates :combined_fields, length: { minimum: 2, message:"requires at least 2 fields" }, if: -> {field_type == "combined_field"}
+  
   accepts_nested_attributes_for :selectable_resource, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == '_destroy' || value.blank? } }
 
   accepts_nested_attributes_for :options, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == '_destroy' || value.blank? } }
 
   accepts_nested_attributes_for :record_key, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == '_destroy' || value.blank? } }
+
+  def name
+    self[:name].capitalize
+  end
 
   def field_alias
     self.update_attribute(:field_alias, generate_field_alias) if self[:field_alias].nil?
@@ -59,27 +65,6 @@ class Field < ApplicationRecord
 
   def cache_key
     "/fields/#{id}-#{updated_at}"
-  end
-
-  private
-  def generate_record_field
-    begin
-      RecordField.find_or_create_by(field_id:id, :name => name,
-      :field_type => field_type,
-      :form_id => form_id,
-      :is_required => is_required,
-      :default_value => default_value,
-      :accepts_decimals => accepts_decimals,
-      :field_format => field_format,
-      :combined_fields => combined_fields,
-      :selectable_resource => selectable_resource,
-      :options => options
-      )
-    rescue => exception
-      errors.add(:record_field, "Couldn't be saved")
-      
-    end
-    
   end
 
 

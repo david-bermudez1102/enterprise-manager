@@ -9,6 +9,7 @@ class Field < ApplicationRecord
   has_many :options, dependent: :nullify
   has_many :values, through: :record_field
   has_many :key_values, through: :record_key
+  has_many :field_dependencies
   serialize :combined_fields, Array
   
   before_create :generate_field_alias

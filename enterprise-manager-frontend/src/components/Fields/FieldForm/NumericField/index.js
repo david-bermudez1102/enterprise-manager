@@ -1,18 +1,18 @@
-import React from "react";
-import { mdiNumeric } from "@mdi/js";
-import NumericFieldOptions from "./NumericFieldOptions";
-import { useHandleChange } from "../../Hooks/useHandleChange";
-import RadioWrapper from "../RadioWrapper";
+import React from "react"
+import { mdiNumeric } from "@mdi/js"
+import NumericFieldOptions from "./NumericFieldOptions"
+import { useHandleChange } from "../../Hooks/useHandleChange"
+import RadioWrapper from "../RadioWrapper"
 
-const NumericField = ({ field, fieldType, onChange }) => {
+const NumericField = ({ field, fieldType, resourceId, onChange }) => {
   const { handleChange, handleNumericField } = useHandleChange({
     field,
-    onChange,
-  });
+    onChange
+  })
   return (
     <>
       <RadioWrapper
-        id="numeric_field"
+        id='numeric_field'
         name={"fieldType"}
         value={"numeric_field"}
         onChange={handleChange}
@@ -22,11 +22,12 @@ const NumericField = ({ field, fieldType, onChange }) => {
         Numeric Field
       </RadioWrapper>
       <NumericFieldOptions
+        resourceId={resourceId}
         fieldType={fieldType}
         handleChange={handleNumericField}
         field={field}
       />
     </>
-  );
-};
-export default NumericField;
+  )
+}
+export default NumericField

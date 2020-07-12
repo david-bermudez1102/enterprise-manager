@@ -22,30 +22,35 @@ const SelectableResourcesOptions = props => {
     }
   }, [selected])
 
-  return fields[selected] ? (
-    <>
-      <Divider />
-      <Form.Item label='Column'>
-        <Select
-          name='resourceFieldId'
-          onChange={handleChange}
-          value={state.value}
-          className='form-control'
-          id='selectable_resource_options'>
-          <Select.Option value='' key={cuid()}>
-            Select
-          </Select.Option>
-          {fields[selected].map(field =>
-            field.formId === parseInt(selected) ? (
-              <Select.Option value={field.id} key={cuid()}>
-                {field.name}
-              </Select.Option>
-            ) : null
-          )}
-        </Select>
-      </Form.Item>
-    </>
-  ) : null
+  return (
+    fields[selected] && (
+      <>
+        <Divider />
+        <Form.Item label='Column'>
+          <Select
+            name='resourceFieldId'
+            onChange={handleChange}
+            value={state.value}
+            className='form-control'
+            id='selectable_resource_options'>
+            <Select.Option value='' key={cuid()}>
+              Select
+            </Select.Option>
+            {fields[selected].map(field =>
+              field.formId === parseInt(selected) ? (
+                <Select.Option value={field.id} key={cuid()}>
+                  {field.name}
+                </Select.Option>
+              ) : null
+            )}
+          </Select>
+        </Form.Item>
+        <Form.Item label='Allow Changes for'>
+
+        </Form.Item>
+      </>
+    )
+  )
 }
 
 export default SelectableResourcesOptions

@@ -24,7 +24,7 @@ const SelectableField = props => {
         fieldType={fieldType}>
         Selectable Field
       </RadioWrapper>
-      {fieldType === "selectable" ? (
+      {fieldType === "selectable" && (
         <Col span={24} order={24}>
           <SelectableChoice
             resourceId={resourceId}
@@ -34,7 +34,7 @@ const SelectableField = props => {
             handleSelectable={handleSelectable}
           />
         </Col>
-      ) : null}
+      )}
     </>
   )
 }

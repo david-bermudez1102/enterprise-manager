@@ -1,16 +1,15 @@
 class Form < ApplicationRecord
-  include ::StoryConcern
   belongs_to :organization, touch: true
   has_one :zoho_connection, class_name:"Connection", foreign_key: "zoho_connection_id", dependent: :destroy
   has_one :quickbooks_connection, class_name:"Connection", foreign_key: "quickbooks_connection_id", dependent: :destroy
-  has_many :fields, dependent: :destroy
+  has_many :fields, -> { order(position: :asc) }, dependent: :destroy
   has_many :records, dependent: :destroy
   has_many :record_fields, dependent: :destroy
   has_many :values, through: :records
   has_one :permission, as: :permissionable
   has_many :exclusions, through: :permission
   has_many :roles, through: :organization
-
+  
   validates :name, length: { in: 2..20 }
   has_many :selectable_resources, dependent: :destroy
   before_create :generate_form_alias

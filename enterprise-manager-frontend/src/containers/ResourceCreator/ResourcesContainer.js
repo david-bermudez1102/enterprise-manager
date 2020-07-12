@@ -5,8 +5,9 @@ import ResourcesList from "../../components/Resources/ResourcesList"
 import Resource from "../../components/Resources/Resource"
 import ResourceDelete from "../../components/Resources/ResourceDelete"
 import Route from "../../Router/Route"
-import { Row, Card } from "antd"
+import { Row } from "antd"
 import ResourceFormLayout from "../../components/Resources/ResourceFormLayout/index.js"
+import useUserPermission from "../../components/Accounts/UserPermission/useUserPermission"
 
 const ResourcesContainer = props => {
   const { loaded, loading } = props
@@ -35,26 +36,32 @@ const ResourcesContainer = props => {
     // eslint-disable-next-line
   }, [formAlias, resources])
 
+  const resourcePermissions = useUserPermission({ payload: resource })
+
   return (
     <Row gutter={[16, 16]}>
       <Switch>
         <Route path={`${match.path}/new`} name={"New Resource"}>
           <ResourceFormLayout title={"Create Resource"} />
         </Route>
-        <Route path={`${match.path}/:formAlias/edit`} name={"Edit Resource"}>
-          <ResourceFormLayout title={"Update Resource"} resource={resource} />
-        </Route>
-        <Route path={`${match.path}/:resourceId/delete`}>
-          <ResourceDelete
-            redirectTo={match.url}
-            organizationId={organizationId}
-          />
-        </Route>
-        {resource ? (
+        {resourcePermissions.canUpdate && (
+          <Route path={`${match.path}/:formAlias/edit`} name={"Edit Resource"}>
+            <ResourceFormLayout title={"Update Resource"} resource={resource} />
+          </Route>
+        )}
+        {resourcePermissions.canDelete && (
+          <Route path={`${match.path}/:resourceId/delete`}>
+            <ResourceDelete
+              redirectTo={match.url}
+              organizationId={organizationId}
+            />
+          </Route>
+        )}
+        {resource && resourcePermissions.canRead && (
           <Route path={`${match.path}/:formAlias`} name={resource.name}>
             <Resource resource={resource} />
           </Route>
-        ) : null}
+        )}
         <Route path={match.path}>
           <ResourcesList loaded={loaded} loading={loading} />
         </Route>

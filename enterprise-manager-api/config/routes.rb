@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       resources :accounts
       resources :roles
       resources :forms do
+        patch :sort
         resources :statistics
         resources :fields, except: %i[index]
         resources :record_fields, except: %i[index]

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Select } from "antd"
 import FieldTypeWrapper from "../FieldTypeWrapper"
 

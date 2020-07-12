@@ -7,40 +7,40 @@ import Route from "../../Router/Route"
 import { Col, Row, Card } from "antd"
 import FieldFormLayout from "../../components/Fields/FieldFormLayout"
 import { singular } from "pluralize"
+import useUserPermission from "../../components/Accounts/UserPermission/useUserPermission"
 
 const FieldsContainer = props => {
   const { match, organizationId, resource, fields } = props
   const location = useLocation()
+
+  const permissions = useUserPermission({ payload: resource })
 
   return (
     <Col span={24}>
       <Card bordered={false} bodyStyle={{ padding: 0, margin: 0 }}>
         <Row justify={"center"}>
           <Switch>
-            <Route path={`${match.path}/new/fields/new`} name={"Add Field"}>
-              <FieldFormLayout
-                resource={resource}
-                organizationId={organizationId}
-              />
-            </Route>
-            <Route
-              path={`${match.path}/new/fields/:fieldId/delete`}
-              render={props => (
-                <FieldDelete
-                  {...props}
-                  redirectTo={match.url}
+            {permissions.canCreate && (
+              <Route path={`${match.path}/new/fields/new`} name={"Add Field"}>
+                <FieldFormLayout
+                  resource={resource}
                   organizationId={organizationId}
-                  resourceId={resource.id}
-                  removeField={removeField}
                 />
-              )}
-            />
-            <Route path={`${match.path}/new/fields/:fieldId/edit`}>
-              <FieldFormLayout
-                resource={resource}
-                organizationId={organizationId}
-              />
-            </Route>
+              </Route>
+            )}
+            {permissions.canUpdate && (
+              <Route path={`${match.path}/new/fields/:fieldId/delete`}>
+                <FieldDelete fields={fields} redirectTo={match.url} />
+              </Route>
+            )}
+            {permissions.canUpdate && (
+              <Route path={`${match.path}/new/fields/:fieldId/edit`}>
+                <FieldFormLayout
+                  resource={resource}
+                  organizationId={organizationId}
+                />
+              </Route>
+            )}
           </Switch>
           <Route
             path={`${match.path}/new`}

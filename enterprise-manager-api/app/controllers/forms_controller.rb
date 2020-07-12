@@ -1,7 +1,7 @@
 class FormsController < ApplicationController
   before_action :authenticate_user
   before_action :set_organization
-  before_action :set_forms, only: [:index, :show, :update, :create]
+  before_action :set_forms, only: [:index, :show, :update, :create, :sort]
 
   def create
     form = @forms.build(form_params)
@@ -30,8 +30,20 @@ class FormsController < ApplicationController
     render json: serialized_data
   end
 
+  def sort
+    form = @forms.find(params[:form_id])
+    authorize form, :update?
+    form_params[:field_ids].each.with_index(1) do |field, index|
+      form.fields.find(field).update!(position:index)
+    end
+    form.save!
+    serialized_data = FormSerializer.new(form).serializable_hash
+    render json: serialized_data[:data][:attributes] 
+  end
+
   def update
     form = @forms.find(params[:id])
+    authorize form
     form.update!(form_params)
     serialized_data = FormSerializer.new(form).serializable_hash
     render json: serialized_data[:data][:attributes]
@@ -49,7 +61,7 @@ class FormsController < ApplicationController
   private
 
   def form_params
-    params.require(:form).permit(:name, :organization_id, zoho_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], quickbooks_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], fields_attributes:[:id, :name, :zoho_field_name], record_fields_attributes:[:id, :name, :zoho_field_name], permission_attributes:[assignments_attributes:[:id, :role_id, :create_privilege, :update_privilege, :delete_privilege, :insert_privilege, :read_privilege], exclusions_attributes:[:id, :_destroy, :permission_id, :account_id, :exclusion_type]])
+    params.require(:form).permit(:name, :organization_id, zoho_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], quickbooks_connection_attributes:[:id, :name, :integration_id, :connection_type, :form_id], fields_attributes:[:id, :name, :zoho_field_name], record_fields_attributes:[:id, :name, :zoho_field_name], permission_attributes:[assignments_attributes:[:id, :role_id, :create_privilege, :update_privilege, :delete_privilege, :insert_privilege, :read_privilege], exclusions_attributes:[:id, :_destroy, :permission_id, :account_id, :exclusion_type]], :field_ids => [])
   end
 
   def set_organization

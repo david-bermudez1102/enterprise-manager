@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_07_170232) do
+ActiveRecord::Schema.define(version: 2020_07_10_165952) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_170232) do
     t.boolean "read_only", default: false, null: false
     t.integer "min_length", default: 0
     t.integer "max_length", default: 140
+    t.integer "position", default: 0, null: false
     t.index ["form_id"], name: "index_fields_on_form_id"
   end
 
@@ -174,6 +175,7 @@ ActiveRecord::Schema.define(version: 2020_07_07_170232) do
     t.datetime "updated_at", null: false
     t.string "form_alias"
     t.integer "records_count"
+    t.text "fields_order", default: "--- []\n"
     t.index ["organization_id"], name: "index_forms_on_organization_id"
   end
 

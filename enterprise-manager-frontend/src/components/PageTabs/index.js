@@ -12,9 +12,11 @@ const PageTabs = ({ tabs }) => {
       activeKey={location.pathname}
       onChange={key => history.push(key)}
       style={{ margin: 0 }}>
-      {tabs.map(tab => (
-        <TabPane tab={tab.tab} key={tab.path} />
-      ))}
+      {tabs
+        .filter(tab => tab)
+        .map(tab => (
+          <TabPane tab={tab.tab} key={tab.path} />
+        ))}
     </Tabs>
   )
 }

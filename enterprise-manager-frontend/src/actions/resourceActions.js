@@ -29,6 +29,17 @@ export const updateResource = resource => {
     })
 }
 
+export const sortFields = resource => dispatch =>
+  update(
+    dispatch,
+    `/api/v1/organizations/${resource.organizationId}/forms/${resource.id}/sort`,
+    { form: resource },
+    resource => {
+      dispatch({ type: "UPDATE_RESOURCE", resource })
+      return resource
+    }
+  )
+
 export const removeResource = (organizationId, id) => {
   return dispatch => {
     return remove(

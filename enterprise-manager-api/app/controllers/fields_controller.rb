@@ -1,9 +1,10 @@
 class FieldsController < ApplicationController
   before_action :authenticate_user
-  before_action :set_form, only: %i[create show update]
+  before_action :set_form, only: %i[create show update destroy]
 
   def create
     field = @form.fields.build(field_params)
+    authorize @form
     Field.transaction do
       field.save!
       field.create_record_field!(field_params.except(:options_attributes,:hidden_in_form, :hidden_in_records, :allow_updates, :read_only, :min_length, :max_length))

@@ -1,5 +1,4 @@
-import { handleErrors } from "./handleErrors"
-import { add, update, getAll } from "./fetchActions"
+import { add, update, getAll, remove } from "./fetchActions"
 
 export const addField = (field, organizationId) => dispatch =>
   add(
@@ -50,19 +49,11 @@ export const fetchFields = (organizationId, formId) => dispatch =>
     })
   )
 
-export const removeField = (organizationId, formId, fieldId) => {
-  return dispatch => {
-    return fetch(
-      `/api/v1/organizations/${organizationId}/forms/${formId}/fields/${fieldId}`,
-      {
-        method: "DELETE"
-      }
-    )
-      .then(handleErrors)
-      .then(field =>
-        field.message
-          ? dispatch({ type: "REMOVE_FIELD", fieldId, status: "deleted" })
-          : null
-      )
-  }
-}
+export const removeField = field => dispatch =>
+  remove(
+    `/api/v1/organizations/${field.organizationId}/forms/${field.formId}/fields/${field.id}`,
+    field =>
+      field.message
+        ? dispatch({ type: "REMOVE_FIELD", field, status: "deleted" })
+        : null
+  )

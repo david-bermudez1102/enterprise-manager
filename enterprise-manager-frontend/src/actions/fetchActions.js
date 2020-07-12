@@ -78,7 +78,7 @@ export const update = (dispatch, url, payload, ...actions) => {
     .catch(resp => message.error(resp.toString()))
 }
 
-export const remove = (dispatch, url, id, type, ...actions) => {
+export const remove = (url, ...actions) => {
   return fetch(url, {
     method: "DELETE"
   })
@@ -96,5 +96,8 @@ export const remove = (dispatch, url, id, type, ...actions) => {
         throw new Error(response.errors.join(", "))
       }
     })
-    .catch(resp => message.error(resp.toString()))
+    .catch(resp => {
+      message.error(resp.toString())
+      return false
+    })
 }

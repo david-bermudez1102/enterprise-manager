@@ -8,6 +8,8 @@ import Route from "./Router/Route"
 import "./App.scss"
 import { fetchRoots } from "./actions/rootActions"
 import SessionWebSocket from "./components/WebSockets/SessionWebSocket"
+import { DndProvider } from "react-dnd"
+import HTML5Backend from "react-dnd-html5-backend"
 
 const App = () => {
   const dispatch = useDispatch()
@@ -33,7 +35,9 @@ const App = () => {
       {loaded ? (
         <Route path='/' name={"Home"}>
           <SessionWebSocket />
-          <HomeContainer organization={organizations[0]} />
+          <DndProvider backend={HTML5Backend}>
+            <HomeContainer organization={organizations[0]} />
+          </DndProvider>
         </Route>
       ) : null}
     </Router>

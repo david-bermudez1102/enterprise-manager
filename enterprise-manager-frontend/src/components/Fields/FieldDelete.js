@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState, useEffect } from "react"
+import { Redirect, useRouteMatch } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { removeField } from "../../actions/fieldActions"
 
-export default class FieldDelete extends Component {
-  constructor() {
-    super();
-    this.state = { status: "deleting" };
-  }
+const FieldDelete = ({ fields, redirectTo }) => {
+  const dispatch = useDispatch()
+  const match = useRouteMatch()
 
-  componentDidMount() {
-    const { match, organizationId, resourceId, removeField } = this.props;
-    removeField(organizationId, resourceId, match.params.fieldId).then(action =>
-      this.setState({ status: action ? action.status : "deleted" })
-    );
-  }
+  const [deleted, setDeleted] = useState(false)
+  const field = fields.find(f => f.id === parseInt(match.params.fieldId))
+  useEffect(() => {
+    dispatch(
+      removeField({ organizationId: match.params.organizationId, ...field })
+    ).then(action => setDeleted(action ? true : false))
+  }, [])
 
-  render() {
-    const { redirectTo } = this.props;
-    return this.state.status === "deleted" ? <Redirect to={redirectTo} /> : null;
-  }
+  return deleted && <Redirect to={redirectTo} />
 }
+
+export default FieldDelete

@@ -4,8 +4,6 @@ import recordsSort from "./RecordsSort"
 import FilterOptions from "./RecordsFilter/FilterOptions/"
 import { Table, Pagination, Row, Col, Empty, Card } from "antd"
 import useRecordsList from "./hooks/useRecordsList"
-import { DndProvider } from "react-dnd"
-import HTML5Backend from "react-dnd-html5-backend"
 import { useFilterRecords } from "./hooks/useFilterRecords"
 import { fetchRecords } from "../../actions/recordActions"
 import { useDispatch } from "react-redux"
@@ -177,68 +175,61 @@ const RecordsList = props => {
                     span={24}
                     style={{ width: "100%", overflowX: "auto" }}
                     className={"scroller"}>
-                    <DndProvider backend={HTML5Backend}>
-                      <Table
-                        tableLayout={"auto"}
-                        loading={
-                          loadingInitialData ||
-                          loadingData ||
-                          loadingFilteredData
-                        }
-                        components={components}
-                        rowSelection={rowSelection}
-                        columns={[
-                          {
-                            title: "Actions",
-                            dataIndex: "",
-                            width: "150px",
-                            key: "x",
-                            render: (text, record) => (
-                              <RecordOptions
-                                resource={resource}
-                                record={record}
-                                showModal={showModal}
-                                setRecord={setRecord}
-                              />
-                            )
-                          },
-                          {
-                            key: `record_field_head_listing_id_${resource.id}`,
-                            title: "#",
-                            dataIndex: "listingId",
-                            sorter: true,
-                            width: "100px"
-                          },
-                          ...columns
-                        ]}
-                        dataSource={chunkOfRecords[page - 1]}
-                        pagination={false}
-                        onChange={(pagination, filters, sorter) => {
-                          filterRecords(filters)
-                          sorter.column
-                            ? handleSortBy(
-                                sorter.column.dataIndex,
-                                sorter.order
-                              )
-                            : handleSortBy("listingId")
-                        }}
-                        locale={{
-                          filterConfirm: "Ok",
-                          filterReset: "Reset",
-                          emptyText: (
-                            <Empty
-                              description={
-                                <>
-                                  There are no records for the current period of
-                                  time.
-                                </>
-                              }
-                              image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    <Table
+                      tableLayout={"auto"}
+                      loading={
+                        loadingInitialData || loadingData || loadingFilteredData
+                      }
+                      components={components}
+                      rowSelection={rowSelection}
+                      columns={[
+                        {
+                          title: "Actions",
+                          dataIndex: "",
+                          width: "150px",
+                          key: "x",
+                          render: (text, record) => (
+                            <RecordOptions
+                              resource={resource}
+                              record={record}
+                              showModal={showModal}
+                              setRecord={setRecord}
                             />
                           )
-                        }}
-                      />
-                    </DndProvider>
+                        },
+                        {
+                          key: `record_field_head_listing_id_${resource.id}`,
+                          title: "#",
+                          dataIndex: "listingId",
+                          sorter: true,
+                          width: "100px"
+                        },
+                        ...columns
+                      ]}
+                      dataSource={chunkOfRecords[page - 1]}
+                      pagination={false}
+                      onChange={(pagination, filters, sorter) => {
+                        filterRecords(filters)
+                        sorter.column
+                          ? handleSortBy(sorter.column.dataIndex, sorter.order)
+                          : handleSortBy("listingId")
+                      }}
+                      locale={{
+                        filterConfirm: "Ok",
+                        filterReset: "Reset",
+                        emptyText: (
+                          <Empty
+                            description={
+                              <>
+                                There are no records for the current period of
+                                time.
+                              </>
+                            }
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                          />
+                        )
+                      }}
+                    />
                   </Col>
                 </Row>
               </div>

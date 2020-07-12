@@ -12,6 +12,8 @@ class Field < ApplicationRecord
   serialize :combined_fields, Array
   
   before_create :generate_field_alias
+  before_create :generate_position
+
   after_save :nullify_form_alias, if: :saved_change_to_name?
   
   validates :name, presence: true
@@ -67,6 +69,11 @@ class Field < ApplicationRecord
     "/fields/#{id}-#{updated_at}"
   end
 
+  
+  private
 
+    def generate_position
+      self[:position] = form.fields.size
+    end
   
 end

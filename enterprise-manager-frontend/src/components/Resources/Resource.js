@@ -20,6 +20,7 @@ import {
 } from "@ant-design/icons"
 import StatisticsContainer from "../../containers/Records/Statistics"
 import ConnectionsContainer from "../../containers/Connections/ConnectionsContainer"
+import useUserPermission from "../Accounts/UserPermission/useUserPermission"
 
 const Resource = () => {
   const location = useLocation()
@@ -33,7 +34,10 @@ const Resource = () => {
   const resource = resources.find(
     resource => resource.formAlias === match.params.formAlias
   )
+
   const dispatch = useDispatch()
+
+  const resourcePermissions = useUserPermission({ payload: resource })
 
   useEffect(() => {
     if (resource) {
@@ -52,7 +56,7 @@ const Resource = () => {
         </span>
       )
     },
-    {
+    resourcePermissions.canRead && {
       path: `${match.url}/records`,
       tab: (
         <span>
@@ -61,7 +65,7 @@ const Resource = () => {
         </span>
       )
     },
-    {
+    resourcePermissions.canRead && {
       path: `${match.url}/statistics`,
       tab: (
         <span>
@@ -70,7 +74,7 @@ const Resource = () => {
         </span>
       )
     },
-    {
+    resourcePermissions.canCreate && {
       path: `${match.url}/new/fields/new`,
       tab: (
         <span>
@@ -79,7 +83,7 @@ const Resource = () => {
         </span>
       )
     },
-    {
+    resourcePermissions.canUpdate && {
       path: `${match.url}/settings`,
       tab: (
         <span>
@@ -96,7 +100,7 @@ const Resource = () => {
         <Card
           bordered={false}
           bodyStyle={{ paddingTop: 0, paddingBottom: 0, margin: 0 }}>
-          <PageTabs tabs={tabs} />
+          <PageTabs tabs={tabs} permission={resourcePermissions} />
         </Card>
       </Col>
       <Switch>

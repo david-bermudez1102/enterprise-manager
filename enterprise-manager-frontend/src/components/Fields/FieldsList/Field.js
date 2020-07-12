@@ -61,6 +61,7 @@ const Field = props => {
       }
     }
   }
+
   switch (field.fieldType) {
     case "selectable":
       inputField = (

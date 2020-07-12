@@ -9,12 +9,15 @@ import Title from "antd/lib/typography/Title"
 import { EyeTwoTone } from "@ant-design/icons"
 import useUserPermission from "../../Accounts/UserPermission/useUserPermission"
 import "./styles.scss"
+import MovableField from "./MovableField"
+import update from "immutability-helper"
 const pluralize = require("pluralize")
 
 const FieldsList = props => {
   const location = useLocation()
   const { match, resource, fields } = props
   const [state, setState] = useState([])
+  const [activeFields, setActiveFields] = useState(fields)
   const { recordFields } = useSelector(
     ({ recordFields }) => ({ recordFields }),
     shallowEqual
@@ -92,6 +95,19 @@ const FieldsList = props => {
     }
   ].filter(tab => tab)
 
+  const moveField = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragField = activeFields[dragIndex]
+      const newActiveFields = update(activeFields, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragField]
+        ]
+      })
+      setActiveFields(newActiveFields)
+    },
+    [activeFields]
+  )
   return (
     <Card
       bordered={false}
@@ -120,35 +136,44 @@ const FieldsList = props => {
           {fields.length > 0 ? (
             <Form
               className={"field-custom-form-item"}
+              style={{ userSelect: "none" }}
               name={`new_${resource.formAlias}`}
               form={form}
               onFinish={handleSubmit}
-              layout='vertical'>
-              {fields
+              layout='vertical'
+              draggable={false}>
+              {activeFields
                 .filter(f => f)
-                .map(field => {
+                .map((field, index) => {
                   const recordField = (recordFields[resource.id] || []).find(
                     f => f.fieldId === field.id
                   )
                   return recordField ? (
-                    <Field
-                      userPermission={userPermission}
+                    <MovableField
+                      permission={userPermission}
+                      resource={resource}
+                      activeFields={activeFields}
                       key={field.key}
-                      field={field}
-                      recordField={recordField}
-                      form={form}
-                      fields={
-                        field.fieldType === "key_field" ? fields : undefined
-                      }
-                      state={
-                        field.fieldType === "combined_field" ||
-                        field.fieldType === "key_field"
-                          ? state
-                          : undefined
-                      }
-                      match={match}
-                      handleChange={handleChange}
-                    />
+                      index={index}
+                      moveField={moveField}>
+                      <Field
+                        userPermission={userPermission}
+                        field={field}
+                        recordField={recordField}
+                        form={form}
+                        fields={
+                          field.fieldType === "key_field" ? fields : undefined
+                        }
+                        state={
+                          field.fieldType === "combined_field" ||
+                          field.fieldType === "key_field"
+                            ? state
+                            : undefined
+                        }
+                        match={match}
+                        handleChange={handleChange}
+                      />
+                    </MovableField>
                   ) : null
                 })}
               <Divider />

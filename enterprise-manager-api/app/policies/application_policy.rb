@@ -6,6 +6,10 @@ class ApplicationPolicy
     @record = record
   end
 
+  def record_permission?(privilege, exclusion_type)
+    record.permission.assignments.find_by(role: user.roles, "#{privilege}":true) && !record.exclusions.find_by(account: user, exclusion_type:exclusion_type)
+  end
+
   def page_permission?(page_name, privilege, exclusion_type)
     default_permission?(page_name, privilege, exclusion_type) || PagePermission.left_outer_joins(:assignments, :permission => :exclusions).where(assignments:{ role: user.roles, "#{privilege}":true }, page_name: page_name, organization: user.organization ).where.not(permissions:{ exclusions: user.exclusions.where(exclusion_type:exclusion_type) } ).size > 0
   end
@@ -23,11 +27,15 @@ class ApplicationPolicy
   end
 
   def create?
-    user.is_root || page_permission?(record.class.name, "create_privilege", "createPrivilege")
+    user.is_root || (page_permission?(record.class.name, "create_privilege", "createPrivilege") && record_permission?("create_privilege", "createPrivilege"))
   end
 
   def edit?
     update?
+  end
+
+  def update?
+    user.is_root || (page_permission?(record.class.name, "update_privilege", "updatePrivilege") && record_permission?("update_privilege", "updatePrivilege"))
   end
 
   def destroy?

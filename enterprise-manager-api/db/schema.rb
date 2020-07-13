@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_10_165952) do
+ActiveRecord::Schema.define(version: 2020_07_12_200838) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -142,6 +142,17 @@ ActiveRecord::Schema.define(version: 2020_07_10_165952) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_exclusions_on_account_id"
     t.index ["permission_id"], name: "index_exclusions_on_permission_id"
+  end
+
+  create_table "field_dependents", force: :cascade do |t|
+    t.integer "field_id"
+    t.integer "dependent_field_id"
+    t.integer "operation"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dependent_field_id"], name: "index_field_dependents_on_dependent_field_id"
+    t.index ["field_id"], name: "index_field_dependents_on_field_id"
   end
 
   create_table "fields", force: :cascade do |t|

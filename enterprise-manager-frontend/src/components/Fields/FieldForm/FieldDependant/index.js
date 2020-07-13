@@ -21,10 +21,18 @@ import {
 const FieldDependant = ({ field, resourceId, onChange }) => {
   const { fields } = useSelector(({ fields }) => ({ fields }), shallowEqual)
   const [options, setOptions] = useState(
-    (fields[resourceId] || []).map(f => ({
-      label: f.name,
-      value: f.id
-    }))
+    (fields[resourceId] || [])
+      .map(f => ({
+        label: f.name,
+        value: f.id
+      }))
+      .filter(f =>
+        field
+          ? !(field.fieldDependents || []).some(
+              dependent => f.value === dependent.dependentFieldId
+            )
+          : field
+      )
   )
 
   const operations = [
@@ -33,47 +41,56 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
     { label: "Concatenate", value: "concatenate" }
   ]
 
-  const [selected, setSelected] = useState([])
-  const [operation, setOperation] = useState()
-  const [dependents, setDependants] = useState([])
+  const [selected, setSelected] = useState(
+    (field.fieldDependents || []).map(dependent => ({
+      label: dependent.label,
+      value: dependent.dependentFieldId
+    }))
+  )
+  const [dependents, setDependants] = useState(field.fieldDependents || [])
 
   useEffect(() => {
-    onChange({ dependents })
+    onChange({ fieldDependentsAttributes: dependents })
   }, [dependents])
 
   const onSelectChange = (value, option) => {
     setOptions(options.filter(o => o.value !== value))
     setSelected([...selected, option])
-    setDependants([...dependents, { fieldId: value }])
+    setDependants([...dependents, { dependentFieldId: value }])
   }
 
   const handleOperationsChange = (value, option) => {
-    setOperation(value)
     setDependants(
       dependents.map(dependent =>
-        dependent.fieldId === option["data-field-id"]
-          ? { fieldId: option["data-field-id"], operation: value }
+        dependent.dependentFieldId === option["data-field-id"]
+          ? { dependentFieldId: option["data-field-id"], operation: value }
           : dependent
       )
     )
   }
 
   const removeDependant = dependent => {
-    setDependants(dependents.filter(d => d.fieldId !== dependent.value))
+    setDependants(
+      dependents.filter(d => d.dependentFieldId !== dependent.value)
+    )
     setOptions([...options, dependent])
     setSelected(selected.filter(o => o.value !== dependent.value))
   }
 
   const renderOperationField = dependentValue => {
+    const { operation, content } =
+      dependents.find(d => d.dependentFieldId === parseInt(dependentValue)) ||
+      {}
     const handleChange = content => {
       setDependants(
         dependents.map(dependent =>
-          dependent.fieldId === dependentValue
+          dependent.dependentFieldId === dependentValue
             ? { ...dependent, content }
             : dependent
         )
       )
     }
+
     const style = { width: "100%" }
     const name = `${operation}_${dependentValue}`
     const size = "small"
@@ -86,6 +103,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
             placeholder={"Enter value that will be added"}
             style={style}
             onChange={handleChange}
+            value={content}
           />
         )
       case "subtract":
@@ -96,6 +114,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
             placeholder={"Enter value that will be subtracted"}
             style={style}
             onChange={handleChange}
+            value={content}
           />
         )
       case "concatenate":
@@ -106,6 +125,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
             placeholder={"Enter string to concatenate"}
             style={style}
             onChange={e => handleChange(e.target.value)}
+            value={content}
           />
         )
       default:
@@ -143,10 +163,22 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
                   <CloseOutlined />
                 </Button>
                 {dependent.label}
+                {console.log(dependent)}
               </Col>
-              <Col span={8}>
+              <Col>
                 <Input.Group>
                   <Select
+                    value={
+                      (
+                        operations.find(o =>
+                          dependents.some(
+                            d =>
+                              d.dependentFieldId === dependent.value &&
+                              d.operation === o.value
+                          )
+                        ) || {}
+                      ).value
+                    }
                     size={"small"}
                     placeholder={"Select Operation"}
                     options={operations.map(o => ({

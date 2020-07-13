@@ -4,7 +4,13 @@ class FieldSerializer
   
   ##cache_options enabled: true, cache_length: 12.hours
   attributes :id, :name, :field_type, :form_id, :field_alias, :is_required, :is_uniq, :default_value, :zoho_field_name, :hidden_in_form, :hidden_in_records, :allow_updates, :read_only, :min_length, :max_length
-  
+
+  attribute :field_dependents, if: Proc.new { |field|field.field_dependents.size > 0 } do |object|
+    FieldDependentSerializer.new(object.field_dependents).serializable_hash[:data].map do |d|
+      d[:attributes]
+    end
+  end
+
   attribute :accepts_decimals, if: Proc.new { |field| field.field_type == "numeric_field" }
   attribute :combined_fields, if: Proc.new { |field| field.field_type == "combined_field" }
   attribute :field_format, if: Proc.new { |field| field.field_type == "combined_field" }

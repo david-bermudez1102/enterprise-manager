@@ -9,7 +9,8 @@ class Field < ApplicationRecord
   has_many :options, dependent: :nullify
   has_many :values, through: :record_field
   has_many :key_values, through: :record_key
-  has_many :field_dependencies
+  has_many :field_dependents, dependent: :destroy
+  
   serialize :combined_fields, Array
   
   before_create :generate_field_alias
@@ -27,6 +28,8 @@ class Field < ApplicationRecord
   accepts_nested_attributes_for :options, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == '_destroy' || value.blank? } }
 
   accepts_nested_attributes_for :record_key, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == '_destroy' || value.blank? } }
+
+  accepts_nested_attributes_for :field_dependents, allow_destroy: true
 
   def name
     self[:name].capitalize

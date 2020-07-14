@@ -85,7 +85,7 @@ const Field = props => {
       )
       break
     case "numeric_field":
-      inputField = <NumericField {...inputAttributes} />
+      inputField = <NumericField {...inputAttributes} state={props.state} />
       break
     case "date_field":
       inputField = <DateField {...inputAttributes} />

@@ -32,6 +32,10 @@ const FieldsList = props => {
     setState([])
   }, [resource])
 
+  useEffect(() => {
+    setActiveFields(fields)
+  }, [fields])
+
   const handleChange = newState => {
     setState([
       ...state.filter(v => v.recordFieldId !== newState.recordFieldId),
@@ -108,6 +112,8 @@ const FieldsList = props => {
     },
     [activeFields]
   )
+
+  console.log(state)
   return (
     <Card
       bordered={false}
@@ -164,12 +170,7 @@ const FieldsList = props => {
                         fields={
                           field.fieldType === "key_field" ? fields : undefined
                         }
-                        state={
-                          field.fieldType === "combined_field" ||
-                          field.fieldType === "key_field"
-                            ? state
-                            : undefined
-                        }
+                        state={state}
                         match={match}
                         handleChange={handleChange}
                       />

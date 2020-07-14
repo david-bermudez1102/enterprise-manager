@@ -12,11 +12,7 @@ import {
   Button,
   Tooltip
 } from "antd"
-import {
-  CloseCircleOutlined,
-  CloseOutlined,
-  QuestionCircleOutlined
-} from "@ant-design/icons"
+import { CloseOutlined, QuestionCircleOutlined } from "@ant-design/icons"
 
 const FieldDependant = ({ field, resourceId, onChange }) => {
   const { fields } = useSelector(({ fields }) => ({ fields }), shallowEqual)
@@ -38,16 +34,37 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
   const operations = [
     { label: "Add", value: "add" },
     { label: "Subtract", value: "subtract" },
-    { label: "Concatenate", value: "concatenate" }
+    { label: "Concatenate", value: "concatenate" },
+    { label: "Multiply", value: "multiply" },
+    { label: "Divide", value: "divide" },
+    {
+      label: "Replace",
+      value: "replace",
+      helper:
+        "Field value will be replaced with dependent's value when it is not empty or 0"
+    },
+    { label: "Value + dependent times", value: "dependent_times" }
   ]
 
   const [selected, setSelected] = useState(
     (field.fieldDependents || []).map(dependent => ({
+      id: dependent.id,
       label: dependent.label,
       value: dependent.dependentFieldId
     }))
   )
   const [dependents, setDependants] = useState(field.fieldDependents || [])
+
+  useEffect(() => {
+    setSelected(
+      (field.fieldDependents || []).map(dependent => ({
+        id: dependent.id,
+        label: dependent.label,
+        value: dependent.dependentFieldId
+      }))
+    )
+    setDependants(field.fieldDependents || [])
+  }, [field.id])
 
   useEffect(() => {
     onChange({ fieldDependentsAttributes: dependents })
@@ -63,7 +80,11 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
     setDependants(
       dependents.map(dependent =>
         dependent.dependentFieldId === option["data-field-id"]
-          ? { dependentFieldId: option["data-field-id"], operation: value }
+          ? {
+              id: dependent.id,
+              dependentFieldId: option["data-field-id"],
+              operation: value
+            }
           : dependent
       )
     )
@@ -94,46 +115,57 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
     const style = { width: "100%" }
     const name = `${operation}_${dependentValue}`
     const size = "small"
+    const inputProps = {
+      name,
+      size,
+      style,
+      onChange: handleChange,
+      value: content
+    }
     switch (operation) {
       case "add":
         return (
           <InputNumber
-            size={size}
-            name={name}
+            {...inputProps}
             placeholder={"Enter value that will be added"}
-            style={style}
-            onChange={handleChange}
-            value={content}
           />
         )
       case "subtract":
         return (
           <InputNumber
-            size={size}
-            name={name}
+            {...inputProps}
             placeholder={"Enter value that will be subtracted"}
-            style={style}
-            onChange={handleChange}
-            value={content}
           />
         )
+      case "divide":
+        return (
+          <InputNumber
+            {...inputProps}
+            placeholder={"Enter value that will be used to divide"}
+          />
+        )
+      case "multiply":
+        return (
+          <InputNumber
+            {...inputProps}
+            placeholder={"Enter value to multiply"}
+          />
+        )
+      case "dependent_times":
+        return <InputNumber {...inputProps} placeholder={"Enter value"} />
       case "concatenate":
         return (
           <Input
-            size={size}
-            name={name}
+            {...inputProps}
             placeholder={"Enter string to concatenate"}
-            style={style}
             onChange={e => handleChange(e.target.value)}
-            value={content}
           />
         )
+
       default:
         return null
     }
   }
-
-  console.log(dependents)
 
   return (
     <>
@@ -152,18 +184,17 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
         itemLayout={"horizontal"}
         size={"small"}
         dataSource={selected}
-        renderItem={dependent => (
+        renderItem={option => (
           <List.Item>
             <Row gutter={8} style={{ width: "100%" }} align={"middle"}>
               <Col>
                 <Button
                   type={"text"}
                   size={"small"}
-                  onClick={() => removeDependant(dependent)}>
+                  onClick={() => removeDependant(option)}>
                   <CloseOutlined />
                 </Button>
-                {dependent.label}
-                {console.log(dependent)}
+                {option.label}
               </Col>
               <Col>
                 <Input.Group>
@@ -173,7 +204,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
                         operations.find(o =>
                           dependents.some(
                             d =>
-                              d.dependentFieldId === dependent.value &&
+                              d.dependentFieldId === option.value &&
                               d.operation === o.value
                           )
                         ) || {}
@@ -182,19 +213,30 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
                     size={"small"}
                     placeholder={"Select Operation"}
                     options={operations.map(o => ({
-                      "data-field-id": dependent.value,
+                      "data-field-id": option.value,
                       ...o
                     }))}
                     onChange={handleOperationsChange}
                   />
-                  <Tooltip title={"The operation that will alter the field"}>
+                  <Tooltip
+                    title={
+                      (
+                        operations.find(o =>
+                          dependents.some(
+                            d =>
+                              d.dependentFieldId === option.value &&
+                              d.operation === o.value
+                          )
+                        ) || {}
+                      ).helper || "The operation that will alter the field"
+                    }>
                     <Button type={"text"} size={"small"}>
                       <QuestionCircleOutlined />
                     </Button>
                   </Tooltip>
                 </Input.Group>
               </Col>
-              <Col flex={"auto"}>{renderOperationField(dependent.value)}</Col>
+              <Col flex={"auto"}>{renderOperationField(option.value)}</Col>
             </Row>
           </List.Item>
         )}

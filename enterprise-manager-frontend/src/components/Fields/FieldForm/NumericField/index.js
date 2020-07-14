@@ -9,6 +9,8 @@ const NumericField = ({ field, fieldType, resourceId, onChange }) => {
     field,
     onChange
   })
+
+  console.log(field)
   return (
     <>
       <RadioWrapper

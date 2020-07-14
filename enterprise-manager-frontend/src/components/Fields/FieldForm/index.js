@@ -61,7 +61,7 @@ const FieldForm = props => {
       form.setFieldsValue(initalState)
     }
     // eslint-disable-next-line
-  }, [match])
+  }, [match.params])
 
   const onChange = state => {
     setFieldState(state)
@@ -108,7 +108,6 @@ const FieldForm = props => {
     { name: "allowUpdates", label: "Allow updates?" }
   ].filter(o => o)
 
-  console.log(fieldState)
   return (
     <Form
       form={form}

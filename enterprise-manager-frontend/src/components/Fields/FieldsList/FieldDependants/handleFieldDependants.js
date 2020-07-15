@@ -1,10 +1,16 @@
 import { useEffect, useState } from "react"
+import { useSelector, shallowEqual } from "react-redux"
 
-const useHandleFieldDependents = (fieldValue, fieldDependants, fields) => {
+const useHandleFieldDependents = (
+  fieldValue,
+  fieldDependants,
+  fieldsListState
+) => {
+  const { values } = useSelector(({ values }) => ({ values }), shallowEqual)
   const [initialValue, setInitialValue] = useState(fieldValue || 0)
 
   useEffect(() => {
-    const replaceableField = fields.find(
+    const replaceableField = fieldsListState.find(
       field =>
         (fieldDependants || []).some(
           fD =>
@@ -19,19 +25,36 @@ const useHandleFieldDependents = (fieldValue, fieldDependants, fields) => {
       )
     } else {
       const operate = async () => {
-        let finalValue = initialValue
-        ;(fields || []).forEach(f => {
+        setInitialValue(fieldValue || 0)
+        let finalValue = fieldValue || 0
+        ;(fieldsListState || []).forEach(f => {
           const fieldDependant = (fieldDependants || []).find(
             fD => fD.dependentFieldId === f.fieldId
           )
 
           if (fieldDependant && f.content) {
             const field =
-              (fields || []).find(
+              (fieldsListState || []).find(
                 field => field.fieldId === fieldDependant.dependentFieldId
               ) || {}
 
             switch (fieldDependant.operation) {
+              case "copy":
+                finalValue += parseInt(
+                  (values[fieldDependant.resourceFieldFormId].find(
+                    v => v.id === field.recordId
+                  ) || {})[fieldDependant.resourceFieldName]
+                )
+
+                console.log(
+                  parseInt(
+                    (values[fieldDependant.resourceFieldFormId].find(
+                      v => v.id === field.recordId
+                    ) || {})[fieldDependant.resourceFieldName]
+                  )
+                )
+
+                break
               case "add":
                 finalValue += parseInt(fieldDependant.content)
 
@@ -63,11 +86,7 @@ const useHandleFieldDependents = (fieldValue, fieldDependants, fields) => {
       }
       operate().then(res => setInitialValue(res))
     }
-  }, [fields])
-
-  useEffect(() => {
-    setInitialValue(fieldValue || 0)
-  }, [fieldValue, initialValue])
+  }, [fieldsListState])
 
   return initialValue
 }

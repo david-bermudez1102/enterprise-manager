@@ -25,9 +25,10 @@ class RecordFieldSerializer
         { id: value.id, 
           value: value.content, 
           zohoRecordId: value.record.zoho_integration_record.external_id,
+          recordId:value.record.id
         }
       else
-        { id: value.id, value: value.content }
+        { id: value.id, value: value.content, recordId:value.record.id }
       end
     end || [],
     resourceFieldId: object.field.selectable_resource.resource_field_id,

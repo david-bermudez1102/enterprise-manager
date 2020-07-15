@@ -16,7 +16,7 @@ const NumericField = props => {
   const [value, setValue] = useState()
   const [valueWithDependents, setValueWithDependents] = useState()
   const [isFocused, setIsFocused] = useState(false)
-  const handleFieldDependents = useHandleFieldDependents(
+  const fieldAfterDependents = useHandleFieldDependents(
     value,
     field.fieldDependents,
     state
@@ -25,7 +25,6 @@ const NumericField = props => {
   const handleChange = content => {
     if (isFocused) {
       setValue(content)
-      setValueWithDependents(content)
     }
     onChange({
       recordFieldId: props.name,
@@ -34,10 +33,10 @@ const NumericField = props => {
   }
 
   useEffect(() => {
-    if (field.fieldDependents && !isFocused && handleFieldDependents) {
-      setValueWithDependents(handleFieldDependents)
+    if (field.fieldDependents && !isFocused) {
+      setValueWithDependents(fieldAfterDependents)
     }
-  }, [handleFieldDependents])
+  }, [fieldAfterDependents])
 
   return (
     <FieldTypeWrapper
@@ -51,12 +50,11 @@ const NumericField = props => {
         onFocus={() => setIsFocused(true)}
         onBlur={() => {
           setIsFocused(false)
-          setValue(value)
         }}
         step={field.acceptsDecimals ? 0.1 : 1}
         style={{ width: "100%" }}
         onChange={handleChange}
-        value={valueWithDependents}
+        value={!isFocused ? valueWithDependents || value : value}
       />
     </FieldTypeWrapper>
   )

@@ -20,13 +20,15 @@ const SelectableField = props => {
       setState({
         recordFieldId: props.name,
         recordValueId: option ? option.id : undefined,
-        content: option ? option.value : undefined
+        content: option ? option.value : undefined,
+        recordId: option ? option["data-record-id"] : undefined
       })
     else
       setState({
         recordFieldId: props.name,
         recordOptionId: option ? option.id : undefined,
-        content: option ? option.value : undefined
+        content: option ? option.value : undefined,
+        recordId: option ? option["data-record-id"] : undefined
       })
     form.setFieldsValue({ [name]: value })
   }
@@ -61,6 +63,7 @@ const SelectableField = props => {
               <Select.Option
                 key={`selectable_option_${field.id}_${option.id}`}
                 id={option.id}
+                data-record-id={option.recordId}
                 value={option.value}>
                 {option.value}
               </Select.Option>
@@ -75,6 +78,7 @@ const SelectableField = props => {
               <Select.Option
                 key={`selectable_option_${field.id}_${option.id}`}
                 id={option.id}
+                data-record-id={option.recordId}
                 value={option.value}>
                 {option.value}
               </Select.Option>

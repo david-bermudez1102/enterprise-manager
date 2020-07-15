@@ -147,12 +147,14 @@ ActiveRecord::Schema.define(version: 2020_07_12_200838) do
   create_table "field_dependents", force: :cascade do |t|
     t.integer "field_id"
     t.integer "dependent_field_id"
+    t.integer "resource_field_id"
     t.integer "operation"
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dependent_field_id"], name: "index_field_dependents_on_dependent_field_id"
     t.index ["field_id"], name: "index_field_dependents_on_field_id"
+    t.index ["resource_field_id"], name: "index_field_dependents_on_resource_field_id"
   end
 
   create_table "fields", force: :cascade do |t|

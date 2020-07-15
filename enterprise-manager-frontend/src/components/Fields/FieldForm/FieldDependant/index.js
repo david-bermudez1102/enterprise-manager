@@ -43,7 +43,8 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       helper:
         "Field value will be replaced with dependent's value when it is not empty or 0"
     },
-    { label: "Value + dependent times", value: "dependent_times" }
+    { label: "Value + dependent times", value: "dependent_times" },
+    { label: "Copy", value: "copy" }
   ]
 
   const [selected, setSelected] = useState(
@@ -99,9 +100,10 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
   }
 
   const renderOperationField = dependentValue => {
-    const { operation, content } =
+    const { operation, content, resourceFieldId } =
       dependents.find(d => d.dependentFieldId === parseInt(dependentValue)) ||
       {}
+
     const handleChange = content => {
       setDependants(
         dependents.map(dependent =>
@@ -112,6 +114,20 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       )
     }
 
+    const handleSelectChange = resourceFieldId => {
+      setDependants(
+        dependents.map(dependent =>
+          dependent.dependentFieldId === dependentValue
+            ? { ...dependent, resourceFieldId }
+            : dependent
+        )
+      )
+    }
+
+    const field = (fields[resourceId] || []).find(
+      f => f.id === parseInt(dependentValue)
+    )
+
     const style = { width: "100%" }
     const name = `${operation}_${dependentValue}`
     const size = "small"
@@ -120,7 +136,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       size,
       style,
       onChange: handleChange,
-      value: content
+      value: content || resourceFieldId
     }
     switch (operation) {
       case "add":
@@ -153,6 +169,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
         )
       case "dependent_times":
         return <InputNumber {...inputProps} placeholder={"Enter value"} />
+
       case "concatenate":
         return (
           <Input
@@ -161,6 +178,27 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
             onChange={e => handleChange(e.target.value)}
           />
         )
+
+      case "copy":
+        console.log(dependents)
+        if (field.fieldType === "selectable") {
+          return (
+            <Select
+              {...inputProps}
+              placeholder={"Select field to copy"}
+              onChange={handleSelectChange}
+              options={fields[field.selectableResourceAttributes.formId]
+                .map(f =>
+                  f.formId ===
+                  parseInt(field.selectableResourceAttributes.formId)
+                    ? { value: f.id, label: f.name }
+                    : null
+                )
+                .filter(f => f)}
+            />
+          )
+        }
+        return null
 
       default:
         return null

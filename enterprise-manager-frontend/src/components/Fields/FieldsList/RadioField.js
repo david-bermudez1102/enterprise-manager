@@ -1,9 +1,10 @@
 import React, { useState } from "react"
 import FieldTypeWrapper from "../FieldTypeWrapper"
-import { Radio } from "antd"
+import { Radio, Button } from "antd"
+import { RedoOutlined } from "@ant-design/icons"
 
 const RadioField = props => {
-  const { field, onChange, editingMode, name, suffix, ...newProps } = props
+  const { field, onChange, editingMode, name, suffix } = props
   const [state, setState] = useState({
     recordFieldId: props.name,
     content: ""
@@ -20,6 +21,16 @@ const RadioField = props => {
     onChange(newState)
   }
 
+  const onClear = () => {
+    const newState = {
+      ...state,
+      content: undefined,
+      optionValueId: undefined
+    }
+    setState(newState)
+    onChange(newState)
+  }
+
   return (
     <FieldTypeWrapper
       editingMode={editingMode}
@@ -27,12 +38,16 @@ const RadioField = props => {
       field={field}
       suffix={suffix}>
       <Radio.Group
+        value={state.optionValueId}
         options={field.optionsAttributes.map(o => ({
           label: o.value,
           value: o.id
         }))}
         onChange={handleChange}
       />
+      <Button size={"small"} onClick={onClear} shape={"circle"}>
+        <RedoOutlined />
+      </Button>
     </FieldTypeWrapper>
   )
 }

@@ -19,7 +19,7 @@ const NumericField = props => {
   const fieldAfterDependents = useHandleFieldDependents(
     value,
     field.fieldDependents,
-    state
+    state.filter(f => f.fieldId !== field.id)
   )
 
   const handleChange = content => {
@@ -35,8 +35,10 @@ const NumericField = props => {
   useEffect(() => {
     if (field.fieldDependents && !isFocused) {
       setValueWithDependents(fieldAfterDependents)
+      handleChange(fieldAfterDependents)
     }
-  }, [fieldAfterDependents])
+    // eslint-disable-next-line
+  }, [fieldAfterDependents, isFocused])
 
   return (
     <FieldTypeWrapper
@@ -48,9 +50,7 @@ const NumericField = props => {
       <InputNumber
         {...newProps}
         onFocus={() => setIsFocused(true)}
-        onBlur={() => {
-          setIsFocused(false)
-        }}
+        onBlur={() => setIsFocused(false)}
         step={field.acceptsDecimals ? 0.1 : 1}
         style={{ width: "100%" }}
         onChange={handleChange}

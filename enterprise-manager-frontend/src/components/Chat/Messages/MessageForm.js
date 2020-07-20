@@ -45,6 +45,7 @@ const MessageForm = ({
           })
         )
     }
+    // eslint-disable-next-line
   }, [isTyping])
 
   const onFinish = data => {

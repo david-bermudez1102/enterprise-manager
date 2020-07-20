@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { Col, Row, Divider, Alert, Card } from "antd"
 import FieldForm from "../FieldForm"
 import Title from "antd/lib/typography/Title"

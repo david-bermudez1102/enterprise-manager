@@ -4,7 +4,7 @@ import NumericFieldOptions from "./NumericFieldOptions"
 import { useHandleChange } from "../../Hooks/useHandleChange"
 import RadioWrapper from "../RadioWrapper"
 
-const NumericField = ({ field, fieldType, resourceId, onChange }) => {
+const NumericField = ({ field, fieldType, resourceId, onChange, form }) => {
   const { handleChange, handleNumericField } = useHandleChange({
     field,
     onChange
@@ -23,6 +23,7 @@ const NumericField = ({ field, fieldType, resourceId, onChange }) => {
         Numeric Field
       </RadioWrapper>
       <NumericFieldOptions
+        form={form}
         resourceId={resourceId}
         fieldType={fieldType}
         handleChange={handleNumericField}

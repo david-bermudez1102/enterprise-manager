@@ -73,6 +73,7 @@ const ProfileForm = props => {
 
   useEffect(() => {
     form.setFieldsValue(currentUser)
+    // eslint-disable-next-line
   }, [currentUser])
 
   return (

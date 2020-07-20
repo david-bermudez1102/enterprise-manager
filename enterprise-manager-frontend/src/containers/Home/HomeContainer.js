@@ -49,6 +49,7 @@ const HomeContainer = ({ organization }) => {
 
   useEffect(() => {
     if (session.isLoggedIn) dispatch(fetchPagePermissions(organization.id))
+    // eslint-disable-next-line
   }, [session, organization])
 
   if (organizations.length === 0 && location.pathname !== "/organizations/new")

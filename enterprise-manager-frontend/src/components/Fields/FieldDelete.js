@@ -11,8 +11,12 @@ const FieldDelete = ({ fields, redirectTo }) => {
   const field = fields.find(f => f.id === parseInt(match.params.fieldId))
   useEffect(() => {
     dispatch(
-      removeField({ organizationId: match.params.organizationId, ...field })
+      removeField({
+        organizationId: match.params.organizationId,
+        ...field
+      })
     ).then(action => setDeleted(action ? true : false))
+    // eslint-disable-next-line
   }, [])
 
   return deleted && <Redirect to={redirectTo} />

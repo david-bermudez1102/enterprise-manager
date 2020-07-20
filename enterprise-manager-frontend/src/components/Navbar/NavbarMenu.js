@@ -35,7 +35,6 @@ const NavbarMenu = ({ location, session, links, layout }) => {
                       <Button
                         type='link'
                         icon={React.cloneElement(link.icon, {
-                          ...link.icon.props,
                           style: { ...link.icon.props.style, margin: 0 }
                         })}
                         style={{
@@ -72,13 +71,8 @@ const NavbarMenu = ({ location, session, links, layout }) => {
                         <Button
                           type='link'
                           icon={React.cloneElement(link.icon, {
-                            ...link.icon.props,
                             style: { ...link.icon.props.style, margin: 0 }
                           })}
-                          style={{
-                            padding: 0,
-                            color: "inherit"
-                          }}
                           style={{
                             padding: 0,
                             color: "inherit"
@@ -128,7 +122,6 @@ const NavbarMenu = ({ location, session, links, layout }) => {
                   <Button
                     type={"link"}
                     icon={React.cloneElement(link.icon, {
-                      ...link.icon.props,
                       style: { ...link.icon.props.style, margin: 0 }
                     })}
                     style={{

@@ -15,7 +15,10 @@ const FieldValueGenerator = props => {
       (combinedFields || [])
         .map(c =>
           c === "createdAt" || c === "updatedAt"
-            ? { fieldType: "date", content: format(new Date(), "MM/dd/yyyy") }
+            ? {
+                fieldType: "date",
+                content: format(new Date(), "MM/dd/yyyy")
+              }
             : (state || []).find(f => f.recordFieldId === c)
         )
         .filter(c => c)
@@ -28,10 +31,12 @@ const FieldValueGenerator = props => {
         .filter(c => c)
     )
     setValue(newValue)
+    // eslint-disable-next-line
   }, [state, combinedFields, fieldFormat])
 
   useEffect(() => {
     onChange(value)
+    // eslint-disable-next-line
   }, [value])
 
   return (

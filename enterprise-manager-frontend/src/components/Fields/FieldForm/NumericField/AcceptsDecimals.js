@@ -3,7 +3,13 @@ import { useState } from "react"
 import { Col, Checkbox, Divider } from "antd"
 import FieldDependant from "../FieldDependant"
 
-const AcceptsDecimals = ({ handleChange, resourceId, fieldType, field }) => {
+const AcceptsDecimals = ({
+  handleChange,
+  resourceId,
+  fieldType,
+  field,
+  form
+}) => {
   const [acceptsDecimals, setAcceptsDecimals] = useState(field.acceptsDecimals)
 
   const handleCheckBoxChange = e => {
@@ -22,6 +28,7 @@ const AcceptsDecimals = ({ handleChange, resourceId, fieldType, field }) => {
       </Checkbox>
       <Divider />
       <FieldDependant
+        form={form}
         field={field}
         resourceId={resourceId}
         onChange={handleChange}

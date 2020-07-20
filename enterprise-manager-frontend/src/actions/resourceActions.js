@@ -1,4 +1,6 @@
 import { remove, update, add, getAll } from "./fetchActions"
+import { handleErrors } from "./handleErrors"
+import snakecaseKeys from "snakecase-keys"
 
 export const addResource = resource => dispatch =>
   add(
@@ -30,15 +32,24 @@ export const updateResource = resource => {
 }
 
 export const sortFields = resource => dispatch =>
-  update(
-    dispatch,
+  fetch(
     `/api/v1/organizations/${resource.organizationId}/forms/${resource.id}/sort`,
-    { form: resource },
-    resource => {
-      dispatch({ type: "UPDATE_RESOURCE", resource })
-      return resource
+    {
+      credentials: "include",
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(
+        snakecaseKeys({ form: resource }, { exclude: ["_destroy"] })
+      )
     }
   )
+    .then(handleErrors)
+    .then(resource => {
+      dispatch({ type: "UPDATE_RESOURCE", resource })
+      return resource
+    })
 
 export const removeResource = (organizationId, id) => {
   return dispatch => {

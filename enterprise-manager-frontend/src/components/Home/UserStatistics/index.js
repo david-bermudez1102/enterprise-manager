@@ -1,7 +1,7 @@
 import React from "react"
 import { Statistic, Row, Col } from "antd"
 import IconWrapper from "../../Icons/IconWrapper"
-import { blue, volcano, gold } from "@ant-design/colors"
+import { blue, volcano } from "@ant-design/colors"
 
 const UserStatistics = () => {
   return (

@@ -148,6 +148,9 @@ ActiveRecord::Schema.define(version: 2020_07_12_200838) do
     t.integer "field_id"
     t.integer "dependent_field_id"
     t.integer "resource_field_id"
+    t.integer "sub_dependent_id"
+    t.integer "sub_dependent_option_id"
+    t.boolean "all_values_same_operation", default: true, null: false
     t.integer "operation"
     t.text "content"
     t.datetime "created_at", null: false
@@ -155,6 +158,8 @@ ActiveRecord::Schema.define(version: 2020_07_12_200838) do
     t.index ["dependent_field_id"], name: "index_field_dependents_on_dependent_field_id"
     t.index ["field_id"], name: "index_field_dependents_on_field_id"
     t.index ["resource_field_id"], name: "index_field_dependents_on_resource_field_id"
+    t.index ["sub_dependent_id"], name: "index_field_dependents_on_sub_dependent_id"
+    t.index ["sub_dependent_option_id"], name: "index_field_dependents_on_sub_dependent_option_id"
   end
 
   create_table "fields", force: :cascade do |t|

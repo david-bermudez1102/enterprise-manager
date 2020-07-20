@@ -1,6 +1,6 @@
 import React from "react"
 import { Switch, useLocation } from "react-router-dom"
-import { updateField, removeField } from "../../actions/fieldActions"
+import { updateField } from "../../actions/fieldActions"
 import FieldDelete from "../../components/Fields/FieldDelete"
 import FieldsList from "../../components/Fields/FieldsList/FieldsList"
 import Route from "../../Router/Route"

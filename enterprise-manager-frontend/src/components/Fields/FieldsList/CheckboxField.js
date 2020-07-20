@@ -3,7 +3,7 @@ import { Checkbox } from "antd"
 import FieldTypeWrapper from "../FieldTypeWrapper"
 
 const CheckboxField = props => {
-  const { field, editingMode, onChange, name, suffix, ...newProps } = props
+  const { field, editingMode, onChange, name, suffix } = props
   const [state, setState] = useState({
     recordFieldId: name,
     content: "",

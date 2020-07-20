@@ -128,4 +128,4 @@ const Field = props => {
   return inputField
 }
 
-export default Field
+export default React.memo(Field)

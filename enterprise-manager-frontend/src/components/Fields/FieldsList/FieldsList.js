@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom"
 import { Empty, Card, Button, Divider, Form, Col } from "antd"
 import zohoBooksIcon from "../../../containers/ZohoBooks/favicon.ico"
 import Title from "antd/lib/typography/Title"
-import { EyeTwoTone } from "@ant-design/icons"
+import { EyeTwoTone, RedoOutlined } from "@ant-design/icons"
 import useUserPermission from "../../Accounts/UserPermission/useUserPermission"
 import "./styles.scss"
 import MovableField from "./MovableField"
@@ -36,17 +36,20 @@ const FieldsList = props => {
     setActiveFields(fields)
   }, [fields])
 
-  const handleChange = newState => {
-    setState([
-      ...state.filter(v => v.recordFieldId !== newState.recordFieldId),
-      {
-        ...recordFields[resource.id].find(
-          rF => rF.id === newState.recordFieldId
-        ),
-        ...newState
-      }
-    ])
-  }
+  const handleChange = useCallback(
+    newState => {
+      setState([
+        ...state.filter(v => v.recordFieldId !== newState.recordFieldId),
+        {
+          ...recordFields[resource.id].find(
+            rF => rF.id === newState.recordFieldId
+          ),
+          ...newState
+        }
+      ])
+    },
+    [state, recordFields, resource.id]
+  )
 
   const handleSubmit = useCallback(
     data => {
@@ -91,7 +94,7 @@ const FieldsList = props => {
           title='Connect to Zoho Books'>
           <img
             src={zohoBooksIcon}
-            style={{ width: "24px", marginTop: -10 }}
+            style={{ width: "24px", marginTop: -5.5 }}
             alt='Connect with ZohoBooks'
           />
         </Link>
@@ -114,6 +117,7 @@ const FieldsList = props => {
   )
 
   console.log(state)
+
   return (
     <Card
       bordered={false}
@@ -186,7 +190,10 @@ const FieldsList = props => {
                   style={{ flex: 1, marginRight: 5 }}>
                   Create {pluralize.singular(resource.name)}
                 </Button>
-                <Button style={{ flex: 1 }} onClick={() => form.resetFields()}>
+                <Button
+                  style={{ flex: 1 }}
+                  onClick={() => form.resetFields()}
+                  icon={<RedoOutlined />}>
                   Reset
                 </Button>
               </Form.Item>

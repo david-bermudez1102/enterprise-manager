@@ -37,12 +37,14 @@ const Conversation = ({ conversation }) => {
     setVirtualizedMessages(
       conversation.messages.slice(-virtualizedMessages.length)
     )
+    // eslint-disable-next-line
   }, [conversation.messages])
 
   useLayoutEffect(() => {
     if (isAtBottom && messagesEndRef) {
       messagesEndRef.scrollIntoView({ block: "end" })
     }
+    // eslint-disable-next-line
   }, [isAtBottom, virtualizedMessages])
 
   useLayoutEffect(() => {
@@ -52,6 +54,7 @@ const Conversation = ({ conversation }) => {
           m => m.account.id !== session.currentUser.id && !m.isRead
         ).length
       )
+    // eslint-disable-next-line
   }, [conversation.messages])
 
   useLayoutEffect(() => {
@@ -65,6 +68,7 @@ const Conversation = ({ conversation }) => {
     } else if (isAtBottom) {
       setMessages(conversation.messages)
     }
+    // eslint-disable-next-line
   }, [isAtBottom, conversation.messages])
 
   const onScroll = event => {

@@ -2,11 +2,14 @@ import React, { useState } from "react"
 import { useDrag, useDrop } from "react-dnd"
 import { useDispatch } from "react-redux"
 import { sortFields } from "../../../../actions/resourceActions"
+import { MenuOutlined } from "@ant-design/icons"
 
 const style = {
   padding: 0,
   margin: 0,
-  cursor: "move"
+  display: "flex",
+  flexWrap: "no-wrap",
+  flex: 1
 }
 
 const MovableField = ({
@@ -80,8 +83,25 @@ const MovableField = ({
         ...style,
         opacity: isDragging ? 0.2 : 1
       }}
-      ref={setRef}>
-      {children}
+      ref={drop}>
+      <div
+        style={{
+          display: "flex",
+          cursor: "move",
+          width: 30,
+          paddingTop: 10,
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+        ref={setRef}>
+        <MenuOutlined />
+      </div>
+      <div
+        style={{
+          flex: 1
+        }}>
+        {children}
+      </div>
     </div>
   ) : (
     children

@@ -4,6 +4,7 @@ import TextArea from "antd/lib/input/TextArea"
 
 const TextAreaField = props => {
   const { field, name, editingMode, onChange, suffix, ...newProps } = props
+
   const handleChange = e => {
     onChange({
       recordFieldId: props.name,
@@ -17,9 +18,9 @@ const TextAreaField = props => {
       name={name}
       field={field}
       suffix={suffix}>
-      <TextArea onChange={handleChange} allowClear autoSize {...newProps} />
+      <TextArea {...newProps} onBlur={handleChange} allowClear autoSize />
     </FieldTypeWrapper>
   )
 }
 
-export default TextAreaField
+export default React.memo(TextAreaField)

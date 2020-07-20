@@ -28,4 +28,4 @@ const FieldTypeWrapper = ({
     </Form.Item>
   )
 }
-export default FieldTypeWrapper
+export default React.memo(FieldTypeWrapper)

@@ -84,6 +84,7 @@ const FieldForm = props => {
     field,
     fieldType: fieldState.fieldType || "",
     resourceId,
+    form,
     onChange
   }
 
@@ -107,6 +108,8 @@ const FieldForm = props => {
     },
     { name: "allowUpdates", label: "Allow updates?" }
   ].filter(o => o)
+
+  console.log(fieldState)
 
   return (
     <Form

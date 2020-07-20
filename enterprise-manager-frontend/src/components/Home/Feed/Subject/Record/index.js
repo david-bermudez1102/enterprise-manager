@@ -3,7 +3,7 @@ import capitalize from "capitalize"
 import Activiy from "../CommentSubject/Activity"
 
 const RecordSubject = props => {
-  const { author, payload, ...restOfProps } = props
+  const { author, payload } = props
   let content
 
   switch (props.action) {

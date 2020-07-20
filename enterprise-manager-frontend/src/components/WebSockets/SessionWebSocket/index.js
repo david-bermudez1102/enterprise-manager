@@ -27,6 +27,7 @@ const SessionWebSocket = props => {
         }
       }
     )
+    // eslint-disable-next-line
   }, [])
   return <></>
 }

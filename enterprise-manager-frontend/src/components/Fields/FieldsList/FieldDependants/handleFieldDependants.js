@@ -41,12 +41,22 @@ const useHandleFieldDependents = (
                 (fieldsListState || []).find(
                   field => field.fieldId === fieldDependant.dependentFieldId
                 ) || {}
-              const dependentContent =
-                fieldDependant.content !== "" && fieldDependant.content
-                  ? fieldDependant.content
-                  : f.content
 
-              switch (fieldDependant.operation) {
+              const subDependent =
+                (fieldDependant.subDependentsAttributes || []).find(
+                  sD => f.optionValueId === sD.subDependentOptionId
+                ) || {}
+
+              const dependentContent =
+                fieldDependant.content !== "" &&
+                fieldDependant.content &&
+                !fieldDependant.subDependentsAttributes
+                  ? fieldDependant.content
+                  : subDependent.content || f.content
+
+              console.log(dependentContent)
+
+              switch (subDependent.operation || fieldDependant.operation) {
                 case "copy":
                   finalValue +=
                     parseInt(

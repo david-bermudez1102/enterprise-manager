@@ -40,5 +40,20 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      const isLocalhost = (
+        window.location.hostname === "localhost" ||
+          window.location.hostname === "[::1]" ||
+          window.location.hostname.match(
+            /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
+          )
+      );
+      if (
+        !isLocalhost &&
+        typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object"
+      ) {
+        window.__REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function () {};
+      }
+    </script>
   </body>
 </html>

@@ -64,7 +64,16 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
     }))
   )
   const [dependents, setDependants] = useState(field.fieldDependents || [])
-  const [allValuesSameOp, setAllValuesSameOp] = useState({})
+  const [allValuesSameOperation, setAllValuesSameOperation] = useState({
+    ...(field.fieldDependents || []).reduce(
+      (f, memo) => ({
+        [memo.id]: memo.allValuesSameOperation
+      }),
+      {}
+    )
+  })
+
+  console.log(allValuesSameOperation)
 
   useEffect(() => {
     setSelected(
@@ -101,8 +110,8 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
         _destroy: undefined
       }
     ])
-    setAllValuesSameOp({
-      ...allValuesSameOp,
+    setAllValuesSameOperation({
+      ...allValuesSameOperation,
       [value]: ["radio", "checkbox"].includes(fieldDependent.fieldType)
     })
   }
@@ -156,8 +165,19 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
     )
   }
 
+  const handleAllValuesSameOperation = (e, dependentId) => {
+    setDependants(
+      dependents.map(d =>
+        d.dependentFieldId === dependentId
+          ? { ...d, allValuesSameOperation: e.target.checked }
+          : d
+      )
+    )
+    setAllValuesSameOperation({
+      [dependentId]: e.target.checked
+    })
+  }
   const renderOperationField = (dependentValue, subDependentOptionId) => {
-    console.log(subDependentOptionId)
     const { operation, content, resourceFieldId, subDependentsAttributes } =
       dependents.find(d => d.dependentFieldId === parseInt(dependentValue)) ||
       {}
@@ -165,6 +185,8 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       (subDependentsAttributes || []).find(
         sD => sD.subDependentOptionId === parseInt(subDependentOptionId)
       ) || {}
+
+    console.log(subDependent)
 
     const handleChange = content => {
       setDependants(
@@ -202,7 +224,9 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
     )
 
     const style = { width: "100%" }
-    const name = `${operation}_${dependentValue}`
+    const name = `${subDependent.operation || operation}_${
+      subDependentOptionId || dependentValue
+    }`
     const size = "small"
     const inputProps = {
       name,
@@ -212,7 +236,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       value: subDependent.content || content || resourceFieldId,
       allowClear: true
     }
-    console.log(inputProps)
+
     switch (subDependent.operation || operation) {
       case "add":
         return (
@@ -294,16 +318,14 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
   return (
     <>
       <Form.Item
-        name={"dependent_fields"}
         label={"Dependants"}
         help={"Every dependent will alter the field value"}
-        required={false}
         initialValue={null}>
         <Select
-          required
           onChange={onSelectChange}
           placeholder={"Select"}
           options={options}
+          value={null}
         />
       </Form.Item>
       <Divider />
@@ -323,6 +345,10 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
           const fieldDependent = (fields[resourceId] || []).find(
             f => f.id === parseInt(option.value)
           )
+
+          const isAddingSubDependant =
+            !allValuesSameOperation[fieldDependent.id] &&
+            ["radio", "checkbox"].includes(fieldDependent.fieldType)
 
           return (
             <List.Item>
@@ -345,53 +371,78 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
                 {fieldDependent.fieldType === "radio" && (
                   <Col span={24}>
                     <Checkbox
-                      name={"allValuesSameOp"}
-                      defaultChecked={true}
+                      name={"allValuesSameOperation"}
+                      defaultChecked={
+                        dependents.some(
+                          d => d.dependentFieldId === option.value && d.id
+                        )
+                          ? dependents.find(
+                              d => d.dependentFieldId === option.value && d.id
+                            ).allValuesSameOperation
+                          : true
+                      }
                       onChange={e =>
-                        setAllValuesSameOp({
-                          [fieldDependent.id]: e.target.checked
-                        })
+                        handleAllValuesSameOperation(e, fieldDependent.id)
                       }>
                       All values have the same operation
                     </Checkbox>
                   </Col>
                 )}
-                {(!allValuesSameOp[fieldDependent.id]
+                {(isAddingSubDependant
                   ? fieldDependent.optionsAttributes || []
                   : [option]
-                ).map((o, i) => (
-                  <React.Fragment
-                    key={`operation_dependent_${i}-${fieldDependent.id}`}>
-                    <Col span={12}>
-                      <Select
-                        required
-                        value={operation.value}
-                        size={"small"}
-                        placeholder={"Select Operation"}
-                        options={operations.map(operation => ({
-                          ...operation,
-                          "data-field-id": option.value,
-                          "data-option-id":
-                            ["radio", "checkbox"].includes(
-                              fieldDependent.fieldType
-                            ) && !allValuesSameOp[fieldDependent.id]
-                              ? o.id
-                              : undefined
-                        }))}
-                        onChange={
+                ).map((o, i) => {
+                  const currentSubDependent = (
+                    dependents.find(
+                      d => d.dependentFieldId === fieldDependent.id
+                    ).subDependentsAttributes || []
+                  ).find(sD => sD.subDependentOptionId === o.id)
+
+                  const subDependentOperation =
+                    (isAddingSubDependant
+                      ? operations.find(
+                          op => op.value === currentSubDependent.operation
+                        )
+                      : null) || {}
+
+                  return (
+                    <React.Fragment
+                      key={`operation_dependent_${i}-${fieldDependent.id}`}>
+                      <Col xxl={12} lg={7} md={24}>
+                        {!allValuesSameOperation[fieldDependent.id] &&
                           ["radio", "checkbox"].includes(
                             fieldDependent.fieldType
-                          ) && !allValuesSameOp[fieldDependent.id]
-                            ? handleSubDependentsOperationsChange
-                            : handleOperationsChange
-                        }
-                      />
-                    </Col>
-                    <Col flex={"auto"}>
-                      {renderOperationField(option.value, o.id)}
-                    </Col>
-                  </React.Fragment>
-                ))}
+                          ) && <>{o.value}</>}
+                        <Select
+                          style={{ width: "100%" }}
+                          value={subDependentOperation.value || operation.value}
+                          size={"small"}
+                          placeholder={"Select Operation"}
+                          options={operations.map(operation => ({
+                            ...operation,
+                            "data-field-id": option.value,
+                            "data-option-id":
+                              ["radio", "checkbox"].includes(
+                                fieldDependent.fieldType
+                              ) && !allValuesSameOperation[fieldDependent.id]
+                                ? o.id
+                                : undefined
+                          }))}
+                          onChange={
+                            ["radio", "checkbox"].includes(
+                              fieldDependent.fieldType
+                            ) && !allValuesSameOperation[fieldDependent.id]
+                              ? handleSubDependentsOperationsChange
+                              : handleOperationsChange
+                          }
+                        />
+                      </Col>
+                      <Col flex={"auto"} style={{ alignItems: "end" }}>
+                        {renderOperationField(option.value, o.id)}
+                      </Col>
+                    </React.Fragment>
+                  )
+                })}
 
                 <Col>
                   <Tooltip

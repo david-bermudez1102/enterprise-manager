@@ -7,6 +7,8 @@ class CreateFieldDependents < ActiveRecord::Migration[5.2]
       t.references :sub_dependent
       t.references :sub_dependent_option
       t.boolean :all_values_same_operation, null: false, default:true
+      t.boolean :is_percentage, null: false, default:false
+      t.boolean :set_as_start_value, null: false, default:false
       t.integer :operation
       t.text :content
 

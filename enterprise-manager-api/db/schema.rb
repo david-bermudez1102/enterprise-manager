@@ -151,6 +151,8 @@ ActiveRecord::Schema.define(version: 2020_07_12_200838) do
     t.integer "sub_dependent_id"
     t.integer "sub_dependent_option_id"
     t.boolean "all_values_same_operation", default: true, null: false
+    t.boolean "is_percentage", default: false, null: false
+    t.boolean "set_as_start_value", default: false, null: false
     t.integer "operation"
     t.text "content"
     t.datetime "created_at", null: false

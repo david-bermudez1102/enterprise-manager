@@ -54,24 +54,37 @@ const useHandleFieldDependents = (
                   ? fieldDependant.content
                   : subDependent.content || f.content
 
-              console.log(dependentContent)
+              const copy =
+                parseInt(
+                  ((values[fieldDependant.resourceFieldFormId] || []).find(
+                    v => v.id === field.recordId
+                  ) || {})[fieldDependant.resourceFieldName]
+                ) || 0
+
+              const isPercentage =
+                subDependent.isPercentage || fieldDependant.isPercentage
 
               switch (subDependent.operation || fieldDependant.operation) {
                 case "copy":
-                  finalValue +=
-                    parseInt(
-                      ((values[fieldDependant.resourceFieldFormId] || []).find(
-                        v => v.id === field.recordId
-                      ) || {})[fieldDependant.resourceFieldName]
-                    ) || 0
-
+                  finalValue += copy
                   break
                 case "add":
-                  finalValue += parseInt(dependentContent)
+                  finalValue +=
+                    field.fieldType === "selectable"
+                      ? copy
+                      : isPercentage
+                      ? (parseInt(dependentContent) * finalValue) / 100
+                      : parseInt(dependentContent)
 
                   break
                 case "subtract":
-                  finalValue -= parseInt(dependentContent)
+                  finalValue -=
+                    field.fieldType === "selectable"
+                      ? copy
+                      : isPercentage
+                      ? (parseInt(dependentContent) * finalValue) / 100
+                      : parseInt(dependentContent)
+                  console.log(finalValue)
                   break
                 case "multiply":
                   finalValue *= parseInt(dependentContent)

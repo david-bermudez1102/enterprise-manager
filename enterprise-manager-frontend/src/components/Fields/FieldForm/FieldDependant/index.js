@@ -43,6 +43,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
   const { fields } = useSelector(({ fields }) => ({ fields }), shallowEqual)
   const [options, setOptions] = useState(
     (fields[resourceId] || [])
+      .filter(f => f.id !== field.id)
       .map(f => ({
         label: f.name,
         value: f.id
@@ -72,8 +73,6 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       {}
     )
   })
-
-  console.log(allValuesSameOperation)
 
   useEffect(() => {
     setSelected(
@@ -141,6 +140,9 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
                   s => s.subDependentOptionId !== option["data-option-id"]
                 ),
                 {
+                  ...(dependent.subDependentsAttributes || []).find(
+                    s => s.subDependentOptionId === option["data-option-id"]
+                  ),
                   subDependentOptionId: option["data-option-id"],
                   operation: value
                 }
@@ -177,16 +179,21 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       [dependentId]: e.target.checked
     })
   }
+
   const renderOperationField = (dependentValue, subDependentOptionId) => {
-    const { operation, content, resourceFieldId, subDependentsAttributes } =
+    const {
+      operation,
+      content,
+      resourceFieldId,
+      isPercentage,
+      subDependentsAttributes
+    } =
       dependents.find(d => d.dependentFieldId === parseInt(dependentValue)) ||
       {}
     const subDependent =
       (subDependentsAttributes || []).find(
         sD => sD.subDependentOptionId === parseInt(subDependentOptionId)
       ) || {}
-
-    console.log(subDependent)
 
     const handleChange = content => {
       setDependants(
@@ -219,6 +226,29 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       )
     }
 
+    const handleIsPercentageChange = e => {
+      setDependants(
+        dependents.map(dependent => {
+          if (
+            dependent.dependentFieldId === dependentValue &&
+            !subDependentOptionId
+          )
+            return { ...dependent, isPercentage: e.target.checked }
+          else if (subDependentOptionId)
+            return {
+              ...dependent,
+              subDependentsAttributes: subDependentsAttributes.map(sD =>
+                sD.subDependentOptionId === parseInt(subDependentOptionId)
+                  ? { ...sD, isPercentage: e.target.checked }
+                  : sD
+              )
+            }
+
+          return dependent
+        })
+      )
+    }
+
     const fieldDependent = (fields[resourceId] || []).find(
       f => f.id === parseInt(dependentValue)
     )
@@ -233,82 +263,124 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       size,
       style,
       onChange: handleChange,
-      value: subDependent.content || content || resourceFieldId,
+      value: subDependent.content || content,
       allowClear: true
     }
+
+    let selectable =
+      fieldDependent.fieldType === "selectable" ? (
+        <Select
+          {...inputProps}
+          value={resourceFieldId}
+          placeholder={"Select field"}
+          onChange={handleSelectChange}
+          options={fields[fieldDependent.selectableResourceAttributes.formId]
+            .map(f =>
+              f.formId ===
+              parseInt(fieldDependent.selectableResourceAttributes.formId)
+                ? { value: f.id, label: f.name }
+                : null
+            )
+            .filter(f => f)}
+        />
+      ) : null
+
+    let isPercentageBox = (
+      <Checkbox
+        onChange={handleIsPercentageChange}
+        checked={subDependent.isPercentage || isPercentage}>
+        Percentage value?
+        <Tooltip
+          title={
+            <>
+              If true, the percentage will be calculated based on the total
+              input's field and the then the operation will be performed(added,
+              substracted, etc)
+            </>
+          }>
+          <QuestionCircleOutlined />
+        </Tooltip>
+      </Checkbox>
+    )
 
     switch (subDependent.operation || operation) {
       case "add":
         return (
-          <InputNumber
-            {...inputProps}
-            placeholder={"Enter value that will be added"}
-          />
+          <>
+            {selectable}
+            <InputNumber
+              {...inputProps}
+              placeholder={"Enter value that will be added"}
+            />
+            {isPercentageBox}
+          </>
         )
       case "subtract":
         return (
-          <InputNumber
-            {...inputProps}
-            placeholder={"Enter value that will be subtracted"}
-          />
+          <>
+            {selectable}
+            <InputNumber
+              {...inputProps}
+              placeholder={"Enter value that will be subtracted"}
+            />
+            {isPercentageBox}
+          </>
         )
       case "divide":
         return (
-          <InputNumber
-            {...inputProps}
-            placeholder={"Enter value that will be used to divide"}
-          />
+          <>
+            {selectable}
+            <InputNumber
+              {...inputProps}
+              placeholder={"Enter value that will be used to divide"}
+            />
+            {isPercentageBox}
+          </>
         )
       case "multiply":
         return (
-          <InputNumber
-            {...inputProps}
-            placeholder={"Enter value to multiply"}
-          />
+          <>
+            {selectable}
+            <InputNumber
+              {...inputProps}
+              placeholder={"Enter value to multiply"}
+            />
+            {isPercentageBox}
+          </>
         )
       case "dependent_times":
-        return <InputNumber {...inputProps} placeholder={"Enter value"} />
+        return (
+          <>
+            {selectable}
+            <InputNumber {...inputProps} placeholder={"Enter value"} />
+          </>
+        )
 
       case "replace":
-        if (field.fieldType === "numeric_field")
-          return (
+        return (
+          <>
+            {selectable}
             <InputNumber
               {...inputProps}
               placeholder={"Enter value or leave empty for dynamic value"}
             />
-          )
-        return null
+          </>
+        )
 
       case "concatenate":
         return (
-          <Input
-            {...inputProps}
-            placeholder={"Enter string to concatenate"}
-            onChange={e => handleChange(e.target.value)}
-          />
+          <>
+            {selectable}
+            <Input
+              {...inputProps}
+              placeholder={"Enter string to concatenate"}
+              onChange={e => handleChange(e.target.value)}
+            />
+          </>
         )
 
       case "copy":
-        if (fieldDependent.fieldType === "selectable") {
-          return (
-            <Select
-              {...inputProps}
-              placeholder={"Select field to copy"}
-              onChange={handleSelectChange}
-              options={fields[
-                fieldDependent.selectableResourceAttributes.formId
-              ]
-                .map(f =>
-                  f.formId ===
-                  parseInt(fieldDependent.selectableResourceAttributes.formId)
-                    ? { value: f.id, label: f.name }
-                    : null
-                )
-                .filter(f => f)}
-            />
-          )
-        }
-        return null
+        return selectable
 
       default:
         return null
@@ -392,11 +464,12 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
                   ? fieldDependent.optionsAttributes || []
                   : [option]
                 ).map((o, i) => {
-                  const currentSubDependent = (
-                    dependents.find(
-                      d => d.dependentFieldId === fieldDependent.id
-                    ).subDependentsAttributes || []
-                  ).find(sD => sD.subDependentOptionId === o.id)
+                  const currentSubDependent =
+                    (
+                      dependents.find(
+                        d => d.dependentFieldId === fieldDependent.id
+                      ).subDependentsAttributes || []
+                    ).find(sD => sD.subDependentOptionId === o.id) || {}
 
                   const subDependentOperation =
                     (isAddingSubDependant
@@ -438,7 +511,10 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
                         />
                       </Col>
                       <Col flex={"auto"} style={{ alignItems: "end" }}>
-                        {renderOperationField(option.value, o.id)}
+                        {renderOperationField(
+                          option.value,
+                          isAddingSubDependant ? o.id : undefined
+                        )}
                       </Col>
                     </React.Fragment>
                   )

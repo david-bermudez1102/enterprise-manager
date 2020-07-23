@@ -288,12 +288,10 @@ ActiveRecord::Schema.define(version: 2020_07_12_200838) do
 
   create_table "options", force: :cascade do |t|
     t.integer "field_id"
-    t.integer "record_field_id"
     t.string "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["field_id"], name: "index_options_on_field_id"
-    t.index ["record_field_id"], name: "index_options_on_record_field_id"
   end
 
   create_table "organization_roots", force: :cascade do |t|

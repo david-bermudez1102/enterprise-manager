@@ -16,9 +16,9 @@ class Value < ApplicationRecord
 
   scope :this_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
 
-  validates :content, presence: true, if: -> { record_field.field.is_required }
+  validates :content, presence: true, if: -> { record_field.field.is_required  }
   validate :should_content_be_uniq
-  validates :content, numericality: true, if: -> {record_field.field.field_type == "numeric_field"}
+  validates :content, numericality: true, if: -> {record_field.field.field_type == "numeric_field" && record_field.field.accepts_decimals}
   validates :content, numericality: {only_integer: true}, if: -> {record_field.field.field_type == "numeric_field" && !record_field.field.accepts_decimals}
 
   validates :record_value, presence:true, if: -> {record_field.field.field_type == "selectable"}

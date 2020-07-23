@@ -54,14 +54,14 @@ export const sortFields = resource => dispatch =>
 export const removeResource = (organizationId, id) => {
   return dispatch => {
     return remove(
-      dispatch,
       `/api/v1/organizations/${organizationId}/forms/${id}`,
       id,
       "REMOVE_RESOURCE",
-      {
-        type: "REMOVE_RECORDS",
-        resourceId: id
-      }
+      () =>
+        dispatch({
+          type: "REMOVE_RECORDS",
+          resourceId: id
+        })
     )
   }
 }

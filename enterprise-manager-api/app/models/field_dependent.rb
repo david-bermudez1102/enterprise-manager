@@ -3,7 +3,7 @@ class FieldDependent < ApplicationRecord
   belongs_to :dependent_field, class_name: "Field", foreign_key: :dependent_field_id, optional: true
   belongs_to :resource_field, class_name: "Field", foreign_key: :resource_field_id, optional: true
   
-  has_many :sub_dependents, class_name: "FieldDependent", foreign_key: :sub_dependent_id
+  has_many :sub_dependents, class_name: "FieldDependent", foreign_key: :sub_dependent_id, dependent: :destroy
   belongs_to :sub_dependent_option, class_name: "Option", foreign_key: :sub_dependent_option_id, optional: true
 
   enum operation: %w[add subtract concatenate multiply divide replace dependent_times copy percentage]

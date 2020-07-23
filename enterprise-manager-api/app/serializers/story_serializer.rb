@@ -17,11 +17,12 @@ class StorySerializer
   attribute :payload do |obj|
     case obj.storiable_type
     when "Form"
-      obj.storiable.slice(:id, :name)
+      obj.storiable.slice(:id, :name) if obj.storiable
+      puts obj.storiable
     when "Record"
-      obj.storiable.form.slice(:id, :name)
+      obj.storiable.form.slice(:id, :name) if obj.storiable.form
     when "Field"
-      obj.storiable.form.slice(:id, :name)
+      obj.storiable.form.slice(:id, :name) if obj.storiable.form
     else
       obj.storiable
     end

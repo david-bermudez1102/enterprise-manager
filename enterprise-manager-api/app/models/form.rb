@@ -1,4 +1,5 @@
 class Form < ApplicationRecord
+  include ::StoryConcern
   belongs_to :organization, touch: true
   has_one :zoho_connection, class_name:"Connection", foreign_key: "zoho_connection_id", dependent: :destroy
   has_one :quickbooks_connection, class_name:"Connection", foreign_key: "quickbooks_connection_id", dependent: :destroy

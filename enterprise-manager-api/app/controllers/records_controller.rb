@@ -10,7 +10,7 @@ class RecordsController < ApplicationController
       params[:id] = record.id
       params[:records_count] = @form.records_count
       params[:current_month_records_count] = @form.current_month_records_count
-      show
+      render json: RecordSerializer.new(record, params:{ records_count: params[:records_count], current_month_records_count: params[:current_month_records_count]}).serializable_hash[:data]
     end
   end
 
@@ -60,9 +60,7 @@ class RecordsController < ApplicationController
   private
 
   def record_params
-    params.require(:record).permit(:record_field_id, :content,
-      values_attributes: [:record_field_id, :content, :option_id, :record_value_id, :account_id,checkbox_options_attributes:[:option_id]],
-    ).merge(account_id:current_account.id)
+    params.require(:record).permit(:record_field_id, :content, values_attributes: [:record_field_id, :content, :option_id, :record_value_id, :account_id, checkbox_options_attributes:[:option_id]]).merge(account_id:current_account.id)
   end
 
   def set_organization

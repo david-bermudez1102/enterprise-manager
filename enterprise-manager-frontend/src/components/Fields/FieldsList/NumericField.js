@@ -10,6 +10,7 @@ const NumericField = props => {
     editingMode,
     suffix,
     state,
+    form,
     ...newProps
   } = props
 
@@ -30,6 +31,7 @@ const NumericField = props => {
       recordFieldId: props.name,
       content
     })
+    form.setFieldsValue({ [name]: content })
   }
 
   useEffect(() => {

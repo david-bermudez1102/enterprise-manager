@@ -1,6 +1,12 @@
 import * as sortByWorker from "./sortBy.js"
 
-export const handleSortBy = async (recordFieldId, order, resource, values) => {
+export const handleSortBy = async (
+  fieldType,
+  recordFieldId,
+  order,
+  resource,
+  values
+) => {
   if (
     /* eslint-disable-next-line no-restricted-globals */
     self.WorkerGlobalScope
@@ -10,6 +16,11 @@ export const handleSortBy = async (recordFieldId, order, resource, values) => {
     console.log("window")
   }
 
-  const sortedRecords = await sortByWorker.sortBy(values, recordFieldId, order)
+  const sortedRecords = await sortByWorker.sortBy(
+    values,
+    recordFieldId,
+    order,
+    fieldType
+  )
   return { id: resource.id, recordFieldId, sortedRecords, order }
 }

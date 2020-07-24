@@ -27,6 +27,7 @@ const useRecordsList = ({ recordFields, values, resource }) => {
         ...getColumnSearchProps(field.id),
         title: capitalize(field.name),
         dataIndex: field.id,
+        dataType: field.fieldType,
         sorter: true,
         wordWrap: "break",
         width: index < recordFields.length - 1 ? 200 : undefined,

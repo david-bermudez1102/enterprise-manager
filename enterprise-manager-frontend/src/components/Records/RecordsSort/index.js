@@ -5,6 +5,7 @@ import {
 } from "../../../actions/recordActions"
 
 const recordsSort = async (
+  fieldType,
   recordFieldId,
   order,
   resource,
@@ -13,7 +14,7 @@ const recordsSort = async (
   deleted
 ) =>
   await workerInstance
-    .handleSortBy(recordFieldId, order, resource, values)
+    .handleSortBy(fieldType, recordFieldId, order, resource, values)
     .then(({ id, recordFieldId, sortedRecords }) => {
       dispatch(setRecordsSortedBy({ id, recordFieldId, order, deleted }))
       if (sortedRecords)

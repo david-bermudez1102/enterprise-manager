@@ -57,6 +57,7 @@ export const useChangePage = props => {
     ) {
       setLoadingData(true)
       recordsSort(
+        null,
         "listingId",
         "descend",
         resource,

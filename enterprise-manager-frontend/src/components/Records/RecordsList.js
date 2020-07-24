@@ -78,8 +78,9 @@ const RecordsList = props => {
     resource
   })
 
-  const handleSortBy = (recordFieldId, order) =>
+  const handleSortBy = (recordFieldId, order, fieldType) => {
     recordsSort(
+      fieldType,
       recordFieldId,
       order,
       resource,
@@ -87,7 +88,7 @@ const RecordsList = props => {
       dispatch,
       props.deleted
     )
-
+  }
   const onShowSizeChange = (current, pageSize) => {
     dispatch({
       type: "SET_LIMIT",
@@ -211,7 +212,11 @@ const RecordsList = props => {
                       onChange={(pagination, filters, sorter) => {
                         filterRecords(filters)
                         sorter.column
-                          ? handleSortBy(sorter.column.dataIndex, sorter.order)
+                          ? handleSortBy(
+                              sorter.column.dataIndex,
+                              sorter.order,
+                              sorter.column.dataType
+                            )
                           : handleSortBy("listingId")
                       }}
                       locale={{

@@ -3,8 +3,9 @@ import { mdiCalendarRange } from "@mdi/js"
 import { useHandleChange } from "../../Hooks/useHandleChange"
 import RadioWrapper from "../RadioWrapper"
 import { Col } from "antd"
+import DateFieldOptions from "./DateFieldOptions"
 
-const DateField = ({ field, fieldType, onChange }) => {
+const DateField = ({ field, fieldType, fieldState, onChange }) => {
   const { handleChange } = useHandleChange({ field, onChange })
   return (
     <>
@@ -26,6 +27,9 @@ const DateField = ({ field, fieldType, onChange }) => {
             instead.
           </small>
         </Col>
+      )}
+      {fieldType === "date_field" && (
+        <DateFieldOptions onChange={onChange} fieldState={fieldState} />
       )}
     </>
   )

@@ -19,7 +19,8 @@ class ZohoBooks::InvoicesController < ApplicationController
   end
 
   def create
-    zoho_books = ZohoBooks::Invoice.create_in_zoho(@authorization, @root_url, @zoho_organization_id, params[:invoice][:body])
+    form =  @organization.forms.find_by(id:params[:form_id])
+    zoho_books = ZohoBooks::Invoice.create_in_zoho(@authorization, @root_url, @zoho_organization_id, params[:invoice][:body], form)
     render json: zoho_books
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_12_200838) do
+ActiveRecord::Schema.define(version: 2020_07_26_002241) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -125,6 +125,17 @@ ActiveRecord::Schema.define(version: 2020_07_12_200838) do
     t.text "render_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "date_field_options", force: :cascade do |t|
+    t.integer "field_id"
+    t.integer "fill_with"
+    t.integer "time_length"
+    t.integer "chosen_time"
+    t.integer "from_time"
+    t.datetime "custom_date"
+    t.integer "date_format"
+    t.index ["field_id"], name: "index_date_field_options_on_field_id"
   end
 
   create_table "default_permissions", force: :cascade do |t|
@@ -288,10 +299,12 @@ ActiveRecord::Schema.define(version: 2020_07_12_200838) do
 
   create_table "options", force: :cascade do |t|
     t.integer "field_id"
+    t.integer "record_field_id"
     t.string "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["field_id"], name: "index_options_on_field_id"
+    t.index ["record_field_id"], name: "index_options_on_record_field_id"
   end
 
   create_table "organization_roots", force: :cascade do |t|

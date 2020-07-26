@@ -4,6 +4,7 @@ import WithModal from "../WithModal"
 import { plural } from "pluralize"
 import { zohoApi } from "../../../../actions/zohoBooksActions"
 import { prepareRecords } from "../../../../containers/ZohoBooks/prepareData"
+import { useSelector, shallowEqual } from "react-redux"
 
 const CreateModal = props => {
   const {
@@ -17,6 +18,8 @@ const CreateModal = props => {
     ...useModalProps
   } = props
 
+  const { fields } = useSelector(({ fields }) => ({ fields }), shallowEqual)
+
   const onOk = () =>
     zohoApi(
       {
@@ -27,7 +30,14 @@ const CreateModal = props => {
       "",
       prepareRecords(
         selectedRows.length > 0 ? selectedRows : values,
-        connectionType
+        connectionType,
+        (fields[resource.id] || []).some(
+          field =>
+            field.name === "invoice_number" ||
+            field.zohoFieldName === "invoice_number"
+        )
+          ? "invoice_number"
+          : "customer_id"
       )
     )
 

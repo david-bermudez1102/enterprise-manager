@@ -1,5 +1,4 @@
 export const sortBy = async (values, dataIndex, order, fieldType) => {
-  console.log(values, dataIndex, order, fieldType)
   return !dataIndex
     ? order
       ? order === "ascend"

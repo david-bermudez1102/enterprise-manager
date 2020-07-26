@@ -47,7 +47,7 @@ class FieldsController < ApplicationController
   private
 
   def field_params
-    params.require(:field).permit(:name, :field_type, :form_id, :is_required, :is_uniq, :hidden_in_form, :hidden_in_records, :allow_updates, :read_only, :min_length, :max_length, :default_value, :accepts_decimals, :field_format, :zoho_field_name, :combined_fields => [], :selectable_resource_attributes => [:form_id, :resource_field_id, :_destroy], :options_attributes => [:id, :field_id, :value, :_destroy], :record_key_attributes => [:resource_field_id], :field_dependents_attributes => [:id, :dependent_field_id, :operation, :content, :resource_field_id, :all_values_same_operation, :_destroy, :is_percentage,:sub_dependents_attributes => [:id, :sub_dependent_option_id, :operation, :content, :is_percentage]])
+    params.require(:field).permit(:name, :field_type, :form_id, :is_required, :is_uniq, :hidden_in_form, :hidden_in_records, :allow_updates, :read_only, :min_length, :max_length, :default_value, :accepts_decimals, :field_format, :zoho_field_name, :combined_fields => [], :selectable_resource_attributes => [:form_id, :resource_field_id, :_destroy], :options_attributes => [:id, :field_id, :value, :_destroy], :record_key_attributes => [:resource_field_id], :field_dependents_attributes => [:id, :dependent_field_id, :operation, :content, :resource_field_id, :all_values_same_operation, :_destroy, :is_percentage,:sub_dependents_attributes => [:id, :sub_dependent_option_id, :operation, :content, :is_percentage]], :date_field_option_attributes => [:id, :fill_with, :time_length, :chosen_time, :from_time, :custom_date, :date_format])
   end
 
   def set_form

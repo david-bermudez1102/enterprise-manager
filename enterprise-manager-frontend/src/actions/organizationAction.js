@@ -28,9 +28,10 @@ export const updateOrganization = organization => {
       dispatch,
       `/api/v1/organizations/${organization.id}`,
       { organization },
-      {
-        type: "UPDATE_ORGANIZATION",
-        organization
-      }
+      organization =>
+        dispatch({
+          type: "UPDATE_ORGANIZATION",
+          organization
+        })
     )
 }

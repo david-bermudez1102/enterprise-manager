@@ -38,9 +38,15 @@ class FieldSerializer
       { id: value.id, value: value.content, recordId:value.record.id } if value.content != ""
     end.compact, resourceFieldId: object.selectable_resource.resource_field_id, formId: object.selectable_resource.form_id } : nil
   end
+
   attribute :options_attributes, if: Proc.new { |field|
                         field.field_type == "selectable" || field.field_type == "radio" || field.field_type == "checkbox"
                       } do |object|
                         object.options
                       end
+
+  attribute :date_field_options_attributes, if: Proc.new { |field| field.field_type == "date_field" } do |object|
+    DateFieldOptionSerializer.new(object.date_field_option) if object.date_field_option
+  end
+
 end

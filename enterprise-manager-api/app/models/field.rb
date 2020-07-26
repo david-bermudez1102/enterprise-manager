@@ -2,7 +2,7 @@ class Field < ApplicationRecord
   belongs_to :form, touch: true
   enum field_type: %w[text password selectable checkbox radio textarea date_field numeric_field combined_field key_field accounts_field boolean_field]
   enum field_format: %w[all_underscored all_dashed dashed_upper underscored_upper dashed_lower underscored_lower all_spaced_upper all_spaced_lower no_format] # Only required when field is combined
-  
+
   has_one :selectable_resource, dependent: :destroy
   has_one :record_key, dependent: :destroy
   has_one :record_field, dependent: :nullify
@@ -10,6 +10,7 @@ class Field < ApplicationRecord
   has_many :values, through: :record_field
   has_many :key_values, through: :record_key
   has_many :field_dependents, dependent: :destroy
+  has_one :date_field_option, dependent: :destroy
   
   serialize :combined_fields, Array
   
@@ -30,6 +31,7 @@ class Field < ApplicationRecord
   accepts_nested_attributes_for :record_key, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == '_destroy' || value.blank? } }
 
   accepts_nested_attributes_for :field_dependents, allow_destroy: true
+  accepts_nested_attributes_for :date_field_option, update_only: true
 
   def name
     self[:name].capitalize

@@ -4,13 +4,7 @@ export const organizationsReducer = (state = [], action) => {
       return [...state, action.organization]
 
     case "FETCH_ORGANIZATIONS":
-      return [
-        ...state,
-        ...action.organizations.filter(
-          organization =>
-            !state.some(org => parseInt(organization.id) === parseInt(org.id))
-        )
-      ]
+      return action.organizations
     case "UPDATE_ORGANIZATION":
       return [...state].map(organization =>
         organization.id === action.organization.id

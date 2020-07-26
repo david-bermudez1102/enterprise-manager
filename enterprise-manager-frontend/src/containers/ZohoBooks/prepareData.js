@@ -1,11 +1,12 @@
 import { uniqBy } from "lodash"
 
-export const prepareRecords = (records, connectionType) => {
+export const prepareRecords = (records, connectionType, groupBy) => {
   switch (connectionType) {
     case "invoice":
-      return uniqBy(records, "invoice_number").map(x => ({
+      console.log(records)
+      return uniqBy(records, groupBy).map(x => ({
         ...x,
-        lineItems: records.filter(i => i.invoice_number === x.invoice_number)
+        lineItems: records.filter(i => i[groupBy] === x[groupBy])
       }))
 
     default:

@@ -3,13 +3,19 @@ module ZohoBooks::CreateConcern
   require 'httparty'
 
   module ClassMethods
-    def create_in_zoho(authorization, root_url, zoho_organization_id, body)
+    def create_in_zoho(authorization, root_url, zoho_organization_id, body, form = nil)
       headers = {
         "Content-Type" => "application/x-www-form-urlencoded;charset=UTF-8",
         "Authorization" => authorization
       }
 
-      url = "#{root_url}?organization_id=#{zoho_organization_id}&ignore_auto_number_generation=true"
+      # if form doesn't an invoice_number field, it will be auto_generated when creating invoices 
+      invoice_number = form ? form.fields.find_by("zoho_field_name = ? or name= ?", "invoice_number", "invoice_number") : nil
+      if invoice_number
+        url = "#{root_url}?organization_id=#{zoho_organization_id}&ignore_auto_number_generation=true"
+      else
+        url = "#{root_url}?organization_id=#{zoho_organization_id}"
+      end
 
       model_name = self.model_name.to_s.split('::').last.downcase.pluralize
 

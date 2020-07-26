@@ -31,6 +31,7 @@ const FieldForm = props => {
     hiddenInRecords,
     readOnly,
     allowUpdates,
+    zohoFieldName,
     ...field
   } = props.field
   const [fieldState, setFieldState] = useState(field || {})
@@ -45,6 +46,7 @@ const FieldForm = props => {
     hiddenInForm,
     hiddenInRecords,
     readOnly,
+    zohoFieldName,
     allowUpdates: field.id ? allowUpdates : true
   }
 
@@ -85,6 +87,7 @@ const FieldForm = props => {
     fieldType: fieldState.fieldType || "",
     resourceId,
     form,
+    fieldState,
     onChange
   }
 
@@ -151,12 +154,8 @@ const FieldForm = props => {
           <CheckBoxField {...fieldProps} />
           <DateField {...fieldProps} />
           <AccountsField {...fieldProps} />
-          <CombinedField
-            {...fieldProps}
-            fieldState={fieldState}
-            resourceId={resourceId}
-          />
-          <BooleanField {...fieldProps} resourceId={resourceId} />
+          <CombinedField {...fieldProps} />
+          <BooleanField {...fieldProps} />
         </Row>
       </Form.Item>
       <Divider style={{ marginTop: 0 }} />
@@ -164,6 +163,9 @@ const FieldForm = props => {
         <Form.Item name={"zohoFieldName"} label='ZohoBooks Field Name'>
           <Input
             placeholder={`Enter ZohoBooks field name`}
+            onChange={e =>
+              setState({ ...state, zohoFieldName: e.target.value })
+            }
             suffix={
               <Tooltip
                 title={

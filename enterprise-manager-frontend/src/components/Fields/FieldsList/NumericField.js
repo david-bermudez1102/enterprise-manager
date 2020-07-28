@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { InputNumber } from "antd"
 import FieldTypeWrapper from "../FieldTypeWrapper"
 import useHandleFieldDependents from "./FieldDependants/handleFieldDependants"
+
 const NumericField = props => {
   const {
     field,
@@ -11,6 +12,7 @@ const NumericField = props => {
     suffix,
     state,
     form,
+    record,
     ...newProps
   } = props
 
@@ -20,7 +22,14 @@ const NumericField = props => {
   const fieldAfterDependents = useHandleFieldDependents(
     value,
     field.fieldDependents,
-    state.filter(f => f.fieldId !== field.id)
+    editingMode
+      ? Object.entries(record)
+          .map(([fieldId, content]) => ({
+            fieldId: parseInt(fieldId),
+            content
+          }))
+          .filter(f => f.fieldId && f.fieldId !== field.id)
+      : state.filter(f => f.fieldId !== field.id)
   )
 
   const handleChange = content => {
@@ -31,11 +40,11 @@ const NumericField = props => {
       recordFieldId: props.name,
       content
     })
-    form.setFieldsValue({ [name]: content })
+    form && form.setFieldsValue({ [name]: content })
   }
 
   useEffect(() => {
-    if (field.fieldDependents && !isFocused) {
+    if (field.fieldDependents && !isFocused && !editingMode) {
       setValueWithDependents(fieldAfterDependents)
       handleChange(fieldAfterDependents)
     }
@@ -50,13 +59,19 @@ const NumericField = props => {
       field={field}
       suffix={suffix}>
       <InputNumber
-        {...newProps}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         step={field.acceptsDecimals ? 0.1 : 1}
+        onChange={editingMode ? handleChange : undefined}
+        value={
+          !editingMode
+            ? !isFocused
+              ? valueWithDependents || value
+              : value
+            : undefined
+        }
+        {...newProps}
         style={{ width: "100%" }}
-        onChange={handleChange}
-        value={!isFocused ? valueWithDependents || value : value}
       />
     </FieldTypeWrapper>
   )

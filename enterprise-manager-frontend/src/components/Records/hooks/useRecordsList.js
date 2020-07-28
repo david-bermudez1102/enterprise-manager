@@ -11,7 +11,12 @@ const useRecordsList = ({ recordFields, values, resource }) => {
   const getColumnSearchProps = useCallback(
     dataIndex => ({
       filterDropdown: props => (
-        <ColumnSearch {...props} dataIndex={dataIndex} values={values} />
+        <ColumnSearch
+          {...props}
+          dataIndex={dataIndex}
+          values={values}
+          recordFields={recordFields}
+        />
       ),
       filterIcon: filtered => (
         <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
@@ -74,7 +79,6 @@ const useRecordsList = ({ recordFields, values, resource }) => {
     tmpColumns.splice(dragIndex, 1)
     tmpColumns.splice(hoverIndex, 0, dragColumn)
     setState({ columns: tmpColumns })
-    console.log(tmpColumns)
     dispatch({
       type: "SORT_RECORD_FIELDS",
       recordFields: tmpRecordFields,

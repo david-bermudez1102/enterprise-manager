@@ -95,3 +95,12 @@ export const archivedValues = (state = {}, action) => {
       return state
   }
 }
+
+export const mappedValues = (state = [], action) => {
+  switch (action.type) {
+    case "SET_MAPPED_VALUES":
+      return action.values
+    default:
+      return state
+  }
+}

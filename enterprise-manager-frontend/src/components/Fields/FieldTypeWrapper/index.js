@@ -10,22 +10,27 @@ const FieldTypeWrapper = ({
   children
 }) => {
   return (
-    <Form.Item
-      style={field.style}
-      label={!editingMode ? label || field.name : "undefined"}
-      name={name}
-      rules={[
-        {
-          required: field.isRequired,
-          message: `Please enter a valid ${field.name.toLowerCase()}`
-        }
-      ]}
-      noStyle={editingMode}>
-      <Row gutter={[24, 16]} align={"middle"}>
-        {!editingMode && suffix && <Col span={1}>{suffix}</Col>}
-        <Col flex={"auto"}>{children}</Col>
-      </Row>
-    </Form.Item>
+    <Row gutter={[24, 16]} align={"middle"}>
+      {!editingMode && suffix && <Col span={1}>{suffix}</Col>}
+      <Col flex={"auto"}>
+        <Form.Item
+          valuePropName={
+            field.fieldType === "boolean_field" ? "checked" : undefined
+          }
+          style={field.style}
+          label={!editingMode ? label || field.name : "undefined"}
+          name={name}
+          rules={[
+            {
+              required: field.isRequired,
+              message: `Please enter a valid ${field.name.toLowerCase()}`
+            }
+          ]}
+          noStyle={editingMode}>
+          {children}
+        </Form.Item>
+      </Col>
+    </Row>
   )
 }
 export default React.memo(FieldTypeWrapper)

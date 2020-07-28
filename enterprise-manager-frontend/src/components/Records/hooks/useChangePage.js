@@ -11,7 +11,8 @@ export const useChangePage = props => {
     filteredRecords,
     filteredData,
     values,
-    resource
+    resource,
+    sorting
   } = props
 
   const dispatch = useDispatch()
@@ -25,10 +26,7 @@ export const useChangePage = props => {
     ({ pagination, recordsSortedBy }) => ({ pagination, recordsSortedBy }),
     shallowEqual
   )
-  const getPayload = useCallback(() => filteredRecords || sortedRecords, [
-    filteredRecords,
-    sortedRecords
-  ])
+  const payload = filteredRecords || sortedRecords
 
   const [page, setPage] = useState(1)
   const [loadingData, setLoadingData] = useState(false)
@@ -36,19 +34,20 @@ export const useChangePage = props => {
   const [paginationLimit, setPaginationLimit] = useState(pagination.limit)
 
   const [chunkOfRecords, setChunkOfRecords] = useState(
-    chunk(getPayload(), paginationLimit)
+    chunk(payload, paginationLimit)
   )
 
   useEffect(() => {
     if (!mounted.current) {
       mounted.current = true
     } else {
-      setLoadingData(true)
-      chunkOfRecordsProxy(getPayload(), paginationLimit)
+      if (sorting) setLoadingData(true)
+      chunkOfRecordsProxy(payload, paginationLimit)
         .then(setChunkOfRecords)
         .then(() => setLoadingData(false))
     }
-  }, [getPayload, paginationLimit])
+    // eslint-disable-next-line
+  }, [payload, paginationLimit])
 
   useEffect(() => {
     if (
@@ -64,14 +63,14 @@ export const useChangePage = props => {
         filteredData || values,
         dispatch,
         props.deleted
-      )
+      ).then(() => setLoadingData(false))
     }
     // eslint-disable-next-line
   }, [recordsSortedBy, resource, filteredData, values])
 
   const changePage = useCallback(() => {
     setLoadingData(true)
-    chunkOfRecordsProxy(getPayload(), pagination.limit)
+    chunkOfRecordsProxy(payload, pagination.limit)
       .then(resp => {
         const currentValue = chunkOfRecords[page - 1][0]
         const newQueryParams = new URLSearchParams(location.search)

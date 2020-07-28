@@ -15,6 +15,7 @@ import useModal from "../Modal/Hooks/useModal"
 import { plural } from "pluralize"
 import Text from "antd/lib/typography/Text"
 import BulkActions from "./BulkActions"
+import "./recordsListStyles.scss"
 
 const RecordsList = props => {
   const dispatch = useDispatch()
@@ -22,6 +23,7 @@ const RecordsList = props => {
   const [record, setRecord] = useState()
   const [currentFilteredBy, setCurrentFilteredBy] = useState()
   const mounted = useRef()
+  const [sorting, setSorting] = useState(false)
   const [recordsRef, setRecordsRef] = useState({})
   const {
     loadingInitialData,
@@ -63,7 +65,8 @@ const RecordsList = props => {
   } = useChangePage({
     ...props,
     filteredData,
-    filteredRecords
+    filteredRecords,
+    sorting
   })
 
   const {
@@ -87,7 +90,7 @@ const RecordsList = props => {
       filteredData || values,
       dispatch,
       props.deleted
-    )
+    ).then(() => setSorting(false))
   }
   const onShowSizeChange = (current, pageSize) => {
     dispatch({
@@ -174,10 +177,14 @@ const RecordsList = props => {
                 <Row>
                   <Col
                     span={24}
-                    style={{ width: "100%", overflowX: "auto" }}
-                    className={"scroller"}>
+                    style={{ width: "100%" }}
+                    className={"custom-table"}>
                     <Table
-                      tableLayout={"auto"}
+                      scroll={{
+                        scrollToFirstRowOnChange: false,
+                        x: "max-content"
+                      }}
+                      tableLayout={"fixed"}
                       loading={
                         loadingInitialData || loadingData || loadingFilteredData
                       }
@@ -211,13 +218,14 @@ const RecordsList = props => {
                       pagination={false}
                       onChange={(pagination, filters, sorter) => {
                         filterRecords(filters)
-                        sorter.column
-                          ? handleSortBy(
-                              sorter.column.dataIndex,
-                              sorter.order,
-                              sorter.column.dataType
-                            )
-                          : handleSortBy("listingId")
+                        if (sorter.column) {
+                          setSorting(true)
+                          handleSortBy(
+                            sorter.column.dataIndex,
+                            sorter.order,
+                            sorter.column.dataType
+                          )
+                        } else handleSortBy("listingId")
                       }}
                       locale={{
                         filterConfirm: "Ok",

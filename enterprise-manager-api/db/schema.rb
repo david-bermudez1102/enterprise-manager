@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 2020_07_26_002241) do
     t.integer "time_length"
     t.integer "chosen_time"
     t.integer "from_time"
+    t.boolean "update_if_record_updates", default: false, null: false
     t.datetime "custom_date"
     t.integer "date_format"
     t.index ["field_id"], name: "index_date_field_options_on_field_id"

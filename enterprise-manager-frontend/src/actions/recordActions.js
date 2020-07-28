@@ -123,12 +123,12 @@ export const updateRecord = value => {
     update(
       dispatch,
       `/api/v1/organizations/${value.organizationId}/forms/${value.formId}/records/${value.recordId}`,
-      value
-    ).then(resp =>
-      dispatch({
-        type: "UPDATE_VALUE",
-        value: resp.links.values
-      })
+      value,
+      resp =>
+        dispatch({
+          type: "UPDATE_VALUE",
+          value: resp.links.values
+        })
     )
 }
 

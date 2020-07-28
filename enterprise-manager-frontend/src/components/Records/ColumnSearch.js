@@ -8,12 +8,20 @@ const ColumnSearch = ({
   confirm,
   clearFilters,
   dataIndex,
-  values
+  values,
+  recordFields
 }) => {
   const [list, setList] = useState([])
+  const currentColumn = recordFields.find(rF => rF.id === dataIndex)
 
   return (
-    <div style={{ padding: 8 }}>
+    <div
+      style={{
+        padding: 8,
+        display: "flex",
+        flexWrap: "wrap",
+        maxWidth: 200
+      }}>
       <Select
         mode='multiple'
         options={list}
@@ -21,13 +29,13 @@ const ColumnSearch = ({
           const data = await workerInstance.filters(values, dataIndex)
           setList(data)
         }}
-        placeholder={`Search ${dataIndex}`}
+        placeholder={`Search ${currentColumn.name}`}
         onChange={value => {
           setList([])
           setSelectedKeys(value ? value : [])
         }}
         notFoundContent={null}
-        style={{ width: 144, marginBottom: 8, display: "block" }}
+        style={{ width: "100%", marginBottom: 8 }}
       />
 
       <Space>

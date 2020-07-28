@@ -1,16 +1,13 @@
 import snakecaseKeys from "snakecase-keys"
 import { handleErrors, displayErrors } from "./handleErrors"
-import { add } from "./fetchActions"
+import { add, getAll } from "./fetchActions"
 
-export const fetchValues = (organizationId, formId) => {
-  return dispatch => {
-    fetch(`/api/v1/organizations/${organizationId}/forms/${formId}/values`, {
-      credentials: "include"
-    })
-      .then(response => response.json())
-      .then(values => dispatch({ type: "FETCH_VALUES", values }))
-  }
-}
+export const fetchValues = (organizationId, formId) => dispatch =>
+  getAll(
+    dispatch,
+    `/api/v1/organizations/${organizationId}/forms/${formId}/values`,
+    values => dispatch({ type: "SET_MAPPED_VALUES", values })
+  )
 
 export const setSortedValues = (values, formId) => {
   return dispatch => dispatch({ type: "SET_SORTED_VALUES", values, formId })

@@ -44,9 +44,26 @@ class FieldSerializer
                       } do |object|
                         object.options
                       end
+  ## Attributes below will be rendered if field type is date
 
-  attribute :date_field_options_attributes, if: Proc.new { |field| field.field_type == "date_field" } do |object|
-    DateFieldOptionSerializer.new(object.date_field_option) if object.date_field_option
+  attribute :date_field_option_attributes, if: Proc.new { |field| field.field_type == "date_field" } do |object|
+    if object.date_field_option
+      DateFieldOptionSerializer.new(object.date_field_option).serializable_hash[:data][:attributes]
+    end
   end
+
+  attribute :able_to_hide_in_form, if: Proc.new { |field| field.field_type == "date_field" } do |obj|
+     if obj.date_field_option
+      obj.date_field_option.fill_with != "user_input"
+     end
+  end
+
+  attribute :able_to_be_read_only, if: Proc.new { |field| field.field_type == "date_field" } do |obj|
+     if obj.date_field_option
+      obj.date_field_option.fill_with != "user_input"
+     end
+  end
+
+  ##############
 
 end

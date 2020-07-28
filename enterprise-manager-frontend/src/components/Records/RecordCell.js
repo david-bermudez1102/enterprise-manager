@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { addValue } from "../../actions/valueActions"
 import CellForm from "./CellForm"
 import { updateRecord } from "../../actions/recordActions"
+import { format } from "date-fns"
 
 class RecordCell extends Component {
   state = { editing: false }
@@ -22,7 +22,6 @@ class RecordCell extends Component {
       children,
       dataIndex,
       record,
-      addValue,
       updateRecord,
       session,
       fieldType,
@@ -31,18 +30,20 @@ class RecordCell extends Component {
     const { editing } = this.state
     const value = dataIndex
     const content = value ? record[value] : null
+    const dateFormat = "yyyy/MM/dd"
 
     if (!record) return <td {...restProps}>{children}</td>
     if (fieldType === "key_field") return <td {...restProps}>{children}</td>
+
     return (
       <td {...restProps} onClick={this.handleClick}>
         {editing ? (
           <div style={{ position: "relative" }}>
             <CellForm
+              record={record}
               content={content}
               handleBlur={this.handleBlur}
-              updateRecord={content ? updateRecord : undefined}
-              addValue={!content ? addValue : undefined}
+              updateRecord={updateRecord}
               recordId={record.id}
               recordFieldId={dataIndex}
               formId={record.formId}
@@ -50,6 +51,12 @@ class RecordCell extends Component {
               organizationId={organizationId}
             />
           </div>
+        ) : fieldType === "date_field" ? (
+          content && content !== "" ? (
+            format(new Date(content), dateFormat)
+          ) : (
+            content
+          )
         ) : (
           content
         )}
@@ -61,4 +68,4 @@ class RecordCell extends Component {
 const mapStateToProps = ({ session }) => {
   return { session }
 }
-export default connect(mapStateToProps, { addValue, updateRecord })(RecordCell)
+export default connect(mapStateToProps, { updateRecord })(RecordCell)

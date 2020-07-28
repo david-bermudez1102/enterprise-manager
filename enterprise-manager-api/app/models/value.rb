@@ -9,7 +9,10 @@ class Value < ApplicationRecord
   belongs_to :record_value, touch: true, class_name:"Value", optional: true
   belongs_to :key_value, optional: true, touch: true
   has_many :checkbox_options, dependent: :delete_all
+
+  validates :record_field, uniqueness: { scope: :record }, on: :create
   before_create :generate_key_value
+  
   after_save :touch_selectable_resource
 
   accepts_nested_attributes_for :checkbox_options, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }

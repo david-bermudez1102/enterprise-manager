@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React from "react"
 import { Row, Col, Select, DatePicker, InputNumber } from "antd"
-import { format } from "date-fns"
+import moment from "moment"
 
 const XTimeFromNow = ({ onChange, fieldState }) => {
   const timeOptions = [
@@ -14,10 +14,12 @@ const XTimeFromNow = ({ onChange, fieldState }) => {
   const fromTimeOptions = [
     { label: "Now", value: "now" },
     { label: "Zoho creation date", value: "zoho_creation_date" },
+    { label: "Next Month", value: "next_month" },
     { label: "Custom date", value: "custom_date" }
   ]
 
-  const [fromTime, setFromTime] = useState()
+  const { fromTime, timeLength, chosenTime, customDate } =
+    fieldState.dateFieldOptionAttributes || {}
 
   const handleTimeLengthChange = e => {
     onChange({
@@ -29,17 +31,16 @@ const XTimeFromNow = ({ onChange, fieldState }) => {
     })
   }
 
-  const handleTimeOptionsChange = timeChosen =>
+  const handleTimeOptionsChange = chosenTime =>
     onChange({
       ...fieldState,
       dateFieldOptionAttributes: {
         ...fieldState.dateFieldOptionAttributes,
-        timeChosen
+        chosenTime
       }
     })
 
   const handleFromTimeChange = fromTime => {
-    setFromTime(fromTime)
     onChange({
       ...fieldState,
       dateFieldOptionAttributes: {
@@ -49,21 +50,22 @@ const XTimeFromNow = ({ onChange, fieldState }) => {
     })
   }
 
-  const handleCustomDateChange = (date, customDate) => {
+  const handleCustomDateChange = date => {
     onChange({
       ...fieldState,
       dateFieldOptionAttributes: {
         ...fieldState.dateFieldOptionAttributes,
-        customDate: format(new Date(customDate), "yyyy-MM-dd")
+        customDate: date.toISOString()
       }
     })
   }
 
   return (
     <Col span={24} order={24}>
-      <Row gutter={16} style={{ width: "103.28%" }}>
+      <Row gutter={[16, 16]} style={{ width: "103.28%" }}>
         <Col span={5}>
           <InputNumber
+            value={timeLength}
             placeholder={"Time length"}
             style={{ width: "100%" }}
             onBlur={handleTimeLengthChange}
@@ -71,6 +73,7 @@ const XTimeFromNow = ({ onChange, fieldState }) => {
         </Col>
         <Col span={5}>
           <Select
+            value={chosenTime}
             options={timeOptions}
             placeholder={"Select"}
             onChange={handleTimeOptionsChange}
@@ -91,6 +94,7 @@ const XTimeFromNow = ({ onChange, fieldState }) => {
         {fromTime === "custom_date" && (
           <Col span={7}>
             <DatePicker
+              value={moment(new Date(customDate))}
               style={{ width: "100%" }}
               onChange={handleCustomDateChange}
               format={"MM/DD/YYYY"}

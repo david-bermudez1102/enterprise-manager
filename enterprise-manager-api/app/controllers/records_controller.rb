@@ -15,13 +15,11 @@ class RecordsController < ApplicationController
   end
 
   def update
-    record = @form.records.find_by(id: params[:id])
-    value = record.values.find_by(record_field_id: params[:record_field_id])
-    if value.update(record_params[:values_attributes])
+    Record.transaction do
+      record = @form.records.find(params[:id])
+      record.update!(record_params)
       serialized_data = RecordSerializer.new(record).serializable_hash[:data]
       render json: serialized_data
-    else
-      render json: { errors: value.errors.full_messages }
     end
   end
 
@@ -60,7 +58,7 @@ class RecordsController < ApplicationController
   private
 
   def record_params
-    params.require(:record).permit(:record_field_id, :content, values_attributes: [:record_field_id, :content, :option_id, :record_value_id, :account_id, checkbox_options_attributes:[:option_id]]).merge(account_id:current_account.id)
+    params.require(:record).permit(:record_field_id, :content, values_attributes: [:id,:record_field_id, :content, :option_id, :record_value_id, :account_id, checkbox_options_attributes:[:option_id]]).merge(account_id:current_account.id)
   end
 
   def set_organization

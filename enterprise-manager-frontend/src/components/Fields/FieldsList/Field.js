@@ -2,7 +2,7 @@ import React from "react"
 import Options from "../../Options/Options"
 import TextAreaField from "./TextareaField"
 import NumericField from "./NumericField"
-import DateField from "./DateField"
+import DateField from "./DateField/DateField"
 import SelectableField from "./SelectableField"
 import RadioField from "./RadioField"
 import CheckboxField from "./CheckboxField"
@@ -15,7 +15,14 @@ import AccountsField from "./AccountsField"
 import BooleanField from "./BooleanField"
 
 const Field = props => {
-  const { editingMode, match, field, recordField, userPermission } = props
+  const {
+    editingMode,
+    match,
+    field,
+    recordField,
+    userPermission,
+    record
+  } = props
 
   const fieldName = field.name
     .split("_")
@@ -90,6 +97,7 @@ const Field = props => {
           {...inputAttributes}
           form={props.form}
           state={props.state}
+          record={record}
         />
       )
       break
@@ -134,4 +142,4 @@ const Field = props => {
   return inputField
 }
 
-export default React.memo(Field)
+export default Field

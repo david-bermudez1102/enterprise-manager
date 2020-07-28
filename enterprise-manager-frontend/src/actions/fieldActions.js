@@ -42,8 +42,8 @@ export const fetchFields = (organizationId, formId) => dispatch =>
     dispatch({
       type: "FETCH_FIELDS",
       fields: fields.map(field => ({
-        key: `resource_field_${field.id}`,
-        ...field
+        ...field,
+        key: `resource_field_${field.id}`
       })),
       formId
     })

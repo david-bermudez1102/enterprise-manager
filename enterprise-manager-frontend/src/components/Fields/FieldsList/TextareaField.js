@@ -18,7 +18,13 @@ const TextAreaField = props => {
       name={name}
       field={field}
       suffix={suffix}>
-      <TextArea {...newProps} onBlur={handleChange} allowClear autoSize />
+      <TextArea
+        onBlur={handleChange}
+        onChange={editingMode ? handleChange : undefined}
+        allowClear
+        autoSize
+        {...newProps}
+      />
     </FieldTypeWrapper>
   )
 }

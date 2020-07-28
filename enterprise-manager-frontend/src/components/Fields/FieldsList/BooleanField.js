@@ -3,7 +3,16 @@ import FieldTypeWrapper from "../FieldTypeWrapper"
 import { Switch } from "antd"
 
 const BooleanField = props => {
-  const { field, name, editingMode, onChange, suffix, ...newProps } = props
+  const {
+    field,
+    name,
+    editingMode,
+    onChange,
+    suffix,
+    initialValue,
+    state,
+    ...newProps
+  } = props
 
   const handleChange = checked => {
     onChange({
@@ -12,13 +21,20 @@ const BooleanField = props => {
     })
   }
 
+  console.log(newProps)
+
   return (
     <FieldTypeWrapper
       editingMode={editingMode}
       name={name}
       field={field}
       suffix={suffix}>
-      <Switch {...newProps} onChange={handleChange} />
+      <Switch
+        onChange={handleChange}
+        size={editingMode ? "small" : "default"}
+        {...newProps}
+        defaultChecked={initialValue && initialValue !== ""}
+      />
     </FieldTypeWrapper>
   )
 }

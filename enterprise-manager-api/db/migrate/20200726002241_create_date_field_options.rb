@@ -6,6 +6,7 @@ class CreateDateFieldOptions < ActiveRecord::Migration[5.2]
       t.integer :time_length
       t.integer :chosen_time
       t.integer :from_time
+      t.boolean :update_if_record_updates, null: false, default:false
       t.datetime :custom_date
       t.integer :date_format
     end

@@ -19,7 +19,7 @@ class RecordSerializer
 
   link :values do |object|
     new_hash = {}
-    ValueSerializer.new(object.values).serializable_hash[:data].map do |value|
+    ValueSerializer.new(object.values.order(id: :desc)).serializable_hash[:data].map do |value|
       
       new_hash[:id] = value[:attributes][:recordId]
       new_hash[:formId] = value[:attributes][:formId]

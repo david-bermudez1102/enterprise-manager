@@ -8,7 +8,7 @@ class ValuesController < ApplicationController
 
   def index
     values = @form.values.includes(:record,:record_field,:record,:form)
-    render json: ValueSerializer.new(values)
+    render json: ValueSerializer.new(values).serializable_hash[:data].map { |data| data[:attributes]}
   end
 
   def show

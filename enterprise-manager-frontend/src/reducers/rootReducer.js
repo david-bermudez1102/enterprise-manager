@@ -7,7 +7,7 @@ import {
   recordsSortedBy,
   sortedRecords
 } from "./recordsReducer"
-import { valuesReducer, archivedValues } from "./valuesReducer"
+import { valuesReducer, archivedValues, mappedValues } from "./valuesReducer"
 import { sessionReducer } from "./sessionReducer"
 import { recordFieldsReducer } from "./recordFieldsReducer"
 import { accountsReducer } from "./accountsReducer"
@@ -53,6 +53,7 @@ export const rootReducer = combineReducers({
   recordFields: recordFieldsReducer,
   recordsSortedBy,
   values: valuesReducer,
+  mappedValues,
   zohoBooks: zohoBooksReducer,
   requesting,
   alerts,

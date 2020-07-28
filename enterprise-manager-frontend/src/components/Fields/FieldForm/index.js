@@ -100,12 +100,14 @@ const FieldForm = props => {
       name: "isUniq",
       label: "Uniq?"
     },
-    ["key_field", "combined_field"].includes(fieldState.fieldType) && {
+    (["key_field", "combined_field"].includes(fieldState.fieldType) ||
+      fieldState.ableToHideInForm) && {
       name: "hiddenInForm",
       label: "Hidden in form?"
     },
     { name: "hiddenInRecords", label: "Hidden in records?" },
-    fieldState.fieldType === "combined_field" && {
+    (fieldState.fieldType === "combined_field" ||
+      fieldState.ableToBeReadOnly) && {
       name: "readOnly",
       label: "Read only?"
     },

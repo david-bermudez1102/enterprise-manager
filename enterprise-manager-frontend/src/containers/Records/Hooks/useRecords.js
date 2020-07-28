@@ -2,6 +2,7 @@ import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
 import { fetchRecords } from "../../../actions/recordActions"
 import { useRouteMatch, useLocation } from "react-router-dom"
+import { fetchValues } from "../../../actions/valueActions"
 
 const useRecords = props => {
   const { resource, deleted } = props
@@ -47,6 +48,7 @@ const useRecords = props => {
       dispatch(
         fetchRecords(resource.organizationId, resource.id, deleted)
       ).then(() => setLoadingInitialData(false))
+      dispatch(fetchValues(resource.organizationId, resource.id))
     }
     // eslint-disable-next-line
   }, [location.pathname, restOfParams])

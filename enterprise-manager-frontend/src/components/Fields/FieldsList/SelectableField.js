@@ -30,7 +30,6 @@ const SelectableField = props => {
         content: option ? option.value : undefined,
         recordId: option ? option["data-record-id"] : undefined
       })
-    form.setFieldsValue({ [name]: value })
   }
 
   useEffect(() => {
@@ -49,7 +48,7 @@ const SelectableField = props => {
         name={name}
         showSearch
         placeholder={`Select a ${field.name.toLowerCase()}`}
-        allowClear
+        allowClear={!editingMode}
         onChange={handleChange}
         {...newProps}>
         {field.selectableResourceAttributes

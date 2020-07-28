@@ -88,8 +88,8 @@ const MovableField = ({
         style={{
           display: "flex",
           cursor: "move",
+          marginTop: -14,
           width: 30,
-          paddingTop: 10,
           alignItems: "center",
           justifyContent: "center"
         }}

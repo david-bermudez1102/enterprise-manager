@@ -42,22 +42,35 @@ const FieldsContainer = props => {
               </Route>
             )}
           </Switch>
-          <Route
-            path={`${match.path}/new`}
-            name={`New ${singular(resource.name)}`}>
-            <Col
-              span={24}
-              {...(location.pathname !== `${match.url}/new`
-                ? { xxl: 12, xl: 10, lg: 12 }
-                : { xxl: 8, xl: 10, lg: 14, md: 16 })}>
-              <FieldsList
-                fields={fields}
-                match={match}
-                resource={resource}
-                updateField={updateField}
-              />
-            </Col>
-          </Route>
+
+          <Switch>
+            <Route
+              path={`${match.path}/:recordId`}
+              name={`Edit ${singular(resource.name)}`}>
+              <Col span={24} {...{ xxl: 8, xl: 10, lg: 14, md: 16 }}>
+                <FieldsList
+                  fields={fields}
+                  resource={resource}
+                  updateField={updateField}
+                />
+              </Col>
+            </Route>
+            <Route
+              path={`${match.path}/new`}
+              name={`New ${singular(resource.name)}`}>
+              <Col
+                span={24}
+                {...(location.pathname !== `${match.url}/new`
+                  ? { xxl: 12, xl: 10, lg: 12 }
+                  : { xxl: 8, xl: 10, lg: 14, md: 16 })}>
+                <FieldsList
+                  fields={fields}
+                  resource={resource}
+                  updateField={updateField}
+                />
+              </Col>
+            </Route>
+          </Switch>
         </Row>
       </Card>
     </Col>

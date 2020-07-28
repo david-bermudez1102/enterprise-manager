@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react"
 import Field from "./Field"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { addRecord } from "../../../actions/recordActions"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useRouteMatch } from "react-router-dom"
 import { Empty, Card, Button, Divider, Form, Col } from "antd"
 import zohoBooksIcon from "../../../containers/ZohoBooks/favicon.ico"
 import Title from "antd/lib/typography/Title"
@@ -15,12 +15,17 @@ const pluralize = require("pluralize")
 
 const FieldsList = props => {
   const location = useLocation()
-  const { match, resource, fields } = props
+  const match = useRouteMatch()
+  const { resource, fields } = props
   const [state, setState] = useState([])
   const [activeFields, setActiveFields] = useState(fields)
-  const { recordFields } = useSelector(
-    ({ recordFields }) => ({ recordFields }),
+  const { recordFields, values } = useSelector(
+    ({ recordFields, values }) => ({ recordFields, values }),
     shallowEqual
+  )
+  const { recordId } = match.params
+  const record = (values[resource.id] || []).find(
+    r => r.id === parseInt(recordId)
   )
 
   const userPermission = useUserPermission({ payload: resource })
@@ -29,8 +34,17 @@ const FieldsList = props => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setState([])
-  }, [resource])
+    if (record)
+      setState(
+        Object.entries(record)
+          .map(([key, value]) => ({
+            recordFieldId: parseInt(key),
+            content: value
+          }))
+          .filter(r => r.recordFieldId)
+      )
+    else setState([])
+  }, [resource, record])
 
   useEffect(() => {
     setActiveFields(fields)
@@ -53,6 +67,7 @@ const FieldsList = props => {
 
   const handleSubmit = useCallback(
     data => {
+      console.log(data)
       setLoading(true)
       dispatch(
         addRecord(
@@ -158,28 +173,31 @@ const FieldsList = props => {
                   const recordField = (recordFields[resource.id] || []).find(
                     f => f.fieldId === field.id
                   )
-                  return recordField ? (
-                    <MovableField
-                      permission={userPermission}
-                      resource={resource}
-                      activeFields={activeFields}
-                      key={field.key}
-                      index={index}
-                      moveField={moveField}>
-                      <Field
-                        userPermission={userPermission}
-                        field={field}
-                        recordField={recordField}
-                        form={form}
-                        fields={
-                          field.fieldType === "key_field" ? fields : undefined
-                        }
-                        state={state}
-                        match={match}
-                        handleChange={handleChange}
-                      />
-                    </MovableField>
-                  ) : null
+                  return (
+                    recordField && (
+                      <MovableField
+                        permission={userPermission}
+                        resource={resource}
+                        activeFields={activeFields}
+                        key={field.key}
+                        index={index}
+                        moveField={moveField}>
+                        <Field
+                          record={record}
+                          userPermission={userPermission}
+                          field={field}
+                          recordField={recordField}
+                          form={form}
+                          fields={
+                            field.fieldType === "key_field" ? fields : undefined
+                          }
+                          state={state}
+                          match={match}
+                          handleChange={handleChange}
+                        />
+                      </MovableField>
+                    )
+                  )
                 })}
               <Divider />
               <Form.Item className={"custom-form-item"}>
@@ -210,4 +228,4 @@ const FieldsList = props => {
   )
 }
 
-export default FieldsList
+export default React.memo(FieldsList)

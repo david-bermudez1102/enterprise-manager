@@ -7,6 +7,7 @@ const NumericField = props => {
   const {
     field,
     onChange,
+    onBlur,
     name,
     editingMode,
     suffix,
@@ -16,7 +17,7 @@ const NumericField = props => {
     ...newProps
   } = props
 
-  const [value, setValue] = useState()
+  const [value, setValue] = useState(editingMode ? state.content : undefined)
   const [valueWithDependents, setValueWithDependents] = useState()
   const [isFocused, setIsFocused] = useState(false)
   const fieldAfterDependents = useHandleFieldDependents(
@@ -33,23 +34,23 @@ const NumericField = props => {
   )
 
   const handleChange = content => {
-    if (isFocused) {
-      setValue(content)
-    }
+    setValue(content)
+
     onChange({
       recordFieldId: props.name,
       content
     })
-    form && form.setFieldsValue({ [name]: content })
   }
 
   useEffect(() => {
     if (field.fieldDependents && !isFocused && !editingMode) {
       setValueWithDependents(fieldAfterDependents)
-      handleChange(fieldAfterDependents)
+      form.setFieldsValue({ [name]: fieldAfterDependents })
     }
     // eslint-disable-next-line
-  }, [fieldAfterDependents, isFocused])
+  }, [editingMode, fieldAfterDependents, isFocused])
+
+  console.log(valueWithDependents, value)
 
   return (
     <FieldTypeWrapper
@@ -58,21 +59,25 @@ const NumericField = props => {
       label={field.name}
       field={field}
       suffix={suffix}>
-      <InputNumber
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        step={field.acceptsDecimals ? 0.1 : 1}
-        onChange={editingMode ? handleChange : undefined}
-        value={
-          !editingMode
-            ? !isFocused
-              ? valueWithDependents || value
+      <div>
+        <InputNumber
+          {...newProps}
+          onFocus={() => setIsFocused(true)}
+          onBlur={editingMode ? onBlur : () => setIsFocused(false)}
+          step={field.acceptsDecimals ? 0.1 : 1}
+          onChange={handleChange}
+          value={
+            !editingMode
+              ? !isFocused
+                ? valueWithDependents || value
+                : value
+              : !isFocused
+              ? state.contentAfterDependents
               : value
-            : undefined
-        }
-        {...newProps}
-        style={{ width: "100%" }}
-      />
+          }
+          style={{ width: "100%" }}
+        />
+      </div>
     </FieldTypeWrapper>
   )
 }

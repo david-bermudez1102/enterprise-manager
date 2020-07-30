@@ -24,6 +24,7 @@ class RecordSerializer
       new_hash[:id] = value[:attributes][:recordId]
       new_hash[:formId] = value[:attributes][:formId]
       new_hash[value[:attributes][:recordFieldId]] = value[:attributes][:content]
+      new_hash[value[:attributes][:recordFieldId]] = value[:attributes][:contentAfterDependents] if value[:attributes][:contentAfterDependents]
       new_hash[value[:attributes][:recordFieldName]] = value[:attributes][:apiContent]
       new_hash[:createdBy] = object.account.name if object.account 
       new_hash[:createdAt] = object.created_at

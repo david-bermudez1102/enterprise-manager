@@ -186,6 +186,7 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       content,
       resourceFieldId,
       isPercentage,
+      isPercentageFromDependent,
       subDependentsAttributes
     } =
       dependents.find(d => d.dependentFieldId === parseInt(dependentValue)) ||
@@ -233,13 +234,13 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
             dependent.dependentFieldId === dependentValue &&
             !subDependentOptionId
           )
-            return { ...dependent, isPercentage: e.target.checked }
+            return { ...dependent, [e.target.name]: e.target.checked }
           else if (subDependentOptionId)
             return {
               ...dependent,
               subDependentsAttributes: subDependentsAttributes.map(sD =>
                 sD.subDependentOptionId === parseInt(subDependentOptionId)
-                  ? { ...sD, isPercentage: e.target.checked }
+                  ? { ...sD, [e.target.name]: e.target.checked }
                   : sD
               )
             }
@@ -286,21 +287,45 @@ const FieldDependant = ({ field, resourceId, onChange }) => {
       ) : null
 
     let isPercentageBox = (
-      <Checkbox
-        onChange={handleIsPercentageChange}
-        checked={subDependent.isPercentage || isPercentage}>
-        Percentage value?
-        <Tooltip
-          title={
-            <>
-              If true, the percentage will be calculated based on the total
-              input's field and the then the operation will be performed(added,
-              substracted, etc)
-            </>
-          }>
-          <QuestionCircleOutlined />
-        </Tooltip>
-      </Checkbox>
+      <>
+        <Checkbox
+          name={"isPercentage"}
+          onChange={handleIsPercentageChange}
+          checked={subDependent.isPercentage || isPercentage}>
+          Percentage value?
+          <Tooltip
+            title={
+              <>
+                If true, the percentage will be calculated based on the total
+                input's field and the then the operation will be
+                performed(added, substracted, etc)
+              </>
+            }>
+            <QuestionCircleOutlined />
+          </Tooltip>
+        </Checkbox>
+        {isPercentage && (
+          <Checkbox
+            name={"isPercentageFromDependent"}
+            onChange={handleIsPercentageChange}
+            checked={
+              subDependent.isPercentageFromDependent ||
+              isPercentageFromDependent
+            }>
+            Percentage from dependent's value?
+            <Tooltip
+              title={
+                <>
+                  If true, the percentage will be calculated based on the
+                  dependent field input and the then the operation will be
+                  performed(added, substracted, etc)
+                </>
+              }>
+              <QuestionCircleOutlined />
+            </Tooltip>
+          </Checkbox>
+        )}
+      </>
     )
 
     switch (subDependent.operation || operation) {

@@ -44,7 +44,7 @@ const useHandleFieldDependents = (
 
               const subDependent =
                 (fieldDependant.subDependentsAttributes || []).find(
-                  sD => f.optionValueId === sD.subDependentOptionId
+                  sD => f.optionId === sD.subDependentOptionId
                 ) || {}
 
               const dependentContent =
@@ -64,8 +64,13 @@ const useHandleFieldDependents = (
               const isPercentage =
                 subDependent.isPercentage || fieldDependant.isPercentage
 
+              const isPercentageFromDependent =
+                subDependent.isPercentageFromDependent ||
+                fieldDependant.isPercentageFromDependent
+
               switch (subDependent.operation || fieldDependant.operation) {
                 case "copy":
+                  console.log(copy)
                   finalValue += copy
                   break
                 case "add":
@@ -73,7 +78,9 @@ const useHandleFieldDependents = (
                     field.fieldType === "selectable"
                       ? copy
                       : isPercentage
-                      ? (parseInt(dependentContent) * finalValue) / 100
+                      ? isPercentageFromDependent
+                        ? (parseInt(dependentContent) * f.content) / 100
+                        : (parseInt(dependentContent) * finalValue) / 100
                       : parseInt(dependentContent)
 
                   break

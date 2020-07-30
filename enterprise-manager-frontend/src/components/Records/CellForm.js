@@ -7,14 +7,7 @@ import Field from "../Fields/FieldsList/Field"
 import useMatchedRoute from "../NoMatch/useMatchedRoute"
 
 export const CellForm = props => {
-  const {
-    record,
-    content,
-    formId,
-    recordId,
-    recordFieldId,
-    organizationId
-  } = props
+  const { record, formId, recordId, recordFieldId, organizationId } = props
 
   const match = useMatchedRoute()
   const { fields, recordFields, mappedValues } = useSelector(
@@ -28,13 +21,14 @@ export const CellForm = props => {
   const field = (fields[formId] || []).find(
     f => f.recordFieldId === recordFieldId
   )
+  const currentValue =
+    mappedValues.find(
+      v => v.recordFieldId === recordFieldId && v.recordId === recordId
+    ) || {}
   const [state, setState] = useState({
-    id: (
-      mappedValues.find(
-        v => v.recordFieldId === recordFieldId && v.recordId === recordId
-      ) || {}
-    ).id,
-    content: content ? content : "",
+    id: currentValue.id,
+    content: currentValue.content || "",
+    contentAfterDependents: currentValue.contentAfterDependents,
     formId,
     recordId,
     recordFieldId,

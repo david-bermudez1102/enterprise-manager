@@ -18,7 +18,7 @@ class Account < ApplicationRecord
   has_many :conversations, through: :open_conversations, dependent: :nullify
   has_many :values, dependent: :nullify
 
-  validates :roles, :length => { :minimum => 1 }
+  validates :roles, :length => { :minimum => 1 }, unless: Proc.new { |obj| obj.accountable_type =="Root" }
 
   has_secure_password
 

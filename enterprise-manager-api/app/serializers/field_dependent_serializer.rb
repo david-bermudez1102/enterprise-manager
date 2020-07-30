@@ -4,7 +4,7 @@ class FieldDependentSerializer
   
   ##cache_options enabled: true, cache_length: 12.hours
 
-  attributes :id, :content, :operation, :is_percentage
+  attributes :id, :content, :operation, :is_percentage, :is_percentage_from_dependent
 
   attribute :dependent_field_id, if: Proc.new { |obj| obj.dependent_field_id }
 

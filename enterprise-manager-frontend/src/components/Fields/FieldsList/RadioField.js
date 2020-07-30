@@ -15,7 +15,7 @@ const RadioField = props => {
       content: (
         field.optionsAttributes.find(o => o.id === e.target.value) || {}
       ).value,
-      optionValueId: e.target.value
+      optionId: e.target.value
     }
     setState(newState)
     onChange(newState)
@@ -25,7 +25,7 @@ const RadioField = props => {
     const newState = {
       ...state,
       content: undefined,
-      optionValueId: undefined
+      optionId: undefined
     }
     setState(newState)
     onChange(newState)
@@ -38,7 +38,7 @@ const RadioField = props => {
       field={field}
       suffix={suffix}>
       <Radio.Group
-        value={state.optionValueId}
+        value={state.optionId}
         options={field.optionsAttributes.map(o => ({
           label: o.value,
           value: o.id

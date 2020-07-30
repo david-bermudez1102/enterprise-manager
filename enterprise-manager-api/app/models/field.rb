@@ -10,6 +10,7 @@ class Field < ApplicationRecord
   has_many :values, through: :record_field
   has_many :key_values, through: :record_key
   has_many :field_dependents, dependent: :destroy
+  has_many :dependent_for, class_name:"FieldDependent", foreign_key: :dependent_field_id
   has_one :date_field_option, dependent: :destroy
   
   serialize :combined_fields, Array

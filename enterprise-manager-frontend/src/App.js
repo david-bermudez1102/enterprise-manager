@@ -36,7 +36,7 @@ const App = () => {
         <Route path='/' name={"Home"}>
           <SessionWebSocket />
           <DndProvider backend={HTML5Backend}>
-            <HomeContainer organization={organizations[0]} />
+            <HomeContainer organization={organizations[0] || {}} />
           </DndProvider>
         </Route>
       ) : null}

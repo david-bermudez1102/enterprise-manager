@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_26_002241) do
+ActiveRecord::Schema.define(version: 2020_07_29_011606) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -169,6 +169,7 @@ ActiveRecord::Schema.define(version: 2020_07_26_002241) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_percentage_from_dependent", default: false, null: false
     t.index ["dependent_field_id"], name: "index_field_dependents_on_dependent_field_id"
     t.index ["field_id"], name: "index_field_dependents_on_field_id"
     t.index ["resource_field_id"], name: "index_field_dependents_on_resource_field_id"
@@ -443,13 +444,12 @@ ActiveRecord::Schema.define(version: 2020_07_26_002241) do
     t.datetime "updated_at", null: false
     t.integer "record_field_id"
     t.integer "record_id"
-    t.integer "field_id"
     t.integer "record_value_id"
     t.integer "option_id"
     t.integer "key_value_id"
     t.integer "account_id"
+    t.string "content_after_dependents"
     t.index ["account_id"], name: "index_values_on_account_id"
-    t.index ["field_id"], name: "index_values_on_field_id"
     t.index ["key_value_id"], name: "index_values_on_key_value_id"
     t.index ["option_id"], name: "index_values_on_option_id"
     t.index ["organization_id"], name: "index_values_on_organization_id"

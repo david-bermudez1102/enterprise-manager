@@ -52,12 +52,14 @@ const FieldsList = props => {
 
   const handleChange = useCallback(
     newState => {
+      const recordField = recordFields[resource.id].find(
+        rF => rF.id === newState.recordFieldId
+      )
+      const { fieldId } = recordField
       setState([
         ...state.filter(v => v.recordFieldId !== newState.recordFieldId),
         {
-          ...recordFields[resource.id].find(
-            rF => rF.id === newState.recordFieldId
-          ),
+          fieldId,
           ...newState
         }
       ])
@@ -67,7 +69,6 @@ const FieldsList = props => {
 
   const handleSubmit = useCallback(
     data => {
-      console.log(data)
       setLoading(true)
       dispatch(
         addRecord(
@@ -84,11 +85,13 @@ const FieldsList = props => {
     [state]
   )
 
+  console.log(state)
+
   const tabList = [
     userPermission.canCreate && {
-      key: `${match.url}/new/fields/new`,
+      key: `${match.url}/fields/new`,
       tab: (
-        <Link to={`${match.url}/new/fields/new`} title='Add new field'>
+        <Link to={`${match.url}/fields/new`} title='Add new field'>
           <i className='fad fa-plus-circle' style={{ fontSize: "24px" }}></i>
         </Link>
       )
@@ -130,8 +133,6 @@ const FieldsList = props => {
     },
     [activeFields]
   )
-
-  console.log(state)
 
   return (
     <Card

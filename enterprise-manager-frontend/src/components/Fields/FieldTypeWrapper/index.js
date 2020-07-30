@@ -15,7 +15,7 @@ const FieldTypeWrapper = ({
       <Col flex={"auto"}>
         <Form.Item
           valuePropName={
-            field.fieldType === "boolean_field" ? "checked" : undefined
+            field.fieldType === "boolean_field" ? "checked" : "value"
           }
           style={field.style}
           label={!editingMode ? label || field.name : "undefined"}

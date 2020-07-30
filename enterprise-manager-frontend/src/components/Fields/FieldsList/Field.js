@@ -48,7 +48,7 @@ const Field = props => {
           content={
             <Options
               permission={userPermission}
-              url={`${match.url}/new/fields`}
+              url={`${match.url}/fields`}
               content={field}
               deletionMessage='The field will be deleted from the resource.'
             />

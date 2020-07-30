@@ -5,6 +5,8 @@ class FieldDependent < ApplicationRecord
   
   has_many :sub_dependents, class_name: "FieldDependent", foreign_key: :sub_dependent_id, dependent: :destroy
   belongs_to :sub_dependent_option, class_name: "Option", foreign_key: :sub_dependent_option_id, optional: true
+  has_many :values, through: :dependent_field
+  has_many :record_values, through: :resource_field, source: :values
 
   enum operation: %w[add subtract concatenate multiply divide replace dependent_times copy percentage]
 
@@ -15,7 +17,11 @@ class FieldDependent < ApplicationRecord
   accepts_nested_attributes_for :sub_dependents, allow_destroy: true
   validate :operation_is_percentage
 
+  before_save :falsify_is_percentage_from_dependent, if: -> {!self[:is_percentage] && self[:is_percentage_from_dependent]}
+
   private
+
+
     def dependent_field_is_selectable?
       dependent_field && dependent_field.field_type == "selectable"
     end
@@ -30,6 +36,10 @@ class FieldDependent < ApplicationRecord
     
     def dependent_field_is_not_sub_dependent
       !sub_dependent_id
+    end
+
+    def falsify_is_percentage_from_dependent
+      self[:is_percentage_from_dependent] = false
     end
 
     def field_dependent_is_not_same_field

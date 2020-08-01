@@ -17,7 +17,7 @@ const NumericField = props => {
     ...newProps
   } = props
 
-  const [value, setValue] = useState(editingMode ? state.content : undefined)
+  const [value, setValue] = useState(editingMode ? state.content : 0)
   const [valueWithDependents, setValueWithDependents] = useState()
   const [isFocused, setIsFocused] = useState(false)
   const fieldAfterDependents = useHandleFieldDependents(

@@ -229,4 +229,4 @@ const FieldsList = props => {
   )
 }
 
-export default React.memo(FieldsList)
+export default FieldsList

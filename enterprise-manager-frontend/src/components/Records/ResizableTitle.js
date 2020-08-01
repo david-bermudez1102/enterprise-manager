@@ -30,7 +30,11 @@ const ResizeableTitle = props => {
       }
     },
     drop: item => {
-      moveColumn(item.index, index)
+      try {
+        moveColumn(item.index, index)
+      } catch (error) {
+        console.log(error)
+      }
     }
   })
   const [, drag] = useDrag({
@@ -54,7 +58,7 @@ const ResizeableTitle = props => {
   return (
     <Resizable
       width={width}
-      height={0}
+      height={100}
       handle={
         <span
           className='react-resizable-handle'
@@ -69,6 +73,7 @@ const ResizeableTitle = props => {
       draggableOpts={{ enableUserSelectHack: false }}>
       <th
         {...restProps}
+        draggable={!isResizing}
         ref={isResizing ? undefined : ref}
         className={`${className}${isOver ? dropClassName : ""}`}
         style={{ cursor: "move", ...style }}
@@ -77,4 +82,4 @@ const ResizeableTitle = props => {
   )
 }
 
-export default ResizeableTitle
+export default React.memo(ResizeableTitle)

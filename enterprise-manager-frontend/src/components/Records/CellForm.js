@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react"
 import { Form, Spin, Button } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import "./styles.scss"
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import Field from "../Fields/FieldsList/Field"
 import useMatchedRoute from "../NoMatch/useMatchedRoute"
+import { updateRecord } from "../../actions/recordActions"
 
 export const CellForm = props => {
   const { record, formId, recordId, recordFieldId, organizationId } = props
+  const dispatch = useDispatch()
 
   const match = useMatchedRoute()
   const { fields, recordFields, mappedValues } = useSelector(
@@ -39,7 +41,7 @@ export const CellForm = props => {
 
   useEffect(() => {
     form.setFieldsValue({ [recordFieldId]: state.content })
-  }, [state])
+  }, [form])
 
   const suffix = loading ? (
     <Spin
@@ -60,16 +62,17 @@ export const CellForm = props => {
   }
 
   const onFinish = data => {
-    const { updateRecord } = props
     setLoading(true)
-    updateRecord({
-      recordId,
-      organizationId,
-      formId,
-      valuesAttributes: [state]
-    })
+    dispatch(
+      updateRecord({
+        recordId,
+        organizationId,
+        formId,
+        valuesAttributes: [state]
+      })
+    )
       .then(() => setLoading(false))
-      .then(() => props.handleBlur())
+      .then(handleBlur)
   }
 
   console.log(state)

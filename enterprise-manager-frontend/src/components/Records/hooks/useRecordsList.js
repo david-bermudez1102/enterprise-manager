@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux"
 import { SearchOutlined } from "@ant-design/icons"
 import ColumnSearch from "../ColumnSearch"
 import { singular, plural } from "pluralize"
+import RecordRow from "../RecordRow"
 
 const useRecordsList = ({ recordFields, values, resource }) => {
   const getColumnSearchProps = useCallback(
@@ -22,42 +23,8 @@ const useRecordsList = ({ recordFields, values, resource }) => {
         <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
       )
     }),
-    [values]
+    [values, recordFields]
   )
-
-  const getColumns = useCallback(
-    recordFields =>
-      recordFields.map((field, index) => ({
-        key: field.id,
-        ...getColumnSearchProps(field.id),
-        title: capitalize(field.name),
-        dataIndex: field.id,
-        dataType: field.fieldType,
-        sorter: true,
-        wordWrap: "break",
-        width: index < recordFields.length - 1 ? 200 : undefined,
-        ellipsis: true,
-        editable: true,
-        onCell: record => ({
-          record,
-          dataIndex: field.id,
-          fieldType: field.fieldType,
-          organizationId: resource.organizationId
-        })
-      })),
-    [getColumnSearchProps, resource.organizationId]
-  )
-
-  const [state, setState] = useState({
-    columns: getColumns(recordFields)
-  })
-
-  const [totalSelected, setTotalSelected] = useState("")
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    setState({ columns: getColumns(recordFields) })
-  }, [getColumns, recordFields])
 
   const handleResize = index => (e, { size }) => {
     const nextColumns = [...state.columns]
@@ -78,6 +45,7 @@ const useRecordsList = ({ recordFields, values, resource }) => {
     tmpRecordFields.splice(hoverIndex, 0, dragRecordField)
     tmpColumns.splice(dragIndex, 1)
     tmpColumns.splice(hoverIndex, 0, dragColumn)
+    console.log(tmpRecordFields)
     setState({ columns: tmpColumns })
     dispatch({
       type: "SORT_RECORD_FIELDS",
@@ -85,6 +53,46 @@ const useRecordsList = ({ recordFields, values, resource }) => {
       formId: resource.id
     })
   }
+
+  const getColumns = useCallback(
+    recordFields =>
+      recordFields.map((field, index) => ({
+        key: field.id,
+        ...getColumnSearchProps(field.id),
+        title: capitalize(field.name),
+        dataIndex: field.id,
+        dataType: field.fieldType,
+        sorter: true,
+        wordWrap: "break",
+        width: index < recordFields.length - 1 ? 200 : undefined,
+        ellipsis: true,
+        editable: true,
+        onCell: record => ({
+          record,
+          dataIndex: field.id,
+          fieldType: field.fieldType,
+          organizationId: resource.organizationId
+        }),
+        onHeaderCell: column => ({
+          width: column.width,
+          onResize: handleResize(index),
+          moveColumn,
+          index
+        })
+      })),
+    [getColumnSearchProps, resource.organizationId]
+  )
+
+  const [state, setState] = useState({
+    columns: getColumns(recordFields)
+  })
+
+  const [totalSelected, setTotalSelected] = useState("")
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    setState({ columns: getColumns(recordFields) })
+  }, [getColumns, recordFields])
 
   const [selectedRows, setSelectedRows] = useState([])
 
@@ -106,23 +114,14 @@ const useRecordsList = ({ recordFields, values, resource }) => {
       cell: ResizeableTitle
     },
     body: {
+      row: RecordRow,
       cell: RecordCell
     }
   }
 
-  const columns = state.columns.map((col, index) => ({
-    ...col,
-    onHeaderCell: column => ({
-      width: column.width,
-      onResize: handleResize(index),
-      moveColumn,
-      index
-    })
-  }))
-
   return {
     components,
-    columns,
+    columns: state.columns,
     rowSelection,
     totalSelected,
     selectedRows

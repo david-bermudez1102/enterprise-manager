@@ -42,4 +42,4 @@ const RecordPreview = ({ resource, record, recordFields, setRecord }) => {
   ) : null
 }
 
-export default RecordPreview
+export default React.memo(RecordPreview)

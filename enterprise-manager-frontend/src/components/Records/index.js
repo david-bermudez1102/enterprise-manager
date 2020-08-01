@@ -4,7 +4,7 @@ import RecordsList from "./RecordsList"
 import { Col } from "antd"
 
 const Records = props => {
-  const { resource } = props
+  const { resource, deleted } = props
   const {
     loadingInitialData,
     recordFields,
@@ -20,7 +20,7 @@ const Records = props => {
         records={records}
         sortedRecords={sortedRecords[resource.id] || []}
         values={values}
-        deleted={props.deleted}
+        deleted={deleted}
         loadingInitialData={loadingInitialData}
       />
     </Col>

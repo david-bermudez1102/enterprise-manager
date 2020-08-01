@@ -16,6 +16,7 @@ import { plural } from "pluralize"
 import Text from "antd/lib/typography/Text"
 import BulkActions from "./BulkActions"
 import "./recordsListStyles.scss"
+import { ReactHeight } from "react-height"
 
 const RecordsList = props => {
   const dispatch = useDispatch()
@@ -24,7 +25,8 @@ const RecordsList = props => {
   const [currentFilteredBy, setCurrentFilteredBy] = useState()
   const mounted = useRef()
   const [sorting, setSorting] = useState(false)
-  const [recordsRef, setRecordsRef] = useState({})
+  const [listHeight, setListHeight] = useState()
+
   const {
     loadingInitialData,
     sortedRecords,
@@ -54,6 +56,14 @@ const RecordsList = props => {
         )
       )
   })
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true
+    } else {
+      if (filtersApplied.length === 0) setCurrentFilteredBy("for current month")
+    }
+  }, [filtersApplied])
 
   const {
     location,
@@ -108,14 +118,6 @@ const RecordsList = props => {
     })
   }
 
-  useEffect(() => {
-    if (!mounted.current) {
-      mounted.current = true
-    } else {
-      if (filtersApplied.length === 0) setCurrentFilteredBy("for current month")
-    }
-  }, [filtersApplied])
-
   return (
     <>
       <div>
@@ -131,14 +133,14 @@ const RecordsList = props => {
           <Col
             span={24}
             style={{
-              height: recordsRef.offsetHeight,
+              height: listHeight,
               position: "relative"
             }}>
             <Card
               bordered={false}
               style={{ width: "100%", position: "absolute" }}
               bodyStyle={{ paddingBottom: 0 }}>
-              <div ref={setRecordsRef}>
+              <ReactHeight onHeightReady={setListHeight}>
                 <Row justify={"space-between"}>
                   <Col span={"auto"}>
                     <BulkActions
@@ -175,16 +177,13 @@ const RecordsList = props => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col
-                    span={24}
-                    style={{ width: "100%" }}
-                    className={"custom-table"}>
+                  <Col span={24} className={"custom-table"}>
                     <Table
                       scroll={{
                         scrollToFirstRowOnChange: false,
-                        x: "max-content"
+                        x: "auto"
                       }}
-                      tableLayout={"fixed"}
+                      tableLayout={"auto"}
                       loading={
                         loadingInitialData || loadingData || loadingFilteredData
                       }
@@ -193,7 +192,7 @@ const RecordsList = props => {
                       columns={[
                         {
                           title: "Actions",
-                          dataIndex: "",
+                          dataIndex: "actions",
                           width: "150px",
                           key: "x",
                           render: (text, record) => (
@@ -206,7 +205,7 @@ const RecordsList = props => {
                           )
                         },
                         {
-                          key: `record_field_head_listing_id_${resource.id}`,
+                          key: `listing_id_${resource.id}`,
                           title: "#",
                           dataIndex: "listingId",
                           sorter: true,
@@ -245,7 +244,7 @@ const RecordsList = props => {
                     />
                   </Col>
                 </Row>
-              </div>
+              </ReactHeight>
             </Card>
           </Col>
         </Row>

@@ -44,7 +44,7 @@ export const useChangePage = props => {
       if (sorting) setLoadingData(true)
       chunkOfRecordsProxy(payload, paginationLimit)
         .then(setChunkOfRecords)
-        .then(() => setLoadingData(false))
+        .then(() => (sorting ? setLoadingData(false) : null))
     }
     // eslint-disable-next-line
   }, [payload, paginationLimit])

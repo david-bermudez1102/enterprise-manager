@@ -17,23 +17,24 @@ class RecordSerializer
     record.form.current_month_records_count
   end
 
+
   link :values do |object|
     new_hash = {}
-    ValueSerializer.new(object.values.order(id: :desc)).serializable_hash[:data].map do |value|
+    object.values.each do |value|
       
-      new_hash[:id] = value[:attributes][:recordId]
-      new_hash[:formId] = value[:attributes][:formId]
-      new_hash[value[:attributes][:recordFieldId]] = value[:attributes][:content]
-      new_hash[value[:attributes][:recordFieldId]] = value[:attributes][:contentAfterDependents] if value[:attributes][:contentAfterDependents]
-      new_hash[value[:attributes][:recordFieldName]] = value[:attributes][:apiContent]
-      new_hash[:createdBy] = object.account.name if object.account 
+      new_hash[:id] = object.id
+      new_hash[:formId] = object.form_id
+      new_hash[value.record_field_id] = value.content
+      new_hash[value.record_field_id] = value.content_after_dependents if value.content_after_dependents
+      new_hash[value.record_field_name] = value.zoho_api_content
+      
+    end
+    new_hash[:createdBy] = object.account.name if object.account 
       new_hash[:createdAt] = object.created_at
       new_hash[:updatedAt] = object.updated_at
       new_hash[:zohoRecordId] = object.zoho_integration_record.external_id if object.zoho_integration_record
       new_hash[:quickbooksRecordId] = object.quickbooks_integration_record.external_id if object.quickbooks_integration_record
-    end
     new_hash
   end
-
 
 end

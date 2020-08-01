@@ -15,18 +15,18 @@ class StorySerializer
   attribute :action
   
   attribute :payload do |obj|
+    payload = nil
     case obj.storiable_type
     when "Form"
-      obj.storiable.slice(:id, :name) if obj.storiable
-      puts obj.storiable
-    when "Record"
-      obj.storiable.form.slice(:id, :name) if obj.storiable.form
-    when "Field"
-      obj.storiable.form.slice(:id, :name) if obj.storiable.form
-    else
-      obj.storiable
-    end
-    
+        payload = obj.storiable.slice(:id, :name) if obj.storiable
+      when "Record"
+        payload = obj.storiable.form.slice(:id, :name) if obj.storiable.form
+      when "Field"
+        payload = obj.storiable.form.slice(:id, :name) if obj.storiable.form
+      else
+        payload = obj.storiable
+      end
+    payload || {}
   end
 
   attribute :likes do |obj|

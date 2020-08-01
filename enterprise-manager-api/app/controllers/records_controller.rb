@@ -24,21 +24,22 @@ class RecordsController < ApplicationController
   end
 
   def index
-    records = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record).order(:created_at).with_filters(filterable_params).where(is_deleted:@is_deleted)
+    records = @form.records.includes({:values => [ :record_field, { :record_value => [{ :record => [:zoho_integration_record] }, :key_value] }, :form, { :field => [:field_dependents, { :selectable_resource => [{ :form => [:zoho_connection] }] }] }]}, :form, :account, :zoho_integration_record, :quickbooks_integration_record).order(:created_at).with_filters(filterable_params).where(is_deleted:@is_deleted)
     if stale?(records, public:true)
       serialized_data = RecordSerializer.new(records.group(:id)).serializable_hash[:data]
       serialized_data.each.with_index(1) do |data, i| 
         data[:links][:values]["listingId"] = i
+        data[:links][:values]["key"] = "record_values_#{i}"
       end
-      render json: serialized_data
+      render json: serialized_data.map { |data| data[:links][:values] }
     end
   end
 
   def show
-    record = @form.records.includes({:values => [:form, :record_value]}, :zoho_integration_record, :quickbooks_integration_record).find_by(id: params[:id])
-    if stale?(record,public:true)
+    record = @form.records.includes(:form, :account, :zoho_integration_record, :quickbooks_integration_record).find_by(id: params[:id])
+    
       render json: RecordSerializer.new(record, params:{ records_count: params[:records_count], current_month_records_count: params[:current_month_records_count]}).serializable_hash[:data]
-    end
+    
   end
 
   def destroy
@@ -66,7 +67,7 @@ class RecordsController < ApplicationController
   end
 
   def set_form
-    @form = @organization.forms.find_by(id: params[:form_id])
+    @form = @organization.forms.includes(:records).find_by(id: params[:form_id])
   end
 
   def set_is_deleted

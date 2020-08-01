@@ -1,5 +1,6 @@
-import chunk from "lodash/chunk";
+import chunk from "lodash/chunk"
 
-export const chunkOfRecords = (sortedRecords, paginationLimit) => {
-  return chunk(sortedRecords, paginationLimit);
-};
+export const chunkOfRecords = async (sortedRecords, paginationLimit) => {
+  const c = new Promise(chunk(sortedRecords, paginationLimit))
+  return await c
+}

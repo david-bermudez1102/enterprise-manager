@@ -9,7 +9,7 @@ const DESTROYED_MESSAGE_DEFAULT = "Content was deleted with success"
 
 export const getAll = (dispatch, url, ...actions) =>
   fetch(url, {
-    cache: "no-cache",
+    cache: "reload",
     credentials: "include",
     headers: {
       "Content-Type": "application/json"
@@ -25,8 +25,8 @@ export const getAll = (dispatch, url, ...actions) =>
       }
     })
     .catch(resp => {
-      actions.map(action => action([]))
       message.error(resp.toString(), 8)
+      return false
     })
 
 export const add = (dispatch, url, payload, ...actions) => {

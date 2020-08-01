@@ -1,5 +1,5 @@
 import workerInstance from "../workers/workerActions"
-import { remove, update, add } from "./fetchActions"
+import { remove, update, add, getAll } from "./fetchActions"
 import { message } from "antd"
 import { handleErrors } from "./handleErrors"
 
@@ -31,6 +31,27 @@ export const addRecord = (record, organizationId, formId) => dispatch =>
       return true
     }
   )
+
+/* export const fetchRecords = (
+  organizationId,
+  formId,
+  deleted,
+  withDateFilters,
+  queryParams
+) => dispatch =>
+  getAll(
+    dispatch,
+    `/api/v1/organizations/${organizationId}/forms/${formId}/records?${
+      queryParams || "current_month=true"
+    }${deleted ? `&deleted=true` : ""}`,
+    values => {
+      dispatch({ type: "FETCH_RECORDS", records: values, formId })
+      dispatch({ type: "FETCH_VALUES", values, formId })
+
+      dispatch({ type: "REMOVE_ARCHIVED_SORTED_BY", formId })
+      return values
+    }
+  ) */
 
 export const fetchRecords = (
   organizationId,
@@ -118,19 +139,19 @@ export const removeRecord = (organizationId, formId, id) => {
     })
 }
 
-export const updateRecord = value => {
-  return dispatch =>
-    update(
-      dispatch,
-      `/api/v1/organizations/${value.organizationId}/forms/${value.formId}/records/${value.recordId}`,
-      value,
-      resp =>
-        dispatch({
-          type: "UPDATE_VALUE",
-          value: resp.links.values
-        })
-    )
-}
+export const updateRecord = value => dispatch =>
+  update(
+    dispatch,
+    `/api/v1/organizations/${value.organizationId}/forms/${value.formId}/records/${value.recordId}`,
+    value,
+    resp => {
+      console.log(resp.links.values)
+      dispatch({
+        type: "UPDATE_VALUE",
+        value: resp.links.values
+      })
+    }
+  )
 
 export const searchRecords = (organizationId, formId, query) => dispatch =>
   fetch(

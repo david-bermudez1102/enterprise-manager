@@ -8,7 +8,7 @@ const PasswordChangeForm = props => {
 
   const handleSubmit = data => {
     dispatch(props.handleSubmit(token, data)).then(resp =>
-      resp.message === "success" ? history.replace("/login") : null
+      resp ? history.replace("/login") : null
     )
   }
 

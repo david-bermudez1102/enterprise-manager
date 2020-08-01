@@ -22,17 +22,58 @@ class Value < ApplicationRecord
 
   scope :this_month, -> { where(created_at: Time.now.beginning_of_month..Time.now.end_of_month) }
 
-  validates :content, presence: true, if: -> { record_field.field.is_required  }
+  validates :content, presence: true, if: -> { field.is_required  }
   
   validate :should_content_be_uniq
-  validates :content, numericality: true, if: -> {record_field.field.field_type == "numeric_field" && record_field.field.accepts_decimals}
-  validates :content, numericality: {only_integer: true}, if: -> {record_field.field.field_type == "numeric_field" && !record_field.field.accepts_decimals}
+  validates :content, numericality: true, if: -> { field.field_type == "numeric_field" && field.accepts_decimals && content != ""}
+  validates :content, numericality: {only_integer: true}, if: -> { field.field_type == "numeric_field" && !field.accepts_decimals && content != "" }
 
-  validates :record_value, presence:true, if: -> {record_field.field.field_type == "selectable"}
+  validates :record_value, presence:true, if: -> { field.field_type == "selectable"}
 
   def cache_key
     "/values/#{id}-#{updated_at}"
   end
+
+  def zoho_api_content
+    new_record = record_value.record if record_value
+    zoho_integration_record = new_record.zoho_integration_record if new_record
+
+    if zoho_integration_record
+      zoho_integration_record.external_id
+    else
+      if field.field_dependents.size > 0 && content_after_dependents && content_after_dependents != ""
+        new_content = content_after_dependents
+      else
+        new_content = content
+      end
+
+      if field.field_type == "numeric_field" 
+        new_content.to_f
+      else
+        new_content
+      end
+    end
+  end
+
+  def record_field_name
+    zoho_connection = field.selectable_resource.form.zoho_connection if field.selectable_resource
+
+    if field && field.selectable_resource && zoho_connection
+      if zoho_connection.connection_type == "contacts"
+        "customer_id"
+      else
+        "#{zoho_connection.connection_type.downcase.singularize}_id"
+      end
+      
+    else
+      if !record_field.zoho_field_name.nil? 
+        record_field.zoho_field_name
+      else 
+        record_field.name.downcase.split(" ").join("_")
+      end
+    end
+  end
+
 
   private
     def touch_selectable_resource

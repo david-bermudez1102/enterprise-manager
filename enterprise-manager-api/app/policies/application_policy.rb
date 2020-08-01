@@ -50,11 +50,19 @@ class ApplicationPolicy
       @scope = scope
     end
 
+    def scope_with_permissions
+      scope.left_outer_joins(:permission => [:assignments, :exclusions]).where(permissions:{ assignments:{ role: user.roles, read_privilege: true } })
+    end
+
+    def scope_with_default_permissions
+      scope.left_outer_joins(:default_permissions => [:assignments, :exclusions]).where(default_permissions:{ assignments:{ role: user.roles, read_privilege: true } })
+    end
+
     def resolve
       if user.is_root
         scope
       else
-        scope.left_outer_joins(:permission => [:assignments, :exclusions]).where(permissions:{ assignments:{ role: user.roles, read_privilege: true } }).where.not(permissions:{ exclusions: user.exclusions.where(exclusion_type:"readPrivilege") } ).distinct
+        scope_with_default_permissions.merge(scope_with_permissions).where.not(permissions:{ exclusions: user.exclusions.where(exclusion_type:"readPrivilege") } ).distinct
       end
     end
   end

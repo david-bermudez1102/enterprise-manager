@@ -30,7 +30,7 @@ class ValueSerializer
       zoho_integration_record.external_id
     else
       if value.field.field_dependents.size > 0 && value.content_after_dependents && value.content_after_dependents != ""
-        content = content_after_dependents
+        content = value.content_after_dependents
       else
         content = value.content
       end

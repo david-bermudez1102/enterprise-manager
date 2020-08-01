@@ -100,6 +100,14 @@ export const mappedValues = (state = [], action) => {
   switch (action.type) {
     case "SET_MAPPED_VALUES":
       return action.values
+    case "UPDATE_VALUE":
+      console.log(action.value)
+      return state.map(value =>
+        value.recordId === action.value.id && action.value[value.recordFieldId]
+          ? { ...value, content: action.value[value.recordFieldId] }
+          : value
+      )
+
     default:
       return state
   }

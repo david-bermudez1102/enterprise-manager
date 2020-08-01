@@ -3,12 +3,12 @@ class ValuesController < ApplicationController
   before_action :set_organization
   before_action :set_form
   before_action :set_record_field, only: :create
-  before_action :set_record, only: :create
+  before_action :set_record, only: [:create]
+  before_action :set_values, only: :index
   before_action :set_value, only: %i[show, update]
 
   def index
-    values = @form.values.includes(:record,:record_field,:record,:form)
-    render json: ValueSerializer.new(values).serializable_hash[:data].map { |data| data[:attributes]}
+    render json: ValueSerializer.new(@values).serializable_hash[:data].map { |data| data[:attributes]}
   end
 
   def show
@@ -46,7 +46,7 @@ class ValuesController < ApplicationController
   end
 
   def set_form
-    @form = @organization.forms.find_by(id: params[:form_id])
+    @form = @organization.forms.includes(:values, :records, :record_fields).find_by(id: params[:form_id])
   end
 
   def set_record_field
@@ -55,6 +55,10 @@ class ValuesController < ApplicationController
 
   def set_record
     @record = @form.records.find_by(id: value_params[:record_id])
+  end
+
+  def set_values
+    @values = @form.values.includes(:record,:record_field, :record, { :record_value => [{ :record => [:zoho_integration_record] }, :key_value] }, :form, { :field => [:field_dependents, { :selectable_resource => [{ :form => [:zoho_connection] }] }] })
   end
 
   def set_value

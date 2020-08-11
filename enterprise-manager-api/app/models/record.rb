@@ -5,12 +5,17 @@ class Record < ApplicationRecord
   belongs_to :form, counter_cache: true, touch: true
   has_one :organization, through: :form
   belongs_to :account, touch: true
-  has_many :values, dependent: :destroy
+  has_many :values, -> { order(created_at: :desc) }, dependent: :destroy, inverse_of: :record
   has_one :zoho_integration_record, class_name:"IntegrationRecord", foreign_key: "zoho_integration_record_id", dependent: :delete
   has_one :quickbooks_integration_record, class_name:"IntegrationRecord", foreign_key: "quickbooks_integration_record_id", dependent: :delete
 
-  before_commit :generate_content_after_dependents
+  after_create :generate_values_that_are_empty
+  after_create :generate_content_after_dependents
+  after_update :generate_values_that_are_empty
+  after_update :generate_content_after_dependents
   #after_create :generate_combined_field_value
+
+  has_paper_trail
 
   accepts_nested_attributes_for :zoho_integration_record, update_only: true, allow_destroy: true, reject_if: proc { |attributes| attributes.all? { |key, value| key == "_destroy" || value.blank? } }
 
@@ -49,25 +54,33 @@ class Record < ApplicationRecord
   end 
 =end
 
+  def generate_values_that_are_empty
+    form.fields.left_outer_joins(:values).where.not(values:values).includes(:values, :record_field).distinct.map do |field|
+      values.new(record_field_id: field.record_field_id).save(validate: false)
+    end
+  end
+
   def generate_content_after_dependents
-    values.select { |v| v.field_dependents.size > 0 }.map do |value|
-      value.content_after_dependents = content_generator(value, value.field_dependents)
-      value.save
+
+    values.joins(:field_dependents).distinct.map do |value|
+      value.update_attribute(:content_after_dependents,content_generator(value, value.field_dependents))
     end
   end
 
   def content_generator(value, dependents)
-    final_value = value.content if value.field.field_type == "numeric_field"
-    final_value = final_value.to_f if
+    final_value = value.content
+    final_value = final_value.to_f if value.field.field_type == "numeric_field"
     percentages = 0
-
+    
     dependents.each do |d|
       field_dependent = d
 
       sub_dependent = field_dependent.sub_dependents.find_by(sub_dependent_option_id: values.pluck(:option_id) )
 
       if !sub_dependent && field_dependent.dependent_field.field_type == "selectable"
-        current_value = values.joins(:field).find_by(fields:{ id: field_dependent.dependent_field_id }).record_value.record.values.find_by(record_field_id: field_dependent.resource_field_id)
+        current_value = values.where.not(record_value_id: nil).joins(:field).find_by(fields:{ id: field_dependent.dependent_field_id })
+        current_value = current_value.record_value.record.values.find_by(record_field_id: field_dependent.resource_field_id) if current_value && current_value.record_value && current_value.record_value.record
+        
       elsif sub_dependent
         field_dependent = sub_dependent
         current_value = values.find_by(option_id:field_dependent.sub_dependent_option_id)
@@ -85,11 +98,11 @@ class Record < ApplicationRecord
         content = 0 if is_percentage && !is_percentage_from_dependent
         percentages += field_dependent.content.to_f if is_percentage && !is_percentage_from_dependent
         content = content * current_value.content.to_f / 100 if is_percentage_from_dependent
-        
         case field_dependent.operation
           when "replace"
-            if content != ""
+            if content != "" && content != 0
               final_value = content
+              percentages = 0
               break
             end
           when "copy"
@@ -115,5 +128,9 @@ class Record < ApplicationRecord
 
   def cache_key
     "/records/#{id}-#{form.records_count}-#{values.size}-#{updated_at.to_i}"
+  end
+
+  def all_values
+    values
   end
 end

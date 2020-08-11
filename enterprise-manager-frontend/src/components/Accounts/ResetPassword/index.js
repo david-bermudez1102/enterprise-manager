@@ -24,6 +24,7 @@ const ResetPassword = ({ verifyToken }) => {
   useEffect(() => {
     if (tokenParam) {
       verifyToken(tokenParam).then(resp => {
+        console.log(resp)
         if (resp.message === "success") {
           setToken({ token: tokenParam, ...resp })
           setValidToken(true)

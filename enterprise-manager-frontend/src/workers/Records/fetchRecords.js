@@ -21,21 +21,8 @@ export const fetchRecords = (
   )
     .then(handleErrors)
     .then(response => {
-      const records = transform(
-        state.records,
-        response.map(r => r.attributes),
-        formId
-      )
-      const values = transform(
-        state.values,
-        response.map(r => ({
-          id: r.id,
-          formId: r.attributes.formId,
-          ...r.links.values,
-          key: `recordValues${r.id}`
-        })),
-        formId
-      )
+      const records = transform(state.records, response, formId)
+      const values = transform(state.values, response, formId)
       return { records, values }
     })
 }

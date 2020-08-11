@@ -115,10 +115,10 @@ const Field = props => {
       )
       break
     case "radio":
-      inputField = <RadioField {...inputAttributes} />
+      inputField = <RadioField {...inputAttributes} state={props.state} />
       break
     case "checkbox":
-      inputField = <CheckboxField {...inputAttributes} />
+      inputField = <CheckboxField {...inputAttributes} state={props.state} />
       break
     case "combined_field":
       inputField = <CombinedField {...inputAttributes} state={props.state} />

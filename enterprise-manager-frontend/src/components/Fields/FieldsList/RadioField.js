@@ -7,7 +7,8 @@ const RadioField = props => {
   const { field, onChange, editingMode, name, suffix } = props
   const [state, setState] = useState({
     recordFieldId: props.name,
-    content: ""
+    content: "",
+    optionId: editingMode ? props.state.optionId : undefined
   })
   const handleChange = e => {
     const newState = {
@@ -20,6 +21,8 @@ const RadioField = props => {
     setState(newState)
     onChange(newState)
   }
+
+  console.log(state)
 
   const onClear = () => {
     const newState = {
@@ -37,17 +40,19 @@ const RadioField = props => {
       name={name}
       field={field}
       suffix={suffix}>
-      <Radio.Group
-        value={state.optionId}
-        options={field.optionsAttributes.map(o => ({
-          label: o.value,
-          value: o.id
-        }))}
-        onChange={handleChange}
-      />
-      <Button size={"small"} onClick={onClear} shape={"circle"}>
-        <RedoOutlined />
-      </Button>
+      <div>
+        <Radio.Group
+          value={state.optionId}
+          options={field.optionsAttributes.map(o => ({
+            label: o.value,
+            value: o.id
+          }))}
+          onChange={handleChange}
+        />
+        <Button size={"small"} onClick={onClear} shape={"circle"}>
+          <RedoOutlined />
+        </Button>
+      </div>
     </FieldTypeWrapper>
   )
 }

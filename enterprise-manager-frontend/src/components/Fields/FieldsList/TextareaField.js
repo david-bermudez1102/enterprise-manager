@@ -21,7 +21,7 @@ const TextAreaField = props => {
       <TextArea
         onBlur={handleChange}
         onChange={editingMode ? handleChange : undefined}
-        allowClear
+        allowClear={!editingMode}
         autoSize
         {...newProps}
       />

@@ -37,6 +37,8 @@ const SelectableField = props => {
     // eslint-disable-next-line
   }, [state])
 
+  console.log(field.content)
+
   return (
     <FieldTypeWrapper
       editingMode={editingMode}
@@ -46,6 +48,7 @@ const SelectableField = props => {
       suffix={suffix}>
       <Select
         name={name}
+        bordered={!editingMode}
         showSearch
         placeholder={`Select a ${field.name.toLowerCase()}`}
         allowClear={!editingMode}

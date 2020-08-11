@@ -14,6 +14,7 @@ const NumericField = props => {
     state,
     form,
     record,
+    style,
     ...newProps
   } = props
 
@@ -59,9 +60,10 @@ const NumericField = props => {
       label={field.name}
       field={field}
       suffix={suffix}>
-      <div>
+      <div style={{ width: "100%" }}>
         <InputNumber
           {...newProps}
+          style={{ ...style, width: "100%" }}
           onFocus={() => setIsFocused(true)}
           onBlur={editingMode ? onBlur : () => setIsFocused(false)}
           step={field.acceptsDecimals ? 0.1 : 1}
@@ -75,7 +77,6 @@ const NumericField = props => {
               ? state.contentAfterDependents
               : value
           }
-          style={{ width: "100%" }}
         />
       </div>
     </FieldTypeWrapper>

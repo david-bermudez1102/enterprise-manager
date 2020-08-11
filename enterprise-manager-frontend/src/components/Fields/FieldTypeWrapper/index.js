@@ -10,12 +10,12 @@ const FieldTypeWrapper = ({
   children
 }) => {
   return (
-    <Row gutter={[24, 16]} align={"middle"}>
+    <Row gutter={[24, 16]} align={"middle"} style={{ width: "100%" }}>
       {!editingMode && suffix && <Col span={1}>{suffix}</Col>}
       <Col flex={"auto"}>
         <Form.Item
           valuePropName={
-            field.fieldType === "boolean_field" ? "checked" : "value"
+            field.fieldType === "boolean_field" ? "checked" : undefined
           }
           style={field.style}
           label={!editingMode ? label || field.name : "undefined"}

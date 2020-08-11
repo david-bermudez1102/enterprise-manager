@@ -80,6 +80,7 @@ const useRecordsList = ({ recordFields, values, resource }) => {
           index
         })
       })),
+    // eslint-disable-next-line
     [getColumnSearchProps, resource.organizationId]
   )
 

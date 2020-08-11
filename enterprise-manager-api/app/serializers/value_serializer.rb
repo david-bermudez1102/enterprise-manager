@@ -3,7 +3,7 @@ class ValueSerializer
   set_key_transform :camel_lower
   #cache_options enabled: true, cache_length: 12.hours
 
-  attributes :id, :record_field_id, :record_id, :form_id, :record_value_id
+  attributes :id, :record_field_id, :record_id, :form_id, :record_value_id, :option_id
   
   attribute :content_after_dependents, if: Proc.new { |value| value.field.field_dependents.size > 0 && value.content_after_dependents && value.content_after_dependents != "" } do |value|
     if value.record_field.field_type == "numeric_field"
@@ -30,7 +30,7 @@ class ValueSerializer
       zoho_integration_record.external_id
     else
       if value.field.field_dependents.size > 0 && value.content_after_dependents && value.content_after_dependents != ""
-        content = content_after_dependents
+        content = value.content_after_dependents
       else
         content = value.content
       end

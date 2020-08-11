@@ -8,8 +8,13 @@ class Form < ApplicationRecord
   has_many :record_fields, dependent: :destroy
   has_many :values, through: :records
   has_one :permission, as: :permissionable
+  has_many :assignments, through: :permission
+
   has_many :exclusions, through: :permission
   has_many :roles, through: :organization
+  has_many :default_permissions, through: :roles
+  has_many :default_assignments, through: :default_permissions, source: :assignments
+  
   
   validates :name, length: { in: 2..20 }
   has_many :selectable_resources, dependent: :destroy

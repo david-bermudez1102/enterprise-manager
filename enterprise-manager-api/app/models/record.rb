@@ -123,6 +123,7 @@ class Record < ApplicationRecord
     
       end
     end
+    puts final_value
     final_value + (final_value * percentages/100)
   end
 

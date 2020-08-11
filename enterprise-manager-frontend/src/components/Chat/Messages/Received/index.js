@@ -35,4 +35,4 @@ const MessageReceived = ({ content, account, style }) => {
   )
 }
 
-export default React.memo(MessageReceived)
+export default MessageReceived

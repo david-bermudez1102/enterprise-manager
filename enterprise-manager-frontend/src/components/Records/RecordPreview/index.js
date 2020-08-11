@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react"
 import { Drawer, Descriptions } from "antd"
 import { format, formatDistanceToNow } from "date-fns"
 import { singular } from "pluralize"
+import RecordHistory from "./RecordHistory"
 
 const RecordPreview = ({ resource, record, recordFields, setRecord }) => {
   const [visible, setVisible] = useState(true)
 
   useEffect(() => {
-    if (record) setVisible(true)
+    if (record) {
+      setVisible(true)
+    }
   }, [record])
 
   return record ? (
@@ -38,6 +41,7 @@ const RecordPreview = ({ resource, record, recordFields, setRecord }) => {
           )
         </Descriptions.Item>
       </Descriptions>
+      <RecordHistory record={record} />
     </Drawer>
   ) : null
 }

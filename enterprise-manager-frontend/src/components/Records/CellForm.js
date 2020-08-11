@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Form, Spin, Button } from "antd"
+import { Form, Spin } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 import "./styles.scss"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
@@ -8,7 +8,14 @@ import useMatchedRoute from "../NoMatch/useMatchedRoute"
 import { updateRecord } from "../../actions/recordActions"
 
 export const CellForm = props => {
-  const { record, formId, recordId, recordFieldId, organizationId } = props
+  const {
+    record,
+    formId,
+    recordId,
+    recordFieldId,
+    organizationId,
+    isTypeableField
+  } = props
   const dispatch = useDispatch()
 
   const match = useMatchedRoute()
@@ -27,20 +34,24 @@ export const CellForm = props => {
     mappedValues.find(
       v => v.recordFieldId === recordFieldId && v.recordId === recordId
     ) || {}
+
   const [state, setState] = useState({
     id: currentValue.id,
     content: currentValue.content || "",
     contentAfterDependents: currentValue.contentAfterDependents,
     formId,
     recordId,
+    recordValueId: record.recordValueId,
     recordFieldId,
-    organizationId
+    organizationId,
+    optionId: currentValue.optionId
   })
   const [loading, setLoading] = useState(false)
   const [form] = Form.useForm()
 
   useEffect(() => {
     form.setFieldsValue({ [recordFieldId]: state.content })
+    // eslint-disable-next-line
   }, [form])
 
   const suffix = loading ? (
@@ -55,6 +66,15 @@ export const CellForm = props => {
   const handleChange = newState => {
     setLoading(false)
     setState({ ...state, ...newState })
+    if (!isTypeableField)
+      dispatch(
+        updateRecord({
+          recordId,
+          organizationId,
+          formId,
+          valuesAttributes: [{ ...state, ...newState }]
+        })
+      )
   }
 
   const handleBlur = () => {
@@ -62,20 +82,18 @@ export const CellForm = props => {
   }
 
   const onFinish = data => {
-    setLoading(true)
-    dispatch(
-      updateRecord({
-        recordId,
-        organizationId,
-        formId,
-        valuesAttributes: [state]
-      })
-    )
-      .then(() => setLoading(false))
-      .then(handleBlur)
+    console.log(state.content, currentValue.content)
+    if (state.content !== currentValue.content)
+      dispatch(
+        updateRecord({
+          recordId,
+          organizationId,
+          formId,
+          valuesAttributes: [state]
+        })
+      ).then(props.handleBlur)
+    else props.handleBlur()
   }
-
-  console.log(state)
 
   return (
     <Form
@@ -97,7 +115,7 @@ export const CellForm = props => {
         match={match}
         handleChange={handleChange}
         onBlur={
-          ["boolean_field"].includes(field.fieldType) ? undefined : handleBlur
+          ["boolean_field"].includes(field.fieldType) ? undefined : onFinish
         }
         editingMode={true}
         style={{
@@ -105,19 +123,14 @@ export const CellForm = props => {
           outline: 0,
           padding: 0,
           margin: 0,
-          width: "100%"
+          width: "100%",
+          boxShadow: "none",
+          background: "transparent"
         }}
         suffix={suffix}
         onPressEnter={field.fieldType === "textarea" ? onFinish : undefined}
         autoFocus
       />
-      {["boolean_field"].includes(field.fieldType) && (
-        <Form.Item noStyle>
-          <Button size={"small"} htmlType={"submit"} style={{ marginLeft: 5 }}>
-            Save
-          </Button>
-        </Form.Item>
-      )}
     </Form>
   )
 }

@@ -30,7 +30,7 @@ const TextField = props => {
         onChange={editingMode ? handleChange : undefined}
         onBlur={!editingMode ? handleChange : newProps.onBlur}
         onPressEnter={!editingMode ? handleChange : newProps.onPressEnter}
-        allowClear
+        allowClear={!editingMode}
       />
     </FieldTypeWrapper>
   )

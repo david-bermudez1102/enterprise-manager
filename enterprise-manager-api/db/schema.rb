@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_29_011606) do
+ActiveRecord::Schema.define(version: 2020_08_01_195145) do
 
   create_table "account_roles", force: :cascade do |t|
     t.integer "account_id"
@@ -456,6 +456,17 @@ ActiveRecord::Schema.define(version: 2020_07_29_011606) do
     t.index ["record_field_id"], name: "index_values_on_record_field_id"
     t.index ["record_id"], name: "index_values_on_record_id"
     t.index ["record_value_id"], name: "index_values_on_record_value_id"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.integer "item_id", limit: 8, null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object", limit: 1073741823
+    t.datetime "created_at"
+    t.text "object_changes", limit: 1073741823
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
 end

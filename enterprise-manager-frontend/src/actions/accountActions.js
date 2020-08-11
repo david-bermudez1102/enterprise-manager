@@ -7,7 +7,7 @@ import jsonToFormData from "json-form-data"
 export const addAccount = account => dispatch =>
   add(
     dispatch,
-    `/api/v1/organizations/${account.organizationId}/accounts`,
+    `/api/v1/organizations/${account.organization_id}/accounts`,
     { account },
     account => dispatch({ type: "ADD_ACCOUNT", account })
   )

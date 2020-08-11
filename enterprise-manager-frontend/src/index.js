@@ -25,6 +25,7 @@ store.subscribe(
       token,
       alerts,
       conversations,
+      mappedValues,
       ...newState
     } = store.getState()
     saveState(newState)

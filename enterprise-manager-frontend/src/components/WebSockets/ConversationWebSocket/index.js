@@ -10,12 +10,10 @@ const ConversationWebSocket = props => {
     dispatch(fetchConversations())
     cable.subscriptions.create(
       {
-        channel: "ConversationChannel",
-        account_id: 14
+        channel: "ConversationChannel"
       },
       {
         received: data => {
-          console.log(data)
           dispatch({
             type: "SET-CONVERSATIONS",
             conversations: data.conversations

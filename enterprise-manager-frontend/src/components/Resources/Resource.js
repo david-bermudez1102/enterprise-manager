@@ -21,6 +21,7 @@ import {
 import StatisticsContainer from "../../containers/Records/Statistics"
 import ConnectionsContainer from "../../containers/Connections/ConnectionsContainer"
 import useUserPermission from "../Accounts/UserPermission/useUserPermission"
+import ResourceWebSocket from "../WebSockets/ResourceWebSocket"
 
 const Resource = () => {
   const location = useLocation()
@@ -96,6 +97,7 @@ const Resource = () => {
 
   return resource ? (
     <>
+      <ResourceWebSocket resourceId={resource.id} />
       <Col span={24} style={{ marginBottom: -24 }}>
         <Card
           bordered={false}

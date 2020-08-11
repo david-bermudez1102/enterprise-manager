@@ -50,4 +50,4 @@ const NewMessage = ({ haveNewMessages, messagesEndRef }) => {
   ) : null
 }
 
-export default NewMessage
+export default React.memo(NewMessage)

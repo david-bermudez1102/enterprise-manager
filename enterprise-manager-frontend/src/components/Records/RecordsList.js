@@ -6,7 +6,7 @@ import { Table, Pagination, Row, Col, Empty, Card } from "antd"
 import useRecordsList from "./hooks/useRecordsList"
 import { useFilterRecords } from "./hooks/useFilterRecords"
 import { fetchRecords } from "../../actions/recordActions"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import useFilters from "../Filters/Hooks/useFilters"
 import RecordOptions from "./RecordOptions"
 import DeletionModal from "../Modal/DeletionModal"
@@ -26,6 +26,10 @@ const RecordsList = props => {
   const mounted = useRef()
   const [sorting, setSorting] = useState(false)
   const [listHeight, setListHeight] = useState()
+  const { recordsStatus } = useSelector(
+    ({ recordsStatus }) => ({ recordsStatus }),
+    shallowEqual
+  )
 
   const {
     loadingInitialData,
@@ -249,6 +253,11 @@ const RecordsList = props => {
           </Col>
         </Row>
       </div>
+      {recordsStatus.isSaving && (
+        <div style={{ position: "fixed", top: 0, zIndex: 5000 }}>
+          Saving Changes...
+        </div>
+      )}
       <DeletionModal {...deletionModal} />
       {/* <ConnectionSettings
         connectionName={"ZohoBooks"}

@@ -5,7 +5,8 @@ import { fieldsReducer } from "./fieldsReducer"
 import {
   recordsReducer,
   recordsSortedBy,
-  sortedRecords
+  sortedRecords,
+  recordsStatus
 } from "./recordsReducer"
 import { valuesReducer, archivedValues, mappedValues } from "./valuesReducer"
 import { sessionReducer } from "./sessionReducer"
@@ -49,6 +50,7 @@ export const rootReducer = combineReducers({
   resources: resourcesReducer,
   fields: fieldsReducer,
   records: recordsReducer,
+  recordsStatus,
   sortedRecords,
   recordFields: recordFieldsReducer,
   recordsSortedBy,

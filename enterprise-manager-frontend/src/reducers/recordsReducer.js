@@ -1,3 +1,5 @@
+import { statusReducer } from "./statusReducer"
+
 export const recordsReducer = (state = {}, action) => {
   switch (action.type) {
     case "ADD_RECORD":
@@ -123,3 +125,6 @@ export const sortedRecords = (state = {}, action) => {
       return state
   }
 }
+
+export const recordsStatus = (state = { isSaving: false }, action) =>
+  statusReducer(state, action)

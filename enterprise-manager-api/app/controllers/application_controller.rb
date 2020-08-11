@@ -2,7 +2,8 @@ class ApplicationController < ActionController::API
   include ::ActionController::Cookies
   include Pundit
   before_action :set_current_account
-
+  before_action :set_paper_trail_whodunnit
+  
   rescue_from Exception, with: :exception_handler
 
   def auth_header

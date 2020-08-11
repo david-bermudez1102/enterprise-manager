@@ -16,9 +16,6 @@
 .custom-form div {
   padding: 0 !important;
   margin: 0 !important;
-  height: 21px !important;
-  min-height: 21px !important;
-  max-height: 21px !important;
 }
 
 .custom-form .ant-select {
@@ -28,9 +25,9 @@
 .custom-form div .ant-input-number-handler-wrap {
   padding: 0 !important;
   margin: 0 !important;
-  height: 90% !important;
-  min-height: 90% !important;
-  max-height: 90% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
   outline: 0 !important;
   line-height: 1.5715 !important;
 }

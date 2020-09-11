@@ -1,0 +1,4 @@
+enterprise-manager-api/node_modules
+enterprise-manager-api/storage
+enterprise-manager-api/public/*
+.vscode

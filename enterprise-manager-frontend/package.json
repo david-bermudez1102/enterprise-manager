@@ -61,7 +61,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "react-app-rewired build && rm -rf ../enterprise-manager-api/public/* && cp -a build/. ../enterprise-manager-api/public",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

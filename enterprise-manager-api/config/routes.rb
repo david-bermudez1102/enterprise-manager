@@ -49,6 +49,10 @@ Rails.application.routes.draw do
     get '/current_user', to: 'sessions#show'
     delete '/delete_session', to: 'sessions#destroy'
   end
+
   mount ActionCable.server => '/cable'
+  get '*path', to: "application#fallback_index_html", constraints: ->(request) do
+    !request.xhr? && request.format.html?
+  end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

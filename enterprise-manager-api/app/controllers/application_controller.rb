@@ -1,10 +1,17 @@
 class ApplicationController < ActionController::API
   include ::ActionController::Cookies
+  include ::ActionController::MimeResponds
   include Pundit
   before_action :set_current_account
   before_action :set_paper_trail_whodunnit
   
   rescue_from Exception, with: :exception_handler
+
+  def fallback_index_html
+    respond_to do |format|
+      format.html { render body: Rails.root.join('public/index.html').read }
+    end
+  end
 
   def auth_header
     request.headers['Authorization']
@@ -18,6 +25,8 @@ class ApplicationController < ActionController::API
     else
       nil
     end
+  rescue
+    nil
   end
 
   def current_user
@@ -26,18 +35,20 @@ class ApplicationController < ActionController::API
 
   def encode_token(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i
-    JWT.encode(payload, Rails.application.secrets.secret_key_base)
+    JWT.encode(payload, Rails.application.credentials.dig(:secret_key_base))
   end
 
   def decoded_token(token)
     begin
-        JWT.decode(token, Rails.application.secrets.secret_key_base, true, algorithm: 'HS256')
+        JWT.decode(token, Rails.application.credentials.dig(:secret_key_base), true, algorithm: 'HS256')
       rescue JWT::DecodeError
         nil
       end
   end
 
   def authenticate_user
+    Rails.logger.info "DECODED TOKEN: #{Rails.application.credentials.dig(:secret_key_base)}"
+    
     if current_account.nil?
       SessionChannel.broadcast_to(current_account, { errors: ["Not logged in"]})
       render json: { errors: ['Not Authorized'] }

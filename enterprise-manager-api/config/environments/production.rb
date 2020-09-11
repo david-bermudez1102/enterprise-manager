@@ -11,8 +11,10 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local = false
+  config.consider_all_requests_local = true
   config.action_controller.perform_caching = true
+  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
+
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
@@ -55,6 +57,19 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "zoho-manager-api_#{Rails.env}"
 
   config.action_mailer.perform_caching = false
+  config.active_record.verbose_query_logs = true
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+  :address              => ENV['MAIL_SERVER'],
+  :port                 => ENV['MAIL_PORT'],
+  :user_name            => ENV['MAIL_USERNAME'],
+  :password             => ENV['MAIL_PASSWORD'],
+  :authentication       => "plain",
+  :enable_starttls_auto => true
+  }
+  
+  config.action_cable.allowed_request_origins = [/http:\/\/*/, /https:\/\/*/]
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.

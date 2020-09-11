@@ -30,7 +30,7 @@ const ResourceWebSocket = ({ resourceId }) => {
       )
     }
     // eslint-disable-next-line
-  }, [organizationId, resourceId])
+  }, [])
   return <></>
 }
 

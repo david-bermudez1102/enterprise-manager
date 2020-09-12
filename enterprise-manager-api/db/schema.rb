@@ -208,7 +208,6 @@ ActiveRecord::Schema.define(version: 2020_08_01_195145) do
     t.datetime "updated_at", null: false
     t.string "form_alias"
     t.integer "records_count"
-    t.text "fields_order", default: "--- []\n"
     t.index ["organization_id"], name: "index_forms_on_organization_id"
   end
 

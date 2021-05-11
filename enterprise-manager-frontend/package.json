@@ -28,7 +28,7 @@
 		"js-yaml": "^3.14.0",
 		"json-form-data": "^1.7.2",
 		"kind-of": "^6.0.3",
-		"lodash": "^4.17.20",
+		"lodash": "^4.17.21",
 		"node-sass": "^4.13.1",
 		"parse-full-name": "^1.2.4",
 		"pluralize": "^8.0.0",

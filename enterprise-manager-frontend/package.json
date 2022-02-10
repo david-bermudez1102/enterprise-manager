@@ -29,7 +29,7 @@
 		"json-form-data": "^1.7.2",
 		"kind-of": "^6.0.3",
 		"lodash": "^4.17.20",
-		"node-sass": "^4.13.1",
+		"node-sass": "^7.0.0",
 		"parse-full-name": "^1.2.4",
 		"pluralize": "^8.0.0",
 		"react": "^16.13.1",
